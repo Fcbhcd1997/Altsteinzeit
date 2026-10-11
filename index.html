@@ -855,7 +855,7 @@ cat('stone',   ['#4c4640','#8a8378','#7d766b','#3f3a35','#4f4943','#5e5750','#7a
 cat('meat',    ['#8a3324','#6e2a1d','#7a3a24']);
 const matCache = new Map();
 const _boneTint = new THREE.Color('#b9a47c');
-function agedBone(c){ return c.lerp(_boneTint, 0.3).multiplyScalar(0.94); }
+function agedBone(c){ return c.lerp(_boneTint, 0.42).multiplyScalar(0.88); }
 const _woodTint = new THREE.Color('#5c5044');
 function agedWood(c){ return c.lerp(_woodTint, 0.22); }
 const rockCache = new Map();
@@ -1601,18 +1601,18 @@ function makePerson(o){
     const rAt = y => { for (let i=1;i<prof.length;i++) if (y >= prof[i][1]){ const [r0, a0] = prof[i-1], [r1, a1] = prof[i]; return r0 + (r1 - r0)*(y - a0)/(a1 - a0); } return prof[prof.length-1][0]; };
     const cards = [], ni = Math.round(nIn*NC), nh = Math.round(nHem*NC);
     for (let i=0;i<ni;i++){ const y = CR(y0 + 0.03, y1), a = CR(0, TAU), r = rAt(y) + 0.006, sx = Math.sin(a), cz = Math.cos(a);
-      tuft(cards, CR(0.05, 0.09), CR(lenIn[0], lenIn[1]), 0.02, CR(0.15, 0.4), sx*r, y, cz*r*zs, sx, cz/zs, CR(-0.2, 0.2)); }
+      tuft(cards, CR(0.03, 0.055), CR(lenIn[0], lenIn[1]), 0.02, CR(0.15, 0.4), sx*r, y, cz*r*zs, sx, cz/zs, CR(-0.2, 0.2)); }
     for (let i=0;i<nh;i++){ const a = i/nh*TAU + CR(-0.08, 0.08), y = CR(y0 - 0.01, y0 + 0.04), r = rAt(y) - 0.004, sx = Math.sin(a), cz = Math.cos(a);
-      tuft(cards, CR(0.06, 0.1), CR(lenHem[0], lenHem[1]), 0.03, CR(0.02, 0.18), sx*r, y, cz*r*zs, sx, cz/zs, CR(-0.15, 0.15)); }
+      tuft(cards, CR(0.035, 0.06), CR(lenHem[0], lenHem[1]), 0.03, CR(0.02, 0.18), sx*r, y, cz*r*zs, sx, cz/zs, CR(-0.15, 0.15)); }
     addCards(spine, cards, hex); };
   if (!kid && o.cape !== false){
     const prof = [[0.065,0.67],[0.15,0.635],[0.24,0.565],[0.295,0.47],[0.315,0.36],[0.305,0.25]], cp = lathe(prof, 32);
     bumpy(cp, 0.1, 7, seed); ragged(cp, 0.23, 0.36, 0.08, 6, seed+1); cp.scale(1, 1, 0.84); mk(cp, furM, spine);
-    capeCards(prof, 0.84, 0.3, 0.62, 70, 34, [0.07, 0.14], [0.1, 0.2], furHex);
+    capeCards(prof, 0.84, 0.3, 0.62, 120, 56, [0.07, 0.14], [0.1, 0.2], furHex);
   } else {
     const prof = [[0.06,0.665],[0.14,0.625],[0.2,0.555],[0.215,0.475]], cp = lathe(prof, 26);
     bumpy(cp, 0.1, 8, seed); ragged(cp, 0.46, 0.53, 0.05, 6, seed+1); cp.scale(1, 1, 0.82); mk(cp, fur2M, spine);
-    capeCards(prof, 0.82, 0.5, 0.62, 30, 22, [0.05, 0.09], [0.06, 0.12], fur2Hex);
+    capeCards(prof, 0.82, 0.5, 0.62, 50, 34, [0.05, 0.09], [0.06, 0.12], fur2Hex);
   }
   mk(new THREE.CapsuleGeometry(0.048, 0.07, 4, 14), skinM, spine, 0, 0.665, 0.005);
   // Kopf (vereinfachtes Gesicht)
@@ -1675,9 +1675,9 @@ function makePerson(o){
                           xf(bumpy(new THREE.TorusGeometry(0.086, 0.024, 8, 22), 0.25, 14, seed+sd*2), 0, -0.15, 0, Math.PI/2, 0, 0),
                           xf(bumpy(new THREE.SphereGeometry(0.075, 18, 12), 0.1, 10, seed+sd*3), 0, -0.405, 0.045, 0, 0, 0, 0.85, 0.58, 1.55) ]);
       // Fellstiefel: zottige Haare rundherum
-      const bc = [], nb = Math.round(16*NC);
+      const bc = [], nb = Math.round(22*NC);
       for (let i=0;i<nb;i++){ const a = i/nb*TAU + CR(-0.15, 0.15), y = CR(-0.3, -0.13), sx = Math.sin(a), cz = Math.cos(a);
-        tuft(bc, CR(0.04, 0.07), CR(0.06, 0.12), 0.02, CR(0.1, 0.3), sx*0.09, y, cz*0.09, sx, cz, CR(-0.2, 0.2)); }
+        tuft(bc, CR(0.03, 0.05), CR(0.06, 0.12), 0.02, CR(0.1, 0.3), sx*0.09, y, cz*0.09, sx, cz, CR(-0.2, 0.2)); }
       addCards(knee, bc, fur2Hex);
     }
     legs.push({ hip, knee });
@@ -1694,8 +1694,8 @@ function poseKneel(p){ p.hips.position.y = 0.48; for (const l of p.legs){ l.hip.
 function breathe(p, ph){ anims.push(t => { p.spine.scale.y = 1 + Math.sin(t*1.6+ph)*0.012; }); }
 /* Steinbeil: flacher, gerundeter Steinkopf, mit Schnur kreuzweise an den Stiel gebunden */
 function makeStoneAxe(parent){
-  const g = new THREE.Group(); parent.add(g);
-  const wood = M('#7a5f3c', { tex:'wood' }), cord = M('#a8946e', { tex:'leather', roughness:0.95 });
+  const g = new THREE.Group(); g.name = 'steinbeil'; parent.add(g);
+  const wood = M('#7a5f3c', { tex:'wood' }), cord = M('#8a7656', { tex:'leather', roughness:0.95 });
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
   // Stiel: leicht krumm gewachsen, oben mit Knauf
   const hc = new THREE.CatmullRomCurve3([V(0, 0, 0), V(0.008, 0.18, 0.003), V(-0.002, 0.38, 0), V(-0.01, 0.56, -0.002), V(-0.006, 0.66, 0)]);
@@ -1708,11 +1708,11 @@ function makeStoneAxe(parent){
     y *= 1 - back*0.45; z *= (1 - Math.pow(Math.abs(y), 3)*0.3)*(1 - Math.pow(Math.max(0, x), 4)*0.6);
     const n = 1 + (fbm3(x*3 + 4, y*3, z*3, 3) - 0.5)*0.12; sp.setXYZ(i, (x*0.115 + 0.05)*n, y*0.095*n, z*0.03*n); }
   sg.computeVertexNormals();
-  const head = mk(sg, rockMat('#8f8a82'), g, 0.012, 0.57, 0); head.rotation.z = 0.06;
+  const head = mk(sg, rockMat('#6e6a64'), g, 0.012, 0.57, 0); head.rotation.z = 0.06;
   // Wicklung: Ringe um Stiel und Steinrücken, dazu ein Kreuz über den Stein
   const wr = [];
   for (let i=0;i<5;i++){ const y = 0.535 + i*0.016; wr.push(xf(new THREE.TorusGeometry(0.042, 0.0045, 5, 18).scale(1.2, 0.78, 1), 0.012, y + (i%2)*0.002, 0, Math.PI/2, 0, (i%2 ? 0.08 : -0.08))); }
-  for (const sd of [-1, 1]) wr.push(xf(new THREE.TorusGeometry(0.05, 0.0045, 5, 20).scale(1.15, 0.6, 1), 0.016, 0.57, 0, Math.PI/2 + sd*0.72, 0, sd*0.25));
+  for (const sd of [-1, 1]) for (const o of [-0.006, 0.006]) wr.push(xf(new THREE.TorusGeometry(0.052, 0.0055, 5, 20).scale(1.15, 0.6, 1), 0.016, 0.57 + o, 0, Math.PI/2 + sd*0.72, 0, sd*0.25));
   for (let i=0;i<3;i++) wr.push(xf(new THREE.TorusGeometry(0.031, 0.0042, 5, 14), -0.004, 0.495 - i*0.012, 0, Math.PI/2, 0, 0));
   bake(g, cord, wr);
   return g;
@@ -1885,7 +1885,7 @@ function makeMammoth(){
 
 function makeDeer(ph){
   const g = new THREE.Group(), dr = mulberry32(Math.floor(ph*1000) + 17), DR = (a, b) => a + (b - a)*dr();
-  const furV = M('#ffffff', { tex:'fur', rep:3, vertexColors:true, sheenColor:'#5e4c3c' }), dark = M('#3a2f27', { tex:'fur' }), hoof = M('#1e1915', { tex:null, roughness:0.55 }), ant = M('#b3a283', { tex:'bone', roughness:0.7 });
+  const furV = M('#ffffff', { tex:'leather', rep:3, vertexColors:true, roughness:0.95 }), dark = M('#3a2f27', { tex:'fur' }), hoof = M('#1e1915', { tex:null, roughness:0.55 }), ant = M('#b3a283', { tex:'bone', roughness:0.7 });
   const shaded = (geo, colFn) => { const p = geo.attributes.position, col = new Float32Array(p.count*3), c = new THREE.Color();
     for (let i=0;i<p.count;i++){ colFn(p.getX(i), p.getY(i), p.getZ(i), c); const n = 0.88 + fbm3(p.getX(i)*6 + ph, p.getY(i)*6, p.getZ(i)*6, 2)*0.24; col[i*3] = c.r*n; col[i*3+1] = c.g*n; col[i*3+2] = c.b*n; }
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); return geo; };
@@ -1934,13 +1934,11 @@ function makeDeer(ph){
     const pts = [ new THREE.Vector3(sd*0.05, 0.08, 0.05), new THREE.Vector3(sd*0.17, 0.34, -0.17), new THREE.Vector3(sd*0.28, 0.64, -0.25), new THREE.Vector3(sd*0.31, 0.9, -0.12), new THREE.Vector3(sd*0.24, 1.06, 0.1) ], beam = new THREE.CatmullRomCurve3(pts);
     const ap = [ part(taperTube(beam, 28, 8, t => 0.034 - 0.018*t), '#b3a283') ];
     const tine = (t, dir, len, r0) => { const b0 = beam.getPoint(t); const c = new THREE.CatmullRomCurve3([b0, b0.clone().add(dir.clone().multiplyScalar(len*0.55)).add(new THREE.Vector3(0, len*0.15, 0)), b0.clone().add(dir.clone().multiplyScalar(len))]); ap.push(part(taperTube(c, 8, 6, u => r0*(1 - u*0.8)), '#b3a283')); };
-    const palm = (t, sx, sy, sz, rx) => { const b0 = beam.getPoint(t); const pg = new THREE.SphereGeometry(1, 12, 8); pg.scale(sx, sy, sz); ap.push(part(pg, '#b3a283', b0.x, b0.y, b0.z, rx, sd*0.3, 0)); };
-    // Augsprosse als flache Schaufel nach vorn (bei Rentieren typisch, oft nur auf einer Seite)
-    if (sd < 0 || dr() < 0.4){ tine(0.05, new THREE.Vector3(sd*0.1, 0.35, 1).normalize(), 0.2, 0.014); const sb = beam.getPoint(0.05); const sh = new THREE.SphereGeometry(1, 12, 8); sh.scale(0.012, 0.07, 0.1); ap.push(part(sh, '#b3a283', sb.x, sb.y + 0.06, sb.z + 0.16, 0.6, 0, 0)); }
+    // Augsprossen nach vorn über die Stirn (bei Rentieren typisch, oft nur auf einer Seite)
+    if (sd < 0 || dr() < 0.4){ tine(0.05, new THREE.Vector3(sd*0.1, 0.35, 1).normalize(), 0.2, 0.014); tine(0.06, new THREE.Vector3(sd*0.3, 0.2, 1).normalize(), 0.14, 0.01); }
     tine(0.22, new THREE.Vector3(sd*0.12, 0.3, 1).normalize(), 0.26, 0.016);
     tine(0.5, new THREE.Vector3(sd*0.35, 0.25, -1).normalize(), 0.2, 0.013);
-    palm(0.86, 0.016, 0.13, 0.08, 0.3);
-    for (const [t, dz, l] of [[0.74, 0.5, 0.16], [0.82, 0.8, 0.15], [0.9, 1.1, 0.13], [0.97, 1.4, 0.11], [0.88, -0.6, 0.1]]) tine(t, new THREE.Vector3(sd*0.35, 1, dz).normalize(), l, 0.01);
+    for (const [t, dz, l] of [[0.7, 0.4, 0.17], [0.78, 0.7, 0.16], [0.85, 1.0, 0.15], [0.92, 1.3, 0.13], [0.98, 1.6, 0.11], [0.82, -0.7, 0.12], [0.6, -0.9, 0.1]]) tine(t, new THREE.Vector3(sd*0.35, 1, dz).normalize(), l, 0.01);
     vmesh(ap, hd, false, VC);
   }
   // Kurzer, heller Schwanz
@@ -2252,8 +2250,12 @@ function flatStone(w, d, h, hex, seed){
   seed = seed || 1; let g = flatGeoCache[seed];
   if (!g){ g = new THREE.IcosahedronGeometry(1, 4); g.deleteAttribute('uv'); g.deleteAttribute('normal'); g = mergeVertices(g); const p = g.attributes.position, v = new THREE.Vector3();
     for (let i=0;i<p.count;i++){ v.fromBufferAttribute(p, i).normalize(); const a = Math.atan2(v.z, v.x), rr = 1 + (vnoise(Math.cos(a)*2 + seed*3, Math.sin(a)*2 - seed) - 0.5)*0.35;
-      const sy = Math.sign(v.y)*Math.pow(Math.abs(v.y), 0.32), sh = Math.pow(Math.max(0, 1 - Math.abs(v.y)), 0.3), n = fbm3(v.x*3 + seed, v.y*3, v.z*3, 3) - 0.5;
+      const sy = Math.sign(v.y)*Math.pow(Math.abs(v.y), 0.2), sh = Math.pow(Math.max(0, 1 - Math.abs(v.y)), 0.16), n = fbm3(v.x*3 + seed, v.y*3, v.z*3, 3) - 0.5;
       p.setXYZ(i, v.x/Math.max(0.0001, Math.hypot(v.x, v.z))*sh*rr*(1 + n*0.08), sy*0.5 + 0.5 + n*0.1*Math.max(0, v.y), v.z/Math.max(0.0001, Math.hypot(v.x, v.z))*sh*rr*(1 + n*0.08)); }
+    // Gebrochene Seitenflächen
+    const fr = mulberry32(seed*53 + 1), cut = [];
+    for (let k=0;k<6;k++){ const a = fr()*TAU, nv = new THREE.Vector3(Math.cos(a), (fr() - 0.5)*0.6, Math.sin(a)).normalize(); cut.push([nv, 0.78 + fr()*0.15]); }
+    for (let i=0;i<p.count;i++){ v.fromBufferAttribute(p, i); const c = new THREE.Vector3(v.x, (v.y - 0.5)*0.5, v.z); for (const [nv, d0] of cut){ const d = c.dot(nv); if (d > d0) c.addScaledVector(nv, -(d - d0)*0.9); } p.setXYZ(i, c.x, c.y*2 + 0.5, c.z); }
     g.computeVertexNormals(); flatGeoCache[seed] = g; }
   const m = new THREE.Mesh(g, rockMat(toneHex(hex || '#948b7e', '#4a4540', 0.3))); m.scale.set(w, h, d); m.castShadow = m.receiveShadow = true; return m;
 }
@@ -2417,7 +2419,7 @@ function buildKnapper(){
   vmesh(flakes, g);
   const sp = new THREE.Group(); sp.position.set(-0.9,0.05,0.5); sp.rotation.set(0,0.3,Math.PI/2 - 0.04); g.add(sp);
   makeSpear(2.0, sp, 0).position.y = -0.7;
-  const axe = makeStoneAxe(g); axe.position.set(0.75, 0.04, 0.15); axe.rotation.set(0, 0.5, 1.5);
+  const axe = makeStoneAxe(g); axe.position.set(0.35, 0.035, 1.6); axe.rotation.set(-Math.PI/2, 0, 0.9);
   const p = makePerson({ skin:'#b9805a', hair:'#2e1e12', beard:true, fur:'#7b5532', fur2:'#9c7a52' });
   poseSit(p, 0.4); g.add(p.root); p.spine.rotation.x = 0.42; breathe(p, 2);
   const hammer = rockMesh(4, 0.075, 0.065, 0.085, '#8a8378'); hammer.position.y = -0.06; p.arms[0].hand.add(hammer);
@@ -2611,7 +2613,7 @@ function buildJewelry(){
   const top = H + 0.005, s = 1.25, parts = [];
   parts.push(part(new THREE.TorusGeometry(0.24*s,0.012,4,24), '#5a4632', -0.25,top+0.012,0.05, Math.PI/2,0,0));
   for (let i=0;i<9;i++){ const a = Math.PI*0.15 + i/8*Math.PI*0.7; parts.push(part(new THREE.ConeGeometry(0.028*s,0.13*s,6), '#efe6cf', -0.25+Math.cos(a)*0.3*s, top+0.028, 0.05+Math.sin(a)*0.3*s, 0,-a,-Math.PI/2)); }
-  const ivory = '#efe4c8', V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const ivory = '#c9b78e', V = (x, y, z) => new THREE.Vector3(x, y, z);
   // Wildpferd aus Elfenbein (wie die Figur vom Vogelherd): gestreckter Leib, gewölbter Hals, kurze Beinstummel
   { const hb = new THREE.SphereGeometry(1, 22, 14), p = hb.attributes.position;
     for (let i=0;i<p.count;i++){ const x = p.getX(i), y = p.getY(i), z = p.getZ(i); p.setXYZ(i, x*0.15, y*0.058*(1 + 0.18*x) + (y > 0 ? -0.012*x*x : 0), z*0.05*(1 - 0.15*Math.abs(x))); }
@@ -3019,7 +3021,7 @@ function buildRiverCamp(){
     const p = makePerson({ skin:'#a8704f', hair:'#8f8a82', beard:true, fur:'#5b3a24', fur2:'#8c6a43', sleeves:true }); poseSit(p, 0.42); g.add(p.root); breathe(p, 9);
     const gy0 = groundH(x, z), endY = RIVER_Y - gy0 + 0.01;
     const lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3*12), 3));
-    const line = new THREE.Line(lg, new THREE.LineBasicMaterial({ color:C('#d8c49a') })); line.frustumCulled = false; g.add(line);
+    const line = new THREE.Line(lg, new THREE.LineBasicMaterial({ color:C('#8a7a58') })); line.frustumCulled = false; g.add(line);
     const hp = new THREE.Vector3(), q = new THREE.Vector3(), endL = new THREE.Vector3(0.15, endY, 3.6);
     const lw = endL.clone().applyAxisAngle(new THREE.Vector3(0,1,0), g.rotation.y); ripple(x + lw.x, z + lw.z, 3.5, 0, 0.7, 0.25);
     anims.push(t => { const tug = (t % 9) > 7.6 ? Math.sin(((t % 9) - 7.6)/1.4*Math.PI) : 0;
