@@ -381,20 +381,32 @@ const STATIONS = [
   text:["Diese Frau <b>melkt</b> eine Ziege. Die Milch fliesst in eine Schale aus Ton.",
         "Milch ist ein neues <b>Nahrungsmittel</b>. Man kann sie trinken oder daraus <b>Käse</b> machen.",
         "Durch das Züchten der Tiere bekommen die Menschen also neue Nahrung, ohne auf die Jagd gehen zu müssen."],
-  fact:"Man hat Gefässe aus Ton mit vielen kleinen Löchern gefunden. Darin liess man Käse abtropfen.",
-  hint:"Wer sitzt neben der Ziege?" },
+  fact:"Viele Erwachsene bekamen damals von frischer Milch Bauchweh. Käse vertrugen sie besser.",
+  hint:"Wer sitzt hinter der Ziege?" },
+{ id:"kaese", cat:"vieh", icon:"🧀", title:"Aus Milch wird Käse",
+  text:["Frische Milch wird schnell sauer. Darum machen die Bauern daraus <b>Käse</b>. Der hält viel länger.",
+        "Zuerst lässt man die Milch an einem warmen Ort sauer und dick werden. Dann giesst die Frau sie in ein <b>Tongefäss mit vielen kleinen Löchern</b>. Die Flüssigkeit, die <b>Molke</b>, tropft ab.",
+        "Übrig bleibt der weiche Käse. Er wird zu kleinen Laiben geformt und getrocknet."],
+  fact:"In Polen hat man über 7000 Jahre alte Siebgefässe aus Ton gefunden. Daran klebten noch Reste von Milchfett. Das sind die ältesten Spuren vom Käsemachen in Europa.",
+  hint:"Wo tropft etwas aus einem Topf mit Löchern?" },
 { id:"rinder", cat:"vieh", icon:"🐂", title:"Vom Auerochsen zum Rind",
   text:["Der <b>Auerochse</b> war ein grosses, wildes Rind mit langen Hörnern. Die Menschen zähmten ihn. Daraus wurde das <b>Hausrind</b>.",
-        "Rinder geben <b>Milch</b> und <b>Fleisch</b>. Aus ihrer Haut macht man Leder, aus den Knochen Werkzeuge.",
+        "Rinder geben <b>Milch</b> und <b>Fleisch</b>. Hier melkt eine Frau gerade eine Kuh. Aus der Haut der Rinder macht man Leder, aus den Knochen Werkzeuge.",
         "Rinder sind stark. Gegen Ende der Jungsteinzeit ziehen sie sogar <b>Wagen</b>."],
   fact:"Der Auerochse war viel grösser als eine heutige Kuh. Der letzte Auerochse starb im Jahr 1627 in einem Wald in Polen.",
   hint:"Auf der Weide grasen grosse Tiere mit Hörnern." },
-{ id:"schweine", cat:"vieh", icon:"🐖", title:"Schweine am Waldrand",
+{ id:"schweine", cat:"vieh", icon:"🐖", title:"Das Schweinegehege",
   text:["Aus dem <b>Wildschwein</b> wurde das <b>Hausschwein</b>.",
-        "Die Schweine laufen frei am Waldrand herum. Dort fressen sie Eicheln, Bucheckern und Wurzeln. Auch Essensreste aus dem Dorf mögen sie.",
+        "Tagsüber treiben die Kinder die Schweine in den Wald. Dort fressen sie Eicheln, Bucheckern und Wurzeln. Nachts und im Winter bleiben sie im <b>Gehege</b> mit einem kleinen Stall. Auch Essensreste aus dem Dorf mögen sie.",
         "Schweine liefern viel <b>Fleisch</b> und <b>Fett</b>."],
   fact:"Die Hausschweine der Jungsteinzeit sahen noch fast aus wie Wildschweine: Sie waren dunkel und hatten borstige Haare.",
   hint:"Unter den Eichen am Waldrand grunzt es." },
+{ id:"fleisch", cat:"vieh", icon:"🍖", title:"Fleisch vom eigenen Tier",
+  text:["Die Bauern müssen nicht mehr auf die Jagd gehen, um Fleisch zu essen. Sie halten Tiere und <b>schlachten</b> sie, wenn sie Fleisch brauchen. Das geschieht meistens im <b>Herbst</b>.",
+        "Das Fleisch wird in Stücke geschnitten. Damit es nicht verdirbt, hängen sie es über ein Feuer mit viel Rauch. Das nennt man <b>räuchern</b>. Geräuchertes Fleisch hält viele Monate.",
+        "Vom Tier wird fast alles verwertet: Aus der Haut wird <b>Leder</b>, aus den Knochen werden <b>Werkzeuge</b>, und das Fett braucht man zum Kochen."],
+  fact:"Im Herbst schlachtete man viele Tiere. So musste man im Winter weniger Tiere füttern, und es gab Vorräte für die kalte Zeit.",
+  hint:"Wo hängt Fleisch im Rauch?" },
 
 /* ---- Wohnen im Dorf ---- */
 { id:"langhaus", cat:"dorf", icon:"🏠", title:"Das Langhaus",
@@ -473,6 +485,8 @@ const QUIZ = [
  { q:"Aus welchem wilden Tier wurde das Hausrind?", a:["Aus dem Auerochsen","Aus dem Elch","Aus dem Hirsch","Aus dem Bären"], why:"Der Auerochse war ein grosses, wildes Rind." },
  { q:"Aus welchem Tier wurde das Hausschwein?", a:["Aus dem Wildschwein","Aus dem Dachs","Aus dem Biber","Aus dem Igel"], why:"Die ersten Hausschweine sahen noch fast aus wie Wildschweine." },
  { q:"Was lieferten Schafe, Ziegen und Kühe?", a:["Milch und Fleisch","Eier und Honig","Seide und Papier","Salz und Zucker"], why:"Durch die Viehzucht bekamen die Menschen neue Nahrungsmittel." },
+ { q:"Wie machten die Bauern Fleisch lange haltbar?", a:["Sie räucherten es über dem Feuer","Sie legten es in den Kühlschrank","Sie froren es in der Tiefkühltruhe ein","Sie kochten es in Blechdosen"], why:"Im Rauch trocknet das Fleisch und verdirbt nicht so schnell." },
+ { q:"Wozu brauchten die Bauern ein Tongefäss mit vielen Löchern?", a:["Um Käse abtropfen zu lassen","Um Fische zu fangen","Als Laterne","Um Brot zu backen"], why:"In diesem Sieb tropfte die Molke ab. Übrig blieb der Käse." },
  { q:"Womit mahlten die Menschen das Korn zu Mehl?", a:["Mit einem Mahlstein","Mit einer Maschine","Mit einem Hammer aus Eisen","Mit den Füssen"], why:"Sie rieben die Körner mit einem Läufer auf einem grossen, flachen Stein." },
  { q:"Wie wurden die Steinbeile so glatt und scharf?", a:["Sie wurden auf Sandstein geschliffen","Sie wurden im Feuer geschmolzen","Sie wurden mit Eisen gehämmert","Sie lagen lange im Wasser"], why:"Mit Wasser und Sand wurde die Klinge lange auf einer Sandsteinplatte gerieben." },
  { q:"Wie formte die Töpferin ihre Gefässe?", a:["Sie legte Tonwürste übereinander","Mit einer elektrischen Töpferscheibe","Sie goss flüssiges Glas in eine Form","Sie schnitzte sie aus Holz"], why:"Die Tonwürste wurden übereinander gelegt und glatt gestrichen." },
@@ -1082,6 +1096,7 @@ const FIELD_RIPE = rect(-33, -26, 11, 10, 0.08);   // reifes Getreide
 const FIELD_SOWN = rect(-2, -46, 12, 4.5, 0.05);   // frisch gesät
 const FLAX = rect(-27, -5, 4, 3, 0.1);             // kleines Leinfeld
 const PEN = rect(-27, 14, 7, 6, -0.08);            // Pferch mit Flechtzaun
+const PIGPEN = rect(-40.5, 1.5, 5.2, 4.2, 0.12);   // Schweinegehege am Waldrand
 const GRANARY = [22, -25];
 const VILLAGE = [0, -8];
 const WALLOW = [-38.6, 3.2];                       // Suhle der Schweine
@@ -1120,7 +1135,8 @@ const P = {
   saat:[-4,-45], ernte:[-21.5,-22], mahlen:[-5.5,-0.5], brot:[3.5,-3], vorrat:GRANARY,
   hund:[-15,21], schafe:[-27,14], melken:[-17.5,9.5], rinder:[-9,34], schweine:[-41,1],
   langhaus:[-12,-12], hausbau:[-2,-33], fluss:[39,-5], familie:[-4,10],
-  beil:[24,-9], roden:[-38,28], toepfern:[14,-2.5], brennen:[19.5,3], weben:[-18,-1.5], rad:[11,25]
+  beil:[24,-9], roden:[-38,28], toepfern:[14,-2.5], brennen:[19.5,3], weben:[-18,-1.5], rad:[11,25],
+  kaese:[-11.5,15.5], fleisch:[-31.5,2.5]
 };
 const START = { x:0, z:46.5, yaw:0 };
 
@@ -1139,7 +1155,7 @@ function terrainSample(x, z, y, ny, out, w){
   const dv = Math.hypot(x - VILLAGE[0], (z - VILLAGE[1])*0.75);
   let villK = (1 - sstep(9, 17 + n*4, dv))*0.85;
   for (const h of HOUSES) villK = Math.max(villK, (1 - sstep(0.5, 3.5 + n*2, rectD(h, x, z)))*0.9);
-  const penK = (1 - sstep(-0.5, 0.6, rectD(PEN, x, z)))*0.7;
+  const penK = Math.max(1 - sstep(-0.5, 0.6, rectD(PEN, x, z)), 1 - sstep(-0.5, 0.6, rectD(PIGPEN, x, z)))*0.7;
   const cartK = (1 - sstep(0.5, 1.5 + n*0.5, Math.abs(Math.hypot(x - P.rad[0], z - P.rad[1]) - CART_R)))*0.75;
   const dk = Math.max(pathK*0.9, villK, penK, cartK);
   const ripeK = 1 - sstep(-0.4, 0.4, rectD(FIELD_RIPE, x, z)), sownK = 1 - sstep(-0.3, 0.3, rectD(FIELD_SOWN, x, z)), flaxK = 1 - sstep(-0.2, 0.3, rectD(FLAX, x, z));
@@ -1242,7 +1258,7 @@ function drawMinimapBase(){
   c.fillStyle = '#c4a57a'; c.beginPath(); c.ellipse(...w2m(VILLAGE[0], VILLAGE[1]), 11*MSC, 13*MSC, 0, 0, TAU); c.fill();
   c.strokeStyle = '#c4a57a'; c.lineWidth = 3.2; c.lineCap = 'round';
   for (const p of PATHS){ c.beginPath(); p.forEach(([x,z],i) => { const [mx,my] = w2m(x,z); i ? c.lineTo(mx,my) : c.moveTo(mx,my); }); c.stroke(); }
-  poly(FIELD_RIPE, '#d9bb5a'); poly(FIELD_SOWN, '#7a5a3a'); poly(FLAX, '#7a94c4'); poly(PEN, '#b9b27c', '#6b4a2b');
+  poly(FIELD_RIPE, '#d9bb5a'); poly(FIELD_SOWN, '#7a5a3a'); poly(FLAX, '#7a94c4'); poly(PEN, '#b9b27c', '#6b4a2b'); poly(PIGPEN, '#a08c64', '#6b4a2b');
   c.strokeStyle = '#5aa0c8'; c.lineWidth = 9*MSC; c.beginPath(); for (let z=-70; z<=70; z+=2){ const [mx,my] = w2m(riverX(z), z); z === -70 ? c.moveTo(mx,my) : c.lineTo(mx,my); } c.stroke();
   for (const h of HOUSES) poly(h, h.build ? '#b0915e' : '#8a6a3a', '#4a301c');
   c.fillStyle = '#8a6a3a'; c.fillRect(...w2m(GRANARY[0] - 1.3, GRANARY[1] - 1.3), 2.6*MSC, 2.6*MSC);
@@ -1343,6 +1359,18 @@ const LEATHERS = ['#7a4c32','#86583a','#6a4430','#8f6242'];
 const cardCache = new Map();
 function cardMat(hex){ let m = cardCache.get(hex); if (!m){ m = new THREE.MeshStandardMaterial({ map:TEX.hairCard.map, color:C(hex), alphaTest:0.35, roughness:0.92, metalness:0 }); cardCache.set(hex, m); } return m; }
 const toneHex = (hex, to, k) => '#' + C(hex).lerp(C(to), k).getHexString();
+/* Haarkappe: vom Scheitel bis zum Haaransatz (vorne hoch auf der Stirn, hinten tief im Nacken), mit kleinem Rand nach innen */
+const hairCapCache = {};
+function hairCapGeo(front, back, side, top, line){
+  const key = [front, back, side, top, line].join(); if (hairCapCache[key]) return hairCapCache[key].clone();
+  const NA = 44, NT = 14, pos = [], uv = [], idx = [];
+  for (let j=0;j<=NA;j++){ const ph = j/NA*TAU, cf = Math.cos(ph), yl = -0.08 + (cf > 0 ? line : 0.64)*cf, thMax = Math.acos(Math.max(-0.95, Math.min(0.95, yl)));
+    for (let i=0;i<=NT + 1;i++){ const lip = i > NT, th = Math.min(i, NT)/NT*thMax, k = lip ? 0.9 : 1, sx = Math.sin(th)*Math.sin(ph), sy = Math.cos(th), sz = Math.sin(th)*cf;
+      pos.push(sx*side*k, sy*top*(lip ? 1 : 1) + (lip ? 0.004 : 0), sz*(sz > 0 ? front : back)*k); uv.push(j/NA*3, Math.min(i, NT)/NT); } }
+  for (let j=0;j<NA;j++) for (let i=0;i<=NT;i++){ const a = j*(NT + 2) + i, b = a + NT + 2; idx.push(a, a + 1, b, b, a + 1, b + 1); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx); g.computeVertexNormals();
+  hairCapCache[key] = g; return g.clone();
+}
 /* Kleidung der Jungsteinzeit: Kittel und Kleider aus Leinen, Beinlinge und Schuhe aus Leder, dazu Westen aus Ziegenfell */
 const LINENS = ['#cbb894','#bca77f','#d3c3a0','#b39b72','#c4ab84','#a99068'];
 function makePerson(o){
@@ -1351,7 +1379,7 @@ function makePerson(o){
   const kid = (o.scale || 1) < 0.85, fem = !!o.female || (!!o.longHair && !o.beard);
   const skinM = M(o.skin || '#b07a5a', { tex:'skin', physical:true, sheen:0.3, sheenRoughness:0.55, sheenColor:'#ffb49a' });
   const lipM = M('#8f5444', { tex:'skin', roughness:0.42 });
-  const hairM = M(o.hair || '#2b1d12', { tex:'hairD' });
+  const hairM = M(o.hair || '#2b1d12', { tex:'hairD', rep:2 });
   const cr = mulberry32(seed*131 + 7), CR = (a, b) => a + (b - a)*cr(), NC = HQ ? 1 : 0.6;
   const tuft = (list, w, len, bend, tilt, x, y, z, nx, nz, roll) => list.push(xf(hairCard(w, len, bend).rotateX(-tilt), x, y, z, 0, Math.atan2(nx, nz), roll || 0));
   const addCards = (parent, list, hex) => { if (list.length){ const m = mk(twoSided(mergeGeo(list)), cardMat(hex), parent); m.receiveShadow = true; } };
@@ -1365,7 +1393,7 @@ function makePerson(o){
   const root = new THREE.Group(), hips = new THREE.Group(), spine = new THREE.Group();
   hips.position.y = 0.88; root.add(hips); hips.add(spine);
   const wq = fem ? 0.93 : 1;
-  const torso = lathe([[0.001,-0.02],[0.15*wq,-0.02],[0.158*wq,0.08],[0.148*wq,0.2],[0.166*wq,0.35],[0.176*wq,0.46],[0.158*wq,0.55],[0.1,0.61],[0.045,0.64],[0.001,0.645]], 30);
+  const torso = lathe([[0.001,-0.02],[0.15*wq,-0.02],[0.158*wq,0.08],[0.148*wq,0.2],[0.166*wq,0.35],[0.18*wq,0.45],[0.188*wq,0.52],[0.165*wq,0.58],[0.1,0.618],[0.045,0.64],[0.001,0.645]], 30);
   torso.scale(1, 1, 0.72); mk(torso, lthM, spine);
   // Kittel bis zum Knie, Frauen tragen lange Kleider
   const yb = kid ? -0.3 : (o.dress || fem) ? -0.66 : -0.4;
@@ -1381,7 +1409,7 @@ function makePerson(o){
     mk(vp, M(o.vest, { tex:'fur', side:THREE.DoubleSide, sheenColor:toneHex(o.vest, '#000000', 0.5) }), spine); }
   mk(new THREE.CapsuleGeometry(0.048, 0.07, 4, 14), skinM, spine, 0, 0.665, 0.005);
   // Kopf (vereinfachtes Gesicht)
-  const head = new THREE.Group(); head.position.y = 0.8; spine.add(head);
+  const head = new THREE.Group(); head.name = 'kopf'; head.position.y = 0.8; spine.add(head);
   const skinParts = [ headGeo(),
     xf(new THREE.CapsuleGeometry(0.0115, 0.062, 4, 10), 0, 0.03, 0.083, 0, 0, Math.PI/2),
     xf(new THREE.SphereGeometry(0.016, 14, 10), 0, -0.002, 0.088, 0.2, 0, 0, 0.85, 1.9, 1.15),
@@ -1397,35 +1425,28 @@ function makePerson(o){
   bake(head, irisM, [-1,1].map(sd => xf(new THREE.SphereGeometry(0.0066, 12, 8), sd*0.031, 0.012, 0.0868, 0, 0, 0, 1, 1, 0.6)));
   if (!o.beard) bake(head, lipM, [ xf(new THREE.CapsuleGeometry(0.0062, 0.024, 4, 8), 0, -0.049, 0.088, 0, 0, Math.PI/2) ]);
   const face = { talk:0, brow:0, closed:0, open:0 };
-  const hairParts = [ xf(bumpy(new THREE.SphereGeometry(0.108, 30, 22, 0, TAU, 0, Math.PI*0.6), 0.16, 14, seed), 0, 0.016, -0.008, -0.38, 0, 0) ];
+  // Frisur: glatte, geschlossene Haarkappe mit sauberem Haaransatz, dazu je nach Person Zopf, Knoten oder langes Haar
+  const hairParts = [ xf(hairCapGeo(0.1, 0.118, 0.095, 0.125, kid ? 0.42 : 0.47), 0, 0.004, -0.004) ];
   for (const sd of [-1,1]) hairParts.push(xf(new THREE.CapsuleGeometry(0.0036, 0.026, 3, 6), sd*0.032, 0.034, 0.091, 0, 0, Math.PI/2 + sd*0.12));
-  if (o.bun){ hairParts.push(xf(bumpy(new THREE.SphereGeometry(0.1, 24, 18), 0.12, 9, seed+2), 0, -0.02, -0.04, 0, 0, 0, 1.06, 1.1, 0.72));
-    hairParts.push(xf(bumpy(new THREE.SphereGeometry(0.05, 16, 12), 0.18, 12, seed+5), 0, 0.02, -0.125, 0, 0, 0, 1.1, 0.9, 0.8)); }
-  else if (fem || o.longHair) hairParts.push(xf(bumpy(new THREE.SphereGeometry(0.1, 24, 18), 0.2, 9, seed+2), 0, -0.11, -0.05, 0, 0, 0, 1.15, 1.95, 0.7));
-  else hairParts.push(xf(bumpy(new THREE.SphereGeometry(0.1, 24, 18), 0.2, 9, seed+2), 0, -0.035, -0.042, 0, 0, 0, 1.1, kid ? 1.05 : 1.2, 0.72));
+  const soft = (g, a, f, sd) => jitter(g, a, f, seed + sd);
+  if (o.bun){ hairParts.push(xf(soft(new THREE.SphereGeometry(0.052, 20, 14), 0.03, 4, 5), 0, 0.03, -0.128, 0, 0, 0, 1.1, 0.95, 0.8)); }
+  else if (fem || o.longHair) hairParts.push(xf(soft(new THREE.SphereGeometry(0.1, 28, 20), 0.03, 3, 2), 0, -0.1, -0.058, 0, 0, 0, 1.08, 1.8, 0.62));
+  else hairParts.push(xf(soft(new THREE.SphereGeometry(0.1, 28, 20), 0.025, 3, 2), 0, -0.03, -0.045, 0, 0, 0, 1.0, kid ? 0.95 : 1.05, 0.7));
   if (o.braid){ const V = (x, y, z) => new THREE.Vector3(x, y, z); hairParts.push(taperTube(new THREE.CatmullRomCurve3([V(0, -0.02, -0.1), V(0, -0.14, -0.11), V(0.01, -0.28, -0.1), V(0, -0.38, -0.09)]), 16, 8, t => 0.026 - 0.01*t)); }
   if (o.beard){
-    hairParts.push(xf(bumpy(new THREE.SphereGeometry(0.09, 26, 18, 0, TAU, Math.PI*0.64, Math.PI*0.36), 0.22, 12, seed+3), 0, -0.022, 0.012, 0.12, 0, 0, 0.88, 1.12, 0.95));
-    hairParts.push(xf(bumpy(new THREE.CapsuleGeometry(0.008, 0.03, 3, 8), 0.2, 30, seed+4), 0, -0.037, 0.095, 0, 0, Math.PI/2));
+    hairParts.push(xf(soft(new THREE.SphereGeometry(0.09, 28, 18, 0, TAU, Math.PI*0.64, Math.PI*0.36), 0.04, 5, 3), 0, -0.022, 0.012, 0.12, 0, 0, 0.9, 1.08, 0.97));
+    hairParts.push(xf(new THREE.CapsuleGeometry(0.008, 0.032, 4, 10), 0, -0.037, 0.095, 0, 0, Math.PI/2));
   }
   bake(head, hairM, hairParts.map(g => { if (g.attributes.tsway) g.deleteAttribute('tsway'); return g; }));
   // Mütze aus Fell
-  if (o.cap) mk(bumpy(new THREE.SphereGeometry(0.118, 24, 14, 0, TAU, 0, Math.PI*0.52), 0.12, 9, seed), M(o.cap, { tex:'fur', sheenColor:toneHex(o.cap, '#000000', 0.5) }), head, 0, 0.022, -0.006, -0.18, 0, 0);
-  // Lose Haarsträhnen, bei Männern ein kurzer Bart
-  { const hc = [], longH = (fem || o.longHair) && !o.bun, nH = Math.round((longH ? 44 : o.bun ? 18 : 24)*NC);
-    for (let i=0;i<nH;i++){ const th = (cr() < 0.5 ? -1 : 1)*CR(1.05, Math.PI), ph = CR(-0.15, 1.15), cp = Math.cos(ph);
-      const len = longH ? CR(0.12, 0.26) : (kid ? CR(0.04, 0.07) : CR(0.04, 0.08));
-      tuft(hc, CR(0.035, 0.06), len, 0.015, CR(0.05, 0.25), Math.sin(th)*cp*0.095, 0.02 + Math.sin(ph)*0.115, Math.cos(th)*cp*0.108 - 0.008, Math.sin(th), Math.cos(th), CR(-0.25, 0.25)); }
-    if (o.beard) for (let i=0;i<Math.round(16*NC);i++){ const th = CR(-0.95, 0.95), ph = CR(-0.95, -0.5), cp = Math.cos(ph);
-      tuft(hc, CR(0.03, 0.05), CR(0.035, 0.07), 0.01, CR(0, 0.2), Math.sin(th)*cp*0.084, -0.025 + Math.sin(ph)*0.09, Math.cos(th)*cp*0.094, Math.sin(th), Math.cos(th), CR(-0.2, 0.2)); }
-    addCards(head, hc, o.hair || '#2b1d12'); }
+  if (o.cap) mk(jitter(new THREE.SphereGeometry(0.124, 28, 16, 0, TAU, 0, Math.PI*0.52), 0.04, 5, seed), M(o.cap, { tex:'fur', sheenColor:toneHex(o.cap, '#000000', 0.5) }), head, 0, 0.022, -0.006, -0.18, 0, 0);
   // Arme (kurze Ärmel am Kittel)
   const arms = [], legs = [];
   const armM = o.sleeves ? lthM : skinM;
   for (const sd of [-1,1]){
     const sh = new THREE.Group(); sh.position.set(sd*0.205*wq, 0.53, 0); sh.rotation.z = sd*0.08; spine.add(sh);
     bake(sh, armM, [ xf(new THREE.SphereGeometry(0.058, 16, 12), 0, -0.01, 0), xf(new THREE.CapsuleGeometry(0.05, 0.19, 4, 14), 0, -0.145, 0) ]);
-    if (!o.sleeves) mk(lathe([[0.064,-0.12],[0.066,-0.05],[0.063,0.0],[0.045,0.04],[0.001,0.05]], 18), lthM, sh, 0, -0.005, 0);
+    if (!o.sleeves) mk(lathe([[0.062,-0.12],[0.063,-0.05],[0.061,-0.005],[0.047,0.03],[0.024,0.047],[0.001,0.052]], 20), lthM, sh, 0, -0.008, 0);
     const el = new THREE.Group(); el.position.y = -0.29; sh.add(el);
     mk(new THREE.CapsuleGeometry(0.042, 0.2, 4, 14).translate(0, -0.14, 0), skinM, el);
     if (o.bracelet) mk(new THREE.TorusGeometry(0.044, 0.008, 6, 16).rotateX(Math.PI/2), M('#d8c8a8', { tex:'bone', roughness:0.5 }), el, 0, -0.22, 0);
@@ -1756,7 +1777,7 @@ function flatStone(w, d, h, hex, seed){
 let LOGM = null;
 function logMats(){
   if (!LOGM){
-    const bark = M('#8e928c', { tex:'bark' });
+    const bark = M('#d0ccc4', { tex:'bark', rep:2, roughness:1, envMapIntensity:0.4 });
     const ends = new THREE.MeshStandardMaterial({ roughness:0.9, metalness:0, map:canvasTex(128, 128, (x, W, H) => { const r = mulberry32(33);
       x.fillStyle = '#3a2818'; x.fillRect(0, 0, W, H); x.fillStyle = '#9c7a52'; x.beginPath(); x.arc(64, 64, 57, 0, TAU); x.fill();
       for (let k=3;k<56;k+=2 + r()*3){ x.strokeStyle = 'rgba(70,44,22,' + (0.2 + r()*0.3) + ')'; x.lineWidth = 0.8 + r(); x.beginPath(); x.ellipse(64 + (r() - 0.5)*2, 64 + (r() - 0.5)*2, k, k*(0.95 + r()*0.08), 0, 0, TAU); x.stroke(); }
@@ -1868,7 +1889,28 @@ function texFoliage(){
     x.strokeStyle = 'rgba(30,45,15,0.3)'; x.lineWidth = 0.6; x.beginPath(); x.moveTo(-L*0.45, 0); x.lineTo(L*0.45, 0); x.stroke(); x.restore(); }
   return c;
 }
+/* Fleisch: rotbraun mit hellen Fettadern */
+function texMeat(){
+  return canvasTex(256, 256, (x, W, H) => { const r = mulberry32(307), f = field(256, 5, 5, 4, 77), id = x.createImageData(W, H), d = id.data;
+    for (let i=0;i<W*H;i++){ const v = f[i], o = i*4; d[o] = 128 + v*52; d[o+1] = 46 + v*30; d[o+2] = 34 + v*22; d[o+3] = 255; } x.putImageData(id, 0, 0);
+    x.lineCap = 'round';
+    for (let i=0;i<26;i++){ let px = r()*W, py = r()*H, a = r()*TAU; x.strokeStyle = 'rgba(236,222,198,' + (0.35 + r()*0.4) + ')'; x.lineWidth = 1.5 + r()*4;
+      x.beginPath(); x.moveTo(px, py); for (let k=0;k<6;k++){ a += (r() - 0.5)*0.9; px += Math.cos(a)*14; py += Math.sin(a)*14; x.lineTo(px, py); } x.stroke(); }
+    for (let i=0;i<60;i++){ x.fillStyle = 'rgba(70,20,12,' + (0.15 + r()*0.25) + ')'; x.beginPath(); x.ellipse(r()*W, r()*H, 3 + r()*10, 2 + r()*5, r()*3, 0, TAU); x.fill(); } });
+}
+/* Rinde von Laubbäumen: graubraun mit tiefen Längsfurchen (Eiche, Linde), ersetzt die rötliche Nadelholzrinde */
+function texOakBark(n){
+  const c = cnv(n), x = c.getContext('2d'), r = mulberry32(308); paintField(c, field(n, 6, 3, 5, 41), '#4e4840', '#8a8274');
+  x.lineCap = 'round';
+  for (let i=0;i<70;i++){ let px = r()*n, py = r()*n; const w = 2 + r()*4; x.strokeStyle = 'rgba(30,26,22,' + (0.35 + r()*0.35) + ')'; x.lineWidth = w;
+    x.beginPath(); x.moveTo(px, py); for (let k=0;k<5;k++){ px += (r() - 0.5)*8; py += 12 + r()*18; x.lineTo(px, py); } x.stroke();
+    if (py > n){ x.beginPath(); x.moveTo(px, py - n); x.lineTo(px, py - n - 20); x.stroke(); } }
+  for (let i=0;i<50;i++){ const px = r()*n, py = r()*n; x.strokeStyle = 'rgba(170,160,140,' + (0.12 + r()*0.18) + ')'; x.lineWidth = 1 + r()*2; x.beginPath(); x.moveTo(px, py); x.lineTo(px + (r() - 0.5)*4, py + 10 + r()*20); x.stroke(); }
+  for (let i=0;i<40;i++){ x.fillStyle = 'rgba(90,110,60,' + (0.05 + r()*0.1) + ')'; x.beginPath(); x.ellipse(r()*n, r()*n, 6 + r()*16, 4 + r()*10, 0, 0, TAU); x.fill(); }
+  return c;
+}
 function buildJungTextures(){
+  setTex('bark', texOakBark(256), true, 12, 1.2, 0.95);
   const B = HQ ? 512 : 256;
   setTex('thatch', texThatch(B), true, 7, 1.3, 0.97);
   setTex('daub', texDaub(B), true, 8, 1.0, 0.95);
@@ -1876,9 +1918,9 @@ function buildJungTextures(){
   TEX.wheat = { map:texFrom(texWheat(), true) }; TEX.wheat.map.wrapS = TEX.wheat.map.wrapT = THREE.ClampToEdgeWrapping;
   TEX.flax = { map:texFrom(texFlax(), true) }; TEX.flax.map.wrapS = TEX.flax.map.wrapT = THREE.ClampToEdgeWrapping;
   TEX.potFired = texPottery(71, '#4e3424', '#7a5638', true); TEX.potDry = texPottery(72, '#86725a', '#a28c6c', false); TEX.potWet = texPottery(73, '#6e6052', '#8a7a68', false);
-  TEX.wheel = texWheel();
+  TEX.wheel = texWheel(); TEX.meat = texMeat();
   TEX.foliage = { map:texFrom(texFoliage(), true) }; TEX.foliage.map.wrapS = TEX.foliage.map.wrapT = THREE.ClampToEdgeWrapping;
-  for (const t of [TEX.potFired, TEX.potDry, TEX.potWet, TEX.wheel]){ t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = ANISO; }
+  for (const t of [TEX.potFired, TEX.potDry, TEX.potWet, TEX.wheel, TEX.meat]){ t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = ANISO; }
 }
 /* ===================== LANGHAUS ===================== */
 /* ===================== LANGHÄUSER ===================== */
@@ -1906,7 +1948,7 @@ function houseMats(){
     daub: new THREE.MeshStandardMaterial({ map:TEX.daub.map, normalMap:TEX.daub.normal, normalScale:new THREE.Vector2(1, 1), roughness:0.95, metalness:0, side:THREE.DoubleSide }),
     thatch: new THREE.MeshStandardMaterial({ map:TEX.thatch.map, normalMap:TEX.thatch.normal, normalScale:new THREE.Vector2(1.3, 1.3), roughness:1, metalness:0, side:THREE.DoubleSide }),
     wattle: new THREE.MeshStandardMaterial({ map:TEX.wattle.map, normalMap:TEX.wattle.normal, alphaTest:0.5, roughness:0.9, metalness:0, side:THREE.DoubleSide }),
-    floor: new THREE.MeshStandardMaterial({ map:TEX.dirt.map, color:C('#8a7660'), roughness:1, metalness:0, envMapIntensity:0.35 }),
+    floor: new THREE.MeshStandardMaterial({ map:TEX.dirt.map, color:C('#a08a70'), roughness:1, metalness:0, envMapIntensity:0.8 }),
     curtain: M('#6a4a30', { tex:'leather', side:THREE.DoubleSide })
   };
   return HM;
@@ -1929,10 +1971,13 @@ function gableGeo(D, door){
 }
 function wallGeo(L, H){ const g = new THREE.PlaneGeometry(L, H, Math.max(2, Math.round(L)), 2); g.translate(0, H/2, 0); return scaleUV(g, L/2.4, H/2.4); }
 /* Kreisförmige Hindernisse entlang der Wände, mit Lücke für eine offene Tür */
-function houseColliders(g, D, doorOpen, build){
-  g.updateWorldMatrix(true, false); const v = new THREE.Vector3(), add = (x, z) => { v.set(x, 0, z); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.4 }); };
-  for (let z = -D.L/2; z <= D.L/2 + 0.01; z += 0.7){ add(-D.W/2, z); if (!build) add(D.W/2, z); }
-  for (let x = -D.W/2; x <= D.W/2 + 0.01; x += 0.7){ add(x, -D.L/2); if ((!doorOpen || Math.abs(x) > 1.0) && !build) add(x, D.L/2); }
+/* Wände als Linien-Hindernisse (Kapseln), damit man auch beim Rennen nicht hindurchkommt */
+const _wa = new THREE.Vector3(), _wb = new THREE.Vector3();
+function wallSeg(g, ax, az, bx, bz, r){ g.updateWorldMatrix(true, false); _wa.set(ax, 0, az); _wb.set(bx, 0, bz); g.localToWorld(_wa); g.localToWorld(_wb); colliders.push({ ax:_wa.x, az:_wa.z, bx:_wb.x, bz:_wb.z, r:r === undefined ? 0.12 : r }); }
+function houseColliders(g, D, doorOpen){
+  const w = D.W/2 + 0.04, l = D.L/2 + 0.02;
+  wallSeg(g, -w, -l, -w, l); wallSeg(g, w, -l, w, l); wallSeg(g, -w, -l, w, -l);
+  if (doorOpen){ wallSeg(g, -w, l, -0.9, l); wallSeg(g, 0.9, l, w, l); } else wallSeg(g, -w, l, w, l);
 }
 function makeLonghouse(h, opt){
   opt = opt || {};
@@ -1965,15 +2010,18 @@ function makeLonghouse(h, opt){
     const st = []; for (let i=0;i<11;i++){ const a = i/11*TAU; st.push(part(ROCK_GEOS[i%8], FIRE_COLS[i%4], Math.cos(a)*0.62, 0.08, Math.sin(a)*0.62, RR(0,3), RR(0,3), RR(0,3), 0.2, 0.14, 0.18)); }
     vmesh(st, hearth); { const a = ashDecal(1.2); a.position.y = 0.02; hearth.add(a); } makeFireFx(hearth, 0.5, 9);
     // Etwas Tageslicht fällt durch Tür und Rauchloch herein
-    { const l = new THREE.PointLight(0xd8c8a8, 7, 0, 2); l.position.set(0, D.wallH + 0.8, -1); g.add(l); }
+    for (const z of [-D.L/4, D.L/4 + 0.5]){ const l = new THREE.PointLight(0xd8c8a8, 8, 0, 2); l.position.set(0, D.wallH + 0.8, z); g.add(l); }
     addSmoke(g, 5, 0, D.ridgeY + 0.2, hz, 0.8, '#8a8680', 2.6);
     const furn = [];
     for (const sd of [-1, 1]) for (let z = -D.L/2 + 1.2; z < hz - 1.5; z += 2.3){ furn.push(part(new THREE.BoxGeometry(1.25, 0.38, 2.1), '#5e4026', sd*(D.W/2 - 0.75), 0.27, z)); }
     vmesh(furn, g);
     for (const sd of [-1, 1]) for (let z = -D.L/2 + 1.2; z < hz - 1.5; z += 2.3) mk(peltGeo(0.55, Math.abs(z*7 + sd)).rotateX(-Math.PI/2), M(sd > 0 ? '#5b3a24' : '#7b5532', { tex:'fur', side:THREE.DoubleSide }), g, sd*(D.W/2 - 0.75), 0.47, z, 0, RR(-0.3, 0.3), 0);
     for (let i=0;i<5;i++){ const pot = makePot(i % 2 ? 'vorrat' : 'topf', 'fired', 40 + i); pot.position.set(RR(-2, 2), 0.08, -D.L/2 + 0.6 + RR(0, 0.4)); pot.scale.setScalar(i % 2 ? 0.9 : 1.2); g.add(pot); }
-    const herbs = []; for (let i=0;i<9;i++){ const x = RR(-2.4, 2.4), z = -D.L/2 + 1.1 + Math.floor(i/3)*2.2; herbs.push(part(new THREE.ConeGeometry(0.09, 0.42, 6), i % 3 ? '#6a7a3a' : '#8a6a3a', x, D.wallH - 0.15, z, Math.PI, 0, 0)); }
-    vmesh(herbs, g);
+    // Herd, Schlafbänke und Firstpfosten sind im Innenraum Hindernisse
+    { g.updateWorldMatrix(true, false); const v = new THREE.Vector3(0, 0, hz); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.72 });
+      for (let z = -D.L/2 + 2.2; z < D.L/2 - 1; z += 4.4){ v.set(0, 0, z); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.16 }); }
+      let z1 = -D.L/2; for (let z = -D.L/2 + 1.2; z < hz - 1.5; z += 2.3) z1 = z + 1.05;
+      for (const sd of [-1, 1]) wallSeg(g, sd*(D.W/2 - 0.75), -D.L/2 + 0.2, sd*(D.W/2 - 0.75), z1, 0.55); }
   }
   houseColliders(g, D, !!opt.interior);
   return { g, D };
@@ -2013,7 +2061,8 @@ function makeHouseFrame(h){
   for (let i=0;i<6;i++){ const b = new THREE.CylinderGeometry(0.16, 0.2, 1.3, 10).rotateZ(Math.PI/2); scaleUV(b, 1, 1); mk(b, HMt.thatch, g, -D.W/2 - 1.8 + (i%3)*0.36, 0.18 + Math.floor(i/3)*0.3, D.L/2 - 0.4, 0, RR(-0.15, 0.15), 0); }
   const pit = new THREE.Mesh(new THREE.CircleGeometry(1.0, 20).rotateX(-Math.PI/2), new THREE.MeshStandardMaterial({ color:C('#6a5034'), roughness:0.55, metalness:0 })); pit.position.set(D.W/2 + 2.2, 0.07, -1.5); g.add(pit);
   mk(bumpy(new THREE.SphereGeometry(0.35, 12, 8), 0.3, 3, 4).scale(1, 0.5, 1), HMt.daub, g, D.W/2 + 2.4, 0.12, -1.3);
-  for (const sd of [-1, 1]) for (let z = -D.L/2; z <= D.L/2 + 0.01; z += 0.7) { const v = new THREE.Vector3(sd*D.W/2, 0, z); g.updateWorldMatrix(true, false); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.3 }); }
+  for (const sd of [-1, 1]) wallSeg(g, sd*(D.W/2 + 0.02), -D.L/2, sd*(D.W/2 + 0.02), D.L/2, 0.14);
+  wallSeg(g, -D.W/2, -D.L/2 - 0.02, D.W/2, -D.L/2 - 0.02, 0.14);
   return { g, D };
 }
 
@@ -2050,8 +2099,8 @@ function makeFence(pts, closed, gaps){
       const wg = new THREE.PlaneGeometry(s1 - s0, H*0.85, Math.max(1, Math.round((s1 - s0)*2)), 1); wg.translate(0, H*0.85/2 + 0.04, 0); scaleUV(wg, (s1 - s0)/1.0, 1);
       const p = wg.attributes.position; for (let k=0;k<p.count;k++){ const t = (p.getX(k) + (s1 - s0)/2)/(s1 - s0), wx = ax + (bx - ax)*(s0 + t*(s1 - s0))/L, wz = az + (bz - az)*(s0 + t*(s1 - s0))/L; p.setY(k, p.getY(k) + groundH(wx, wz) - gyy); }
       const m = mk(wg, HMt.wattle, scene, mx, gyy, mz, 0, ang - Math.PI/2, 0); m.castShadow = true;
-      for (let s = s0; s <= s1 + 0.01; s += 0.55){ const x = ax + (bx - ax)*s/L, z = az + (bz - az)*s/L; stakes.push(part(new THREE.CylinderGeometry(0.035, 0.045, H + 0.25, 6), '#5a4028', x, groundH(x, z) + (H + 0.25)/2 - 0.08, z, (hash2(x*10|0, z*10|0) - 0.5)*0.08, 0, (hash2(z*10|0, x*10|0) - 0.5)*0.08));
-        colliders.push({ x, z, r:0.25 }); } } }
+      for (let s = s0; s <= s1 + 0.01; s += 0.55){ const x = ax + (bx - ax)*s/L, z = az + (bz - az)*s/L; stakes.push(part(new THREE.CylinderGeometry(0.035, 0.045, H + 0.25, 6), '#5a4028', x, groundH(x, z) + (H + 0.25)/2 - 0.08, z, (hash2(x*10|0, z*10|0) - 0.5)*0.08, 0, (hash2(z*10|0, x*10|0) - 0.5)*0.08)); }
+      colliders.push({ ax:ax + (bx - ax)*s0/L, az:az + (bz - az)*s0/L, bx:ax + (bx - ax)*s1/L, bz:az + (bz - az)*s1/L, r:0.1 }); } }
   vmesh(stakes, scene);
 }
 /* ===================== KERAMIK ===================== */
@@ -2379,8 +2428,8 @@ function treeMats(){
   if (oakLeaf) return; vegMaterials();
   const leaf = (hex, amp) => { const m = new THREE.MeshStandardMaterial({ map:TEX.foliage.map, color:C(hex), alphaTest:0.4, roughness:0.75, metalness:0 }); addWind(m, amp, 1.4); return m; };
   oakLeaf = leaf('#d2dcb4', 0.002); beechLeaf = leaf('#e6ecbc', 0.002); hazelLeaf = leaf('#dce6b8', 0.015); alderLeaf = leaf('#b8c69c', 0.003);
-  oakBark = new THREE.MeshStandardMaterial({ map:TEX.bark.map, color:C('#7a827e'), normalMap:TEX.bark.normal, roughness:0.95, metalness:0 });
-  beechBark = new THREE.MeshStandardMaterial({ map:TEX.bark.map, color:C('#aab4b2'), normalMap:TEX.bark.normal, normalScale:new THREE.Vector2(0.25, 0.25), roughness:0.85, metalness:0 });
+  oakBark = new THREE.MeshStandardMaterial({ map:TEX.bark.map, color:C('#c8c4bc'), normalMap:TEX.bark.normal, roughness:0.95, metalness:0 });
+  beechBark = new THREE.MeshStandardMaterial({ map:TEX.bark.map, color:C('#e2e4e0'), normalMap:TEX.bark.normal, normalScale:new THREE.Vector2(0.25, 0.25), roughness:0.85, metalness:0 });
 }
 const TREE_KINDS = {
   oak:   { H:13, split:0.38, r:0.42, branches:5, cards:90, cs:3.0, spread:1.9, leaf:() => oakLeaf, bark:() => oakBark },
@@ -2404,6 +2453,7 @@ function inBuilt(x, z, m){
   if (rectD(FIELD_RIPE, x, z) < m) return true; if (rectD(FIELD_SOWN, x, z) < m) return true; if (rectD(FLAX, x, z) < m) return true; if (rectD(PEN, x, z) < m + 0.5) return true;
   if (Math.hypot(x - GRANARY[0], z - GRANARY[1]) < m + 2.5) return true;
   if (Math.hypot(x - WALLOW[0], z - WALLOW[1]) < m + 1.7) return true;
+  if (rectD(PIGPEN, x, z) < m + 0.6) return true;
   if (Math.abs(Math.hypot(x - P.rad[0], z - P.rad[1]) - CART_R) < m + 1.6) return true;
   return false;
 }
@@ -2418,6 +2468,8 @@ function blocked(x,z,o){
   if (o.gravel && gravelK(x,z) > 0.4) return true;
   return false;
 }
+/* Stämme, Büsche und grosse Steine im begehbaren Bereich halten den Spieler auf */
+function treeCollider(x, z, r){ if (Math.hypot(x, z) < 58) colliders.push({ x, z, r }); }
 function buildVegetation(){
   vegMaterials(); treeMats();
   const lod = !HQ;
@@ -2428,24 +2480,24 @@ function buildVegetation(){
       const a = R(0,TAU), r = 47 + Math.pow(rnd(), 1.6)*85, x = Math.cos(a)*r, z = Math.sin(a)*r;
       if (Math.abs(x - riverX(z)) < 12) return null; if (x > riverX(z) && rnd() < 0.5) return null;
       if (blocked(x,z,{ path:3, station:7, built:3, start:8 })) return null; if (slopeAt(x,z) > 0.9) return null;
-      return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s:R(0.75, 1.15), c:R(0.85,1.1) }; }); });
+      const s = R(0.75, 1.15); treeCollider(x, z, K.r*s + 0.12); return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s, c:R(0.85,1.1) }; }); });
   { const tg = broadleafGeo(9, Object.assign({ lod }, TREE_KINDS.oak));
     scatterMulti([[tg.trunk, oakBark, true], [tg.crown, oakLeaf, true]], 7, () => { const x = R(-50, -36), z = R(-10, 14);
-      if (blocked(x,z,{ station:3.5, built:2 })) return null; return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s:R(0.8, 1.05) }; }); }
+      if (blocked(x,z,{ station:3.5, built:2 })) return null; const s = R(0.8, 1.05); treeCollider(x, z, 0.5*s); return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s }; }); }
   // Einzelne Bäume im offenen Land und am Fluss Erlen
   { const tg = broadleafGeo(13, Object.assign({ lod }, TREE_KINDS.lime));
     scatterMulti([[tg.trunk, oakBark, true], [tg.crown, alderLeaf, true]], 6, () => { const a = R(0,TAU), r = R(24, 44), x = Math.cos(a)*r, z = Math.sin(a)*r;
-      if (blocked(x,z,{ path:4, station:9, built:5, start:10, river:10 })) return null; return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s:R(0.7, 1.0) }; }); }
+      if (blocked(x,z,{ path:4, station:9, built:5, start:10, river:10 })) return null; const s = R(0.7, 1.0); treeCollider(x, z, 0.42*s); return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s }; }); }
   { const tg = broadleafGeo(17, Object.assign({ lod }, TREE_KINDS.alder));
     scatterMulti([[tg.trunk, oakBark, true], [tg.crown, alderLeaf, true]], HQ ? 40 : 22, () => { const z = R(-70, 70), side = rnd() < 0.55 ? -1 : 1, x = riverX(z) + side*R(8, 13);
-      if (blocked(x,z,{ path:3, station:6, built:3, wet:0.2 })) return null; return { x, y:groundH(x,z) - 0.15, z, ry:R(0,TAU), s:R(0.7, 1.1) }; }); }
+      if (blocked(x,z,{ path:3, station:6, built:3, wet:0.2 })) return null; const s = R(0.7, 1.1); treeCollider(x, z, 0.28*s); return { x, y:groundH(x,z) - 0.15, z, ry:R(0,TAU), s }; }); }
   { const wg = willowGeo(2);
     scatterMulti([[wg.trunk, willowBark, true], [wg.crown, willowMat, true]], HQ ? 30 : 16, () => { const z = R(-60, 60), x = riverX(z) - R(8, 11);
-      if (blocked(x,z,{ path:2, station:5, built:2, wet:0.15 })) return null; return { x, y:groundH(x,z) - 0.1, z, ry:R(0,TAU), s:R(0.8, 1.2) }; }); }
+      if (blocked(x,z,{ path:2, station:5, built:2, wet:0.15 })) return null; const s = R(0.8, 1.2); treeCollider(x, z, 0.35); return { x, y:groundH(x,z) - 0.1, z, ry:R(0,TAU), s }; }); }
   // Haselsträucher an Waldrand und Feldrainen
   { const hg = hazelGeo(3);
     scatterMulti([[hg.trunk, willowBark, true], [hg.crown, hazelLeaf, true]], HQ ? 90 : 45, () => { const a = R(0,TAU), r = R(30, 60), x = Math.cos(a)*r, z = Math.sin(a)*r;
-      if (blocked(x,z,{ path:2, station:5, built:2, start:8, river:9 })) return null; return { x, y:groundH(x,z) - 0.05, z, ry:R(0,TAU), s:R(0.7, 1.15) }; }); }
+      if (blocked(x,z,{ path:2, station:5, built:2, start:8, river:9 })) return null; const s = R(0.7, 1.15); treeCollider(x, z, 0.55*s); return { x, y:groundH(x,z) - 0.05, z, ry:R(0,TAU), s }; }); }
   // Gras und Wiesenblumen
   const pal = ['#6c7e33','#7d8c3c','#8b9446','#5e7230','#94954c'];
   const gg = grassGeo(HQ ? 7 : 6, 0.22, 0.6, pal);
@@ -2468,7 +2520,7 @@ function buildVegetation(){
     if (gravelK(x,z) < 0.45) return null; if (nearStation(x,z,1.0)) return null; const s = R(0.035, 0.2) * (rnd() < 0.08 ? 2 : 1);
     return { x, y:groundH(x,z) - s*0.25, z, rx:R(0,3), ry:R(0,3), rz:R(0,3), s, sy:R(0.45,0.8), c:R(0.72,1.15) }; });
   scatterMulti([[ROCK_GEOS[3], rockMat('#6f6a62'), true]], 60, () => { const a = R(0,TAU), r = R(20, 70), x = Math.cos(a)*r, z = Math.sin(a)*r;
-    if (blocked(x,z,{ village:16, path:2, built:2, station:4, wet:0.3, start:6 })) return null; const s = R(0.3, 0.9); return { x, y:groundH(x,z) - s*0.3, z, rx:R(0,3), ry:R(0,3), rz:R(0,3), s }; });
+    if (blocked(x,z,{ village:16, path:2, built:2, station:4, wet:0.3, start:6 })) return null; const s = R(0.3, 0.9); if (s > 0.45) treeCollider(x, z, s*0.75); return { x, y:groundH(x,z) - s*0.3, z, rx:R(0,3), ry:R(0,3), rz:R(0,3), s }; });
 }
 /* ===================== HILFEN FÜR DIE STATIONEN ===================== */
 function rcW(rc, lx, lz){ const c = Math.cos(rc.yaw), s = Math.sin(rc.yaw); return [rc.cx + lx*c + lz*s, rc.cz - lx*s + lz*c]; }
@@ -2661,14 +2713,32 @@ function buildGranary(){
   hotspots.vorrat.snap = [g];
 }
 /* ===================== PFERCH MIT SCHAFEN UND ZIEGEN ===================== */
+/* Tor aus einem Flechtgitter, das quer vor der Öffnung an der Ostseite eines Geheges steht */
+function makeGate(rc, lz){
+  const HMt = houseMats(), [gx0, gz0] = rcW(rc, rc.hw + 0.25, lz), gate = new THREE.Group(); gate.position.set(gx0, groundH(gx0, gz0), gz0); gate.rotation.y = rc.yaw + Math.PI/2 + 0.05; scene.add(gate);
+  const wg = new THREE.PlaneGeometry(1.9, 0.9); wg.translate(0, 0.5, 0); scaleUV(wg, 1.9, 1); mk(wg, HMt.wattle, gate);
+  for (const sx of [-0.95, 0.95]) mk(new THREE.CylinderGeometry(0.04, 0.05, 1.15, 6), M('#5a4028', { tex:'wood' }), gate, sx, 0.52, 0);
+  wallSeg(gate, -0.95, 0, 0.95, 0, 0.1);
+  return gate;
+}
+/* Punkt (Welt) in ein Rechteck zurückholen */
+function clampRect(rc, x, z, m){ const c = Math.cos(rc.yaw), s = Math.sin(rc.yaw), dx = x - rc.cx, dz = z - rc.cz;
+  const lx = Math.max(-rc.hw + m, Math.min(rc.hw - m, dx*c - dz*s)), lz = Math.max(-rc.hl + m, Math.min(rc.hl - m, dx*s + dz*c)); return rcW(rc, lx, lz); }
+/* Euter mit Zitzen unter einem Tier */
+function addUdder(animal, n, size){
+  const rig = animal.userData.rig, sp = rig.sp, ud = new THREE.Group(); ud.position.set(0, sp.cy - sp.hb + 0.02, -sp.hl*0.52); rig.root.add(ud);
+  const udM = M('#c4968a', { tex:'skin', roughness:0.6 });
+  mk(new THREE.SphereGeometry(size, 16, 12).scale(1.1, 0.8, 1.1), udM, ud, 0, -size*0.4, 0);
+  const teats = []; for (let i=0;i<n;i++){ const x = n === 2 ? (i ? 1 : -1)*size*0.45 : (i % 2 ? 1 : -1)*size*0.4, z = n === 2 ? 0.01 : (i < 2 ? 1 : -1)*size*0.4;
+    mk(new THREE.CapsuleGeometry(size*0.16, size*0.5, 3, 8), udM, ud, x, -size*1.25, z); teats.push(new THREE.Vector3(x, -size*1.6, z)); }
+  return { ud, teats };
+}
 const PEN_ANIMALS = [];
 function buildPen(){
   const corners = [[-7, -6], [7, -6], [7, 6], [-7, 6]].map(([a, b]) => rcW(PEN, a, b));
   makeFence(corners, true, { 1:[5.2, 6.9] });
-  // Tor aus einem Flechtgitter, das quer vor der Öffnung steht
-  const HMt = houseMats(), [gx0, gz0] = rcW(PEN, 7.25, 0.05), gate = new THREE.Group(); gate.position.set(gx0, groundH(gx0, gz0), gz0); gate.rotation.y = PEN.yaw + Math.PI/2 + 0.05; scene.add(gate);
-  { const wg = new THREE.PlaneGeometry(1.9, 0.9); wg.translate(0, 0.5, 0); scaleUV(wg, 1.9, 1); mk(wg, HMt.wattle, gate); for (const sx of [-0.95, 0.95]) mk(new THREE.CylinderGeometry(0.04, 0.05, 1.15, 6), M('#5a4028', { tex:'wood' }), gate, sx, 0.52, 0);
-    for (let s = -0.9; s <= 0.9; s += 0.45){ const v = new THREE.Vector3(s, 0, 0); gate.updateWorldMatrix(true, false); gate.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.3 }); } }
+  makeGate(PEN, 0.05);
+  const HMt = houseMats();
   // Futterkrippe aus einem ausgehöhlten Stamm, Heuhaufen
   { const [tx, tz] = rcW(PEN, -3, -4.6), tr = grp(tx, tz); tr.rotation.y = PEN.yaw + Math.PI/2;
     const lg = new THREE.CylinderGeometry(0.22, 0.22, 1.8, 14, 1, true, Math.PI, Math.PI).rotateZ(Math.PI/2); mk(lg, M('#6b4a2b', { tex:'wood', side:THREE.DoubleSide }), tr, 0, 0.24, 0);
@@ -2756,8 +2826,7 @@ function buildCattle(){
   const herd = [ { col:{ back:'#3a2418', flank:'#5a3622', belly:'#6e4a32' } }, { col:{ back:'#6a3a20', flank:'#8a4e2c', belly:'#a06a44', face:'#7a4428' } },
     { col:{ back:'#2a201a', flank:'#3a2c22', belly:'#4a3a2c', face:'#2e241c' }, horns:'ox', scale:1.08 }, { col:{ back:'#5a3a24', flank:'#7a5034', belly:'#8a6446' } } ];
   herd.forEach((o, i) => { const a = makeAnimal('cow', 70 + i, o), [x, z] = pick(mulberry32(i*11 + 5)); a.position.set(x, groundH(x, z), z); a.rotation.y = R(0, TAU); scene.add(a); list.push(a);
-    if (i === 3){ const rig = a.userData.rig; anims.push(t => animalPose(rig, t, { lie:1, graze:false, look:Math.sin(t*0.2)*0.5 })); colliders.push({ x, z, r:0.9 }); }
-    else wander(a, pick, { seed:80 + i, speed:0.45, rest:9, collide:0.85 }); });
+    if (i === 3) buildCowMilking(a, list); else wander(a, pick, { seed:80 + i, speed:0.45, rest:9, collide:0.85 }); });
   // Das Kalb bleibt in der Nähe seiner Mutter
   const calf = makeAnimal('cow', 77, { scale:0.55, horns:null, col:{ back:'#7a4a2a', flank:'#946038', belly:'#b08058', face:'#8a5432' } }), mom = list[1];
   calf.position.set(mom.position.x + 1.2, 0, mom.position.z + 0.8); scene.add(calf); list.push(calf);
@@ -2765,28 +2834,174 @@ function buildCattle(){
   addHotspot('rinder', list, P.rinder[0], gy(P.rinder[0], P.rinder[1]) + 2.6, P.rinder[1], 0);
 }
 
-/* ===================== SCHWEINE UNTER DEN EICHEN ===================== */
+/* Eine Frau melkt eine Kuh am Rand der Weide */
+function buildCowMilking(cow, list){
+  const g = grp(-4.2, 34.6); g.rotation.y = 0.4; list.push(g);
+  cow.position.set(0, 0, 0); cow.rotation.y = Math.PI/2; g.add(cow);
+  const rig = cow.userData.rig, U = addUdder(cow, 4, 0.11);
+  const stool = new THREE.Group(); stool.position.set(-0.15, 0, -0.52); g.add(stool);
+  mk(new THREE.CylinderGeometry(0.17, 0.17, 0.05, 14), M('#6b4a2b', { tex:'wood' }), stool, 0, 0.29, 0);
+  for (let i=0;i<3;i++){ const a = i/3*TAU; mk(new THREE.CylinderGeometry(0.02, 0.025, 0.3, 5), M('#5e4026', { tex:'wood' }), stool, Math.cos(a)*0.1, 0.14, Math.sin(a)*0.1, Math.sin(a)*0.25, 0, -Math.cos(a)*0.25); }
+  const p = person(g, { skin:'#c99068', hair:'#5a3a22', female:true, bun:true, linen:'#c4ab84', bracelet:true }, -0.15, -0.52, -0.45);
+  poseSit(p, 0.32); p.legs[0].hip.rotation.z = -0.3; p.legs[1].hip.rotation.z = 0.3;
+  const pot = makePot('topf', 'fired', 14); pot.position.set(-0.46, 0, -0.08); pot.scale.setScalar(0.9); g.add(pot);
+  const milk = mk(new THREE.CircleGeometry(0.135, 16).rotateX(-Math.PI/2), M('#f2eee4', { tex:null, roughness:0.25 }), pot, 0, 0.24, 0);
+  const jets = [0, 1].map(() => { const m = mk(new THREE.CylinderGeometry(0.003, 0.003, 1, 4).translate(0, -0.5, 0), M('#f8f6f0', { tex:null, roughness:0.2, transparent:true, opacity:0.85 }), g); m.visible = false; m.castShadow = false; return m; });
+  const W = new THREE.Vector3(), T = new THREE.Vector3(), B = new THREE.Vector3();
+  anims.push(t => {
+    animalPose(rig, t, { graze:false, look:Math.sin(t*0.25)*0.35 });
+    cow.updateWorldMatrix(true, true);
+    for (const i of [0, 1]){ const s = Math.sin(t*4.6 + i*Math.PI), pull = Math.max(0, s);
+      T.copy(U.teats[i]).add(new THREE.Vector3(0, -pull*0.03, 0)); U.ud.localToWorld(T); W.copy(T); W.y -= 0.02; ikWorld(p, i, W);
+      const j = jets[i]; j.visible = pull > 0.6; if (j.visible){ const top = T.clone(); g.worldToLocal(top); j.position.copy(top); B.set(0, 0.25, 0); pot.localToWorld(B); g.worldToLocal(B); j.scale.y = Math.max(0.01, top.y - B.y); } }
+    p.spine.rotation.x = 0.5; p.head.rotation.x = 0.3; p.head.rotation.y = 0.15;
+    milk.position.y = 0.2 + ((t*0.015) % 1)*0.06;
+  });
+  g.updateWorldMatrix(true, false); colliders.push({ x:g.position.x, z:g.position.z, r:1.05 });
+}
+
+/* ===================== SCHWEINEGEHEGE AM WALDRAND ===================== */
 function buildPigs(){
-  const C0 = P.schweine, pick = rr => { const a = rr()*TAU, d = Math.sqrt(rr())*4.5; return [C0[0] + Math.cos(a)*d, C0[1] + Math.sin(a)*d]; };
-  const list = [];
-  // Suhle aus Schlamm, Eicheln am Boden
+  const rc = PIGPEN, HMt = houseMats(), list = [];
+  const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => rcW(rc, a*rc.hw, b*rc.hl));
+  makeFence(corners, true, { 1:[rc.hl - 0.85, rc.hl + 0.85] });
+  makeGate(rc, 0);
+  // Stall: Pultdach aus Stroh auf vier Pfosten, hinten und seitlich mit Flechtwerk, vorne offen
+  { const [sx, sz] = rcW(rc, -rc.hw + 1.05, -rc.hl + 1.45), st = grp(sx, sz); st.rotation.y = rc.yaw;
+    const wd = [], D = 1.7, Wd = 2.5, hF = 1.35, hB = 0.95;
+    for (const [x, h] of [[D/2, hF], [-D/2, hB]]) for (const z of [-Wd/2, Wd/2]) wd.push(part(new THREE.CylinderGeometry(0.06, 0.07, h + 0.1, 7), '#4a301c', x, (h + 0.1)/2 - 0.05, z));
+    vmesh(wd, st);
+    const ang = Math.atan2(hF - hB, D), rl = Math.hypot(D, hF - hB) + 0.5, roof = new THREE.PlaneGeometry(rl, Wd + 0.5); roof.rotateX(-Math.PI/2); roof.rotateZ(ang); scaleUV(roof, rl/1.2, (Wd + 0.5)/1.2);
+    mk(roof, HMt.thatch, st, 0.05, (hF + hB)/2 + 0.1, 0);
+    const back = wallGeo(Wd, hB); mk(back, HMt.wattle, st, -D/2, 0, 0, 0, Math.PI/2, 0);
+    for (const sd of [-1, 1]){ const sg = new THREE.Shape(); sg.moveTo(-D/2, 0); sg.lineTo(D/2, 0); sg.lineTo(D/2, hF*0.8); sg.lineTo(-D/2, hB); sg.closePath(); mk(scaleUV(new THREE.ShapeGeometry(sg), 1/1.2, 1/1.2), HMt.wattle, st, 0, 0, sd*Wd/2); }
+    mk(new THREE.PlaneGeometry(D - 0.1, Wd - 0.1).rotateX(-Math.PI/2), M('#b09a5c', { tex:'grain', roughness:1 }), st, 0, 0.03, 0).castShadow = false;
+    wallSeg(st, -D/2, -Wd/2, -D/2, Wd/2, 0.1); wallSeg(st, -D/2, -Wd/2, D/2, -Wd/2, 0.1); wallSeg(st, -D/2, Wd/2, D/2, Wd/2, 0.1);
+    // Ein Schwein schläft im Stroh
+    const sl = makeAnimal('pig', 59, { col:{ back:'#3a3028', flank:'#4e4032' } }); sl.position.set(-0.1, 0, 0.2); sl.rotation.y = 0.4; st.add(sl); list.push(st);
+    anims.push(t => animalPose(sl.userData.rig, t, { lie:1, graze:false, look:0 })); }
+  // Futtertrog
+  { const [tx, tz] = rcW(rc, 2.6, -rc.hl + 0.9), tr = grp(tx, tz); tr.rotation.y = rc.yaw + Math.PI/2;
+    mk(new THREE.CylinderGeometry(0.2, 0.2, 1.5, 14, 1, true, Math.PI, Math.PI).rotateZ(Math.PI/2), M('#6b4a2b', { tex:'wood', side:THREE.DoubleSide }), tr, 0, 0.22, 0);
+    for (const sx of [-0.75, 0.75]) mk(new THREE.CircleGeometry(0.2, 14, Math.PI, Math.PI).rotateY(Math.PI/2), M('#6b4a2b', { tex:'wood', side:THREE.DoubleSide }), tr, sx, 0.22, 0);
+    const ac = []; for (let i=0;i<40;i++) ac.push(part(new THREE.SphereGeometry(0.018, 6, 5), i % 3 ? '#7a5a32' : '#5e4426', R(-0.65, 0.65), 0.1 + R(0, 0.03), R(-0.1, 0.1), 0, 0, 0, 1, 1, 1.4)); vmesh(ac, tr); }
+  // Suhle aus Schlamm und Eicheln am Boden
   { const mud = canvasTex(256, 256, (x, W, H) => { const r = mulberry32(44), g = x.createRadialGradient(128, 128, 10, 128, 128, 126);
       g.addColorStop(0, 'rgba(58,44,30,1)'); g.addColorStop(0.55, 'rgba(74,56,38,0.95)'); g.addColorStop(0.8, 'rgba(92,72,48,0.6)'); g.addColorStop(1, 'rgba(92,72,48,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
       for (let i=0;i<400;i++){ const a = r()*TAU, d = Math.sqrt(r())*100; x.fillStyle = r() < 0.5 ? 'rgba(40,30,20,0.25)' : 'rgba(120,96,66,0.2)'; x.beginPath(); x.ellipse(128 + Math.cos(a)*d, 128 + Math.sin(a)*d, 2 + r()*5, 1 + r()*3, r()*3, 0, TAU); x.fill(); } });
-    const wg = new THREE.PlaneGeometry(3.8, 2.9, 16, 12).rotateX(-Math.PI/2), wp = wg.attributes.position;
+    const wg = new THREE.PlaneGeometry(3.2, 2.5, 16, 12).rotateX(-Math.PI/2), wp = wg.attributes.position;
     for (let i=0;i<wp.count;i++){ const x = wp.getX(i) + WALLOW[0], z = wp.getZ(i) + WALLOW[1]; wp.setXYZ(i, x, groundH(x, z) + 0.035, z); } wg.computeVertexNormals();
-    const s = new THREE.Mesh(wg, new THREE.MeshStandardMaterial({ map:mud, transparent:true, depthWrite:false, roughness:0.35, metalness:0, polygonOffset:true, polygonOffsetFactor:-2 })); s.receiveShadow = true; scene.add(s);
-    const ac = []; for (let i=0;i<70;i++){ const [x, z] = pick(rnd); ac.push(part(new THREE.SphereGeometry(0.014, 6, 5), i % 3 ? '#7a5a32' : '#5e4426', x, groundH(x, z) + 0.01, z, 0, 0, 0, 1, 1, 1.4)); }
+    const s = new THREE.Mesh(wg, new THREE.MeshStandardMaterial({ map:mud, transparent:true, depthWrite:false, roughness:0.7, metalness:0, envMapIntensity:0.25, polygonOffset:true, polygonOffsetFactor:-2 })); s.receiveShadow = true; scene.add(s);
+    const ac = []; for (let i=0;i<60;i++){ const [x, z] = rcW(rc, R(-rc.hw + 2, rc.hw - 0.4), R(-rc.hl + 0.4, rc.hl - 0.4)); ac.push(part(new THREE.SphereGeometry(0.014, 6, 5), i % 3 ? '#7a5a32' : '#5e4426', x, groundH(x, z) + 0.01, z, 0, 0, 0, 1, 1, 1.4)); }
     vmesh(ac, scene).castShadow = false; }
+  // Schweine laufen im Gehege umher (nicht durch den Stall), die Ferkel folgen der Muttersau
+  const pick = rr => rcW(rc, -rc.hw + 2.4 + rr()*(2*rc.hw - 3.3), -rc.hl + 0.9 + rr()*(2*rc.hl - 1.8));
   [ { col:{} }, { col:{ back:'#3a3028', flank:'#544636' } }, { scale:0.85, col:{ back:'#2a221c', flank:'#3e3228' } } ].forEach((o, i) => {
     const a = makeAnimal('pig', 50 + i, o), [x, z] = pick(mulberry32(i*5 + 1)); a.position.set(x, groundH(x, z), z); a.rotation.y = R(0, TAU); scene.add(a); list.push(a);
-    wander(a, pick, { seed:60 + i, speed:0.5, rest:6, root:true, collide:0.55 }); });
-  // Gestreifte Ferkel laufen der Muttersau nach
-  const sow = list[0];
+    wander(a, pick, { seed:60 + i, speed:0.5, rest:6, root:true }); });
+  const sow = list[1];
   for (let i=0;i<4;i++){ const f = makeAnimal('pig', 55 + i, { scale:0.36, stripes:true, col:{ back:'#5a4632', flank:'#7a6046', belly:'#9a7c5a' } });
     f.position.set(sow.position.x + R(-1, 1), 0, sow.position.z + R(-1, 1)); scene.add(f); list.push(f);
-    wander(f, rr => [sow.position.x + (rr() - 0.5)*1.8, sow.position.z + (rr() - 0.5)*1.8], { seed:65 + i, speed:0.9, rest:1.5, root:true }); }
-  addHotspot('schweine', list, C0[0], gy(C0[0], C0[1]) + 2.2, C0[1], 0);
+    wander(f, rr => clampRect(rc, sow.position.x + (rr() - 0.5)*1.8, sow.position.z + (rr() - 0.5)*1.8, 0.6), { seed:65 + i, speed:0.9, rest:1.5, root:true }); }
+  addHotspot('schweine', list, P.schweine[0], gy(P.schweine[0], P.schweine[1]) + 2.4, P.schweine[1], 0);
+  hotspots.schweine.snapDir = [0.9, 0.44];
+}
+
+/* ===================== AUS MILCH WIRD KÄSE ===================== */
+/* Siebgefäss: Tontopf mit vielen kleinen Löchern */
+function makeSieve(){
+  const g = makePot('topf', 'fired', 2), prof = POT_PROF.topf.o, holes = [];
+  const rAt = y => { for (let i=1;i<prof.length;i++) if (y <= prof[i][1]){ const [r0, y0] = prof[i-1], [r1, y1] = prof[i]; return r0 + (r1 - r0)*(y - y0)/((y1 - y0) || 1); } return prof[prof.length - 1][0]; };
+  for (let row=0; row<6; row++){ const y = 0.03 + row*0.042, r = rAt(y) + 0.002, n = Math.round(r*90);
+    for (let k=0;k<n;k++){ const a = (k + (row % 2)*0.5)/n*TAU; holes.push(xf(new THREE.CircleGeometry(0.0075, 6), Math.cos(a)*r, y, Math.sin(a)*r, 0, Math.atan2(Math.cos(a), Math.sin(a)), 0)); } }
+  for (let k=0;k<12;k++){ const a = k/12*TAU, d = 0.03 + (k % 2)*0.025; holes.push(xf(new THREE.CircleGeometry(0.0075, 6), Math.cos(a)*d, -0.001, Math.sin(a)*d, Math.PI/2, 0, 0)); }
+  mk(mergeGeo(holes), M('#1a120c', { tex:null, roughness:1 }), g).castShadow = false;
+  return g;
+}
+function buildCheese(){
+  const g = grp(P.kaese[0], P.kaese[1]); faceTo(g, P.familie[0], P.familie[1]);
+  mk(new THREE.PlaneGeometry(2.2, 1.6).rotateX(-Math.PI/2), M('#9a8a64', { tex:'weave', rep:2 }), g, 0.2, 0.012, 0.2).castShadow = false;
+  // Feuerstelle: darauf wird die Milch im Topf warm gehalten
+  const fire = new THREE.Group(); fire.position.set(-1.15, 0, -0.1); g.add(fire);
+  { const st = []; for (let i=0;i<9;i++){ const a = i/9*TAU; st.push(part(ROCK_GEOS[i%8], FIRE_COLS[i%4], Math.cos(a)*0.42, 0.07, Math.sin(a)*0.42, i, i*2, 0, 0.14, 0.1, 0.12)); } vmesh(st, fire);
+    const ash = ashDecal(0.6); ash.position.y = 0.02; fire.add(ash); makeFireFx(fire, 0.28, 1.6); }
+  const mpot = makePot('topf', 'fired', 3); mpot.position.set(0.12, 0.06, 0); mpot.scale.setScalar(1.15); fire.add(mpot);
+  mk(new THREE.CircleGeometry(0.15, 16).rotateX(-Math.PI/2), M('#f0eadc', { tex:null, roughness:0.3 }), mpot, 0, 0.29, 0);
+  addSmoke(fire, 3, 0.12, 0.5, 0, 0.12, '#f4f2ee', 0.6);
+  // Käserin hält das Siebgefäss über eine Schale, die Molke tropft ab
+  const p = person(g, { skin:'#c48f6c', hair:'#3a2414', female:true, braid:true, linen:'#d3c3a0', bracelet:true }, 0.25, -0.05, 0);
+  poseKneel(p);
+  const bowl = makePot('schale', 'fired', 6); bowl.position.set(0.25, 0, 0.42); g.add(bowl);
+  mk(new THREE.CircleGeometry(0.13, 16).rotateX(-Math.PI/2), M('#e8e2c0', { tex:null, roughness:0.2, transparent:true, opacity:0.9 }), bowl, 0, 0.07, 0);
+  const sieve = makeSieve(); g.add(sieve);
+  mk(new THREE.SphereGeometry(0.135, 16, 10, 0, TAU, 0, Math.PI*0.5).scale(1, 0.35, 1), M('#f4eedc', { tex:'skin', roughness:0.7 }), sieve, 0, 0.24, 0);
+  const drops = []; for (let i=0;i<7;i++){ const d = mk(new THREE.SphereGeometry(0.008, 6, 5).scale(1, 1.6, 1), M('#e8e0b8', { tex:null, roughness:0.1, transparent:true, opacity:0.85 }), g); d.castShadow = false; drops.push({ m:d, ph:i/7, x:(Math.random() - 0.5)*0.12, z:(Math.random() - 0.5)*0.12 }); }
+  // Käselaibe trocknen auf einem Brett
+  const board = new THREE.Group(); board.position.set(1.35, 0, -0.35); board.rotation.y = -0.5; g.add(board);
+  mk(new THREE.BoxGeometry(1.0, 0.05, 0.42), M('#8a6a42', { tex:'wood' }), board, 0, 0.42, 0);
+  for (const sx of [-0.4, 0.4]) mk(new THREE.CylinderGeometry(0.09, 0.1, 0.4, 10), logMats(), board, sx, 0.2, 0);
+  const cheeseM = M('#efe2b8', { tex:'skin', roughness:0.75 }), rindM = M('#d8c48e', { tex:'skin', roughness:0.8 });
+  for (let i=0;i<6;i++){ const r = 0.07 + (i % 3)*0.012; mk(new THREE.CylinderGeometry(r, r*1.04, 0.07, 18), i < 3 ? cheeseM : rindM, board, -0.38 + (i % 3)*0.33 + (i > 2 ? 0.12 : 0), 0.48, i > 2 ? 0.1 : -0.09); }
+  const jug = makePot('krug', 'fired', 8); jug.position.set(-0.55, 0, 0.55); g.add(jug);
+  const W = new THREE.Vector3(), S = new THREE.Vector3();
+  anims.push(t => { const tilt = Math.sin(t*0.7)*0.08;
+    sieve.position.set(0.25 + Math.sin(t*0.9)*0.02, 0.5, 0.42); sieve.rotation.set(tilt, 0, Math.sin(t*0.5)*0.06);
+    for (const sd of [-1, 1]){ W.set(sd*0.17, 0.2, 0); sieve.localToWorld(W); ikWorld(p, sd < 0 ? 0 : 1, W); }
+    p.spine.rotation.x = 0.2; p.head.rotation.x = 0.4;
+    sieve.updateWorldMatrix(true, false); S.set(0, 0, 0); sieve.localToWorld(S); g.worldToLocal(S);
+    for (const d of drops){ const k = (t*0.9 + d.ph) % 1; d.m.position.set(S.x + d.x, S.y - k*0.42, S.z + d.z); d.m.visible = k < 0.95; }
+  });
+  colliders.push({ x:P.kaese[0], z:P.kaese[1], r:1.5 });
+  addHotspot('kaese', [g], P.kaese[0], gy(P.kaese[0], P.kaese[1]) + 2.0, P.kaese[1], 2.0);
+}
+
+/* ===================== FLEISCH RÄUCHERN ===================== */
+function buildMeat(){
+  const g = grp(P.fleisch[0], P.fleisch[1]); faceTo(g, P.weben[0], P.weben[1]);
+  // Räuchergestell über einem glimmenden Feuer
+  const rack = new THREE.Group(); g.add(rack); const wd = [];
+  for (const sx of [-1.1, 1.1]) for (const sz of [-0.35, 0.35]) wd.push(part(new THREE.CylinderGeometry(0.05, 0.06, 2.0, 7), '#4a301c', sx, 0.95, sz, sz*0.12, 0, -sx*0.03));
+  for (const sz of [-0.35, 0.35]) wd.push(part(new THREE.CylinderGeometry(0.04, 0.04, 2.5, 7), '#5a3b22', 0, 1.82, sz, 0, 0, Math.PI/2));
+  for (const sx of [-1.1, 1.1]) wd.push(part(new THREE.CylinderGeometry(0.035, 0.035, 0.8, 6), '#5a3b22', sx, 1.7, 0, Math.PI/2, 0, 0));
+  vmesh(wd, rack);
+  const smoked = new THREE.MeshStandardMaterial({ map:TEX.meat, color:C('#7a5a46'), roughness:0.62, metalness:0 }), fresh = new THREE.MeshStandardMaterial({ map:TEX.meat, roughness:0.5, metalness:0 }), fat = M('#e8d8c0', { tex:'skin', roughness:0.5 }), cord = M('#b3a07c', { tex:'leather' }), boneM = M('#e6dbc0', { tex:'bone', roughness:0.55 });
+  const pieces = [];
+  [[-0.85, -0.35, 'ham'], [-0.45, 0.35, 'strip'], [-0.15, -0.35, 'rib'], [0.25, 0.35, 'ham'], [0.55, -0.35, 'strip'], [0.85, 0.35, 'rib'], [0.05, 0.35, 'strip'], [-0.65, 0.35, 'strip']].forEach(([x, z, k], i) => {
+    const h = new THREE.Group(); h.position.set(x, 1.8, z); rack.add(h); pieces.push(h);
+    mk(new THREE.CylinderGeometry(0.004, 0.004, 0.16, 4).translate(0, -0.08, 0), cord, h);
+    const m = i % 3 === 0 ? smoked : fresh;
+    if (k === 'ham'){ const hg = lathe([[0.001, -0.42], [0.07, -0.405], [0.12, -0.35], [0.14, -0.27], [0.125, -0.19], [0.08, -0.13], [0.035, -0.1], [0.001, -0.095]], 18); hg.scale(1, 1, 0.72); mk(hg, m, h); mk(new THREE.CylinderGeometry(0.016, 0.02, 0.07, 8), boneM, h, 0, -0.1, 0); mk(new THREE.SphereGeometry(0.024, 8, 6), boneM, h, 0, -0.065, 0); }
+    else if (k === 'rib'){ mk(new THREE.BoxGeometry(0.22, 0.32, 0.05).translate(0, -0.32, 0), m, h); for (let r=0;r<4;r++) mk(new THREE.CylinderGeometry(0.009, 0.009, 0.24, 5), fat, h, 0, -0.2 - r*0.07, 0.03, 0, 0, Math.PI/2); }
+    else { mk(bumpy(new THREE.BoxGeometry(0.075, 0.38, 0.03, 2, 6, 1), 0.08, 6, i).translate(0, -0.35, 0), m, h); }
+  });
+  { const f = new THREE.Group(); f.position.set(0, 0, 0); g.add(f); const st = []; for (let i=0;i<10;i++){ const a = i/10*TAU; st.push(part(ROCK_GEOS[i%8], FIRE_COLS[i%4], Math.cos(a)*0.55, 0.08, Math.sin(a)*0.4, i, i, 0, 0.16, 0.11, 0.14)); } vmesh(st, f);
+    const ash = ashDecal(0.75); ash.position.y = 0.02; f.add(ash); makeFireFx(f, 0.22, 1.8);
+    const br = []; for (let i=0;i<6;i++){ const a = i/6*TAU; br.push(part(new THREE.CylinderGeometry(0.02, 0.03, 0.7, 5), '#3a4a2a', Math.cos(a)*0.18, 0.1, Math.sin(a)*0.12, 0, -a, 1.3)); } vmesh(br, f);
+    addSmoke(f, HQ ? 9 : 6, 0, 0.5, 0, 0.35, '#9a9690', 1.6); }
+  // Hackklotz: ein Mann schneidet mit einem Feuersteinmesser ein Stück Fleisch ab
+  const block = new THREE.Group(); block.position.set(1.75, 0, 1.0); g.add(block);
+  mk(new THREE.CylinderGeometry(0.3, 0.34, 0.55, 14), logMats(), block, 0, 0.275, 0);
+  const meat = mk(bumpy(new THREE.SphereGeometry(0.16, 14, 10), 0.12, 4, 3).scale(1.3, 0.45, 0.9), fresh, block, 0, 0.6, 0);
+  mk(new THREE.BoxGeometry(0.3, 0.025, 0.2), fat, block, 0, 0.625, 0.02);
+  const p = person(g, { skin:'#b98260', hair:'#3a2616', beard:true, leggings:'#5a3e28', leather:'#7a5434', pouch:true }, 1.75, 1.45, Math.PI);
+  p.hips.position.y = 0.82; for (const l of p.legs){ l.hip.rotation.x = -0.25; l.knee.rotation.x = 0.4; }
+  const knife = new THREE.Group(); p.arms[1].hand.add(knife); knife.position.set(0, -0.08, 0.02); knife.rotation.x = 1.4;
+  mk(new THREE.CylinderGeometry(0.014, 0.016, 0.1, 6), M('#7a5f3c', { tex:'wood' }), knife, 0, 0, 0);
+  mk(new THREE.OctahedronGeometry(1, 0), M('#4c4640', { tex:null, roughness:0.3 }), knife, 0, 0.1, 0).scale.set(0.016, 0.06, 0.005);
+  const W = new THREE.Vector3();
+  anims.push(t => { const s = Math.sin(t*3.2);
+    W.set(1.75 + s*0.1, 0.72, 1.12); g.localToWorld(W); ikWorld(p, 1, W);
+    W.set(1.62, 0.66, 0.98); g.localToWorld(W); ikWorld(p, 0, W);
+    p.spine.rotation.x = 0.6; p.head.rotation.x = 0.3;
+    pieces.forEach((h, i) => { h.rotation.z = Math.sin(t*0.8 + i)*0.04; h.rotation.x = Math.sin(t*0.6 + i*2)*0.03; }); });
+  // Fett in einem Topf, ein Korb mit Knochen für Werkzeuge
+  const lard = makePot('topf', 'fired', 5); lard.position.set(2.4, 0, 0.35); g.add(lard);
+  mk(new THREE.CircleGeometry(0.14, 16).rotateX(-Math.PI/2), M('#f2ead2', { tex:null, roughness:0.4 }), lard, 0, 0.27, 0);
+  const bk = makeBasket(0.2, 0.2, g); bk.position.set(2.45, 0, 1.1);
+  { const bp = []; for (let i=0;i<5;i++) bp.push(...boneParts(0.28 - i*0.02, 0.016, '#e6dbc0', (i - 2)*0.05, 0.2, (i % 2 - 0.5)*0.08, 0.2, i, Math.PI/2 - 0.3)); vmesh(bp, bk); }
+  wallSeg(g, -1.2, 0, 1.2, 0, 0.5);
+  { const v = new THREE.Vector3(1.75, 0, 1.0); g.updateWorldMatrix(true, false); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.55 }); }
+  addHotspot('fleisch', [g], P.fleisch[0], gy(P.fleisch[0], P.fleisch[1]) + 2.6, P.fleisch[1], 0);
 }
 /* ===================== LANGHÄUSER ===================== */
 function buildLonghouses(){
@@ -2933,13 +3148,50 @@ function buildFamily(){
   { const pb = []; for (let i=0;i<9;i++) pb.push(part(ROCK_GEOS[i % 8], '#8a857c', 0.1 + Math.cos(i*2.4)*0.2, 0.03, 1.15 + Math.sin(i*2.4)*0.15, i, i, 0, 0.035, 0.025, 0.03)); vmesh(pb, g);
     const fig = makeAnimal('cow', 99, { scale:0.12, col:{ back:'#8a5a3a', flank:'#9a6a46', belly:'#9a6a46', leg:'#8a5a3a', face:'#8a5a3a', muzzle:'#8a5a3a', nose:'#6a4a32' } }); fig.position.set(-0.05, 0, 1.25); fig.rotation.y = 0.8; g.add(fig); }
   anims.push(t => { const s = Math.sin(t*2.2); for (const i of [0, 1]){ tod.arms[i].sh.rotation.set(-0.9 + (i ? s : -s)*0.3, 0, (i ? 0.2 : -0.2)); tod.arms[i].el.rotation.x = -0.4; } tod.head.rotation.x = 0.4; tod.head.rotation.y = Math.sin(t*0.7)*0.3; });
-  // Zwei Kinder fangen sich
-  const kids = [ person(g, { scale:0.72, skin:'#c99068', hair:'#5a3a22', linen:'#b39b72', barefoot:true }, 0, 3, 0), person(g, { scale:0.68, skin:'#d0996e', hair:'#2b1d12', female:true, braid:true, linen:'#cbb894', barefoot:true }, 0, 3, 0) ];
-  anims.push(t => kids.forEach((k, i) => { const a = t*0.95 + i*1.1, r = 2.1 + Math.sin(t*0.7 + i)*0.25;
-    k.g.position.set(Math.cos(a)*r, 0, 3.4 + Math.sin(a)*r*0.8); k.g.position.y = localGround(g, k.g.position.x, k.g.position.z);
-    k.g.rotation.y = Math.atan2(-Math.sin(a), Math.cos(a)*0.8); walkPose(k, t + i*0.4, 10, 0.6, true); k.spine.rotation.x = 0.15;
-    if (i === 0){ k.arms[1].sh.rotation.set(-1.5, 0, 0.1); k.arms[1].el.rotation.x = -0.1; } }));
   addHotspot('familie', [g], P.familie[0], gy(P.familie[0], P.familie[1]) + 2.0, P.familie[1], 2.4);
+}
+
+/* ===================== KINDER SPAZIEREN DURCHS DORF ===================== */
+/* Freier Platz im Dorf: nicht in Häusern, nicht bei den Stationen, nicht in Hindernissen */
+function villageSpot(rr){
+  for (let k=0;k<60;k++){ const a = rr()*TAU, d = Math.sqrt(rr()), x = VILLAGE[0] + Math.cos(a)*d*12, z = VILLAGE[1] + 5 + Math.sin(a)*d*14;
+    let ok = true; for (const h of HOUSES) if (rectD(h, x, z) < 1.8) ok = false;
+    for (const p of STATION_PTS) if (Math.hypot(x - p[0], z - p[1]) < 3.4) ok = false;
+    if (!ok) continue; const r = pushOut(x, z, 0.7); if (Math.hypot(r[0] - x, r[1] - z) > 0.01) continue; return [x, z]; }
+  return [VILLAGE[0] + 1, VILLAGE[1] + 8];
+}
+/* Eine Figur, die gemütlich von Ort zu Ort geht; mit "follow" geht sie neben einer anderen her */
+function makeWalker(o, seed, follow){
+  const rr = mulberry32(seed), p = makePerson(o), g = new THREE.Group(); g.add(p.root); scene.add(g); p.g = g;
+  let [x, z] = follow ? [follow.x + 1, follow.z] : villageSpot(rr), tx = x, tz = z, wait = 1 + rr()*3, stuck = 0, gait = rr()*6, mv = 0;
+  const col = { x, z, r:0.3 }; colliders.push(col);
+  const me = { g, p, get x(){ return x; }, get z(){ return z; } };
+  const L = new THREE.Vector3();
+  anims.push((t, dt) => {
+    let speed = 1.0, go = false;
+    if (follow){ const fy = follow.g.rotation.y; tx = follow.x + Math.cos(fy)*0.95; tz = follow.z - Math.sin(fy)*0.95; speed = 1.25; go = Math.hypot(tx - x, tz - z) > 0.3; }
+    else if (wait > 0) wait -= dt;
+    else { go = true; if (Math.hypot(tx - x, tz - z) < 0.3){ go = false; wait = 2 + rr()*6; [tx, tz] = villageSpot(rr); } }
+    if (go){ const dx = tx - x, dz = tz - z, d = Math.hypot(dx, dz), want = Math.atan2(dx, dz);
+      g.rotation.y = angLerp(g.rotation.y, want, Math.min(1, dt*4));
+      const st = Math.min(d, speed*dt*Math.max(0.2, Math.cos(want - g.rotation.y))*(follow ? Math.min(1.3, d + 0.3) : 1));
+      const r = pushOut(x + Math.sin(g.rotation.y)*st, z + Math.cos(g.rotation.y)*st, 0.35, col), moved = Math.hypot(r[0] - x, r[1] - z);
+      x = r[0]; z = r[1];
+      if (!follow){ stuck = moved < st*0.35 ? stuck + dt : Math.max(0, stuck - dt); if (stuck > 1.2){ stuck = 0; [tx, tz] = villageSpot(rr); } } }
+    else if (follow) g.rotation.y = angLerp(g.rotation.y, follow.g.rotation.y, Math.min(1, dt*2));
+    mv += ((go ? 1 : 0) - mv)*Math.min(1, dt*5); gait += dt*6.5*mv;
+    walkPose(p, gait, 1, 0.42*mv, true);
+    g.position.set(x, groundH(x, z), z); col.x = x; col.z = z;
+    // Die beiden schauen sich ab und zu beim Reden an
+    const other = follow || me.partner; if (other && Math.sin(t*0.4 + seed) > 0.3){ L.set(other.x, groundH(other.x, other.z) + 1.1, other.z); lookAtW(p, L, 0.05); }
+    else p.head.rotation.y += (Math.sin(t*0.5 + seed)*0.3 - p.head.rotation.y)*0.05;
+  });
+  return me;
+}
+function buildVillagers(){
+  const a = makeWalker({ scale:0.72, skin:'#c99068', hair:'#5a3a22', linen:'#b39b72', barefoot:true }, 501);
+  const b = makeWalker({ scale:0.68, skin:'#d0996e', hair:'#2b1d12', female:true, braid:true, linen:'#cbb894', barefoot:true }, 502, a);
+  a.partner = b;
 }
 /* ===================== STEINBEIL SCHLEIFEN ===================== */
 function buildAxeGrinding(){
@@ -2983,7 +3235,7 @@ function buildClearing(){
   { const cards = []; for (let i=0;i<(HQ ? 46 : 28);i++){ const sz = R(1.0, 1.6), pg = new THREE.PlaneGeometry(sz, sz); pg.rotateX(R(-1, 1)); pg.rotateY(R(0, TAU)); pg.translate(R(2.6, 4.6), R(0.3, 1.2), R(-1.1, 1.1)); cards.push(pg); }
     const cm = mk(twoSided(outwardNormals(mergeGeo(cards), 3.6, 0.4, 0, 0.4)), oakLeaf, lg); cm.castShadow = true; }
   for (const [sx, sz, r] of [[1.8, 2.6, 0.32], [-1.2, -1.6, 0.26], [2.4, -0.8, 0.36]]){ const st = new THREE.Group(); st.position.set(sx, 0, sz); g.add(st);
-    mk(new THREE.CylinderGeometry(r, r*1.15, 0.45, 14), [M('#8e928c', { tex:'bark' }), logMats()[1], logMats()[1]], st, 0, 0.18, 0);
+    mk(new THREE.CylinderGeometry(r, r*1.15, 0.45, 14), [M('#d0ccc4', { tex:'bark', rep:2, roughness:1, envMapIntensity:0.4 }), logMats()[1], logMats()[1]], st, 0, 0.18, 0);
     const v = new THREE.Vector3(sx, 0, sz); g.updateWorldMatrix(true, false); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:r + 0.1 }); }
   { const pile = new THREE.Group(); pile.position.set(-1.8, 0, -2.6); g.add(pile); const tw = [];
     for (let i=0;i<26;i++){ const a = rnd()*TAU; tw.push(part(new THREE.CylinderGeometry(0.015, 0.035, R(0.8, 1.6), 5), i % 3 ? '#4a3a2c' : '#3a2e24', Math.cos(a)*R(0, 0.5), R(0.1, 0.4), Math.sin(a)*R(0, 0.5), R(-1.4, 1.4), R(0, 3), R(-1.4, 1.4))); }
@@ -3092,8 +3344,8 @@ function buildWeaving(){
     const len = 0.45 + ((t*0.03) % 1)*0.1; Sp.copy(Hh); Sp.y -= len; g.worldToLocal(Sp); spindle.position.copy(Sp); spindle.rotation.y = t*14;
     const top = Hh.clone(); g.worldToLocal(top); thread.position.copy(top); thread.scale.y = len - 0.06; sp.head.rotation.x = 0.35; });
   // Leinbündel trocknen, ein Korb mit Garnknäueln
-  const HMt = houseMats(); cropMats();
-  for (let i=0;i<3;i++){ const st = makeStook(g, 0, 0, 5, i); const v = new THREE.Vector3(-1.8 - i*0.55, 0, 0.9 + (i%2)*0.4); g.updateWorldMatrix(true, false); g.localToWorld(v); st.parent.remove(st); scene.add(st); st.position.set(v.x, groundH(v.x, v.z) - 0.03, v.z); st.scale.setScalar(0.85); st.children.forEach(m => { m.material = M('#8a8a52', { tex:'grain', roughness:0.9 }); }); }
+  const HMt = houseMats(); cropMats(); const flaxM = HMt.thatch.clone(); flaxM.color = C('#b4b67e');
+  for (let i=0;i<3;i++){ const st = makeStook(g, 0, 0, 5, i); const v = new THREE.Vector3(-1.8 - i*0.55, 0, 0.9 + (i%2)*0.4); g.updateWorldMatrix(true, false); g.localToWorld(v); st.parent.remove(st); scene.add(st); st.position.set(v.x, groundH(v.x, v.z) - 0.03, v.z); st.scale.set(0.62, 1.0, 0.62); st.children.forEach(m => { m.material = flaxM; }); }
   const bk = makeBasket(0.2, 0.18, g); bk.position.set(1.1, 0, -0.1);
   for (let i=0;i<5;i++) mk(new THREE.SphereGeometry(0.055, 10, 8), M('#ddd0ae', { tex:'weave', rep:2 }), bk, Math.cos(i*1.3)*0.08, 0.16 + (i%2)*0.04, Math.sin(i*1.3)*0.08);
   colliders.push({ x:P.weben[0], z:P.weben[1], r:1.2 });
@@ -3117,7 +3369,7 @@ function buildCart(){
   anims.push((t, dt) => { ang += dt*0.85/RAD; const dist = ang*RAD;
     cg.position.set(C0[0] + Math.cos(ang)*RAD, 0, C0[1] + Math.sin(ang)*RAD); cg.position.y = groundH(cg.position.x, cg.position.z);
     cg.rotation.y = Math.atan2(-Math.sin(ang), Math.cos(ang)) + 0.25;
-    cart.wheels.forEach(w => { w.rotation.x = -dist/0.42; });
+    cart.wheels.forEach(w => { w.rotation.x = dist/0.42; });
     oxen.forEach((o, i) => { o.position.y = groundH(cg.position.x, cg.position.z) - cg.position.y; animalPose(o.userData.rig, t, { walk:1, gait:dist/1.35*TAU + i*Math.PI*0.5, graze:false, look:0 }); });
     walkPose(dr, dist/0.85*1.0, 5.2, 0.32, false); dr.arms[0].sh.rotation.set(Math.sin(dist*5.2/0.85)*0.25, 0, -0.08); dr.arms[0].el.rotation.x = -0.2;
     dr.head.rotation.y = 0.4 + Math.sin(t*0.3)*0.3;
@@ -3419,8 +3671,19 @@ function handleClick(cx, cy){
   openStation(id);
 }
 
+/* Hindernisse: Kreise {x,z,r} und Wände als Linien {ax,az,bx,bz,r}. skip = eigenes Hindernis einer Figur */
+function pushOut(x, z, rad, skip){
+  for (let it=0; it<2; it++) for (const c of colliders){ if (c === skip) continue; const m = c.r + rad;
+    if (c.ax !== undefined){ const ex = c.bx - c.ax, ez = c.bz - c.az, L2 = ex*ex + ez*ez; let t = L2 > 1e-9 ? ((x - c.ax)*ex + (z - c.az)*ez)/L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t;
+      const px = c.ax + ex*t, pz = c.az + ez*t, dx = x - px, dz = z - pz; if (dx > m || dx < -m || dz > m || dz < -m) continue;
+      const d = Math.hypot(dx, dz); if (d < m && d > 1e-5){ x = px + dx/d*m; z = pz + dz/d*m; } }
+    else { const dx = x - c.x, dz = z - c.z; if (dx > m || dx < -m || dz > m || dz < -m) continue; const d = Math.hypot(dx, dz); if (d < m && d > 1e-5){ x = c.x + dx/d*m; z = c.z + dz/d*m; } } }
+  return [x, z];
+}
 function collide(nx, nz, ox, oz){
-  for (const c of colliders){ const dx = nx-c.x, dz = nz-c.z, d = Math.hypot(dx,dz), m = c.r + 0.45; if (d < m && d > 1e-4){ nx = c.x + dx/d*m; nz = c.z + dz/d*m; } }
+  /* in kleinen Schritten, damit man auch beim Rennen nicht durch eine Wand springt */
+  { const mx = nx - ox, mz = nz - oz, n = Math.max(1, Math.ceil(Math.hypot(mx, mz)/0.15)); let x = ox, z = oz;
+    for (let i=0;i<n;i++){ const r = pushOut(x + mx/n, z + mz/n, 0.45); x = r[0]; z = r[1]; } nx = x; nz = z; }
   const r = Math.hypot(nx,nz); let edge = false; if (r > 54){ nx *= 54/r; nz *= 54/r; edge = true; }
   let wet = false;
   const deep = (x, z) => onDeck(x, z) === null && Math.abs(x - riverX(z)) < 24 && RIVER_Y - groundH(x, z) > 0.5;
@@ -3543,7 +3806,8 @@ function zoned(fn, R, center){
   };
 }
 buildSowing = zoned(buildSowing, 52); buildHarvest = zoned(buildHarvest); buildQuern = zoned(buildQuern); buildBakery = zoned(buildBakery); buildGranary = zoned(buildGranary, 52);
-buildPen = zoned(buildPen, 52); buildDog = zoned(buildDog); buildMilking = zoned(buildMilking); buildCattle = zoned(buildCattle, 55); buildPigs = zoned(buildPigs, 55);
+buildPen = zoned(buildPen, 52); buildDog = zoned(buildDog); buildMilking = zoned(buildMilking); buildCattle = zoned(buildCattle, 55); buildPigs = zoned(buildPigs, 55, P.schweine);
+buildCheese = zoned(buildCheese); buildMeat = zoned(buildMeat);
 buildConstruction = zoned(buildConstruction, 60); buildRiver = zoned(buildRiver, 58); buildFamily = zoned(buildFamily);
 buildAxeGrinding = zoned(buildAxeGrinding); buildClearing = zoned(buildClearing, 55, P.roden); buildPottery = zoned(buildPottery); buildKiln = zoned(buildKiln); buildWeaving = zoned(buildWeaving); buildCart = zoned(buildCart, 55, P.rad);
 const loadMsg = $('#loadMsg'), loadBar = $('#loadBar');
@@ -3555,8 +3819,8 @@ async function buildWorld(){
     ['Himmel und Sonnenlicht …', [buildSky, buildEnvironment, buildLights], true],
     ['Wiesen, Felder und Fluss entstehen …', [() => makeTerrain(300, HQ ? 240 : 170, 0, 0), () => makeTerrain(1400, 180, -0.15, 144, true), buildWater, buildFields]],
     ['Die Langhäuser werden gebaut …', [buildLonghouses, buildConstruction, buildGranary, buildPen, buildVillageProps]],
-    ['Die Bauern gehen an die Arbeit …', [buildSowing, buildHarvest, buildQuern, buildBakery, buildFamily, buildRiver]],
-    ['Tiere und Handwerker kommen …', [buildDog, buildMilking, buildCattle, buildPigs, buildAxeGrinding, buildClearing, buildPottery, buildKiln, buildWeaving, buildCart]],
+    ['Die Bauern gehen an die Arbeit …', [buildSowing, buildHarvest, buildQuern, buildBakery, buildFamily, buildRiver, buildVillagers]],
+    ['Tiere und Handwerker kommen …', [buildDog, buildMilking, buildCattle, buildPigs, buildCheese, buildMeat, buildAxeGrinding, buildClearing, buildPottery, buildKiln, buildWeaving, buildCart]],
     ['Bäume und Gras wachsen …', [buildVegetation, buildBirds]],
     ['Gleich geht es los …', [drawMinimapBase]]
   ];
