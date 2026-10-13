@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Zeitreise in die Steinzeit</title>
+<title>Zeitreise in die Urgeschichte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap">
@@ -56,61 +56,70 @@ button{font:inherit;color:inherit}
 .reise .btn{pointer-events:auto;margin-top:14px;font-family:var(--font-head);font-weight:600;font-size:1.05rem;border:2px solid var(--charcoal);border-radius:14px;
   padding:.62em 1.15em;background:var(--ochre);color:#2b2118;box-shadow:0 4px 0 var(--charcoal);cursor:pointer}
 
-/* ---------- Zeitstrahl ---------- */
-.zs{position:fixed;z-index:20;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translateX(-50%);
-  background:var(--hud);border:2px solid var(--charcoal);border-radius:12px;box-shadow:0 3px 0 var(--charcoal);padding:7px 10px 8px;
-  transition:opacity .35s ease, transform .35s ease;font-family:var(--font-head)}
+/* ---------- Zeitstrahl: kompakt, ein- und ausblendbar ---------- */
+/* Er sitzt oben in der Lücke zwischen der Fortschrittsanzeige (links) und der Karte (rechts) der Welt */
+.zs{position:fixed;z-index:20;top:calc(env(safe-area-inset-top,0px) + 12px);left:calc(395px + (100vw - 565px)/2);transform:translateX(-50%);
+  display:flex;align-items:center;gap:6px;background:var(--hud);border:2px solid var(--charcoal);border-radius:999px;box-shadow:0 3px 0 var(--charcoal);
+  padding:4px 5px 4px 10px;font-family:var(--font-head);transition:opacity .35s ease, transform .35s ease}
+.zs.atstart{left:50%}
 .zs.away{opacity:0;pointer-events:none;transform:translate(-50%,-10px)}
-.zs-head{font-weight:600;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:5px}
-.zs-track{display:flex;align-items:center;gap:0}
-.zs-era{display:flex;align-items:center;gap:8px;text-align:left;border:2px solid var(--line);border-radius:10px;background:var(--paper);padding:5px 10px;
-  cursor:pointer;line-height:1.15;transition:background .3s, border-color .3s, box-shadow .3s}
-.zs-era:hover{border-color:var(--ochre-2)}
-.zs-era[aria-current="true"]{background:var(--ochre);border-color:var(--charcoal);box-shadow:0 3px 0 var(--charcoal);color:#2b2118}
-.zs-era:focus-visible{outline:3px solid #3c7fd6;outline-offset:3px}
-.zs-ico{font-size:1.5rem}
-.zs-name{display:block;font-weight:600;font-size:1.02rem}
-.zs-date{display:block;font-family:var(--font-body);font-size:.78rem;opacity:.8}
-.zs-found{display:block;font-family:var(--font-body);font-size:.74rem;opacity:.75}
-.zs-line{position:relative;width:110px;height:24px;margin:0 6px;flex:none}
-.zs-line::before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;
-  background:repeating-linear-gradient(90deg,var(--charcoal) 0 10px,transparent 10px 15px)}
-.zs-line::after{content:"Mittelsteinzeit";position:absolute;left:0;right:0;top:100%;margin-top:-4px;text-align:center;font-family:var(--font-body);font-size:.66rem;color:var(--ink-soft);white-space:nowrap}
-.zs-runner{position:absolute;top:50%;left:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--ochre);border:2px solid var(--charcoal);
-  box-shadow:0 0 0 3px rgba(228,164,40,.35);transition:left 1.8s cubic-bezier(.45,0,.2,1)}
-.zs-runner.end{left:100%}
-/* Mittlere Breiten: kompakt neben der Fortschrittsanzeige der Welt; auf der Startkarte kompakt über der Karte */
+.zs-head{font-size:1.05rem;line-height:1}
+.zs-track{display:flex;align-items:center}
+.zs-era{display:flex;align-items:center;gap:5px;border:2px solid transparent;border-radius:999px;background:transparent;padding:3px 9px 3px 6px;
+  cursor:pointer;line-height:1.1;white-space:nowrap;transition:background .3s, border-color .3s, box-shadow .3s}
+.zs-era:hover{border-color:var(--line)}
+.zs-era[aria-current="true"]{background:var(--ochre);border-color:var(--charcoal);color:#2b2118}
+.zs-era:focus-visible,.zs-tog:focus-visible,.zs-open:focus-visible{outline:3px solid #3c7fd6;outline-offset:2px}
+.zs-ico{font-size:1.15rem}
+.zs-name{font-weight:600;font-size:.88rem}
+.zs-date{display:none;font-family:var(--font-body);font-size:.7rem;opacity:.8}
+.zs-found{display:none;font-family:var(--font-body);font-size:.7rem;opacity:.8}
+.zs-line{width:16px;height:3px;flex:none;border-radius:2px;background:var(--charcoal);opacity:.55}
+.zs-line.gap{background:repeating-linear-gradient(90deg,var(--charcoal) 0 4px,transparent 4px 7px)}
+.zs-tog{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--paper-2);cursor:pointer;font-size:.8rem;line-height:1;display:grid;place-items:center;padding:0}
+.zs-tog:hover{border-color:var(--charcoal)}
+/* Eingeklappt: nur noch ein kleiner Knopf */
+.zs-open{position:fixed;z-index:20;top:calc(env(safe-area-inset-top,0px) + 12px);left:calc(395px + (100vw - 565px)/2);transform:translateX(-50%);
+  display:none;align-items:center;gap:6px;font-family:var(--font-head);font-weight:600;font-size:.88rem;background:var(--hud);border:2px solid var(--charcoal);
+  border-radius:999px;box-shadow:0 3px 0 var(--charcoal);padding:5px 12px 5px 9px;cursor:pointer;transition:opacity .35s ease}
+.zs-open .zs-ico{font-size:1.05rem}
+.zs-open.atstart{left:50%}
+.zs-open.away{opacity:0;pointer-events:none}
+body.zs-zu .zs{display:none}
+body.zs-zu .zs-open{display:flex}
+/* Auf der Startkarte: mit Jahreszahlen */
+.zs.atstart .zs-era{flex-direction:row;padding:4px 10px 4px 7px}
+.zs.atstart .zs-txt{display:flex;flex-direction:column;align-items:flex-start}
+.zs.atstart .zs-date{display:block}
+@media (min-width:1340px){ .zs .zs-txt{display:flex;flex-direction:column;align-items:flex-start} .zs .zs-found{display:block} }
+/* Mittlere Breite: nur die aktuelle Zeit mit Namen, die anderen als Symbol */
 @media (max-width:1339px){
-  .zs:not(.atstart){left:400px;transform:none}
-  .zs:not(.atstart).away{transform:translateY(-10px)}
-  .zs{padding:6px 8px}
-  .zs-head,.zs-date,.zs-found{display:none}
-  .zs-era{padding:4px 9px;gap:6px}
-  .zs-ico{font-size:1.25rem}
-  .zs-name{font-size:.95rem}
-  .zs-line{width:64px}
-  .zs-line::after{display:none}
+  .zs:not(.atstart) .zs-era:not([aria-current="true"]) .zs-txt{display:none}
+  .zs:not(.atstart) .zs-era:not([aria-current="true"]){padding:3px 6px}
 }
+@media (max-width:1100px){ .zs.atstart .zs-date{display:none} }
 /* Schmale Bildschirme: im Spiel senkrecht rechts unter der Karte der Welt */
 @media (max-width:979px){
-  .zs:not(.atstart){left:auto;right:12px;top:calc(env(safe-area-inset-top,0px) + 176px);padding:6px}
-  .zs:not(.atstart) .zs-track{flex-direction:column;align-items:stretch}
-  .zs-era{padding:4px 8px}
-  .zs-ico{font-size:1.2rem}
-  .zs-name{font-size:.9rem}
-  .zs:not(.atstart) .zs-line{width:24px;height:30px;margin:2px auto}
-  .zs:not(.atstart) .zs-line::before{left:50%;right:auto;top:0;bottom:0;width:4px;height:auto;margin:0 0 0 -2px;background:repeating-linear-gradient(180deg,var(--charcoal) 0 6px,transparent 6px 10px)}
-  .zs:not(.atstart) .zs-runner{left:50%;top:0;transition:top 1.8s cubic-bezier(.45,0,.2,1)}
-  .zs:not(.atstart) .zs-runner.end{left:50%;top:100%}
-  .zs.atstart .zs-line{width:40px}
+  .zs:not(.atstart){left:auto;right:12px;transform:none;top:calc(env(safe-area-inset-top,0px) + 176px);flex-direction:column;border-radius:22px;padding:6px 4px}
+  .zs:not(.atstart).away{transform:translateY(-10px)}
+  .zs:not(.atstart) .zs-track{flex-direction:column}
+  .zs:not(.atstart) .zs-line{width:3px;height:10px}
+  .zs:not(.atstart) .zs-line.gap{background:repeating-linear-gradient(180deg,var(--charcoal) 0 3px,transparent 3px 6px)}
+  .zs:not(.atstart) .zs-era .zs-txt{display:none}
+  .zs:not(.atstart) .zs-era{padding:4px}
+  .zs-open:not(.atstart){left:auto;right:12px;transform:none;top:calc(env(safe-area-inset-top,0px) + 176px)}
+  .zs-open:not(.atstart) .zs-lbl{display:none}
+  .zs.atstart .zs-era:not([aria-current="true"]) .zs-txt{display:none}
 }
-@media (max-width:640px){ .zs:not(.atstart){top:calc(env(safe-area-inset-top,0px) + 128px)} }
+@media (max-width:640px){
+  .zs:not(.atstart),.zs-open:not(.atstart){top:calc(env(safe-area-inset-top,0px) + 128px)}
+  .zs.atstart{max-width:calc(100vw - 16px)}
+}
 @media (prefers-reduced-motion: reduce){
   .world.go{transition:opacity .5s ease}
   .world.leaving,.world.pre{filter:none;transform:none}
   .streaks{display:none}
   .reise-title{transition:opacity .3s}
-  .zs-runner{transition:none}
 }
 </style>
 </head>
@@ -129,9 +138,11 @@ button{font:inherit;color:inherit}
 </div>
 
 <nav class="zs" id="zs" aria-label="Zeitstrahl">
-  <div class="zs-head">⏳ Zeitstrahl</div>
+  <span class="zs-head" aria-hidden="true" title="Zeitstrahl">⏳</span>
   <div class="zs-track" id="zsTrack"></div>
+  <button class="zs-tog" id="zsTog" aria-label="Zeitstrahl ausblenden" aria-expanded="true" aria-controls="zsTrack" title="Zeitstrahl ausblenden">▲</button>
 </nav>
+<button class="zs-open" id="zsOpen" aria-label="Zeitstrahl einblenden" title="Zeitstrahl einblenden"><span class="zs-ico" aria-hidden="true">⏳</span><span class="zs-lbl">Zeitstrahl</span></button>
 
 <script>
 (function(){
@@ -139,29 +150,41 @@ button{font:inherit;color:inherit}
 /* Jede Epoche ist eine eigene, vollständig getrennte Seite. Diese Startseite zeigt sie an und blendet zwischen ihnen über. */
 var ERAS = [
   { id:'altsteinzeit', file:'altsteinzeit.html', name:'Altsteinzeit', icon:'🦣', date:'bis ca. 10 000 v. Chr.', year:15000, sub:'Im Lager der Jäger und Sammler' },
-  { id:'jungsteinzeit', file:'jungsteinzeit.html', name:'Jungsteinzeit', icon:'🌾', date:'ca. 5500 – 2200 v. Chr.', year:4000, sub:'Im Dorf der ersten Bauern' }
+  { id:'jungsteinzeit', file:'jungsteinzeit.html', name:'Jungsteinzeit', icon:'🌾', date:'ca. 5500 – 2200 v. Chr.', year:4000, sub:'Im Dorf der ersten Bauern' },
+  { id:'bronzezeit', file:'bronzezeit.html', name:'Bronzezeit', icon:'🥉', date:'ca. 2200 – 800 v. Chr.', year:1500, sub:'Im Dorf der Bronzegiesser' },
+  { id:'eisenzeit', file:'eisenzeit.html', name:'Eisenzeit', icon:'⚒️', date:'ca. 800 – 15 v. Chr.', year:400, sub:'Bei den Kelten' }
 ];
 var BY = {}; ERAS.forEach(function(e, i){ e.index = i; BY[e.id] = e; });
 var touch = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || false;
 var LOW = touch || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 var $ = function(s){ return document.querySelector(s); };
-var worlds = $('#worlds'), zs = $('#zs'), reise = $('#reise');
+var worlds = $('#worlds'), zs = $('#zs'), zsOpen = $('#zsOpen'), reise = $('#reise');
 var frames = {}, state = {}, cur = null, busy = false;
 
 /* ---------- Zeitstrahl aufbauen ---------- */
 var track = $('#zsTrack');
 ERAS.forEach(function(e, i){
-  if (i > 0){ var line = document.createElement('div'); line.className = 'zs-line'; if (i === 1){ var run = document.createElement('i'); run.className = 'zs-runner'; run.id = 'zsRunner'; line.appendChild(run); } track.appendChild(line); }
-  var b = document.createElement('button'); b.className = 'zs-era'; b.dataset.era = e.id; b.setAttribute('aria-current', 'false');
-  b.innerHTML = '<span class="zs-ico" aria-hidden="true">' + e.icon + '</span><span><span class="zs-name">' + e.name + '</span><span class="zs-date">' + e.date + '</span><span class="zs-found" id="found-' + e.id + '"></span></span>';
+  if (i > 0){ var line = document.createElement('div'); line.className = 'zs-line' + (i === 1 ? ' gap' : ''); line.setAttribute('aria-hidden', 'true'); if (i === 1) line.title = 'Mittelsteinzeit'; track.appendChild(line); }
+  var b = document.createElement('button'); b.className = 'zs-era'; b.dataset.era = e.id; b.setAttribute('aria-current', 'false'); b.title = e.name + ' (' + e.date + ')';
+  b.innerHTML = '<span class="zs-ico" aria-hidden="true">' + e.icon + '</span><span class="zs-txt"><span class="zs-name">' + e.name + '</span><span class="zs-date">' + e.date + '</span><span class="zs-found" id="found-' + e.id + '"></span></span>';
   b.addEventListener('click', function(){ travel(e.id); });
   track.appendChild(b);
 });
 function markEra(id){
   [].forEach.call(document.querySelectorAll('.zs-era'), function(b){ b.setAttribute('aria-current', b.dataset.era === id ? 'true' : 'false'); });
-  $('#zsRunner').classList.toggle('end', BY[id].index > 0);
 }
+/* Ein- und ausblenden; die Wahl bleibt gespeichert */
+var ZKEY = 'zeitstrahl-eingeklappt';
+function setClosed(c, focus){
+  document.body.classList.toggle('zs-zu', c);
+  $('#zsTog').setAttribute('aria-expanded', c ? 'false' : 'true');
+  try { localStorage.setItem(ZKEY, c ? '1' : '0'); } catch(e){}
+  if (focus) try { (c ? zsOpen : $('#zsTog')).focus(); } catch(e){}
+}
+$('#zsTog').addEventListener('click', function(){ setClosed(true, true); });
+zsOpen.addEventListener('click', function(){ setClosed(false, true); });
+try { if (localStorage.getItem(ZKEY) === '1') setClosed(true); } catch(e){}
 
 /* ---------- Welten laden ---------- */
 function makeFrame(id){
@@ -183,11 +206,13 @@ window.addEventListener('message', function(ev){
 });
 function setFound(id, n, total){ var el = document.getElementById('found-' + id); if (el && total) el.textContent = n + ' / ' + total + ' entdeckt'; }
 /* Während eine Infokarte, das Quiz oder das Forscherheft offen ist, tritt der Zeitstrahl zurück */
-function updateZs(){ var m = cur && state[cur].modal; zs.classList.toggle('away', busy || (!!m && m !== 'start')); zs.classList.toggle('atstart', m === 'start'); }
+function updateZs(){ var m = cur && state[cur].modal, away = busy || (!!m && m !== 'start');
+  zs.classList.toggle('away', away); zsOpen.classList.toggle('away', away);
+  zs.classList.toggle('atstart', m === 'start'); zsOpen.classList.toggle('atstart', m === 'start'); }
 
 /* ---------- Zeitreise-Bildschirm ---------- */
 (function(){ var s = $('#streaks'); for (var i=0;i<22;i++){ var e = document.createElement('i'); e.style.top = (4 + Math.random()*92) + '%'; e.style.width = (18 + Math.random()*30) + 'vw'; e.style.animationDelay = (-Math.random()*1.1) + 's'; e.style.animationDuration = (0.7 + Math.random()*0.8) + 's'; s.appendChild(e); } })();
-function fmtYear(y){ return Math.round(y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' v. Chr.'; }
+function fmtYear(y){ y = Math.round(y); return (y >= 10000 ? y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : y.toString()) + ' v. Chr.'; }
 var yearRaf = 0;
 function runYear(from, to, ms){
   cancelAnimationFrame(yearRaf); var t0 = performance.now(), el = $('#reiseYear');
