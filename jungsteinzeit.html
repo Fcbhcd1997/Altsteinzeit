@@ -58,8 +58,8 @@ button{font:inherit;color:inherit}
   padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);
   background:var(--veil)}
 .card{position:relative;width:min(580px,100%);max-height:100%;overflow:auto;background:var(--paper);color:var(--ink);
-  border-radius:6px;box-shadow:var(--shadow);padding:30px 30px 26px;animation:pop .22s ease-out;-webkit-user-select:text;user-select:text}
-.card::before{content:"";position:absolute;inset:9px;border:2px dashed var(--line);border-radius:3px;pointer-events:none}
+  border-radius:6px;box-shadow:var(--shadow);padding:30px 30px 26px;animation:pop .22s ease-out;-webkit-user-select:text;user-select:text;
+  outline:2px dashed var(--line);outline-offset:-11px}
 @keyframes pop{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion: reduce){.card{animation:none}.btn{transition:none}}
 .x{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:2px solid var(--line);
@@ -94,9 +94,9 @@ kbd{font-family:var(--font-head);font-weight:600;min-width:2em;text-align:center
 .new-badge{display:inline-block;margin-top:14px;font-family:var(--font-head);font-weight:600;color:#2b2118;background:var(--ochre);
   padding:.25em .8em;border-radius:6px;border:2px solid var(--charcoal);transform:rotate(-2deg)}
 .info-text{font-size:1.16rem;line-height:1.65;margin-top:14px}
-.info-photo{margin:14px 0 2px;border-radius:6px;overflow:hidden;border:2px solid var(--line);background:#1d1611;position:relative}
-.info-photo img{display:block;width:100%;height:auto;aspect-ratio:14/9;object-fit:cover}
-.info-photo span{position:absolute;left:8px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:.8rem;padding:.15em .55em;border-radius:4px}
+.info-art{margin:14px auto 2px;border-radius:8px;overflow:hidden;border:2px solid var(--line);background:#fbf6ea;display:flex;justify-content:center;align-items:center;height:clamp(150px,30vh,210px)}
+.info-art img,.info-art svg{display:block;max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain}
+.info-art img{padding:8px}
 #gameCanvas{width:100%;height:auto;display:block;border-radius:6px;background:#d8d2b8;touch-action:none;cursor:ew-resize;margin-top:10px}
 .heat{height:16px;border-radius:8px;background:var(--paper-2);border:1px solid var(--line);overflow:hidden;margin:12px 0 6px}
 .heat i{display:block;height:100%;width:0;background:linear-gradient(90deg,#efe3c0,#d1a84a)}
@@ -242,7 +242,7 @@ body.touch .hud-bottom{padding-left:160px}
       <div class="info-icon" id="infoIcon"></div>
       <div><span class="chip" id="infoCat"></span><h2 id="infoTitle"></h2></div>
     </div>
-    <div class="info-photo hidden" id="infoPhoto"><img id="infoImg" alt=""><span>Nahaufnahme aus dem Dorf</span></div>
+    <div class="info-art hidden" id="infoArt" role="img"></div>
     <div class="new-badge hidden" id="infoNew">⭐ Neu entdeckt!</div>
     <div class="info-text" id="infoText"></div>
     <div class="fact"><div class="fact-h">💡 Wusstest du?</div><div id="infoFact"></div></div>
@@ -473,6 +473,41 @@ const STATIONS = [
   hint:"Ein Wagen mit Rindern davor." }
 ];
 const BY_ID = Object.fromEntries(STATIONS.map(s => [s.id, s]));
+/* Bilder für die Infokarten: Ausschnitte aus den Arbeitsblättern oder gezeichnete Cliparts */
+const CLIPART = {
+  saat: 'bilder/jung-saat.webp',
+  ernte: () => caArt('day', Array.from({ length:14 }, (_, i) => caWheat(170 + (i % 7)*20 + (i > 6 ? 10 : 0), 168 + (i > 6 ? 10 : 0), 1.1)).join('') +
+    caWho(110, 180, 1, { tunic:'#c8b890', hair:CA.hair[1], beard:true, arms:[110, 40], bend:[-20, 20], hold:[{ svg:caItem.sickle(CA.stone), rot:30 }] }) +
+    caT(50, 182, 1, caP('M-10 0L-4 -40L4 -40L10 0Z', CA.wheat) + caL(-8, -14, 8, -14, '#a08030', 3))),
+  mahlen: () => caArt('inside', caQuern(180, 182, 1.6) + caWho(120, 184, 1.05, { kneel:true, long:true, hair:CA.hair[2], tunic:'#c8b890', arms:[100, 90], bend:[-10, -10] }) + caT(260, 186, 1, caItem.basket()) + caT(70, 186, 1, caItem.bowl('#d8c8a0'))),
+  brot: () => caArt('inside', caT(160, 178, 1.2, caP('M-60 0Q-62 -60 0 -64Q62 -60 60 0Z', '#b89a72') + caP('M-26 0Q-26 -28 0 -28Q26 -28 26 0Z', '#3a2418') + '<circle cx="0" cy="-12" r="14" fill="url(#caGlow)"/>' + caE(0, -6, 14, 4, '#c88a4a')) +
+    caBread(70, 186, 1.1) + caBread(250, 186, 1) + caT(272, 168, 0.7, caBread(0, 0, 1))),
+  vorrat: () => caArt('inside', caBigPot(90, 186, 1.6, CA.clay2) + caBigPot(160, 186, 1.3, CA.clay) + caPot(222, 186, 1.2, CA.clay, true) + caT(272, 186, 1.3, caItem.basket()) + caT(272, 168, 1, '<circle cx="-6" cy="-6" r="3" fill="#e8c060"/><circle cx="2" cy="-8" r="3" fill="#e8c060"/><circle cx="8" cy="-5" r="3" fill="#e8c060"/>')),
+  hund: () => caArt('day', caT(90, 174, 1.1, caDog('#8a8a8a')) + '<text x="132" y="120" font-size="34" fill="#3b2a1c">→</text>' + caT(220, 176, 1, caDog('#a8784a')) + caWho(270, 178, 0.75, { kid:true, hair:CA.hair[3], tunic:'#c8b890', arms:[60, 20] }, true)),
+  schafe: 'bilder/jung-schafe.webp',
+  melken: 'bilder/jung-melken.webp',
+  kaese: () => caArt('inside', caT(160, 186, 1, caR(-80, -40, 160, 8, 2, CA.wood) + caL(-70, -32, -70, 0, CA.wood2, 4) + caL(70, -32, 70, 0, CA.wood2, 4)) + caCheese(110, 146, 1.2) + caCheese(196, 146, 0.9) +
+    caT(240, 146, 1, caItem.bowl('#f4f0e0')) + caT(150, 120, 0.8, caCheese(0, 0, 1))),
+  rinder: () => caArt('day', caT(100, 172, 1.05, caCow('#3a2a20', 'long')) + '<text x="160" y="124" font-size="34" fill="#3b2a1c">→</text>' + caT(240, 174, 0.95, caCow('#9a6a3a', 'short', true))),
+  schweine: () => caArt('day', caFence(20, 182, 280, 34) + caT(110, 176, 1.1, caPig()) + caT(200, 180, 0.8, caPig('#f0b8b0')) + caT(250, 174, 0.65, caPig()) + caE(160, 186, 30, 5, '#7a5a3a', 'stroke="none"')),
+  fleisch: () => caArt('day', caFire(160, 176, 1.2) + caT(160, 176, 1, caL(-40, 0, -36, -50, CA.wood2, 3) + caL(40, 0, 36, -50, CA.wood2, 3) + caL(-46, -46, 46, -46, CA.wood2, 3) + caE(0, -46, 22, 11, '#a0502a')) +
+    caWho(240, 180, 1, { tunic:'#c8b890', hair:CA.hair[0], beard:true, arms:[90, 20], bend:[10, 0] }, true)),
+  langhaus: 'bilder/jung-langhaus.webp',
+  hausbau: () => caArt('day', caT(160, 176, 1, [-60, -30, 0, 30, 60].map(x => caL(x, 0, x, -60, CA.wood2, 5)).join('') + caL(-66, -60, 66, -60, CA.wood, 5) + caL(-66, -60, 0, -100, CA.wood, 4) + caL(66, -60, 0, -100, CA.wood, 4) +
+      Array.from({ length:5 }, (_, i) => caL(-60, -10 - i*9, -30, -10 - i*9, '#c8a060', 3)).join('')) +
+    caWho(260, 180, 1, { tunic:'#c8b890', hair:CA.hair[1], beard:true, arms:[170, -170], bend:[0, 0], hold:[{ svg:caLimb('M-30 0H30', CA.wood, 6), rot:0 }] }, true)),
+  fluss: () => caArt('river', caLonghouse(110, 150, 0.6) + caLonghouse(230, 146, 0.5) + caCanoe(170, 176, 0.8) + caTree(40, 150, 0.6) + caTree(296, 148, 0.5)),
+  familie: () => caArt('day', caLonghouse(160, 146, 0.75) + caWho(70, 184, 1, { tunic:'#c8b890', hair:CA.hair[1], beard:true, arms:[20, -20] }) + caWho(115, 184, 0.95, { long:true, hair:CA.hair[2], tunic:'#b08a5a', dress:true, arms:[20, -20] }) +
+    caWho(170, 186, 0.7, { kid:true, hair:CA.hair[3], tunic:'#c8b890', arms:[40, -40] }) + caWho(215, 186, 0.62, { kid:true, long:true, hair:CA.hair[2], tunic:'#b08a5a', arms:[20, -60] }) + caWho(255, 186, 0.52, { kid:true, hair:CA.hair[1], tunic:'#c8b890', arms:[60, -20] })),
+  beil: () => caArt('plain', caT(110, 150, 2.2, caItem.axe(), -20) + caT(230, 150, 1.4, caP('M-50 0Q-52 -20 -30 -24H40Q54 -20 50 0Z', CA.stone2) + caT(-4, -26, 1.2, caP('M-12 0Q-8 -10 12 -8Q20 -4 12 2Z', '#6a8a7a')) + '<path d="M-30 -14h50" stroke="#c8e0f0" stroke-width="3"/>')),
+  roden: () => caArt('day', caTree(220, 172, 1.2) + caT(130, 174, 1, caR(-14, -16, 28, 16, 3, CA.wood2) + caE(0, -16, 14, 4, '#c8a070')) +
+    caWho(170, 180, 1, { tunic:'#c8b890', hair:CA.hair[0], beard:true, arms:[170, 150], bend:[-10, 10], hold:[{ svg:caItem.axe(), rot:-30 }] }, true) + caT(70, 178, 1, caR(-12, -14, 24, 14, 3, CA.wood2) + caE(0, -14, 12, 4, '#c8a070'))),
+  toepfern: 'bilder/jung-toepfern.webp',
+  brennen: () => caArt('day', caT(160, 178, 1.3, '<circle cx="0" cy="-30" r="50" fill="url(#caGlow)"/>' + caP('M-50 0Q-50 -70 0 -72Q50 -70 50 0Z', '#a87a52') + caP('M-18 0Q-18 -24 0 -24Q18 -24 18 0Z', '#3a1a10') +
+      caP('M-10 -2Q-12 -14 0 -20Q12 -14 10 -2Z', '#f8a01a') + caP('M0 -72Q-6 -86 4 -96', 'none', 'stroke-width="6" stroke="#b8b0a8"')) + caPot(66, 184, 1, CA.clay) + caPot(256, 184, 0.9, CA.clay2, true) + caPot(286, 184, 0.7, CA.clay)),
+  weben: () => caArt('inside', caLoom(130, 186, 1.5) + caWho(220, 186, 1, { long:true, hair:CA.hair[3], tunic:'#b08a5a', dress:true, arms:[110, 60], bend:[-20, 20], hold:[null, { svg:caE(0, -2, 6, 4, '#e8dcc0') + caL(0, 0, 0, 30, CA.wood2, 2) }] }, true)),
+  rad: 'bilder/jung-rad.webp'
+};
 
 const QUIZ = [
  { q:"Was haben die ersten Bauern herausgefunden?", a:["Dass man gesammelte Samen wieder aussäen kann","Dass man Metall schmelzen kann","Dass man auf Pferden reiten kann","Dass man Höhlen bemalen kann"], why:"Aus den ausgesäten Samen wuchs neues Getreide. So wurde der Ackerbau erfunden." },
@@ -1637,9 +1672,19 @@ function makeAnimal(kind, seed, o){
   return g;
 }
 /* Haltung: walk 0..1 (gehen), run 0..1 (rennen), graze true/false oder undefined (von selbst), sit, lie 0..1 */
+/* Gangphase aus der zurückgelegten Strecke (die Hufe rutschen nicht), sonst aus der Zeit; am Hang neigt sich der Körper */
+const _apV = new THREE.Vector3(), _apF = new THREE.Vector3(), _apQ = new THREE.Quaternion(), _apS = new THREE.Vector3();
 function animalPose(rig, t, o){
   o = o || {}; const walk = o.walk || 0, run = o.run || 0, sp = rig.sp;
-  const amp = (0.36 + 0.34*run)*Math.max(walk, run), off = [0, Math.PI, Math.PI*0.5, Math.PI*1.5], g = o.gait !== undefined ? o.gait : t*(4.2 + 6*run);
+  const amp = (0.36 + 0.34*run)*Math.max(walk, run), off = [0, Math.PI, Math.PI*0.5, Math.PI*1.5], g0 = o.gait !== undefined ? o.gait : t*(4.2 + 6*run);
+  const par = rig.root.parent; par.updateWorldMatrix(true, false); _apV.setFromMatrixPosition(par.matrixWorld); _apS.setFromMatrixScale(par.matrixWorld); const scl = _apS.x || 1;
+  if (rig._d){ const d = Math.hypot(_apV.x - rig._d.x, _apV.z - rig._d.z), dg = g0 - rig._d.g; rig._d.w += d > 0.002 && d < 0.8 ? d/(sp.legY*Math.max(amp*(run > 0.5 ? 1.5 : 1), 0.18)*scl) : Math.abs(dg) < 3 ? dg : 0; }
+  else rig._d = { w:g0 };
+  rig._d.x = _apV.x; rig._d.z = _apV.z; rig._d.g = g0; const g = rig._d.w;
+  let pitch = 0;
+  if (typeof groundH === 'function'){ par.getWorldQuaternion(_apQ); _apF.set(0, 0, 1).applyQuaternion(_apQ); _apF.y = 0; _apF.normalize(); const lz = Math.max(0.12, (sp.legZ[0] - sp.legZ[1])*0.5*scl);
+    const hf = groundH(_apV.x + _apF.x*lz, _apV.z + _apF.z*lz), hb = groundH(_apV.x - _apF.x*lz, _apV.z - _apF.z*lz); if (Math.abs(_apV.y - (hf + hb)/2) < 0.35) pitch = Math.atan2(hf - hb, 2*lz); }
+  rig._pitch = (rig._pitch || 0) + (pitch - (rig._pitch || 0))*0.25;
   const lie = rig.lie += ((o.lie || 0) - rig.lie)*0.05, sit = rig.sit += ((o.sit || 0) - rig.sit)*0.06;
   rig.legs.forEach((l, i) => { const ph = g + off[i] + rig.ph*0; const front = i < 2;
     let a = Math.sin(ph)*amp, b = Math.max(0, -Math.cos(ph))*amp*1.25;
@@ -1648,7 +1693,7 @@ function animalPose(rig, t, o){
     if (sit > 0 && front){ a = a*(1 - sit) + 0.42*sit; }
     l.leg.rotation.x = a; l.low.rotation.x = b; });
   rig.root.position.y = (run > 0 ? Math.abs(Math.sin(g))*0.05*run : 0) - lie*(sp.cy - sp.hb - 0.03) - sit*sp.legY*0.27;
-  rig.root.rotation.x = -sit*0.5;
+  rig.root.rotation.x = -sit*0.5 - rig._pitch;
   let gzT;
   if (o.graze !== undefined) gzT = o.graze ? 1 : 0;
   else gzT = walk < 0.3 && run < 0.1 && lie < 0.5 && sit < 0.5 && Math.sin(t*0.3 + rig.ph*3) > -0.35 ? 1 : 0;
@@ -1747,12 +1792,36 @@ function armIK(p, i, tx, ty, tz){
   arm.sh.quaternion.copy(_ikQ);
 }
 function ikWorld(p, i, w){ p.spine.updateWorldMatrix(true, false); _ikW.copy(w); p.spine.worldToLocal(_ikW); armIK(p, i, _ikW.x, _ikW.y, _ikW.z); }
+/* Natürlicher Gang: Standphase (Fuss steht fest am Boden) und Schwungphase (Knie gebeugt, Fuss wird nach vorne geholt).
+   Bewegt sich die Figur wirklich, richtet sich der Schritt nach der zurückgelegten Strecke, damit die Füsse nicht rutschen.
+   Auf unebenem Gelände setzt jeder Fuss auf dem Boden auf (Beine werden mit IK angepasst), die Hüfte senkt sich, wenn die Beine gespreizt sind. */
+const _wpV = new THREE.Vector3(), _wpF = new THREE.Vector3(), _wpR = new THREE.Vector3(), _wpQ = new THREE.Quaternion(), _wpL = [{}, {}];
+const LEG_L1 = 0.42, LEG_L2 = 0.445, LEG_R = LEG_L1 + LEG_L2 - 0.004;
 function walkPose(p, t, rate, amp, arms){
-  const w = t*rate, s = Math.sin(w);
-  p.legs[0].hip.rotation.x = s*amp; p.legs[1].hip.rotation.x = -s*amp;
-  p.legs[0].knee.rotation.x = Math.max(0, -Math.cos(w))*amp*1.3; p.legs[1].knee.rotation.x = Math.max(0, Math.cos(w))*amp*1.3;
-  if (arms){ p.arms[0].sh.rotation.set(-s*amp*0.8, 0, -0.08); p.arms[1].sh.rotation.set(s*amp*0.8, 0, 0.08); p.arms[0].el.rotation.x = -0.25; p.arms[1].el.rotation.x = -0.25; }
-  p.hips.position.y = 0.88 - Math.abs(Math.cos(w))*0.025;
+  const g0 = t*rate, A = Math.max(0, amp), sc = p.root.scale.x || 1;
+  p.root.updateWorldMatrix(true, false); _wpV.setFromMatrixPosition(p.root.matrixWorld);
+  const stride = Math.max(0.35, 2*LEG_R*Math.sin(Math.max(A, 0.1))/0.6)*sc;
+  if (p._wp){ const d = Math.hypot(_wpV.x - p._wp.x, _wpV.z - p._wp.z), dg = g0 - p._wp.g; p._wp.w += d > 0.002 && d < 0.6 ? d/stride*TAU : Math.abs(dg) < 3 ? dg : 0; }
+  else p._wp = { w:g0 };
+  p._wp.x = _wpV.x; p._wp.z = _wpV.z; p._wp.g = g0; const w = p._wp.w;
+  // Gelände unter den Füssen (nur wenn die Figur auf dem Boden steht)
+  let onG = false, gy0 = 0;
+  if (typeof groundH === 'function'){ gy0 = groundH(_wpV.x, _wpV.z); onG = Math.abs(_wpV.y - gy0) < 0.25*sc;
+    if (onG){ p.root.getWorldQuaternion(_wpQ); _wpF.set(0, 0, 1).applyQuaternion(_wpQ); _wpF.y = 0; _wpF.normalize(); _wpR.set(_wpF.z, 0, -_wpF.x); } }
+  let hy = 0.88;
+  for (let i=0;i<2;i++){ const L = _wpL[i], u = ((w/TAU + (i ? 0.5 : 0)) % 1 + 1) % 1;
+    if (u < 0.6){ const s = u/0.6; L.th = -A + 2*A*s; L.kn = 0.25*A*Math.sin(Math.PI*s); L.st = true; }
+    else { const s = (u - 0.6)/0.4; L.th = A - 2*A*(0.5 - 0.5*Math.cos(Math.PI*s)); L.kn = 2.4*A*Math.sin(Math.PI*s); L.st = false; }
+    L.fy = -LEG_L1*Math.cos(L.th) - LEG_L2*Math.cos(L.th + L.kn); L.fz = -LEG_L1*Math.sin(L.th) - LEG_L2*Math.sin(L.th + L.kn);
+    L.h = 0; if (onG){ const sd = i ? 0.095 : -0.095; L.h = Math.max(-0.3, Math.min(0.3, (groundH(_wpV.x + (_wpF.x*L.fz + _wpR.x*sd)*sc, _wpV.z + (_wpF.z*L.fz + _wpR.z*sd)*sc) - gy0)/sc)); }
+    if (L.st) hy = Math.min(hy, L.h + 0.015 + Math.sqrt(Math.max(0, LEG_R*LEG_R - L.fz*L.fz))); }
+  hy = Math.max(0.55, hy);
+  for (let i=0;i<2;i++){ const L = _wpL[i], leg = p.legs[i];
+    const ty = L.st ? L.h + 0.015 - hy : 0.88 + L.fy + L.h - hy, fz = L.fz, D = Math.min(LEG_R, Math.hypot(ty, fz));
+    const kn = Math.acos(Math.max(-1, Math.min(1, (D*D - LEG_L1*LEG_L1 - LEG_L2*LEG_L2)/(2*LEG_L1*LEG_L2))));
+    leg.hip.rotation.x = Math.atan2(-fz, -ty) - Math.atan2(LEG_L2*Math.sin(kn), LEG_L1 + LEG_L2*Math.cos(kn)); leg.knee.rotation.x = kn; }
+  if (arms){ p.arms[0].sh.rotation.set(-_wpL[0].th*0.85, 0, -0.08); p.arms[1].sh.rotation.set(-_wpL[1].th*0.85, 0, 0.08); p.arms[0].el.rotation.x = -0.22 - Math.max(0, -_wpL[1].th)*0.4; p.arms[1].el.rotation.x = -0.22 - Math.max(0, -_wpL[0].th)*0.4; }
+  p.hips.position.y = hy;
 }
 function standPose(p){ for (const l of p.legs){ l.hip.rotation.x = 0; l.knee.rotation.x = 0; } p.hips.position.y = 0.88; }
 function poseKneelLow(p, hy){ p.hips.position.y = hy; for (const l of p.legs){ l.hip.rotation.x = -0.95; l.knee.rotation.x = 2.35; } if (p.skirt){ p.skirt.rotation.x = -0.9; p.skirt.scale.set(1, 0.7, 1); } }
@@ -3406,12 +3475,213 @@ function speak(text){
 }
 
 /* ===================== UI ===================== */
+/* ===================== CLIPARTS FÜR DIE INFOKARTEN ===================== */
+/* Kleine gezeichnete Bilder (SVG) im Stil eines Arbeitsblatts: dunkle Umrisse, flächige Farben. Koordinaten 320 × 200, y nach unten. */
+const CA = {
+  ol:'#3b2a1c', skin:['#f0c39a', '#d49a6c', '#b07a54'], hair:['#3a2616', '#7a4a22', '#c86a2a', '#e8c878', '#a8a29a', '#f2f0ea'],
+  fur:'#8a5a32', fur2:'#c09060', wood:'#9a6a3a', wood2:'#6e4825', stone:'#a8a29a', stone2:'#7e786e', bronze:'#d09040', iron:'#8a8c92', gold:'#f0c040',
+  clay:'#c8804a', clay2:'#9a5a32', grass:'#8ab84a', grass2:'#6a9a3a', water:'#5aa8d0', wheat:'#e8c060', red:'#c8402a', blue:'#3a6aa8', green:'#4a8a4a'
+};
+const caO = 'class="cao"';
+/* Zusätzliche Angaben: stroke="none" muss gegen die Umriss-Klasse ankommen, darum als style */
+function caX(x){ return x ? ' ' + x.replace('stroke="none"', 'style="stroke:none"') : ''; }
+/* Dicke farbige Linie mit dunklem Rand (Arme, Beine, Hörner, Stiele) */
+function caLimb(d, c, w){ return '<path d="' + d + '" stroke="' + CA.ol + '" stroke-width="' + (w + 3.4) + '" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="' + d + '" stroke="' + c + '" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'; }
+function caP(d, f, x){
+  if (x && (f === 'none' || !f)){ const w = /stroke-width="([0-9.]+)"/.exec(x), c = /stroke="([^"]+)"/.exec(x);
+    if (w && +w[1] > 2.6) return caLimb(d, c ? c[1] : CA.ol, +w[1]);
+    if (w || c) return '<path d="' + d + '" fill="none" stroke="' + (c ? c[1] : CA.ol) + '" stroke-width="' + (w ? w[1] : 2.4) + '" stroke-linecap="round" stroke-linejoin="round"/>'; }
+  return '<path d="' + d + '" fill="' + (f || 'none') + '" ' + caO + caX(x) + '/>'; }
+function caE(cx, cy, rx, ry, f, x){ return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="' + f + '" ' + caO + caX(x) + '/>'; }
+function caC(cx, cy, r, f, x){ if (x && /stroke-width/.test(x) && f === 'none'){ const w = /stroke-width="([0-9.]+)"/.exec(x), c = /stroke="([^"]+)"/.exec(x); return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + (c ? c[1] : CA.ol) + '" stroke-width="' + w[1] + '"/>'; } return caE(cx, cy, r, r, f, x); }
+function caR(x, y, w, h, r, f, xx){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '" fill="' + f + '" ' + caO + caX(xx) + '/>'; }
+function caL(x1, y1, x2, y2, c, w){ return '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + '" stroke="' + (c || CA.ol) + '" stroke-width="' + (w || 2.4) + '" stroke-linecap="round" fill="none"/>'; }
+function caT(x, y, s, inner, rot, flip){ return '<g transform="translate(' + x + ' ' + y + ')' + (rot ? ' rotate(' + rot + ')' : '') + ' scale(' + (flip ? -s : s) + ' ' + s + ')">' + inner + '</g>'; }
+function caShadow(x, y, rx){ return '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + (rx*0.18) + '" fill="#000" opacity=".13"/>'; }
+/* Hintergründe */
+function caBg(kind){
+  const defs = '<defs><linearGradient id="caSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe2f4"/><stop offset="1" stop-color="#f6f0dc"/></linearGradient>' +
+    '<linearGradient id="caNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2440"/><stop offset="1" stop-color="#3a4a70"/></linearGradient>' +
+    '<radialGradient id="caGlow"><stop offset="0" stop-color="#ffd27a" stop-opacity=".8"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="caCave" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a382a"/><stop offset="1" stop-color="#6e5640"/></linearGradient></defs>' +
+    '<style>.cao{stroke:' + CA.ol + ';stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}</style>';
+  if (kind === 'cave') return defs + '<rect width="320" height="200" fill="url(#caCave)"/>' + caP('M0 0H320V200H0Z', 'none') +
+    '<path d="M0 60Q40 20 90 30T200 18T320 50V0H0Z" fill="#2e2219"/><path d="M0 172Q80 160 160 168T320 164V200H0Z" fill="#8a7458"/>';
+  if (kind === 'night') return defs + '<rect width="320" height="200" fill="url(#caNight)"/>' + [[30, 30], [80, 18], [140, 40], [210, 22], [280, 36], [250, 60], [110, 66], [300, 80]].map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="1.8" fill="#fff6c8"/>').join('') +
+    '<path d="M0 160Q90 140 180 155T320 150V200H0Z" fill="#2e4a2a"/>';
+  if (kind === 'inside') return defs + '<rect width="320" height="200" fill="#e8d4a8"/>' + Array.from({ length:9 }, (_, i) => '<rect x="' + (i*36) + '" y="0" width="34" height="150" fill="' + (i % 2 ? '#c89a62' : '#bf9058') + '"/>').join('') + '<path d="M0 150H320V200H0Z" fill="#9a7a52"/>';
+  if (kind === 'plain') return defs + '<rect width="320" height="200" fill="#fbf6ea"/>';
+  const g = '<rect width="320" height="200" fill="url(#caSky)"/><path d="M0 120Q60 92 130 112T260 100T320 108V200H0Z" fill="#b8d48a" opacity=".7"/>';
+  if (kind === 'river') return defs + g + '<path d="M0 140Q80 128 160 136T320 132V200H0Z" fill="' + CA.grass + '"/><path d="M0 162Q80 150 160 160T320 156V186Q240 176 160 184T0 182Z" fill="' + CA.water + '" ' + caO + '/>' +
+    '<path d="M40 170q12 -5 24 0M150 172q12 -5 24 0M240 168q12 -5 24 0" stroke="#d8f0fa" stroke-width="2" fill="none"/>';
+  if (kind === 'snow') return defs + '<rect width="320" height="200" fill="url(#caSky)"/><path d="M0 118Q60 88 130 110T260 96T320 104V200H0Z" fill="#e8eef0"/><path d="M0 150Q90 136 180 146T320 142V200H0Z" fill="#cfd8a0"/>';
+  return defs + g + '<path d="M0 148Q80 136 160 144T320 140V200H0Z" fill="' + CA.grass + '"/>';
+}
+function caArt(kind, body){ return '<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + caBg(kind) + body + '</svg>'; }
+/* ---------- Menschen ---------- */
+/* Figur steht mit den Füssen auf (0,0), etwa 100 hoch. o: skin, hair, beard, long, bun, kid, tunic, pants, fur (Fellumhang), dress, arms:[rechts, links] in Grad
+   (0 = hängt, 90 = waagrecht nach vorne, 160 = hoch), bend:[..] Ellbogen, hold:[svg, svg] Dinge in den Händen (Griff im Ursprung, zeigt nach oben), kneel, sit */
+function caPerson(o){
+  o = o || {}; const skin = o.skin || CA.skin[1], hair = o.hair || CA.hair[0], tun = o.tunic || CA.fur2, s = o.kid ? 0.72 : 1;
+  const arms = o.arms || [20, -15], bend = o.bend || [20, 20], hold = o.hold || [], legs = [];
+  let out = '', hipY = -46;
+  if (o.sit){ hipY = -30; legs.push(caP('M-6 -30L18 -30L18 -2', 'none', 'stroke-width="9" stroke="' + (o.pants || CA.fur) + '"'), caP('M6 -30L28 -28L28 -2', 'none', 'stroke-width="9" stroke="' + (o.pants || CA.fur) + '"'), caE(22, -2, 7, 3.5, '#4a3020'), caE(32, -2, 7, 3.5, '#4a3020')); }
+  else if (o.kneel){ hipY = -34; legs.push(caP('M-4 -34L-6 -2L-24 -2', 'none', 'stroke-width="9" stroke="' + (o.pants || CA.fur) + '"'), caP('M6 -34L22 -18L22 -2', 'none', 'stroke-width="9" stroke="' + (o.pants || CA.fur) + '"'), caE(25, -2, 7, 3.5, '#4a3020')); }
+  else { const st = o.step || 0; legs.push(caP('M-5 -46L' + (-6 - st) + ' -3', 'none', 'stroke-width="9" stroke="' + (o.pants || (o.dress ? skin : CA.fur)) + '"'), caP('M5 -46L' + (6 + st) + ' -3', 'none', 'stroke-width="9" stroke="' + (o.pants || (o.dress ? skin : CA.fur)) + '"'),
+    caE(-4 - st, -2, 7, 3.5, '#4a3020'), caE(9 + st, -2, 7, 3.5, '#4a3020')); }
+  out += legs.join('');
+  const top = hipY - 36, hem = o.dress ? hipY + 26 : hipY + 8;
+  // Arm hinter dem Körper (links)
+  const arm = (side, ang, bd, it) => { const sx = side*11, sy = top + 6, a = ang*Math.PI/180, b = (ang + bd*side*0 + bd)*Math.PI/180;
+    const ex = sx + Math.sin(a)*17, ey = sy + Math.cos(a)*17, hx = ex + Math.sin(b)*16, hy = ey + Math.cos(b)*16;
+    return caP('M' + sx + ' ' + sy + 'L' + ex.toFixed(1) + ' ' + ey.toFixed(1) + 'L' + hx.toFixed(1) + ' ' + hy.toFixed(1), 'none', 'stroke-width="7.5" stroke="' + (o.sleeves ? tun : skin) + '"') +
+      (it ? '<g transform="translate(' + hx.toFixed(1) + ' ' + hy.toFixed(1) + ') rotate(' + ((it.rot || 0)) + ')">' + it.svg + '</g>' : '') + caC(hx.toFixed(1), hy.toFixed(1), 4.2, skin); };
+  out += arm(-1, arms[1], bend[1], hold[1]);
+  // Körper: Kittel oder Kleid, Gürtel
+  out += caP('M-12 ' + top + 'Q-16 ' + (hipY - 10) + ' ' + (o.dress ? -18 : -14) + ' ' + hem + 'L' + (o.dress ? 18 : 14) + ' ' + hem + 'Q16 ' + (hipY - 10) + ' 12 ' + top + 'Q0 ' + (top - 4) + ' -12 ' + top + 'Z', tun);
+  if (o.plaid) out += '<path d="M-10 ' + (top + 8) + 'H10M-12 ' + (top + 18) + 'H12M-14 ' + (top + 28) + 'H14M-4 ' + top + 'V' + hem + 'M5 ' + top + 'V' + hem + '" stroke="' + o.plaid + '" stroke-width="2" opacity=".7"/>';
+  out += caL(-13, hipY - 6, 13, hipY - 6, '#5a3a20', 3);
+  if (o.fur) out += caP('M-14 ' + (top + 2) + 'L-17 ' + (top + 20) + 'L-11 ' + (top + 16) + 'L-7 ' + (top + 24) + 'L0 ' + (top + 18) + 'L7 ' + (top + 24) + 'L11 ' + (top + 16) + 'L17 ' + (top + 20) + 'L14 ' + (top + 2) + 'Q0 ' + (top - 5) + ' -14 ' + (top + 2) + 'Z', o.fur);
+  if (o.cloak) out += caP('M-13 ' + (top + 1) + 'L-19 ' + (hem - 2) + 'L-12 ' + (hem - 4) + 'L-9 ' + (top + 6) + 'Z', o.cloak);
+  if (o.torque) out += caP('M-7 ' + (top + 1) + 'Q0 ' + (top + 7) + ' 7 ' + (top + 1), 'none', 'stroke="' + CA.gold + '" stroke-width="3.4"');
+  // Kopf
+  const hy = top - 13;
+  if (o.long) out += caP('M-14 ' + (hy - 2) + 'Q-17 ' + (hy + 20) + ' -10 ' + (hy + 24) + 'L10 ' + (hy + 24) + 'Q17 ' + (hy + 20) + ' 14 ' + (hy - 2) + 'Z', hair);
+  out += caC(0, hy, 13, skin);
+  out += caP('M-13 ' + (hy - 1) + 'Q-12 ' + (hy - 16) + ' 0 ' + (hy - 15) + 'Q12 ' + (hy - 16) + ' 13 ' + (hy - 1) + 'Q8 ' + (hy - 8) + ' 2 ' + (hy - 8) + 'Q-6 ' + (hy - 9) + ' -13 ' + (hy - 1) + 'Z', hair);
+  if (o.bun) out += caC(-10, hy - 10, 6, hair);
+  if (o.wreath) out += '<path d="M-13 ' + (hy - 6) + 'Q0 ' + (hy - 13) + ' 13 ' + (hy - 6) + '" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-dasharray="3 2"/>';
+  if (o.helmet) out += caP('M-14 ' + (hy - 2) + 'Q-13 ' + (hy - 18) + ' 0 ' + (hy - 18) + 'Q13 ' + (hy - 18) + ' 14 ' + (hy - 2) + 'Z', CA.iron);
+  if (o.beard) out += caP('M-11 ' + (hy + 3) + 'Q-10 ' + (hy + 18) + ' 0 ' + (hy + 19) + 'Q10 ' + (hy + 18) + ' 11 ' + (hy + 3) + 'Q0 ' + (hy + 8) + ' -11 ' + (hy + 3) + 'Z', o.beardCol || hair);
+  if (o.mustache) out += caP('M-7 ' + (hy + 7) + 'Q0 ' + (hy + 3) + ' 7 ' + (hy + 7), 'none', 'stroke="' + hair + '" stroke-width="3"');
+  out += '<circle cx="4" cy="' + (hy - 1) + '" r="1.7" fill="' + CA.ol + '"/><circle cx="-4" cy="' + (hy - 1) + '" r="1.7" fill="' + CA.ol + '"/>';
+  if (!o.beard && !o.mustache) out += '<path d="M-4 ' + (hy + 5) + 'Q0 ' + (hy + 8) + ' 4 ' + (hy + 5) + '" stroke="' + CA.ol + '" stroke-width="1.6" fill="none"/>';
+  out += arm(1, arms[0], bend[0], hold[0]);
+  if (o.over) out += o.over;
+  return (s !== 1 ? '<g transform="scale(' + s + ')">' + out + '</g>' : out);
+}
+function caWho(x, y, s, o, flip){ return caShadow(x, y, 16*s) + caT(x, y, s, caPerson(o), 0, flip); }
+/* ---------- Dinge (Griff im Ursprung, zeigen nach oben) ---------- */
+const caItem = {
+  spear: (L, tip) => caL(0, 18, 0, -(L || 70), CA.wood2, 3.4) + caP('M0 ' + (-(L || 70) - 16) + 'L-5 ' + (-(L || 70) + 2) + 'L5 ' + (-(L || 70) + 2) + 'Z', tip || CA.stone2),
+  harpoon: L => caL(0, 18, 0, -(L || 64), CA.wood2, 3.4) + caP('M0 ' + (-(L || 64) - 18) + 'L-3 ' + (-(L || 64) + 4) + 'L3 ' + (-(L || 64) + 4) + 'Z', '#e8dcc0') + caP('M-2 ' + (-(L || 64) - 10) + 'l-6 6M-2 ' + (-(L || 64) - 2) + 'l-6 6', 'none'),
+  leister: L => caL(0, 18, 0, -(L || 66), CA.wood2, 3.4) + caP('M-8 ' + (-(L || 66) - 16) + 'Q-8 ' + (-(L || 66)) + ' 0 ' + (-(L || 66)) + 'Q8 ' + (-(L || 66)) + ' 8 ' + (-(L || 66) - 16) + 'M0 ' + (-(L || 66)) + 'V' + (-(L || 66) - 20), 'none', 'stroke-width="3"'),
+  axe: (metal) => caL(0, 12, 0, -34, CA.wood, 4) + (metal ? caP('M-2 -36L14 -42Q20 -34 14 -24L-2 -28Z', metal) : caP('M-3 -38Q14 -44 18 -32Q14 -22 -3 -26Z', CA.stone)),
+  hammer: () => caL(0, 10, 0, -30, CA.wood, 4) + caR(-9, -40, 18, 10, 2, CA.iron),
+  tongs: () => caP('M-2 10L-3 -34L-7 -40M2 10L3 -34L7 -40', 'none', 'stroke-width="2.6"'),
+  sword: (m) => caR(-4, -2, 8, 14, 2, '#6a4a2a') + caR(-9, -5, 18, 4, 1, m || CA.iron) + caP('M-4 -5L-4 -58L0 -66L4 -58L4 -5Z', m || CA.iron),
+  dagger: (m) => caR(-3, -1, 6, 10, 2, '#6a4a2a') + caR(-6, -4, 12, 3, 1, m || CA.bronze) + caP('M-4 -4L0 -28L4 -4Z', m || CA.bronze),
+  sickle: (m) => caR(-3, -2, 6, 16, 2, CA.wood) + caP('M0 -2Q-4 -28 16 -36Q30 -38 34 -28Q24 -32 14 -26Q6 -18 4 -2Z', m || CA.bronze),
+  torch: () => caL(0, 10, 0, -26, CA.wood2, 4) + caP('M0 -44Q-9 -34 -5 -26H5Q9 -34 0 -44Z', '#f8a01a'),
+  bowl: (c) => caP('M-14 -6Q-12 6 0 6Q12 6 14 -6Z', c || CA.clay),
+  stick: (L) => caL(0, 14, 0, -(L || 40), CA.wood2, 3),
+  staff: (L) => caL(0, 50, 0, -(L || 40), CA.wood2, 3.6),
+  basket: () => caP('M-12 -14L-9 6H9L12 -14Z', '#c8a060') + '<path d="M-11 -8H11M-10 -2H10" stroke="#8a6a3a" stroke-width="1.6"/>',
+  fish: () => caT(0, 0, 0.7, caFish(0, 0, 1, '#8aa8b8'), 90),
+  needle: () => caL(0, 6, 0, -14, '#efe6cc', 2.4),
+  flute: () => caR(-3, -30, 6, 36, 3, '#efe6cc') + '<circle cx="0" cy="-20" r="1.3" fill="#3b2a1c"/><circle cx="0" cy="-12" r="1.3" fill="#3b2a1c"/><circle cx="0" cy="-4" r="1.3" fill="#3b2a1c"/>',
+  brush: () => caL(0, 8, 0, -18, CA.wood, 3) + caP('M-3 -18L0 -28L3 -18Z', '#c8402a'),
+  jug: () => caP('M-8 -20Q-12 -10 -10 0H10Q12 -10 8 -20Z', CA.clay) + caP('M8 -16Q15 -12 9 -5', 'none'),
+  bucket: () => caP('M-10 -16L-8 2H8L10 -16Z', CA.wood) + caP('M-10 -16Q0 -28 10 -16', 'none'),
+  coin: () => caC(0, -4, 5, CA.gold),
+  lyre: () => caP('M-8 0Q-14 -20 -8 -34M8 0Q14 -20 8 -34M-10 -32H10M-8 0H8', 'none', 'stroke-width="3.2" stroke="' + CA.wood + '"') + '<path d="M-4 -32V0M0 -32V0M4 -32V0" stroke="#e8dcc0" stroke-width="1"/>',
+  shield: (c) => caE(0, -14, 12, 22, c || '#8a5a3a') + caE(0, -14, 4.5, 6, CA.iron),
+  roundShield: (c) => caC(0, -12, 15, c || CA.bronze) + caC(0, -12, 9, 'none') + caC(0, -12, 3.5, CA.bronze),
+  mallet: () => caL(0, 10, 0, -24, CA.wood, 3.4) + caR(-10, -34, 20, 12, 3, CA.wood2),
+  chisel: () => caR(-3, -14, 6, 14, 2, CA.wood) + caP('M-2 0V12L0 16L2 12V0', CA.iron),
+  awl: () => caE(0, 0, 4, 6, CA.wood) + caL(0, -6, 0, -18, CA.iron, 1.8),
+  pot: () => caP('M-10 -22Q-15 -10 -10 0H10Q15 -10 10 -22Z', CA.clay),
+  ingot: () => caP('M-12 -6L-8 -2H8L12 -6L8 -10H-8Z', CA.bronze),
+  crucible: () => caL(0, 6, 0, -22, CA.wood2, 3.2) + caP('M-9 -32Q-8 -22 0 -22Q8 -22 9 -32Z', '#8a7a6a') + caE(0, -32, 9, 3, '#ffb030')
+};
+/* ---------- Tiere (Seitenansicht nach rechts, Füsse auf y = 0) ---------- */
+function caLegs(xs, top, c, w){ return xs.map(x => caP('M' + x + ' ' + top + 'L' + x + ' -2', 'none', 'stroke-width="' + (w || 7) + '" stroke="' + c + '"')).join(''); }
+function caMammoth(c){ c = c || '#7a4a2a'; return caLegs([-36, -22, 16, 30], -42, c, 14) + caP('M-54 -40Q-62 -98 -8 -104Q34 -112 50 -82Q60 -62 48 -40Z', c) +
+    caLimb('M50 -66Q66 -50 62 -28Q60 -14 68 -10', c, 11) + caLimb('M46 -54Q70 -44 80 -66', '#f4ecd8', 6) + caE(30, -76, 9, 13, toneCa(c)) + '<circle cx="44" cy="-80" r="2.2" fill="' + CA.ol + '"/>' +
+    '<path d="M-44 -62l-6 12M-28 -70l-6 14M-12 -74l-6 14M4 -72l-4 12M-36 -48l-4 8M-18 -52l-4 8" stroke="' + toneCa(c) + '" stroke-width="2" fill="none"/>'; }
+function toneCa(c){ const n = parseInt(c.slice(1), 16), f = 0.78; return '#' + [16, 8, 0].map(sh => Math.round(((n >> sh) & 255)*f).toString(16).padStart(2, '0')).join(''); }
+function caDeer(antl, c){ c = c || '#a0703c'; return caLegs([-22, -14, 16, 24], -30, c, 5) + caP('M-30 -34Q-30 -52 0 -52Q24 -54 28 -40Q26 -28 -26 -28Z', c) +
+    caP('M20 -46L30 -72L46 -70L44 -62L34 -60L28 -40Z', c) + '<circle cx="38" cy="-66" r="1.8" fill="' + CA.ol + '"/>' + caE(-30, -44, 4, 3, '#f4ecd8') +
+    (antl ? caP('M32 -72L28 -94M28 -86L20 -92M30 -80L36 -90M38 -72L44 -92M42 -84L50 -90', 'none', 'stroke="#d8c8a0" stroke-width="3.2"') : ''); }
+function caCow(c, horns, spots){ c = c || '#8a5a3a'; return caLegs([-26, -16, 18, 28], -26, c, 7) + caP('M-36 -30Q-38 -56 -10 -56L24 -58Q36 -54 34 -30Q30 -22 -32 -22Z', c) +
+    (spots ? caE(-10, -42, 9, 7, '#f4ecd8', 'stroke="none"') + caE(14, -46, 6, 5, '#f4ecd8', 'stroke="none"') : '') +
+    caP('M28 -54L46 -54Q54 -48 52 -36Q44 -32 34 -38Z', c) + caE(50, -38, 6, 5, '#e8b0a0') + '<circle cx="42" cy="-48" r="1.8" fill="' + CA.ol + '"/>' +
+    caP('M-36 -44Q-44 -36 -42 -20', 'none') + (horns ? caP('M34 -56Q30 -70 ' + (horns === 'long' ? '20 -74' : '28 -68') + 'M42 -56Q46 -70 ' + (horns === 'long' ? '58 -74' : '50 -68'), 'none', 'stroke="#f4ecd8" stroke-width="4"') : ''); }
+function caSheep(c){ return caLegs([-14, -6, 10, 16], -16, '#3b2a1c', 4) + caP('M-24 -22Q-30 -34 -20 -40Q-16 -50 -4 -46Q4 -54 14 -46Q26 -48 26 -36Q32 -26 22 -20Q10 -14 -2 -18Q-16 -14 -24 -22Z', c || '#f2ecdc') +
+    caE(28, -38, 7, 9, '#4a3a2a') + '<circle cx="30" cy="-40" r="1.6" fill="#fff"/>'; }
+function caGoat(c){ c = c || '#c8a070'; return caLegs([-16, -10, 12, 18], -22, c, 4.5) + caP('M-22 -26Q-24 -42 0 -42L16 -42Q24 -38 22 -24Q16 -18 -18 -20Z', c) + caP('M16 -40L24 -60L34 -58L32 -48L24 -44Z', c) +
+    caP('M24 -60Q20 -72 12 -74', 'none', 'stroke-width="3.4"') + caP('M30 -50L32 -42', 'none', 'stroke-width="3"') + '<circle cx="28" cy="-55" r="1.6" fill="' + CA.ol + '"/>'; }
+function caPig(c){ c = c || '#e8a8a0'; return caLegs([-18, -10, 12, 18], -14, c, 5) + caE(0, -26, 28, 16, c) + caR(24, -32, 10, 10, 4, c) + caE(34, -27, 3, 4, '#c8807a') + '<circle cx="20" cy="-32" r="1.6" fill="' + CA.ol + '"/>' +
+    caP('M14 -40L20 -46L22 -38', c) + caP('M-28 -30q-8 -2 -6 -8', 'none'); }
+function caDog(c){ c = c || '#9a7a52'; return caLegs([-16, -10, 12, 18], -18, c, 4.5) + caP('M-22 -22Q-22 -36 0 -36L14 -36Q20 -32 18 -20L-18 -18Z', c) + caP('M12 -34L22 -50L36 -44L34 -38L22 -36Z', c) +
+    caP('M22 -50L20 -60L28 -52Z', c) + '<circle cx="28" cy="-45" r="1.6" fill="' + CA.ol + '"/>' + caP('M-22 -30Q-34 -38 -32 -48', 'none', 'stroke-width="4" stroke="' + c + '"'); }
+function caHorse(c){ c = c || '#8a5a32'; return caLegs([-26, -18, 18, 26], -30, c, 6) + caP('M-34 -34Q-34 -56 -6 -56L22 -56Q32 -52 30 -32Q24 -26 -30 -26Z', c) + caP('M20 -52L34 -84L48 -80L46 -70L36 -66L32 -44Z', c) +
+    caP('M22 -54Q26 -76 34 -86', 'none', 'stroke="#3a2618" stroke-width="5"') + '<circle cx="40" cy="-77" r="1.7" fill="' + CA.ol + '"/>' + caP('M-34 -50Q-46 -40 -42 -20', 'none', 'stroke="#3a2618" stroke-width="5"'); }
+function caChicken(c){ c = c || '#a8602a'; return caLegs([-3, 4], -10, '#d8a030', 2.4) + caE(0, -18, 12, 9, c) + caC(10, -28, 5.5, c) + caP('M15 -29L20 -27L15 -25Z', '#e8b030') + caP('M8 -34Q10 -38 13 -34', '#d83020') + caP('M-10 -20Q-18 -30 -14 -34Q-10 -26 -6 -24', c) + '<circle cx="11" cy="-29" r="1.2" fill="' + CA.ol + '"/>'; }
+function caFish(x, y, s, c){ return caT(x, y, s, caP('M-18 0Q-6 -10 10 -6Q18 -2 20 0Q18 2 10 6Q-6 10 -18 0Z', c || '#7a9aa8') + caP('M-18 0L-28 -8L-26 0L-28 8Z', c || '#7a9aa8') + '<circle cx="12" cy="-1" r="1.4" fill="' + CA.ol + '"/>'); }
+/* ---------- Bauten und Landschaft ---------- */
+function caTree(x, y, s, c){ return caShadow(x, y, 18*s) + caT(x, y, s, caR(-5, -40, 10, 40, 3, CA.wood2) + caC(0, -58, 24, c || CA.green) + caC(-14, -48, 14, c || CA.green) + caC(14, -48, 14, c || CA.green)); }
+function caPine(x, y, s){ return caT(x, y, s, caR(-3, -14, 6, 14, 2, CA.wood2) + caP('M0 -70L-18 -14H18Z', '#3e6a3a')); }
+function caFire(x, y, s){ return caT(x, y, s || 1, '<circle cx="0" cy="-16" r="30" fill="url(#caGlow)"/>' + caR(-18, -6, 36, 6, 3, CA.wood2, 'transform="rotate(-12)"') + caR(-18, -6, 36, 6, 3, CA.wood, 'transform="rotate(12)"') +
+    caP('M0 -40Q-14 -24 -10 -10Q-4 -2 0 -4Q4 -2 10 -10Q14 -24 0 -40Z', '#f05a1a') + caP('M0 -28Q-6 -18 -4 -10H4Q6 -18 0 -28Z', '#ffd040', 'stroke="none"')); }
+function caTent(x, y, s, bones){ return caShadow(x, y, 44*s) + caT(x, y, s, caP('M-46 0L0 -74L46 0Z', '#a8784a') + '<path d="M-30 -24Q0 -18 30 -24M-18 -46Q0 -42 18 -46" stroke="#7a5432" stroke-width="2" fill="none"/>' + caP('M-12 0L0 -26L12 0Z', '#4a3020') +
+    (bones ? caP('M-40 0Q-34 -50 -2 -78M40 0Q34 -50 2 -78', 'none', 'stroke="#f4ecd8" stroke-width="5"') : caP('M-6 -74L-12 -86M6 -74L12 -86M0 -74L0 -88', 'none', 'stroke-width="3"'))); }
+function caLonghouse(x, y, s){ return caShadow(x, y, 80*s) + caT(x, y, s, caR(-70, -36, 140, 36, 2, '#c8a87a') + Array.from({ length:8 }, (_, i) => caL(-62 + i*18, -34, -62 + i*18, 0, '#8a6a42', 3)).join('') +
+    caP('M-82 -32L-60 -76H60L82 -32Z', '#d8b860') + '<path d="M-70 -46H70M-66 -58H66" stroke="#b09040" stroke-width="2"/>' + caR(-8, -26, 16, 26, 2, '#4a3020')); }
+function caRoundhouse(x, y, s, wall){ return caShadow(x, y, 50*s) + caT(x, y, s, caR(-40, -30, 80, 30, 3, wall || '#b8b0a0') + (wall ? '' : '<path d="M-40 -20H40M-40 -10H40M-26 -30V-20M0 -30V-20M24 -30V-20M-12 -20V-10M12 -20V-10" stroke="#8a8478" stroke-width="1.6"/>') +
+    caP('M-50 -26L0 -90L50 -26Q0 -18 -50 -26Z', '#d8b860') + '<path d="M-30 -42L0 -82L30 -42M-38 -34Q0 -28 38 -34" stroke="#b09040" stroke-width="2" fill="none"/>' + caR(-8, -24, 16, 24, 2, '#4a3020')); }
+function caFence(x, y, w, h){ let s = ''; for (let i=0;i<=w;i+=10) s += caP('M' + (x + i) + ' ' + y + 'V' + (y - h) + 'l3 -5l3 5V' + y, '#a07a4a'); return s + caL(x, y - h*0.35, x + w, y - h*0.35, '#6a4a2a', 3) + caL(x, y - h*0.75, x + w, y - h*0.75, '#6a4a2a', 3); }
+function caPalisade(x, y, w, h){ let s = ''; for (let i=0;i<=w;i+=11) s += caP('M' + (x + i) + ' ' + y + 'V' + (y - h) + 'l5.5 -9l5.5 9V' + y + 'Z', i % 22 ? '#a07a4a' : '#8a6a3a'); return s; }
+function caWheat(x, y, s){ return caT(x, y, s || 1, caL(0, 0, 0, -40, '#b89a3a', 2.4) + Array.from({ length:5 }, (_, i) => caE(i % 2 ? 3 : -3, -40 - i*5, 3, 5, CA.wheat, 'transform="rotate(' + (i % 2 ? 25 : -25) + ' ' + (i % 2 ? 3 : -3) + ' ' + (-40 - i*5) + ')"')).join('')); }
+function caPot(x, y, s, c, deco){ return caShadow(x, y, 14*s) + caT(x, y, s, caP('M-12 -34Q-18 -16 -12 0H12Q18 -16 12 -34Q0 -38 -12 -34Z', c || CA.clay) + caE(0, -34, 12, 3.5, c || CA.clay) + (deco ? '<path d="M-14 -22l4 -5l4 5l4 -5l4 5l4 -5l4 5" stroke="' + CA.ol + '" stroke-width="1.6" fill="none"/>' : '')); }
+function caBigPot(x, y, s, c){ return caShadow(x, y, 22*s) + caT(x, y, s, caP('M-14 -50Q-30 -30 -18 0H18Q30 -30 14 -50Z', c || CA.clay2) + caE(0, -50, 14, 4, c || CA.clay2)); }
+function caRock(x, y, w, h, c){ return caP('M' + (x - w/2) + ' ' + y + 'Q' + (x - w/2) + ' ' + (y - h) + ' ' + x + ' ' + (y - h) + 'Q' + (x + w/2) + ' ' + (y - h) + ' ' + (x + w/2) + ' ' + y + 'Z', c || CA.stone); }
+function caSun(x, y){ return caC(x, y, 14, '#ffd860') + Array.from({ length:8 }, (_, i) => { const a = i/8*Math.PI*2; return caL((x + Math.cos(a)*19).toFixed(1), (y + Math.sin(a)*19).toFixed(1), (x + Math.cos(a)*25).toFixed(1), (y + Math.sin(a)*25).toFixed(1), '#e8a830', 2.4); }).join(''); }
+function caWheelDisc(x, y, r){ return caC(x, y, r, '#9a6a3a') + caC(x, y, r*0.22, '#6e4825') + '<path d="M' + (x - r*0.7) + ' ' + (y - r*0.3) + 'Q' + x + ' ' + (y - r*0.5) + ' ' + (x + r*0.7) + ' ' + (y - r*0.3) + '" stroke="#6e4825" stroke-width="1.6" fill="none"/>'; }
+function caWheelSpoke(x, y, r, iron){ let s = caC(x, y, r, 'none', 'stroke-width="5"') + caC(x, y, r, 'none', 'stroke="' + (iron ? CA.iron : CA.wood) + '" stroke-width="4"'); for (let i=0;i<8;i++){ const a = i/8*Math.PI*2; s += caL(x, y, (x + Math.cos(a)*r).toFixed(1), (y + Math.sin(a)*r).toFixed(1), CA.wood2, 2.6); } return s + caC(x, y, r*0.18, CA.wood2); }
+function caCanoe(x, y, s){ return caT(x, y, s, caP('M-60 -14Q-58 2 -30 4H30Q58 2 60 -14Q0 -6 -60 -14Z', '#8a5a2e') + '<path d="M-52 -12Q0 -4 52 -12" stroke="#6a4020" stroke-width="2" fill="none"/>'); }
+function caFurnace(x, y, s, h){ h = h || 70; return caShadow(x, y, 26*s) + caT(x, y, s, '<circle cx="0" cy="' + (-h - 6) + '" r="22" fill="url(#caGlow)"/>' + caP('M-22 0Q-24 ' + (-h*0.6) + ' -12 ' + (-h) + 'H12Q24 ' + (-h*0.6) + ' 22 0Z', '#b8987a') +
+    caP('M-8 0Q-8 -14 0 -14Q8 -14 8 0Z', '#ff8a2a') + caP('M-6 ' + (-h - 2) + 'Q0 ' + (-h - 22) + ' 6 ' + (-h - 2) + 'Z', '#f8a01a')); }
+function caAnvil(x, y, s){ return caShadow(x, y, 16*s) + caT(x, y, s, caR(-12, -26, 24, 26, 4, CA.wood2) + caP('M-16 -34H14L22 -30L14 -26H-16Z', CA.iron)); }
+function caCauldron(x, y, s, c){ return caT(x, y, s, caP('M-20 -30Q-22 -4 0 -2Q22 -4 20 -30Z', CA.bronze) + caE(0, -30, 20, 5, c || '#6adc3a') + caP('M-18 -30Q0 -48 18 -30', 'none')); }
+function caStall(x, y, s, cloth){ return caT(x, y, s, caR(-36, -30, 72, 6, 2, CA.wood) + caL(-30, -24, -30, 0, CA.wood2, 4) + caL(30, -24, 30, 0, CA.wood2, 4) + caL(-34, -30, -34, -74, CA.wood2, 3) + caL(34, -30, 34, -74, CA.wood2, 3) +
+    caP('M-42 -74H42L36 -62H-36Z', cloth || CA.red) + '<path d="M-24 -74L-20 -62M0 -74V-62M24 -74L20 -62" stroke="#f4ecd8" stroke-width="3"/>'); }
+function caLoom(x, y, s){ return caT(x, y, s, caL(-26, 0, -22, -80, CA.wood2, 4) + caL(26, 0, 22, -80, CA.wood2, 4) + caL(-28, -78, 28, -78, CA.wood, 4) + caR(-20, -76, 40, 34, 1, '#c8402a', 'stroke-width="1"') +
+    Array.from({ length:9 }, (_, i) => caL(-18 + i*4.5, -42, -18 + i*4.5, -14, '#e8dcc0', 1.4)).join('') + Array.from({ length:9 }, (_, i) => caC(-18 + i*4.5, -10, 2.6, CA.stone)).join('')); }
+function caPloughSvg(x, y, s){ return caT(x, y, s, caP('M-40 -40L-14 -6M-14 -6L30 -26M-14 -6L-20 2', 'none', 'stroke="' + CA.wood + '" stroke-width="5"') + caP('M-22 0L-10 -4L-18 6Z', CA.iron)); }
+function caQuern(x, y, s){ return caShadow(x, y, 28*s) + caT(x, y, s, caP('M-30 0Q-32 -16 -20 -18Q0 -14 22 -18Q32 -16 30 0Z', CA.stone) + caE(4, -22, 12, 6, CA.stone2) + '<circle cx="-14" cy="-18" r="1.4" fill="' + CA.wheat + '"/><circle cx="-8" cy="-17" r="1.4" fill="' + CA.wheat + '"/><circle cx="18" cy="-17" r="1.2" fill="#f4ecd8"/>'); }
+function caBread(x, y, s){ return caT(x, y, s, caE(0, -8, 22, 8, '#c88a4a') + '<path d="M-10 -12l4 4M0 -14l4 4M10 -12l4 4" stroke="#8a5a2a" stroke-width="2"/>'); }
+function caCheese(x, y, s){ return caT(x, y, s, caP('M-20 -4V-16Q0 -24 20 -16V-4Q0 4 -20 -4Z', '#f2d060') + caE(0, -16, 20, 6, '#f8e080') + '<circle cx="-6" cy="-6" r="2.4" fill="#d8b040"/><circle cx="8" cy="-8" r="2" fill="#d8b040"/>'); }
+function caMountain(x, y, w, h, c){ return caP('M' + (x - w/2) + ' ' + y + 'L' + x + ' ' + (y - h) + 'L' + (x + w/2) + ' ' + y + 'Z', c || '#9a948a'); }
+function caHand(x, y, s, c){ return caT(x, y, s, caP('M-10 10Q-14 -4 -12 -10L-16 -26Q-16 -30 -12 -28L-6 -14L-6 -34Q-6 -38 -2 -36L0 -16L2 -38Q4 -42 7 -38L6 -16L10 -34Q13 -37 15 -33L11 -10Q18 -14 20 -10Q14 0 10 10Z', c || '#c8502a', 'stroke="none" opacity=".85"')); }
+function caTrack(x, y, s, rot, hoof){ return caT(x, y, s, hoof ? caP('M-5 -8Q-8 4 -2 8L-1 -6ZM5 -8Q8 4 2 8L1 -6Z', '#5a4030', 'stroke="none"') : caE(0, 0, 6, 7, '#5a4030', 'stroke="none"') + [[-7, -9], [-2, -12], [3, -12], [8, -9]].map(([a, b]) => caE(a, b, 2.2, 2.8, '#5a4030', 'stroke="none"')).join(''), rot); }
+function caMeatRack(x, y, s, fish){ return caShadow(x, y, 36*s) + caT(x, y, s, caL(-34, 0, -30, -58, CA.wood2, 4) + caL(34, 0, 30, -58, CA.wood2, 4) + caL(-38, -56, 38, -56, CA.wood, 4) +
+    Array.from({ length:5 }, (_, i) => fish ? caT(-22 + i*11, -40, 0.5, caFish(0, 0, 1, '#a08a6a'), 90) : caP('M' + (-24 + i*12) + ' -56v' + (16 + (i % 2)*6) + 'q4 6 8 0v-' + (16 + (i % 2)*6), '#a0402a')).join('')); }
+/* Weitere Zeichnungen für die Metallzeiten */
+function caSpiral(x, y, s, c){ let d = 'M0 0'; for (let i=1;i<=40;i++){ const a = i*0.5, r = 1 + i*0.45; d += 'L' + (Math.cos(a)*r).toFixed(1) + ' ' + (Math.sin(a)*r).toFixed(1); } return caT(x, y, s, caLimb(d, c || CA.bronze, 3)); }
+function caPin(x, y, s, rot){ return caT(x, y, s, caL(0, 30, 0, -26, CA.bronze, 2.6) + caC(0, -30, 7, CA.bronze) + caC(0, -30, 3, 'none'), rot); }
+function caTorque(x, y, s, c){ return caT(x, y, s, caLimb('M-12 -24Q-30 -14 -26 4Q-18 22 0 24Q18 22 26 4Q30 -14 12 -24', c || CA.gold, 5) + caC(-12, -25, 4.5, c || CA.gold) + caC(12, -25, 4.5, c || CA.gold)); }
+function caFibula(x, y, s, c){ return caT(x, y, s, caLimb('M-26 6Q-24 -16 0 -16Q20 -16 24 0', c || CA.bronze, 4) + caL(-26, 8, 26, 8, c || CA.bronze, 2.4) + caSpiralTiny(26, 4, c)); }
+function caSpiralTiny(x, y, c){ return caC(x, y, 4, 'none', 'stroke="' + (c || CA.bronze) + '" stroke-width="2.4"'); }
+function caRing(x, y, rx, ry, c){ return caE(x, y, rx, ry, 'none', 'stroke="' + CA.ol + '" stroke-width="7"') + caE(x, y, rx, ry, 'none', 'stroke="' + c + '" stroke-width="4"'); }
+function caAmphora(x, y, s){ return caShadow(x, y, 12*s) + caT(x, y, s, caP('M-6 -60H6L8 -50Q22 -40 18 -16Q14 -2 0 2Q-14 -2 -18 -16Q-22 -40 -8 -50Z', '#c8784a') + caLimb('M-7 -54Q-16 -54 -14 -44M7 -54Q16 -54 14 -44', '#c8784a', 3)); }
+function caHorn(x, y, s, rot){ return caT(x, y, s, caP('M-4 0Q-10 -24 6 -40L12 -36Q2 -22 6 0Z', '#e8dcc0') + caL(-6, -2, 8, -2, CA.gold, 3), rot); }
+function caMould(x, y, s){ return caT(x, y, s, caP('M-34 0L-30 -22H30L34 0Z', CA.stone) + caP('M-18 -18L10 -18L16 -8L10 2L-18 2Z', '#3a2a20') + caP('M-16 -16L8 -16L13 -8L8 0L-16 0Z', '#ffb030')); }
+function caMine(x, y, s){ return caT(x, y, s, caP('M-120 0L-40 -110L20 -70L60 -100L140 0Z', '#9a9488') + caP('M-30 0Q-30 -50 0 -52Q30 -50 30 0Z', '#2a2018') + caL(-30, 0, -30, -44, CA.wood2, 4) + caL(30, 0, 30, -44, CA.wood2, 4) + caL(-34, -44, 34, -44, CA.wood, 5) +
+  [[-80, -20], [60, -24], [90, -40], [-60, -50]].map(([a, b]) => caC(a, b, 4, '#4a7a6a')).join('')); }
+function caMound(x, y, s){ return caT(x, y, s, caP('M-120 0Q-110 -70 0 -76Q110 -70 120 0Z', CA.grass2) + caP('M-60 0Q-56 -36 0 -38Q56 -36 60 0Z', '#8a6a42') + caR(-44, -18, 88, 16, 4, '#c8a878')); }
+function caStatue(x, y, s){ return caShadow(x, y, 26*s) + caT(x, y, s, caR(-26, -20, 52, 20, 4, CA.stone) + caP('M-24 -20Q-20 -34 0 -34Q20 -34 24 -20Z', '#9a7a52') + caP('M-12 -34Q-14 -60 0 -62Q14 -60 12 -34Z', '#9a7a52') + caC(0, -72, 11, '#9a7a52') +
+  caLimb('M-6 -82Q-14 -96 -24 -100M-12 -92L-20 -88M-18 -98L-14 -106M6 -82Q14 -96 24 -100M12 -92L20 -88M18 -98L14 -106', '#efe6cc', 3) + caTorque(0, -58, 0.35) + '<circle cx="-4" cy="-73" r="1.6" fill="' + CA.ol + '"/><circle cx="4" cy="-73" r="1.6" fill="' + CA.ol + '"/>'); }
+function caMistletoe(x, y, s){ return caT(x, y, s, Array.from({ length:7 }, (_, i) => { const a = (i/7 - 0.5)*2.4, ex = Math.sin(a)*18, ey = -Math.cos(a)*18; return caL(0, 0, ex.toFixed(1), ey.toFixed(1), '#7a9a3a', 2.4) + caE(ex.toFixed(1), ey.toFixed(1), 3, 6, '#9ab84a') + caC((ex*1.1).toFixed(1), (ey*1.1 - 2).toFixed(1), 2.4, '#f8f6ec'); }).join('')); }
+function caBoat(x, y, s){ return caT(x, y, s, caP('M-70 -16Q-66 2 -40 4H40Q66 2 72 -18Q0 -8 -70 -16Z', '#8a5a2e') + caR(-30, -30, 22, 16, 3, '#d8c8a0') + caR(-2, -34, 18, 20, 3, '#c8a070') + caPot(30, -12, 0.6, CA.clay)); }
+
 let toastTm;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTm); toastTm = setTimeout(() => t.classList.remove('show'), 2200); }
 function updateProgress(){ tell({ type:'found', found:visited.size, total:STATIONS.length }); $('#pCount').textContent = visited.size; $('#pTotal').textContent = STATIONS.length; $('#pBar').style.width = (visited.size/STATIONS.length*100) + '%';
   for (const id in hotspots){ const h = hotspots[id]; h.marker.material = visited.has(id) ? MARK_DONE : MARK_NEW; if (h.ring) h.ring.material.color.copy(visited.has(id) ? C('#7fd28f') : C('#ffc04a')); } }
 let lastFocus = null;
-function openModal(id){ closeModal(true); modal = id; tell({ type:'modal', modal:id }); lastFocus = document.activeElement; const el = document.getElementById(id); el.classList.remove('hidden'); const f = el.querySelector('[data-close], .btn'); if (f) setTimeout(() => f.focus({ preventScroll:true }), 30); keys = {}; resetJoy(); }
+function openModal(id){ closeModal(true); modal = id; tell({ type:'modal', modal:id }); lastFocus = document.activeElement; const el = document.getElementById(id); el.classList.remove('hidden');
+  { const cd = el.querySelector('.card'); if (cd) cd.scrollTop = 0; }   /* Karten immer von oben zeigen */ const f = el.querySelector('[data-close], .btn'); if (f) setTimeout(() => f.focus({ preventScroll:true }), 30); keys = {}; resetJoy(); }
 function closeModal(silent){
   if (!modal) return; const was = modal; document.getElementById(modal).classList.add('hidden'); modal = null; stopSpeech(); tell({ type:'modal', modal:null });
   if (!silent && was === 'info' && !celebrated && visited.size === STATIONS.length){ celebrated = true; setTimeout(() => { openModal('done'); burst(); }, 250); }
@@ -3428,46 +3698,11 @@ function openStation(id){
   $('#infoText').innerHTML = st.text.map(p => '<p>' + p + '</p>').join('');
   $('#infoFact').innerHTML = st.fact; $('#infoNew').classList.toggle('hidden', !isNew);
   $('#btnRead').onclick = () => speak(st.title + '. ' + st.text.join(' ') + ' Wusstest du? ' + st.fact);
-  const img = stationSnapshot(id), ph = $('#infoPhoto');
-  if (img){ $('#infoImg').src = img; $('#infoImg').alt = 'Nahaufnahme: ' + st.title; ph.classList.remove('hidden'); } else ph.classList.add('hidden');
+  const art = $('#infoArt'), ca = typeof CLIPART !== 'undefined' ? CLIPART[id] : null;
+  if (ca){ art.innerHTML = typeof ca === 'function' ? ca() : '<img src="' + ca + '" alt="">'; art.setAttribute('aria-label', 'Bild: ' + st.title); art.classList.remove('hidden'); } else { art.innerHTML = ''; art.classList.add('hidden'); }
   $('#btnTry').classList.toggle('hidden', id !== 'mahlen');
   openModal('info');
 }
-/* ===================== NAHAUFNAHMEN FÜR DIE INFOKARTEN ===================== */
-function o_showFaces(h){ for (const o of (h.snap || h.objects)) o.traverse(ch => { if (ch.name === 'faceDetail') ch.visible = true; }); }
-const snapCache = {}, _sBox = new THREE.Box3(), _sTmp = new THREE.Box3(), _sC = new THREE.Vector3(), _sS = new THREE.Vector3();
-function stationSnapshot(id){
-  if (id in snapCache) return snapCache[id];
-  const h = hotspots[id]; if (!h) return null;
-  try {
-    _sBox.makeEmpty();
-    for (const o of (h.snap || h.objects)){ o.updateWorldMatrix(true, true); o.traverse(ch => { if (!ch.isMesh || ch.isSprite || !ch.visible || !ch.geometry) return;
-      if (!ch.geometry.boundingSphere) ch.geometry.computeBoundingSphere(); if (ch.geometry.boundingSphere.radius*Math.max(ch.scale.x, ch.scale.y, ch.scale.z) > 25) return;
-      _sTmp.setFromObject(ch); _sBox.union(_sTmp); }); }
-    if (_sBox.isEmpty()) return (snapCache[id] = null);
-    _sBox.getCenter(_sC); _sBox.getSize(_sS);
-    const rad = Math.max(0.5, Math.min(_sS.length()*0.5, 9)) * (h.snapZoom || 1);
-    let dx, dz;
-    if (h.snapDir){ dx = h.snapDir[0]; dz = h.snapDir[1]; }
-    else { dx = player.x - _sC.x; dz = player.z - _sC.z; const ca = Math.cos(0.45), sa = Math.sin(0.45), ox = dx; dx = ox*ca - dz*sa; dz = ox*sa + dz*ca; }
-    const dl = Math.hypot(dx, dz) || 1; dx /= dl; dz /= dl;
-    const dist = rad/Math.tan(camera.fov*Math.PI/360)*1.1, sp = camera.position.clone(), sq = camera.quaternion.clone();
-    camera.position.set(_sC.x + dx*dist, _sC.y + rad*0.45 + 0.4, _sC.z + dz*dist); camera.lookAt(_sC);
-    for (const m of markers){ m.marker.visible = false; if (m.ring) m.ring.visible = false; }
-    const zh = h.zone && !h.zone.active ? h.zone : null; if (zh) zh.members.forEach(m => { m.visible = true; });
-    updateSun(_sC.x, _sC.z);
-    o_showFaces(h); composer.render();
-    const W = 560, H = 360, c = document.createElement('canvas'); c.width = W; c.height = H; const src = renderer.domElement, sw = src.width, sh = src.height;
-    let cw = sw, chh = sw*H/W; if (chh > sh){ chh = sh; cw = sh*W/H; }
-    c.getContext('2d').drawImage(src, (sw - cw)/2, (sh - chh)/2, cw, chh, 0, 0, W, H);
-    snapCache[id] = c.toDataURL('image/jpeg', 0.86);
-    if (zh) zh.members.forEach(m => { m.visible = false; });
-    camera.position.copy(sp); camera.quaternion.copy(sq);
-    for (const m of markers){ m.marker.visible = true; if (m.ring) m.ring.visible = true; }
-  } catch(e){ console.warn('Nahaufnahme nicht möglich', e); snapCache[id] = null; }
-  return snapCache[id];
-}
-
 /* ===================== KORN MAHLEN SELBST AUSPROBIEREN ===================== */
 const gCan = $('#gameCanvas'), gx = gCan.getContext('2d'), heatBar = $('#heatBar'), gMsg = $('#gameMsg'), gBake = $('#gameBake');
 const G = { flour:0, state:'grind', pos:0, dir:0, strokes:0, dust:[], grains:[], bakeT:0, drag:null, raf:0, last:0, moved:0 };
