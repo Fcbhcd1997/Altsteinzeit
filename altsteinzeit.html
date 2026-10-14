@@ -152,7 +152,23 @@ kbd{font-family:var(--font-head);font-weight:600;min-width:2em;text-align:center
 .chip-btn{font-family:var(--font-head);font-weight:600;font-size:.98rem;background:var(--hud);border:2px solid var(--charcoal);
   border-radius:10px;padding:.42em .8em;cursor:pointer;box-shadow:0 3px 0 var(--charcoal)}
 .chip-btn.icon{padding:.42em .65em}
-#minimap{width:150px;height:150px;border-radius:50%;border:3px solid var(--charcoal);box-shadow:0 3px 0 var(--charcoal);background:#9fb06a}
+#minimap{width:150px;height:150px;border-radius:50%;border:3px solid var(--charcoal);box-shadow:0 3px 0 var(--charcoal);background:#9fb06a;cursor:zoom-in;transition:transform .15s}
+#minimap:hover{transform:scale(1.04)}
+/* ---------- Grosse Karte ---------- */
+.map-card{width:min(900px,100%);padding:22px 22px 18px}
+.map-card h2{margin:0 52px 4px 0}
+.map-hint{margin:0 0 10px;color:var(--ink-soft);font-size:.98rem}
+.map-wrap{position:relative;margin:0 auto;border-radius:10px;overflow:hidden;border:2px solid var(--charcoal);background:#e8dcc4;touch-action:none}
+#bigMapCv{display:block;width:100%;height:100%;cursor:grab}
+#bigMapCv.dragging{cursor:grabbing}
+#bigMapCv.pointing{cursor:pointer}
+.map-zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.map-zoom .chip-btn{width:42px;height:42px;padding:0;font-size:1.35rem;line-height:1}
+.map-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:.95rem;color:var(--ink-soft)}
+.map-legend i{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--charcoal);vertical-align:-2px;margin-right:6px}
+.map-legend i.new{background:#f08a24}.map-legend i.done{background:#3d9a50}.map-legend i.me{background:#e4a428;border-radius:2px;transform:rotate(45deg)}
+.fade{position:fixed;inset:0;z-index:60;background:#110c08;opacity:0;pointer-events:none;transition:opacity .38s ease}
+.fade.on{opacity:1;pointer-events:auto}
 .hud-bottom{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;gap:10px;
   padding:0 12px calc(env(safe-area-inset-bottom,0px) + 16px);pointer-events:none}
 .prompt{pointer-events:auto;font-family:var(--font-head);font-weight:600;font-size:1.1rem;background:var(--ochre);color:#2b2118;
@@ -223,6 +239,18 @@ body.touch .hud-bottom{padding-left:160px}
   <div id="tooltip" class="tooltip hidden"></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </div>
+
+<div id="bigmap" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="mapTitle">
+  <div class="card map-card">
+    <button class="x" data-close aria-label="Schliessen">✕</button>
+    <h2 id="mapTitle">🗺️ Karte</h2>
+    <p class="map-hint" id="mapHint">Klicke auf einen Punkt, dann reist du direkt dorthin. Ziehen verschiebt die Karte, mit + und − zoomst du.</p>
+    <div class="map-wrap" id="mapWrap"><canvas id="bigMapCv" role="img" aria-label="Grosse Karte mit allen Stationen"></canvas>
+      <div class="map-zoom"><button class="chip-btn icon" id="mapIn" aria-label="Hineinzoomen">+</button><button class="chip-btn icon" id="mapOut" aria-label="Herauszoomen">−</button></div></div>
+    <div class="map-legend"><span><i class="new"></i>noch nicht entdeckt</span><span><i class="done"></i>schon entdeckt</span><span><i class="me"></i>hier bist du</span></div>
+  </div>
+</div>
+<div id="fade" class="fade" aria-hidden="true"></div>
 
 <div id="start" class="modal start hidden">
   <div class="card start-card">
@@ -1762,8 +1790,8 @@ const _lk = new THREE.Vector3();
 function lookAtW(p, w, k){ p.spine.updateWorldMatrix(true, false); _lk.copy(w); p.spine.worldToLocal(_lk); _lk.y -= p.head.position.y;
   const yaw = Math.max(-1.1, Math.min(1.1, Math.atan2(_lk.x, _lk.z))), pitch = Math.max(-0.6, Math.min(0.85, Math.atan2(-_lk.y, Math.hypot(_lk.x, _lk.z))));
   k = k || 0.1; p.head.rotation.y += (yaw - p.head.rotation.y)*k; p.head.rotation.x += (pitch - p.head.rotation.x)*k; }
-function poseSit(p, seat){ p.hips.position.y = seat + 0.08; for (const l of p.legs){ l.hip.rotation.x = -1.5; l.knee.rotation.x = 1.5; } if (p.skirt){ p.skirt.rotation.x = -1.1; p.skirt.scale.set(1, 0.72, 1); } }
-function poseKneel(p){ p.hips.position.y = 0.48; for (const l of p.legs){ l.hip.rotation.x = -0.1; l.knee.rotation.x = 1.5; } }
+function poseSit(p, seat){ if (p._tw) standPose(p); p.hips.position.y = seat + 0.08; for (const l of p.legs){ l.hip.rotation.x = -1.5; l.knee.rotation.x = 1.5; } if (p.skirt){ p.skirt.rotation.x = -1.1; p.skirt.scale.set(1, 0.72, 1); } }
+function poseKneel(p){ if (p._tw) standPose(p); p.hips.position.y = 0.48; for (const l of p.legs){ l.hip.rotation.x = -0.1; l.knee.rotation.x = 1.5; } }
 function breathe(p, ph){ anims.push(t => { p.spine.scale.y = 1 + Math.sin(t*1.6+ph)*0.012; }); }
 /* Steinbeil: flacher, gerundeter Steinkopf, mit Schnur kreuzweise an den Stiel gebunden */
 function makeStoneAxe(parent){
@@ -2313,7 +2341,7 @@ function ikWorld(p, i, w){ p.spine.updateWorldMatrix(true, false); _ikW.copy(w);
 const _wpV = new THREE.Vector3(), _wpF = new THREE.Vector3(), _wpR = new THREE.Vector3(), _wpQ = new THREE.Quaternion(), _wpL = [{}, {}];
 const LEG_L1 = 0.42, LEG_L2 = 0.445, LEG_R = LEG_L1 + LEG_L2 - 0.004;
 function walkPose(p, t, rate, amp, arms){
-  const g0 = t*rate, A = Math.max(0, amp), sc = p.root.scale.x || 1;
+  const g0 = t*rate, A = Math.max(0, amp)*0.9, sc = p.root.scale.x || 1;
   p.root.updateWorldMatrix(true, false); _wpV.setFromMatrixPosition(p.root.matrixWorld);
   const stride = Math.max(0.35, 2*LEG_R*Math.sin(Math.max(A, 0.1))/0.6)*sc;
   if (p._wp){ const d = Math.hypot(_wpV.x - p._wp.x, _wpV.z - p._wp.z), dg = g0 - p._wp.g; p._wp.w += d > 0.002 && d < 0.6 ? d/stride*TAU : Math.abs(dg) < 3 ? dg : 0; }
@@ -2335,11 +2363,15 @@ function walkPose(p, t, rate, amp, arms){
     const ty = L.st ? L.h + 0.015 - hy : 0.88 + L.fy + L.h - hy, fz = L.fz, D = Math.min(LEG_R, Math.hypot(ty, fz));
     const kn = Math.acos(Math.max(-1, Math.min(1, (D*D - LEG_L1*LEG_L1 - LEG_L2*LEG_L2)/(2*LEG_L1*LEG_L2))));
     leg.hip.rotation.x = Math.atan2(-fz, -ty) - Math.atan2(LEG_L2*Math.sin(kn), LEG_L1 + LEG_L2*Math.cos(kn)); leg.knee.rotation.x = kn; }
-  if (arms){ p.arms[0].sh.rotation.set(-_wpL[0].th*0.85, 0, -0.08); p.arms[1].sh.rotation.set(-_wpL[1].th*0.85, 0, 0.08); p.arms[0].el.rotation.x = -0.22 - Math.max(0, -_wpL[1].th)*0.4; p.arms[1].el.rotation.x = -0.22 - Math.max(0, -_wpL[0].th)*0.4; }
+  if (arms){ p.arms[0].sh.rotation.set(-_wpL[0].th*0.8, 0, -0.08); p.arms[1].sh.rotation.set(-_wpL[1].th*0.8, 0, 0.08); p.arms[0].el.rotation.x = -0.25 - Math.max(0, -_wpL[0].th)*0.7; p.arms[1].el.rotation.x = -0.25 - Math.max(0, -_wpL[1].th)*0.7; }
   p.hips.position.y = hy;
+  // Becken dreht mit dem vorderen Bein mit, die Schultern drehen dagegen, der Oberkörper neigt sich leicht nach vorne
+  { const k = Math.min(1, A/0.3), tw = 0.1*k*Math.cos(w); p.hips.rotation.y = tw; p._twS = -tw*1.25; p._lean = 0.035*k; p.spine.rotation.y = p._twS; p.spine.rotation.x = p._lean; p._tw = true;
+    for (const leg of p.legs){ leg.hip.rotation.order = 'YXZ'; leg.hip.rotation.y = -tw; } }
 }
-function standPose(p){ for (const l of p.legs){ l.hip.rotation.x = 0; l.knee.rotation.x = 0; } p.hips.position.y = 0.88; }
-function poseKneelLow(p, hy){ p.hips.position.y = hy; for (const l of p.legs){ l.hip.rotation.x = -0.95; l.knee.rotation.x = 2.35; } if (p.skirt){ p.skirt.rotation.x = -0.9; p.skirt.scale.set(1, 0.7, 1); } }
+function standPose(p){ for (const l of p.legs){ l.hip.rotation.x = 0; l.knee.rotation.x = 0; } p.hips.position.y = 0.88;
+  if (p._tw){ p._tw = false; p.hips.rotation.y = 0; p.spine.rotation.y = 0; p.spine.rotation.x = 0; p._twS = p._lean = 0; for (const l of p.legs) l.hip.rotation.y = 0; } }
+function poseKneelLow(p, hy){ if (p._tw) standPose(p); p.hips.position.y = hy; for (const l of p.legs){ l.hip.rotation.x = -0.95; l.knee.rotation.x = 2.35; } if (p.skirt){ p.skirt.rotation.x = -0.9; p.skirt.scale.set(1, 0.7, 1); } }
 function angLerp(a, b, k){ let d = b - a; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU; return a + d*k; }
 /* Flacher Stein mit ebener Oberfläche (Oberkante = Höhe h) */
 const flatGeoCache = {};
@@ -3904,6 +3936,7 @@ const joy = { x:0, y:0, id:null };
 const MOVE_KEYS = ['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight','Space'];
 addEventListener('keydown', e => {
   if (e.code === 'Escape' && modal && modal !== 'start'){ closeModal(); return; }
+  if (e.code === 'KeyM' && started && (!modal || modal === 'bigmap')){ if (modal) closeModal(); else openBigMap(); e.preventDefault(); return; }
   if (modal || !started) return;
   if (MOVE_KEYS.includes(e.code)){ keys[e.code] = true; e.preventDefault(); }
   if ((e.code === 'KeyE' || e.code === 'Enter') && promptId){ openStation(promptId); e.preventDefault(); }
@@ -4015,9 +4048,122 @@ function updatePrompt(){
     else promptBtn.classList.add('hidden'); }
 }
 
+/* ---- Grosse Karte: Klick auf die kleine Karte vergrössert sie. Ziehen verschiebt, + und − zoomen.
+   Ein Klick auf eine Station bringt dich mit einer Überblendung direkt dorthin. ---- */
+const BM = { cv:null, base:null, zoom:1, cx:0, cz:0, hover:null, drag:null, marks:[], css:0, dpr:1 };
+function bmScale(){ return BM.cv.width/MS*BM.zoom; }
+function bmToScreen(mx, my){ const s = bmScale(); return [(mx - BM.cx)*s + BM.cv.width/2, (my - BM.cz)*s + BM.cv.height/2]; }
+function bmToMap(sx, sy){ const s = bmScale(); return [(sx - BM.cv.width/2)/s + BM.cx, (sy - BM.cv.height/2)/s + BM.cz]; }
+function bmClamp(){ BM.zoom = Math.max(1, Math.min(8, BM.zoom)); const h = MS/2/BM.zoom; BM.cx = Math.max(h - 6, Math.min(MS - h + 6, BM.cx)); BM.cz = Math.max(h - 6, Math.min(MS - h + 6, BM.cz)); }
+function bmTitle(id){ return visited.has(id) ? BY_ID[id].title : 'Was ist das?'; }
+function renderBigMap(){
+  const cv = BM.cv, W = cv.width, H = cv.height, d = BM.dpr, x = cv.getContext('2d');
+  // Hintergrund mit der Zeichnung der kleinen Karte, aber gestochen scharf im gewählten Ausschnitt
+  if (!BM.base) BM.base = document.createElement('canvas');
+  if (BM.base.width !== W || BM.base.height !== H){ BM.base.width = W; BM.base.height = H; }
+  const b = BM.base.getContext('2d'); b.setTransform(1, 0, 0, 1, 0, 0); b.fillStyle = '#e8dcc4'; b.fillRect(0, 0, W, H);
+  const s = bmScale(); b.setTransform(s, 0, 0, s, W/2 - BM.cx*s, H/2 - BM.cz*s);
+  // Die Beschriftung «N» der kleinen Karte wäre hier riesig: Text weglassen und unten einen eigenen Nordpfeil zeichnen
+  const keepBase = mmBase; mmBase = BM.base; b.fillText = b.strokeText = () => {};
+  try { drawMinimapBase(); } finally { mmBase = keepBase; delete b.fillText; delete b.strokeText; b.setTransform(1, 0, 0, 1, 0, 0); }
+  x.clearRect(0, 0, W, H); x.drawImage(BM.base, 0, 0);
+  // Stationen
+  BM.marks = [];
+  for (const id in hotspots){ const h = hotspots[id], [sx, sy] = bmToScreen(...w2m(h.x, h.z)); BM.marks.push({ id, sx, sy }); }
+  const R = 10*d, lab = [];
+  for (const m of BM.marks){ const done = visited.has(m.id), hv = m.id === BM.hover, r = hv ? R*1.3 : R;
+    x.beginPath(); x.arc(m.sx, m.sy, r, 0, TAU); x.fillStyle = done ? '#3d9a50' : '#f08a24'; x.fill(); x.lineWidth = 2.5*d; x.strokeStyle = '#fff'; x.stroke();
+    x.lineWidth = 1.2*d; x.strokeStyle = '#2b2118'; x.beginPath(); x.arc(m.sx, m.sy, r + 1.8*d, 0, TAU); x.stroke();
+    x.fillStyle = '#fff'; x.font = '700 ' + Math.round(r*1.15) + 'px Fredoka, Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(done ? '✓' : '?', m.sx, m.sy + d*0.5); }
+  // Namen der entdeckten Stationen: zuerst der Punkt unter der Maus, dann so viele wie ohne Überlappung Platz haben
+  x.font = '600 ' + Math.round(13*d) + 'px Fredoka, Arial, sans-serif'; x.textBaseline = 'middle';
+  const order = BM.marks.slice().sort((a, b) => (b.id === BM.hover) - (a.id === BM.hover) || visited.has(b.id) - visited.has(a.id));
+  const boxes = BM.marks.map(m => [m.sx - R - 2*d, m.sy - R - 2*d, m.sx + R + 2*d, m.sy + R + 2*d]);
+  for (const m of order){ if (!visited.has(m.id) && m.id !== BM.hover) continue;   // Unentdecktes bleibt ein Rätsel, bis man darauf zeigt
+    const t = bmTitle(m.id), tw = x.measureText(t).width, ph = 8*d, hh = 22*d;
+    let bx = m.sx + R + 6*d, by = m.sy - hh/2; if (bx + tw + ph*2 > W - 4*d) bx = m.sx - R - 6*d - tw - ph*2;
+    const bb = [bx, by, bx + tw + ph*2, by + hh], hv = m.id === BM.hover;
+    if (!hv && (lab.some(o => !(bb[2] < o[0] || bb[0] > o[2] || bb[3] < o[1] || bb[1] > o[3])) || boxes.some((o, i) => BM.marks[i] !== m && !(bb[2] < o[0] || bb[0] > o[2] || bb[3] < o[1] || bb[1] > o[3])))) continue;
+    lab.push(bb); x.fillStyle = hv ? '#2b2118' : 'rgba(255,253,247,0.92)'; x.strokeStyle = '#2b2118'; x.lineWidth = 1.2*d;
+    x.beginPath(); x.roundRect ? x.roundRect(bb[0], bb[1], bb[2] - bb[0], hh, 6*d) : x.rect(bb[0], bb[1], bb[2] - bb[0], hh); x.fill(); x.stroke();
+    x.fillStyle = hv ? '#fffdf7' : '#2b2118'; x.textAlign = 'left'; x.fillText(t, bx + ph, m.sy + d*0.5); }
+  // Nordpfeil
+  { const k = d, cx = 30*k, cy = 34*k; x.beginPath(); x.arc(cx, cy, 20*k, 0, TAU); x.fillStyle = 'rgba(255,253,247,0.9)'; x.fill(); x.lineWidth = 2*k; x.strokeStyle = '#2b2118'; x.stroke();
+    x.beginPath(); x.moveTo(cx, cy - 15*k); x.lineTo(cx + 6*k, cy - 2*k); x.lineTo(cx - 6*k, cy - 2*k); x.closePath(); x.fillStyle = '#c8402a'; x.fill();
+    x.fillStyle = '#2b2118'; x.font = '700 ' + Math.round(13*k) + 'px Fredoka, Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('N', cx, cy + 8*k); }
+  // Wo du gerade stehst
+  { const [px, py] = bmToScreen(...w2m(player.x, player.z)), a = Math.atan2(-Math.cos(player.yaw), -Math.sin(player.yaw)), k = d*1.3;
+    x.save(); x.translate(px, py); x.rotate(a); x.beginPath(); x.moveTo(13*k, 0); x.lineTo(-8*k, -8*k); x.lineTo(-4*k, 0); x.lineTo(-8*k, 8*k); x.closePath();
+    x.fillStyle = '#e4a428'; x.fill(); x.lineWidth = 2.5*d; x.strokeStyle = '#2b2118'; x.stroke(); x.restore(); }
+}
+function bmLayout(){
+  const wrap = $('#mapWrap'), card = wrap.closest('.card'), cs = getComputedStyle(card);
+  const avail = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const css = Math.max(220, Math.floor(Math.min(avail, innerHeight - 230)));
+  BM.css = css; BM.dpr = Math.min(2, devicePixelRatio || 1); wrap.style.width = wrap.style.height = css + 'px';
+  BM.cv.width = BM.cv.height = Math.round(css*BM.dpr);
+}
+function openBigMap(){
+  if (!started) return;
+  BM.cv = $('#bigMapCv'); openModal('bigmap'); bmLayout();
+  // Ausschnitt so wählen, dass alle Stationen und du selbst darauf Platz haben
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  const pts = Object.values(hotspots).map(h => w2m(h.x, h.z)); pts.push(w2m(player.x, player.z));
+  for (const [mx, my] of pts){ x0 = Math.min(x0, mx); y0 = Math.min(y0, my); x1 = Math.max(x1, mx); y1 = Math.max(y1, my); }
+  BM.zoom = Math.min(4, MS/(Math.max(x1 - x0, y1 - y0) + 34)); BM.cx = (x0 + x1)/2; BM.cz = (y0 + y1)/2; BM.hover = null; bmClamp();
+  $('#mapHint').textContent = isTouch ? 'Tippe auf einen Punkt, dann reist du direkt dorthin. Mit dem Finger verschiebst du die Karte, mit + und − zoomst du.' : 'Klicke auf einen Punkt, dann reist du direkt dorthin. Ziehen verschiebt die Karte, mit + und − oder dem Mausrad zoomst du.';
+  renderBigMap();
+}
+function bmPick(sx, sy){ let best = null, bd = 18*BM.dpr; for (const m of BM.marks){ const d = Math.hypot(m.sx - sx, m.sy - sy); if (d < bd){ bd = d; best = m.id; } } return best; }
+function bmPos(e){ const r = BM.cv.getBoundingClientRect(); return [(e.clientX - r.left)*BM.cv.width/r.width, (e.clientY - r.top)*BM.cv.height/r.height]; }
+function bmZoomAt(f, sx, sy){ const [mx, my] = bmToMap(sx, sy); BM.zoom *= f; bmClamp(); const [nx, ny] = bmToMap(sx, sy); BM.cx += mx - nx; BM.cz += my - ny; bmClamp(); renderBigMap(); }
+/* Freier Platz vor einer Station: nicht in einer Wand, nicht im tiefen Wasser, mit freier Sicht auf die Station */
+function segCross(ax, az, bx, bz, cx, cz, dx, dz){ const d1 = (bx - ax)*(cz - az) - (bz - az)*(cx - ax), d2 = (bx - ax)*(dz - az) - (bz - az)*(dx - ax), d3 = (dx - cx)*(az - cz) - (dz - cz)*(ax - cx), d4 = (dx - cx)*(bz - cz) - (dz - cz)*(bx - cx); return d1*d2 < 0 && d3*d4 < 0; }
+function standSpot(h){
+  const RW = typeof WORLD_R !== 'undefined' ? WORLD_R : 54, a0 = Math.atan2(player.x - h.x, player.z - h.z), list = [];
+  for (const [ring, dist] of [[0, 3.4], [1, 4.6], [2, 2.6], [3, 6], [4, 8]]) for (let k=0;k<24;k++){ const a = k/24*TAU; let da = Math.abs(((a - a0) % TAU + TAU + Math.PI) % TAU - Math.PI); list.push({ x:h.x + Math.sin(a)*dist, z:h.z + Math.cos(a)*dist, sc:ring*10 + da }); }
+  list.sort((p, q) => p.sc - q.sc);
+  for (const c of list){
+    if (Math.hypot(c.x, c.z) > RW - 1.5) continue;
+    if ((typeof onDeck !== 'function' || onDeck(c.x, c.z) === null) && RIVER_Y - groundH(c.x, c.z) > 0.25) continue;
+    const r = collide(c.x, c.z, c.x, c.z); if (r[2] || r[3] || Math.hypot(r[0] - c.x, r[1] - c.z) > 0.03) continue;
+    if (colliders.some(w => w.ax !== undefined && segCross(c.x, c.z, h.x, h.z, w.ax, w.az, w.bx, w.bz))) continue;
+    return [c.x, c.z]; }
+  return [h.x + 3, h.z];
+}
+let traveling = false;
+function travelTo(id){
+  if (traveling) return; const h = hotspots[id]; if (!h) return; traveling = true;
+  closeModal(); const fd = $('#fade'); fd.classList.add('on'); keys = {};
+  setTimeout(() => {
+    const [x, z] = standSpot(h); player.x = x; player.z = z; player.vx = player.vz = 0; player.yaw = Math.atan2(x - h.x, z - h.z); player.pitch = -0.08; player.camY = 0;
+    if (typeof trans !== 'undefined') trans = null;
+    setTimeout(() => { fd.classList.remove('on'); traveling = false; toast('📍 ' + (visited.has(id) ? BY_ID[id].title : 'Hier gibt es etwas zu entdecken!')); }, 260);
+  }, 400);
+}
+$('#minimap').addEventListener('click', () => { if (!modal) openBigMap(); });
+$('#minimap').setAttribute('title', 'Karte vergrössern (Taste M)');
+{ const cv = $('#bigMapCv'); BM.cv = cv; const ptrs = new Map();
+  cv.addEventListener('pointerdown', e => { const [sx, sy] = bmPos(e); ptrs.set(e.pointerId, [sx, sy]); try { cv.setPointerCapture(e.pointerId); } catch(err){}
+    if (ptrs.size === 1) BM.drag = { sx, sy, x:sx, y:sy, moved:false }; else if (ptrs.size === 2){ const [a, b] = [...ptrs.values()]; BM.drag = { pinch:Math.hypot(a[0] - b[0], a[1] - b[1]), moved:true }; } });
+  cv.addEventListener('pointermove', e => { const [sx, sy] = bmPos(e);
+    if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, [sx, sy]);
+    if (BM.drag && BM.drag.pinch && ptrs.size === 2){ const [a, b] = [...ptrs.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); bmZoomAt(d/BM.drag.pinch, (a[0] + b[0])/2, (a[1] + b[1])/2); BM.drag.pinch = d; return; }
+    if (BM.drag && ptrs.size === 1){ if (Math.hypot(sx - BM.drag.sx, sy - BM.drag.sy) > 6*BM.dpr) BM.drag.moved = true;
+      if (BM.drag.moved){ const s = bmScale(); BM.cx -= (sx - BM.drag.x)/s; BM.cz -= (sy - BM.drag.y)/s; BM.drag.x = sx; BM.drag.y = sy; bmClamp(); cv.classList.add('dragging'); renderBigMap(); return; } }
+    const id = bmPick(sx, sy); if (id !== BM.hover){ BM.hover = id; cv.classList.toggle('pointing', !!id); renderBigMap(); } });
+  const up = e => { const [sx, sy] = bmPos(e), d = BM.drag; ptrs.delete(e.pointerId); cv.classList.remove('dragging');
+    if (ptrs.size === 0){ BM.drag = null; if (d && !d.moved && !d.pinch){ const id = bmPick(sx, sy); if (id) travelTo(id); } } };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', e => { ptrs.delete(e.pointerId); if (!ptrs.size) BM.drag = null; cv.classList.remove('dragging'); });
+  cv.addEventListener('pointerleave', () => { if (BM.hover && !BM.drag){ BM.hover = null; cv.classList.remove('pointing'); renderBigMap(); } });
+  cv.addEventListener('wheel', e => { e.preventDefault(); const [sx, sy] = bmPos(e); bmZoomAt(e.deltaY < 0 ? 1.18 : 1/1.18, sx, sy); }, { passive:false });
+  $('#mapIn').addEventListener('click', () => bmZoomAt(1.4, BM.cv.width/2, BM.cv.height/2));
+  $('#mapOut').addEventListener('click', () => bmZoomAt(1/1.4, BM.cv.width/2, BM.cv.height/2));
+  addEventListener('resize', () => { if (modal === 'bigmap'){ bmLayout(); bmClamp(); renderBigMap(); } }); }
+
 /* ---- Minikarte ---- */
 const mm = $('#minimap'), mctx = mm.getContext('2d'); const MS = mm.width, MC = MS/2, MSC = (MC-10)/56;
-const mmBase = document.createElement('canvas'); mmBase.width = mmBase.height = MS;
+let mmBase = document.createElement('canvas'); mmBase.width = mmBase.height = MS;
 function w2m(x,z){ return [MC + x*MSC, MC + z*MSC]; }
 function drawMinimapBase(){
   const c = mmBase.getContext('2d'); c.clearRect(0,0,MS,MS); c.save(); c.beginPath(); c.arc(MC,MC,MC,0,TAU); c.clip();
@@ -4048,10 +4194,11 @@ function drawMinimap(){
 /* ===================== START & SCHLEIFE ===================== */
 function controlsHTML(){
   return isTouch ?
-    '<div class="keys">🕹️</div><div>Joystick unten links: laufen</div><div class="keys">👆</div><div>Mit dem Finger wischen: umschauen</div><div class="keys"><span class="qm">?</span></div><div>Antippen: entdecken und lesen</div><div class=\"keys\">⚙️</div><div>Ruckelt es? Oben auf «Grafik» tippen.</div>' :
+    '<div class="keys">🕹️</div><div>Joystick unten links: laufen</div><div class="keys">👆</div><div>Mit dem Finger wischen: umschauen</div><div class="keys"><span class="qm">?</span></div><div>Antippen: entdecken und lesen</div><div class=\"keys\">🗺️</div><div>Kleine Karte oben rechts antippen: grosse Karte. Einen Punkt antippen und hinreisen.</div><div class=\"keys\">⚙️</div><div>Ruckelt es? Oben auf «Grafik» tippen.</div>' :
     '<div class="keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div><div>oder Pfeiltasten: laufen (mit <kbd>Shift</kbd> rennen)</div>' +
     '<div class="keys">🖱️</div><div>Maustaste gedrückt halten und ziehen: umschauen</div>' +
     '<div class="keys"><span class="qm">?</span></div><div>Anklicken: entdecken und lesen. Ganz nah dran geht auch die Taste <kbd>E</kbd>.</div>' +
+    '<div class="keys">🗺️</div><div>Kleine Karte oben rechts anklicken oder Taste <kbd>M</kbd>: grosse Karte. Einen Punkt anklicken und hinreisen.</div>' +
     '<div class=\"keys\">⚙️</div><div>Ruckelt es? Oben auf «Grafik» klicken und «Schnell» wählen.</div>';
 }
 let trans = null;
@@ -4091,6 +4238,7 @@ function loop(){
   }
   WIND.value = t; SKY_UNI.uTime.value = t; updateSun(started ? player.x : 0, started ? player.z : 0);
   for (const f of anims) f(t, dt);
+  if (typeof fitSkirts === 'function') fitSkirts();
   for (const h of markers){ h.marker.position.y = h.baseY + Math.sin(t*2 + h.x)*0.12; const s = (h.id === hoverId ? 1.45 : 1.15); h.marker.scale.set(s,s,1);
     if (h.ring) h.ring.material.opacity = (h.id === hoverId || h.id === promptId) ? 0.6 : (visited.has(h.id) ? 0.12 : 0.18 + Math.sin(t*3 + h.x)*0.08); }
   if (started) drawMinimap();
@@ -4103,12 +4251,12 @@ function zoned(fn, R, center){
     const z = { members:[], R:R || 48, active:true, center:new THREE.Vector3(), radius:0 };
     const c0 = scene.children.length, a0 = anims.length, prev = curZone; curZone = z;
     let res; try { res = fn.apply(this, args); } finally { curZone = prev; }
-    for (let i = c0; i < scene.children.length; i++){ const o = scene.children[i]; if (!o.userData.keep) z.members.push(o); }
+    const made = []; for (let i = c0; i < scene.children.length; i++){ const o = scene.children[i]; made.push(o); if (!o.userData.keep) z.members.push(o); }
     const lights = []; for (const m of z.members) m.traverse(o => { if (o.isLight) lights.push(o); });
     for (const l of lights){ l.updateWorldMatrix(true, false); scene.attach(l); l.userData.keep = true; }
     for (let i = a0; i < anims.length; i++){ const f = anims[i]; anims[i] = (t, dt) => { if (z.active) f(t, dt); }; }
     if (center){ z.center.set(center[0], groundH(center[0], center[1]), center[1]); z.radius = 6; }
-    else if (z.members.length){ const box = new THREE.Box3(), sph = new THREE.Sphere(); for (const m of z.members){ m.updateWorldMatrix(true, true); box.expandByObject(m); }
+    else if (made.length){ const box = new THREE.Box3(), sph = new THREE.Sphere(); for (const m of (z.members.length ? z.members : made)){ m.updateWorldMatrix(true, true); box.expandByObject(m); }
       if (!box.isEmpty()){ box.getBoundingSphere(sph); z.center.copy(sph.center); z.radius = Math.min(sph.radius, 45); } }
     ZONES.push(z); return res;
   };
