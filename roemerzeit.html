@@ -1279,6 +1279,7 @@ const AQUA = { x0:-176, x1:-101.5, z:-29, y0:9.6, y1:7.2 }; // Aquädukt von den
 const CAMP = [-42, -106];                             // Legionslager vor dem Nordtor
 const DRILL = rect(-16, -100, 7.5, 5, 0);             // Übungsplatz
 const LIMES = { z:-126, x0:-104, x1:104, towers:[-90, -54, -20, 20, 54, 90] }; // Grenze ohne Fluss: Graben, Palisade, Wachtürme, Tor an der Strasse nach Norden
+const ROADWORK = { x0:-2.3, zc:92.8, rw:3.2 };       // Baustelle der neuen Strasse, die nach Westen abzweigt
 const FIELD = rect(107.5, -60, 5.5, 5.2, 0.1);         // Romulus zieht die Furche, am Fluss wie die Geschichte mit der Wölfin
 const PATHS = [
   [[0,140],[0,80]], [[0,-80],[0,-140]], [[-98,1],[-140,1]], [[98,1],[112,1]],   // die grossen Strassen aus den Toren
@@ -1305,12 +1306,18 @@ function segDist(px,pz,ax,az,bx,bz){ const dx=bx-ax, dz=bz-az; const t=Math.max(
 function pathDist(x,z){ let d=1e9; for (const p of PATHS) for (let i=0;i<p.length-1;i++) d = Math.min(d, segDist(x,z,p[i][0],p[i][1],p[i+1][0],p[i+1][1])); return d; }
 function streetDist(x, z){ let d = 1e9; for (const [a, b, w] of STREETS) d = Math.min(d, segDist(x, z, a[0], a[1], b[0], b[1]) - w/2); return d; }
 /* Der Graben vor dem Limes, aussen auf der Nordseite: 0 daneben, 1 in der Mitte; an der Strasse bleibt eine Erdbrücke */
-const LD_Z = -4.8, LD_HW = 3.4;
+const LD_Z = -5.4, LD_HW = 4.0, LD_D = 2.6;   // Lage, halbe Breite und Tiefe
 function limesDitch(x, z){ const lz = z - LIMES.z - LD_Z; if (lz < -LD_HW || lz > LD_HW || x < LIMES.x0 - 4 || x > LIMES.x1 + 4) return 0;
-  return (0.5 + 0.5*Math.cos(Math.PI*lz/LD_HW))*sstep(4.6, 6.8, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
+  return (0.5 + 0.5*Math.cos(Math.PI*lz/LD_HW))*sstep(4.6, 5.6, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
 /* Farbe der Erde im Graben: über die ganze Breite und ein Stück darüber hinaus braun */
 function limesDitchMask(x, z){ const lz = Math.abs(z - LIMES.z - LD_Z); if (lz > LD_HW + 0.9 || x < LIMES.x0 - 4 || x > LIMES.x1 + 4) return 0;
-  return sstep(LD_HW + 0.9, LD_HW - 0.2, lz)*sstep(4.2, 5.8, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
+  return sstep(LD_HW + 0.9, LD_HW - 0.2, lz)*sstep(4.2, 5.2, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
+/* Das Untergeschoss unter dem Warmbad der Thermen (Heizraum mit dem Ofen): dort liegt das Gelände tiefer.
+   Die Lage ist in Koordinaten der Thermen angegeben (Ursprung THERMEN), y = Boden des Heizraums */
+const TH_PIT = { x0:2.6, x1:4.95, z0:0.95, z1:4.6, y:-1.45 };
+function thermPit(x, z){ const lx = x - THERMEN[0], lz = z - THERMEN[1], e = 0.3;
+  if (lx < TH_PIT.x0 - e || lx > TH_PIT.x1 + e || lz < TH_PIT.z0 - e || lz > TH_PIT.z1 + e) return 0;
+  return sstep(TH_PIT.x0 - e, TH_PIT.x0, lx)*sstep(TH_PIT.x1 + e, TH_PIT.x1, lx)*sstep(TH_PIT.z0 - e, TH_PIT.z0, lz)*sstep(TH_PIT.z1 + e, TH_PIT.z1, lz); }
 function amphiE(x, z){ return Math.hypot((x - AMPHI.x)/AMPHI.rx, (z - AMPHI.z)/AMPHI.rz); }
 function groundH(x,z){
   const r = Math.hypot(x,z), dr = Math.abs(x - riverX(z));
@@ -1321,7 +1328,9 @@ function groundH(x,z){
   // Das Forum liegt eine Stufe höher
   h += 0.12*(1 - sstep(-0.25, 0, rectD(FORUM, x, z)));
   // Der Graben vor dem Limes
-  h -= 1.4*limesDitch(x, z);
+  h -= LD_D*limesDitch(x, z);
+  // Der Heizraum unter den Thermen
+  h -= 1.7*thermPit(x, z);
   // Erst weit draussen sanfte Hügel; im Westen ein Hügelzug mit der Quelle des Aquädukts
   const rt = Math.max(0, r - 150);
   let rim = Math.min(rt*rt*0.004 + rt*0.1, 30)*(0.4 + 0.95*fbm(x*0.012+5.1, z*0.012-2.2, 3));
@@ -1343,7 +1352,7 @@ const P = {
   legionaer:[-8, -95], ausruestung:[-28, -88], schildkroete:[16, -98], legion:[-42, -99],
   toga:[-7.6, 5.6], stola:[-4.8, 11], familie:[-13.4, 8.5], schule:[11.6, 8.4], zahlen:[7.0, 11.4], abakus:[6.4, 8.5], berufe:[9.6, -3.6], kueche:[-17.6, 12.3], latein:[-2.8, -3.4],
   strasse:[-5.2, 95.2], tempel:[0, -14.4], triumphbogen:[-3.6, 84.6], insula:[9.4, -8.4], amphitheater:[50.6, 62.5],
-  aquaedukt:[-110, -25.2], thermen:[11.5, -14.4], hypokaustum:[25.7, -15.2], latrine:[16, -24.2]
+  aquaedukt:[-110, -25.2], thermen:[11.5, -14.4], hypokaustum:[21.4, -15.05], latrine:[16, -24.2]
 };
 const START = { x:0, z:104, yaw:0 };
 function addSplat(mat){
@@ -1645,7 +1654,7 @@ function makePerson(o){
   const clothHex = o.leather ? o.leather : Array.isArray(cloth) ? cloth[0] : cloth;
   const lthM = o.leather ? M(clothHex, { tex:'leather', side:THREE.DoubleSide }) : fabricMat(cloth, linen ? 5 : 4, linen);
   const trimM = o.leather ? M('#4a3322', { tex:'leather' }) : M(toneHex(clothHex, '#3a2a1c', 0.4), { tex:'wool', rep:6 });
-  const legM = o.trousers ? fabricMat(o.trousers, 3) : kid || (fem && !o.leggings) || (o.sandals && !o.leggings) ? skinM : M(o.leggings || '#6a4a32', { tex:'leather' });   // Römer in Sandalen: nackte Beine
+  const legM = o.trousers ? fabricMat(o.trousers, 3) : o.bath || kid || (fem && !o.leggings) || (o.sandals && !o.leggings) ? skinM : M(o.leggings || '#6a4a32', { tex:'leather' });   // Römer in Sandalen: nackte Beine
   const shoeM = M(o.shoes || '#4e3626', { tex:'leather', roughness:0.8 });
   const beltM = M('#4a3322', { tex:'leather' });
   const eyeM = M('#e2d9cc', { tex:null, roughness:0.2 }), irisM = M('#22140b', { tex:null, roughness:0.08 });
@@ -1653,13 +1662,14 @@ function makePerson(o){
   hips.position.y = 0.88; root.add(hips); hips.add(spine);
   const wq = fem ? 0.93 : 1;
   const torso = lathe([[0.001,-0.02],[0.15*wq,-0.02],[0.158*wq,0.08],[0.148*wq,0.2],[0.166*wq,0.35],[0.18*wq,0.45],[0.188*wq,0.52],[0.165*wq,0.58],[0.1,0.618],[0.045,0.64],[0.001,0.645]], 30);
-  torso.scale(1, 1, 0.72); mk(torso, lthM, spine);
+  torso.scale(1, 1, 0.72); mk(torso, o.bath ? skinM : lthM, spine);   // im Bad: nur ein Lendentuch (und bei Frauen ein Brustband)
   // Kittel bis zum Knie, Frauen tragen lange Kleider
-  const yb = kid ? (o.long ? -0.62 : -0.3) : (o.toga || o.long) ? -0.8 : (o.dress || fem) ? -0.66 : -0.4;
+  const yb = o.bath ? -0.13 : kid ? (o.long ? -0.62 : -0.3) : (o.toga || o.long) ? -0.8 : (o.dress || fem) ? -0.66 : -0.4;
   // Viele Ringe übereinander, damit sich der Stoff dort wölben kann, wo ein Bein dagegen drückt (siehe fitSkirts)
-  const sk = ragged(lathe(densify([[0.158*wq,0.06],[0.17,-0.06],[0.2,-0.22],[fem ? 0.24 : 0.215, yb*0.75],[fem ? 0.255 : 0.226, yb]], 0.045), 30), yb, yb + 0.06, linen ? 0.025 : 0.06, 7, seed);
+  const sk = ragged(lathe(densify(o.bath ? [[0.158*wq,0.06],[0.168,-0.04],[0.172, yb]] : [[0.158*wq,0.06],[0.17,-0.06],[0.2,-0.22],[fem ? 0.24 : 0.215, yb*0.75],[fem ? 0.255 : 0.226, yb]], 0.045), 30), yb, yb + 0.06, o.bath ? 0 : linen ? 0.025 : 0.06, 7, seed);
   sk.scale(1, 1, 0.8); const skirt = mk(sk, lthM, hips);
-  mk(new THREE.TorusGeometry(0.163*wq, 0.017, 6, 30).rotateX(Math.PI/2).scale(1, 1, 0.74), beltM, spine, 0, 0.02, 0);
+  if (!o.bath) mk(new THREE.TorusGeometry(0.163*wq, 0.017, 6, 30).rotateX(Math.PI/2).scale(1, 1, 0.74), beltM, spine, 0, 0.02, 0);
+  else if (fem) mk(new THREE.CylinderGeometry(0.176*wq, 0.172*wq, 0.11, 30, 1, true).scale(1, 1, 0.76), lthM, spine, 0, 0.44, 0);
   // Römer: Purpurstreifen (Clavus) auf der Tunika, Toga über der linken Schulter, Rüstung der Legionäre
   if (o.clavus) for (const sx of [-0.06, 0.06]) mk(new THREE.BoxGeometry(0.03, 0.5, 0.01), M(o.clavus, { tex:'wool', rep:4 }), spine, sx, 0.33, 0.128*wq + 0.004);
   if (o.toga){ const tm = M(o.toga, { tex:'wool', rep:4, side:THREE.DoubleSide, roughness:0.95 });
@@ -1687,7 +1697,7 @@ function makePerson(o){
   // Gürteltasche wie beim «Ötzi»
   if (o.pouch) mk(bumpy(new THREE.SphereGeometry(0.055, 12, 10), 0.1, 6, seed).scale(1, 0.85, 0.55), M('#5e4026', { tex:'leather' }), spine, 0.09, -0.04, 0.12);
   // Halsausschnitt mit gesäumtem Rand
-  mk(new THREE.TorusGeometry(0.062, 0.012, 6, 20).rotateX(Math.PI/2 - 0.25).scale(1, 1, 0.85), trimM, spine, 0, 0.63, 0.012);
+  if (!o.bath) mk(new THREE.TorusGeometry(0.062, 0.012, 6, 20).rotateX(Math.PI/2 - 0.25).scale(1, 1, 0.85), trimM, spine, 0, 0.63, 0.012);
   // Weste aus Ziegenfell (kurzhaarig)
   if (o.vest){ const prof = [[0.08,0.655],[0.165,0.6],[0.2,0.5],[0.205,0.36],[0.198,0.2]], vp = lathe(prof, 30); bumpy(vp, 0.05, 7, seed); ragged(vp, 0.19, 0.26, 0.04, 6, seed + 1); vp.scale(1.02, 1, 0.8);
     mk(vp, M(o.vest, { tex:'fur', side:THREE.DoubleSide, sheenColor:toneHex(o.vest, '#000000', 0.5) }), spine); }
@@ -1733,9 +1743,13 @@ function makePerson(o){
     hairParts.push(xf(new THREE.CapsuleGeometry(0.008, 0.032, 4, 10), 0, -0.037, 0.095, 0, 0, Math.PI/2));
   }
   bake(head, hairM, hairParts.map(g => { if (g.attributes.tsway) g.deleteAttribute('tsway'); return g; }));
-  // Palla: Umhang der Römerinnen, über den Kopf gezogen
+  // Palla: das grosse Tuch der Römerinnen. Es ist über den Kopf gezogen (vorne fürs Gesicht offen), fällt über Schultern und Rücken
+  // bis zu den Knien, und ein Ende liegt schräg über der Brust
   if (o.palla){ const pm = M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide, roughness:0.95 });
-    mk(new THREE.SphereGeometry(0.142, 26, 14, 0, TAU, 0, Math.PI*0.6).scale(1.02, 1.04, 1.12), pm, head, 0, 0.012, -0.022, -0.42, 0, 0); }
+    mk(new THREE.SphereGeometry(0.142, 26, 14, Math.PI/2 + 0.95, TAU - 1.9, 0, Math.PI*0.78).scale(1.03, 1.08, 1.2), pm, head, 0, 0.014, -0.012);
+    const mg = new THREE.LatheGeometry([[0.1, 0.73], [0.15, 0.67], [0.24, 0.6], [0.29, 0.5], [0.29, 0.3], [0.292, 0.05], [0.3, -0.25], [0.31, -0.5]].map(q => new THREE.Vector2(q[0], q[1])), 34, 0.9, TAU - 1.8);
+    ragged(mg, -0.5, -0.44, 0.03, 7, seed + 11); mg.scale(1, 1, 0.8); mg.computeVertexNormals(); mk(mg, pm, spine);
+    const band = new THREE.CylinderGeometry(0.205*wq, 0.222*wq, 0.2, 30, 1, true); band.scale(1, 1, 0.84); mk(band, pm, spine, 0, 0.36, 0.004, 0, 0, -0.55); }
   // Römischer Helm (Galea) mit Nackenschutz, Wangenklappen und Federbusch; Lorbeerkranz
   if (o.galea){ const hm = METAL[o.galea === true ? 'iron' : o.galea]();
     bake(head, hm, [xf(new THREE.SphereGeometry(0.132, 28, 14, 0, TAU, 0, Math.PI*0.5).scale(1, 0.98, 1.08), 0, 0.03, -0.006, -0.08, 0, 0),
@@ -1759,7 +1773,7 @@ function makePerson(o){
   for (const sd of [-1,1]){
     const sh = new THREE.Group(); sh.position.set(sd*0.205*wq, 0.53, 0); sh.rotation.z = sd*0.08; spine.add(sh);
     bake(sh, armM, [ xf(new THREE.SphereGeometry(0.058, 16, 12), 0, -0.01, 0), xf(new THREE.CapsuleGeometry(0.05, 0.19, 4, 14), 0, -0.145, 0) ]);
-    if (!o.sleeves) mk(lathe([[0.062,-0.12],[0.063,-0.05],[0.061,-0.005],[0.047,0.03],[0.024,0.047],[0.001,0.052]], 20), lthM, sh, 0, -0.008, 0);
+    if (!o.sleeves && !o.bath) mk(lathe([[0.062,-0.12],[0.063,-0.05],[0.061,-0.005],[0.047,0.03],[0.024,0.047],[0.001,0.052]], 20), lthM, sh, 0, -0.008, 0);
     if (o.toga && sd > 0) mk(lathe([[0.072,-0.24],[0.072,-0.1],[0.07,-0.005],[0.05,0.035],[0.02,0.05],[0.001,0.054]], 20), M(o.toga, { tex:'wool', rep:4, side:THREE.DoubleSide }), sh, 0, -0.008, 0);
     if (o.palla) mk(lathe([[0.07,-0.16],[0.071,-0.05],[0.068,-0.005],[0.05,0.035],[0.02,0.05],[0.001,0.054]], 20), M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide }), sh, 0, -0.008, 0);
     if (o.armor) mk(new THREE.SphereGeometry(0.07, 14, 8, 0, TAU, 0, Math.PI*0.55).scale(1.1, 0.9, 1.05), METAL[o.armor === true ? 'iron' : o.armor](), sh, 0, 0.0, 0);
@@ -1782,7 +1796,7 @@ function makePerson(o){
       mk(new THREE.SphereGeometry(0.058, 16, 10).scale(0.82, 0.5, 1.6), skinM, knee, 0, -0.41, 0.04);
       bake(knee, shoeM, [ xf(new THREE.BoxGeometry(0.1, 0.022, 0.24), 0, -0.437, 0.04), ...[0, 1, 2].map(k => xf(new THREE.TorusGeometry(0.052 - k*0.004, 0.007, 5, 16), 0, -0.4 + k*0.04, 0.02 - k*0.012, Math.PI/2 - 0.2, 0, 0)),
         xf(new THREE.TorusGeometry(0.044, 0.007, 5, 14), 0, -0.42, 0.11, Math.PI/2 + 0.6, 0, 0) ]);
-    } else if (kid && o.barefoot){
+    } else if ((kid && o.barefoot) || o.bath){
       mk(new THREE.SphereGeometry(0.06, 16, 10).scale(0.8, 0.55, 1.6), skinM, knee, 0, -0.41, 0.04);
     } else {
       bake(knee, shoeM, [ xf(bumpy(new THREE.CylinderGeometry(0.066, 0.072, 0.12, 18, 2, true), 0.08, 9, seed+sd), 0, -0.37, 0),
@@ -3454,7 +3468,7 @@ function makeCrow(){ const g = new THREE.Group(), m = M('#18181c', { tex:null, r
 const DECKS = [];
 /* Begehbare Flächen über dem Boden (Böden, Stufen). Eine Rampe { ramp:{ axis:'x'|'z', a0, a1, y0, y1 } } steigt gleichmässig an: so klettert man Leitern hinauf. */
 function onDeck(x, z){ for (const d of DECKS){ if (x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1){ if (d.ramp){ const r = d.ramp, u = Math.max(0, Math.min(1, ((r.axis === 'x' ? x : z) - r.a0)/(r.a1 - r.a0))); return r.y0 + (r.y1 - r.y0)*u; } return d.y; } } return null; }
-function onRamp(x, z){ for (const d of DECKS) if (d.ramp && x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1) return true; return false; }
+function onRamp(x, z){ for (const d of DECKS) if (d.ramp && !d.ramp.stairs && x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1) return true; return false; }
 function makeGate(rc, lz){
   const HMt = houseMats(), [gx0, gz0] = rcW(rc, rc.hw + 0.25, lz), gate = new THREE.Group(); gate.position.set(gx0, groundH(gx0, gz0), gz0); gate.rotation.y = rc.yaw + Math.PI/2 + 0.05; scene.add(gate);
   const wg = new THREE.PlaneGeometry(1.9, 0.9); wg.translate(0, 0.5, 0); scaleUV(wg, 1.9, 1); mk(wg, HMt.wattle, gate);
@@ -3629,7 +3643,9 @@ function inscriptionTex(lines, w, h, bg){ return canvasTex(w, h, (x, W, H) => { 
   }); }
 /* Randsteine nicht quer über Kreuzungen, Plätze und Tore legen */
 function kerbFree(x, z){ for (const [a, b, w] of STREETS) if (segDist(x, z, a[0], a[1], b[0], b[1]) < w/2 + 0.05) return false;
-  if (rectD(FORUM, x, z) < 0.4) return false; for (const [gx, gz] of GATES) if (Math.hypot(x - gx, z - gz) < 5) return false; return true; }
+  if (rectD(FORUM, x, z) < 0.4) return false; for (const [gx, gz] of GATES) if (Math.hypot(x - gx, z - gz) < 5) return false;
+  if (Math.abs(x - ROADWORK.x0) < 0.6 && Math.abs(z - ROADWORK.zc) < ROADWORK.rw/2 + 0.2) return false;   // dieses Stück setzt die Baustelle selbst (es verschwindet, wenn gebaut wird)
+  return true; }
 /* Gepflasterte Strasse als Band über dem Gelände (Mitte der Strasse leicht gewölbt) */
 function pavedStrip(ax, az, bx, bz, w, mat, lift, noKerb){ const L = Math.hypot(bx - ax, bz - az), n = Math.max(2, Math.ceil(L/1.2)), ux = (bx - ax)/L, uz = (bz - az)/L, px = -uz, pz = ux, pos = [], uv = [], idx = [];
   for (let i=0;i<=n;i++){ const t = i/n, cx = ax + (bx - ax)*t, cz = az + (bz - az)*t;
@@ -4040,7 +4056,10 @@ function buildLimes(){
     for (let x = X0; x < X1 - 0.1; x += 16){ const xe = Math.min(X1, x + 16); pts.push([x, Z]); gaps.push(x < GW && xe > -GW ? [Math.max(0, -GW - x), Math.min(xe - x, GW - x)] : null); }
     pts.push([X1, Z]); gaps.push([0, 1e9]);
     makePalisade(pts, gaps, 3.0); for (let i=n0; i<scene.children.length; i++) keep(scene.children[i]); }
-  // Der Graben vor der Palisade ist direkt ins Gelände gegraben (siehe limesDitch im Layout)
+  // Der Graben vor der Palisade ist direkt ins Gelände gegraben (siehe limesDitch im Layout). Er ist so tief, dass man nicht
+  // hinüberkommt: am Rand hält ein Hindernis auf, nur über die Erdbrücke an der Strasse geht es weiter
+  { const zc = LIMES.z + LD_Z, e = LD_HW - 0.35; for (const [xa, xb] of [[LIMES.x0 - 4, -5.0], [5.0, LIMES.x1 + 4]]){
+      colliders.push({ ax:xa, az:zc - e, bx:xb, bz:zc - e, r:0.15 }, { ax:xa, az:zc + e, bx:xb, bz:zc + e, r:0.15 }); const xe = Math.abs(xa) < 6 ? xa : xb; colliders.push({ ax:xe, az:zc - e, bx:xe, bz:zc + e, r:0.15 }); } }
   // Wachturm aus Stein mit Holzgeschoss und Ziegeldach
   const stoneTower = (x, z, guard, climb) => { const g = keep(grp(x, z)), H = 5.2, g0 = g.position.y;
     wbox(g, 3.4, H, 3.4, R.ashlar, 0, 0, 0, 0, 2); mk(new THREE.PlaneGeometry(0.9, 1.9), R.dark, g, 0, 0.95, -1.71, 0, Math.PI, 0);
@@ -4536,16 +4555,16 @@ function buildSchool(){
       for (let j=0;j<8;j++) for (let i=0;i<8;i++){ const v = 0.88 + r()*0.16; x.fillStyle = 'rgb(' + (196*v|0) + ',' + (122*v|0) + ',' + (84*v|0) + ')'; x.fillRect(i*32 + 1.5, j*32 + 1.5, 29, 29); } });
     ft.wrapS = ft.wrapT = THREE.RepeatWrapping; ft.repeat.set(5, 4);
     mk(new THREE.PlaneGeometry(HW*2 - 0.3, HD*2 - 0.3).rotateX(-Math.PI/2), new THREE.MeshStandardMaterial({ map:ft, roughness:0.75 }), g, 0, 0.04, 0).receiveShadow = true; }
-  const north = rectWall(HW*2, WH, 0.35, [[-2.4, 0, 1.0, 3.0], [1.6, 1.6, 0.45, 1.0], [3.6, 1.6, 0.45, 1.0]]); mk(north, R.ochre, g, 0, 0, -HD).castShadow = true;
-  const south = rectWall(HW*2, WH, 0.35, [[0.6, 2.2, 0.45, 0.9], [3.4, 2.2, 0.45, 0.9]]); mk(south, R.ochre, g, 0, 0, HD).castShadow = true;
-  for (const sx of [-1, 1]){ const w = rectWall(HD*2 + 0.35, WH, 0.35, [[0, 2.2, 0.45, 0.9]]); mk(w, R.ochre, g, sx*HW, 0, 0, 0, Math.PI/2, 0).castShadow = true; }
+  const north = rectWall(HW*2, WH, 0.35, [[-2.4, 0, 1.0, 3.0]]); mk(north, R.ochre, g, 0, 0, -HD).castShadow = true;
+  const south = rectWall(HW*2, WH, 0.35, []); mk(south, R.ochre, g, 0, 0, HD).castShadow = true;
+  for (const sx of [-1, 1]){ const w = rectWall(HD*2 + 0.35, WH, 0.35, []); mk(w, R.ochre, g, sx*HW, 0, 0, 0, Math.PI/2, 0).castShadow = true; }
   wbox(g, HW*2 + 0.39, 0.6, 0.02, R.red, 0, 0.2, HD + 0.19, 0, 2); for (const [x0, x1] of [[-HW - 0.195, -3.4], [-1.4, HW + 0.195]]) wbox(g, x1 - x0, 0.6, 0.02, R.red, (x0 + x1)/2, 0.2, -HD - 0.19, 0, 2);   // roter Sockel, an der Tür offen
   gableRoof(g, HD*2 + 0.35, HW*2 + 0.35, 1.5, 0.35, WH, 0, 0, Math.PI/2);
   mk(new THREE.PlaneGeometry(HW*2, HD*2).rotateX(Math.PI/2), M('#e8dcc4', { tex:'plaster' }), g, 0, WH - 0.02, 0);
-  // Bemalte Wände innen, Tür und Fenster bleiben frei; innen an der Tür ein Rahmen mit «EXITVS – Ausgang»
-  { const T = hallWallTex(); wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, -HD + 0.19, 0, [[-2.4, 0, 1.02, 3.05], [1.6, 1.6, 0.47, 1.02], [3.6, 1.6, 0.47, 1.02]]);
-    wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, HD - 0.19, Math.PI, [[-0.6, 2.2, 0.47, 0.92], [-3.4, 2.2, 0.47, 0.92]]);
-    for (const sx of [-1, 1]) wallPaintH(g, T, HD*2 - 0.4, 2.8, sx*(HW - 0.19), 0, 0, -sx*Math.PI/2, [[0, 2.2, 0.47, 0.92]]);
+  // Bemalte Wände innen, die Tür bleibt frei; innen an der Tür ein Rahmen aus Marmor
+  { const T = hallWallTex(); wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, -HD + 0.19, 0, [[-2.4, 0, 1.02, 3.05]]);
+    wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, HD - 0.19, Math.PI, []);
+    for (const sx of [-1, 1]) wallPaintH(g, T, HD*2 - 0.4, 2.8, sx*(HW - 0.19), 0, 0, -sx*Math.PI/2, []);
     exitFrame(g, -2.4, 0, -HD + 0.18, 0, 2.0, 3.0); }
   // Inschrift über der Tür: «LVDVS» heisst Schule
   mk(new THREE.PlaneGeometry(2.2, 0.55), new THREE.MeshStandardMaterial({ map:inscriptionTex(['LVDVS'], 512, 128), roughness:0.8 }), g, -2.4, 3.45, -HD - 0.19, 0, Math.PI, 0);
@@ -4584,8 +4603,11 @@ function buildSchool(){
   const peb = []; for (let i=0;i<4;i++) for (let k=0;k<5;k++){ const p = mk(new THREE.SphereGeometry(0.022, 10, 8), R.bronze, ab, 0, 0.84, 0); peb.push({ p, col:i, k }); }
   const bo = person(g, { scale:0.76, skin:'#c48f6c', hair:'#2b1d12', cloth:'#8aa060', sandals:true }, -HW + 1.85, -0.6, -Math.PI/2);
   const W = new THREE.Vector3(), D = new THREE.Vector3(), GQ = new THREE.Quaternion();
-  const abX = i => ((64 + i*128)/512 - 0.5)*1.2, valOf = (t, col) => Math.floor((t*0.3 + col*2.3) % 10);
-  anims.push(t => { g.updateWorldMatrix(true, false);
+  // Der Junge zählt in Schritten weiter: jedes Mal schiebt er in einer Rille ein Steinchen dazu, die Steinchen gleiten an ihren Platz
+  const abX = i => ((64 + i*128)/512 - 0.5)*1.2, vals = [0, 2, 3, 6], ORDER = [3, 3, 2, 3, 3, 1, 3, 2, 0, 3], STEP = 1.6; let lastN = -1, mvCol = 3;
+  const tgtZ = (q, v) => q.k === 4 ? (v >= 5 ? -0.11 : -0.22) : (q.k < v % 5 ? -0.01 + q.k*0.045 : 0.235 - (3 - q.k)*0.045);
+  for (const q of peb) q.p.position.set(abX(q.col), 0.84, tgtZ(q, vals[q.col]));
+  anims.push((t, dt) => { g.updateWorldMatrix(true, false);
     // Der Lehrer liest vor und zeigt ab und zu auf die Tafel
     te.g.getWorldQuaternion(GQ); const show = Math.sin(t*0.35) > 0.5; W.set(0, 1.12, 0.4); te.g.localToWorld(W); sc.position.copy(W); sc.quaternion.copy(GQ); sc.rotateX(-1.1);
     for (const i of [0, 1]){ if (show && i === 0){ te.arms[0].sh.quaternion.identity(); te.arms[0].sh.rotation.set(-1.4, -0.6, -0.6); te.arms[0].el.rotation.x = -0.2; freeHand(te, 0); continue; }
@@ -4600,8 +4622,9 @@ function buildSchool(){
       gripAt(rd, 0, hp, dir); rd.arms[1].sh.rotation.set(-0.2, 0, 0.15); rd.arms[1].el.rotation.x = -0.3; lookAtW(rd, W, 0.2); }
     // Der Junge schiebt Steinchen in den Rillen hin und her
     // oben ein Steinchen für die Fünf, unten vier für die Einer; zur Mitte geschoben zählen sie
-    for (const q of peb){ const v = valOf(t, q.col); if (q.k === 4) q.p.position.set(abX(q.col), 0.84, v >= 5 ? -0.11 : -0.22); else q.p.position.set(abX(q.col), 0.84, q.k < v % 5 ? -0.01 + q.k*0.045 : 0.235 - (3 - q.k)*0.045); }
-    { const col = Math.floor(t*0.6) % 4, W2 = new THREE.Vector3(abX(col), 0.88, 0.05 + Math.sin(t*2.2)*0.1); ab.localToWorld(W2); ikWorld(bo, 0, W2); freeHand(bo, 0);
+    { const n = Math.floor(t/STEP); if (n < lastN || n - lastN > 40) lastN = n - 1; while (lastN < n){ lastN++; mvCol = ORDER[((lastN % ORDER.length) + ORDER.length) % ORDER.length]; vals[mvCol] = (vals[mvCol] + 1) % 10; }
+      const k = Math.min(1, (dt || 0.016)*5); for (const q of peb){ q.p.position.x = abX(q.col); q.p.position.z += (tgtZ(q, vals[q.col]) - q.p.position.z)*k; } }
+    { const ph = (t % STEP)/STEP, v = vals[mvCol], zt = v % 5 === 0 ? -0.13 : -0.01 + (v % 5 - 1)*0.045, W2 = new THREE.Vector3(abX(mvCol), 0.87 + (ph < 0.25 ? (0.25 - ph)*0.3 : 0), zt + 0.06 + (ph < 0.3 ? 0.08 : 0)); ab.localToWorld(W2); ikWorld(bo, 0, W2); freeHand(bo, 0);
       W2.set(0.45, 0.82, 0.18); ab.localToWorld(W2); ikWorld(bo, 1, W2); freeHand(bo, 1); bo.head.rotation.x = 0.5; bo.spine.rotation.x = 0.25; }
   });
   // Mauern (Tür offen) und Möbel als Hindernisse
@@ -4727,7 +4750,7 @@ function buildTriumphArch(){
   let pi = 0, lastThrow = -9;
   const V = new THREE.Vector3();
   anims.push((t, dt) => {
-    const c = t % cycle, tS = sStop/SPD, stop = c >= tS && c < tS + WAIT, s = c < tS ? c*SPD : stop ? sStop : (c - WAIT)*SPD, mv = stop ? 0 : 1;
+    const c = ((t % cycle) + cycle) % cycle, tS = sStop/SPD, stop = c >= tS && c < tS + WAIT, s = c < tS ? c*SPD : stop ? sStop : (c - WAIT)*SPD, mv = stop ? 0 : 1;
     route.getPointAt((s/L) % 1, A); route.getPointAt(((s + POLE)/L) % 1, B); route.getTangentAt(((s + POLE)/L) % 1, TG);
     const x = A.x, z = A.z;
     Q.g.position.set(x, groundH(x, z) + 0.04, z); Q.g.rotation.y = Math.atan2(B.x - x, B.z - z);
@@ -4890,7 +4913,7 @@ function buildRoadWorks(){
   /* Baustelle einer neuen Strasse, die von der Hauptstrasse nach Westen abzweigt. Die Arbeit läuft in einer Schleife:
      1. der Vermesser peilt mit der Groma die Richtung, 2. ein Arbeiter hebt den Graben aus, 3. grosse Steine kommen hinein,
      4. darüber eine Schicht Kies, 5. zuletzt die Pflastersteine, die festgestampft werden. Ist die Strasse fertig, beginnt alles von vorne. */
-  const R = romMats(), X0 = -2.3, ZC = 92.8, NC = 12, CW = 0.98, L = NC*CW, CT = 3.0, LAG = { dig:0, stone:3, gravel:5, pave:7 }, T = (NC + LAG.pave)*CT + 8, RW = 3.2;
+  const R = romMats(), X0 = ROADWORK.x0, ZC = ROADWORK.zc, NC = 12, CW = 0.98, L = NC*CW, CT = 3.0, LAG = { dig:0, stone:3, gravel:5, pave:7 }, T = (NC + LAG.pave)*CT + 8, RW = 3.2;
   // Meilenstein an der Hauptstrasse
   { const ms = keep(grp(-3.0, 96.6)); ms.rotation.y = Math.PI/2; wbox(ms, 0.7, 0.3, 0.7, R.stone, 0, 0, 0, 0, 1);
     mk(new THREE.CylinderGeometry(0.26, 0.28, 1.6, 18), new THREE.MeshStandardMaterial({ map:inscriptionTex(['ROMA', 'M · P', 'XX'], 256, 256, '#d8d0c0'), roughness:0.8 }), ms, 0, 1.1, 0, 0, -Math.PI/2, 0).castShadow = true;
@@ -4902,6 +4925,8 @@ function buildRoadWorks(){
   const cobT = R.cobble.map ? R.cobble.map.clone() : null; if (cobT){ cobT.wrapS = cobT.wrapT = THREE.RepeatWrapping; cobT.needsUpdate = true; }
   const paveM = new THREE.MeshStandardMaterial({ map:cobT, normalMap:R.cobble.normalMap || null, color:R.cobble.color, roughness:0.85 }); const pave = strip(0.08, 0.18, paveM);
   const kerbs = [-1, 1].map(sd => { const k = mk(new THREE.BoxGeometry(1, 0.2, 0.22).translate(-0.5, 0, 0), M('#b8b0a0', { tex:'stone' }), lay, 0, 0.2, sd*(RW/2 + 0.11)); return k; });
+  // Der Randstein der Hauptstrasse an der Abzweigung: er wird weggenommen, sobald die neue Strasse begonnen wird
+  const gapKerb = mk(new THREE.BoxGeometry(0.22, 0.18, RW + 0.3), M('#b8b0a0', { tex:'stone' }), scene, -2.1 - 0.12, groundH(-2.22, ZC) + 0.06, ZC); keep(gapKerb);
   const mound = mk(new THREE.CylinderGeometry(0.5, 0.5, 1, 10, 1, false, 0, Math.PI).rotateZ(Math.PI/2).translate(-0.5, 0, 0), M('#6a523a', { tex:'dirt' }), lay, 0, 0, RW/2 + 1.0); mound.scale.set(1, 0.6, 1);
   // grosse Steine für das Fundament (Instanzen)
   const NR = NC*10, rocks = new THREE.InstancedMesh(ROCK_GEOS[3], M('#8a8478', { tex:'stone' }), NR), rr = mulberry32(533), RX = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), v = new THREE.Vector3(), sc = new THREE.Vector3();
@@ -4940,7 +4965,7 @@ function buildRoadWorks(){
   anims.push(t => { const c = ((t % T) + T) % T, len = lag => Math.max(0, Math.min(NC, c/CT - lag))*CW;
     // Schichten der Strasse wachsen hinter den Arbeitern her
     const ld = len(LAG.dig), ls = len(LAG.stone), lg = len(LAG.gravel), lp = len(LAG.pave), fin = c > (NC + LAG.pave)*CT, fade = fin ? 1 : 1;
-    trench.visible = ld > 0.01; trench.scale.x = Math.max(0.01, ld); mound.visible = ld > 0.01; mound.scale.x = Math.max(0.01, ld - Math.max(0, lp - 0.5));
+    trench.visible = ld > 0.01; trench.scale.x = Math.max(0.01, ld); gapKerb.visible = ld <= 0.01; mound.visible = ld > 0.01; mound.scale.x = Math.max(0.01, ld - Math.max(0, lp - 0.5));
     gravel.visible = lg > 0.01; gravel.scale.x = Math.max(0.01, lg); pave.visible = lp > 0.01; pave.scale.x = Math.max(0.01, lp); for (const k of kerbs){ k.visible = pave.visible; k.scale.x = pave.scale.x; }
     if (cobT) cobT.repeat.set(Math.max(0.01, lp)/1.6, RW/1.6);
     for (let i=0;i<NR;i++) rocks.setMatrixAt(i, -RX[i] < ls && -RX[i] > lg - 0.2 ? RM[i] : zero); rocks.instanceMatrix.needsUpdate = true;
@@ -5096,7 +5121,7 @@ function buildAmphitheater(){
    Lokale Achsen: Eingang im Westen (−x), das Warmbad im Osten (+x), dahinter der Heizraum. */
 const TH_W = 6.4, TH_D = 6, TH_FL = 0.75, TH_FL2 = 1.15, TH_WALL = 4.7, TH_SPLIT = 2.4;
 const TH_POOL = { x0:-3.8, x1:-0.2, z0:-3.2, z1:3.2 };
-function greenPoolMat(){ return new THREE.MeshStandardMaterial({ color:C('#5f8f6c'), roughness:0.05, metalness:0.1, transparent:true, opacity:0.86, envMapIntensity:1.5, depthWrite:false }); }
+function greenPoolMat(){ return poolMat(1.5, 2.6, '#5f8f6c', 0.84); }
 let FISHTEX = null;
 function fishMosaicTex(){ if (FISHTEX) return FISHTEX;
   FISHTEX = canvasTex(512, 256, (x, W, H) => { const r = mulberry32(881);
@@ -5134,17 +5159,12 @@ function wallPaintH(parent, tex, w, h, x, y, z, ry, holes){ const t = tex.clone(
     let yc = 0; for (const [a, b] of cut){ if (a > yc) quad(x0, x1, yc, a); yc = Math.max(yc, b); } if (yc < h) quad(x0, x1, yc, h); }
   const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(idx); geo.computeVertexNormals();
   const m = mk(geo, new THREE.MeshStandardMaterial({ map:t, roughness:0.85 }), parent, x, y, z, 0, ry, 0); m.receiveShadow = true; m.castShadow = false; return m; }
-/* Innen an einer Tür: Rahmen aus Marmor und darüber eine Tafel «EXITVS – Ausgang», damit man den Weg hinaus findet.
-   Die Tür liegt in der Ebene z = 0 der Gruppe g (Innenseite +z), w = Breite, h = Höhe; side = ±1: Tafel neben statt über der Tür */
-function exitFrame(parent, x, y, z, ry, w, h, side){ const R = romMats(), g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry; parent.add(g);
+/* Innen an einer Tür: ein Rahmen aus Marmor, damit man den Weg hinaus findet.
+   Die Tür liegt in der Ebene z = 0 der Gruppe g (Innenseite +z), w = Breite, h = Höhe */
+function exitFrame(parent, x, y, z, ry, w, h){ const R = romMats(), g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry; parent.add(g);
   for (const sx of [-1, 1]) wbox(g, 0.22, h + 0.1, 0.1, R.marble, sx*(w/2 + 0.11), 0, 0.05, 0, 1);
   wbox(g, w + 0.66, 0.18, 0.12, R.marble, 0, h, 0.06, 0, 1);
-  if (!EXITTEX) EXITTEX = canvasTex(512, 160, (c, W, H) => { c.fillStyle = '#efe6d2'; c.fillRect(0, 0, W, H); c.strokeStyle = '#9a3a28'; c.lineWidth = 10; c.strokeRect(5, 5, W - 10, H - 10);
-    c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#5a2a1a'; c.font = 'bold 66px "Times New Roman", Georgia, serif'; c.fillText('EXITVS', W/2, 62);
-    c.fillStyle = '#2a201a'; c.font = 'bold 36px Fredoka, Arial, sans-serif'; c.fillText('Ausgang  ➜', W/2, 122); });
-  const sg = mk(new THREE.PlaneGeometry(1.25, 0.39), new THREE.MeshStandardMaterial({ map:EXITTEX, roughness:0.8, emissive:C('#3a2a1a'), emissiveIntensity:0.15 }), g, side ? side*(w/2 + 0.95) : 0, side ? 2.1 : h + 0.52, 0.14); sg.castShadow = false;
   return g; }
-let EXITTEX = null;
 function buildThermen(){
   const R = romMats(), g = keep(grp(THERMEN[0], THERMEN[1])), g0 = g.position.y, FL = TH_FL, F2 = TH_FL2, WH = TH_WALL, W = TH_W, D = TH_D, SX = TH_SPLIT, PO = TH_POOL;
   const wx = (lx) => g.position.x + lx, wz = (lz) => g.position.z + lz;
@@ -5176,7 +5196,7 @@ function buildThermen(){
     wallSeg(g, -W - 1.5, -1.5, -W, -1.5, 0.15); wallSeg(g, -W - 1.5, 1.5, -W, 1.5, 0.15);
     for (const sz of [-1, 1]) colliders.push({ x:wx(-W - 0.6), z:wz(sz*1.75), r:0.3 }); }
   // Innen: bemalte Wände der Halle
-  { const T = hallWallTex(); wallPaintH(g, T, D*2 - 0.4, 3.2, -W + 0.21, FL, 0, Math.PI/2, [[0, 0, 1.22, 3.3]]); exitFrame(g, -W + 0.2, FL, 0, Math.PI/2, 2.4, 3.0, 1);
+  { const T = hallWallTex(); wallPaintH(g, T, D*2 - 0.4, 3.2, -W + 0.21, FL, 0, Math.PI/2, [[0, 0, 1.22, 3.3]]); exitFrame(g, -W + 0.2, FL, 0, Math.PI/2, 2.4, 3.0);
     for (const sz of [-1, 1]) wallPaint(g, T, W + SX - 0.4, 3.2, (SX - W)/2, FL, sz*(D - 0.21), sz < 0 ? 0 : Math.PI); }
   // ---- Pfeiler und Säulen um das Becken, darüber eine Terrasse mit Brüstung und Statuen
   const piers = [];
@@ -5205,15 +5225,21 @@ function buildThermen(){
     DECKS.push({ x0:wx(SX - 0.6), x1:wx(SX - 0.2), z0:wz(-0.85), z1:wz(0.85), y:g0 + (FL + F2)/2 }); }
   // Böden als begehbare Flächen (Halle ohne Becken, Warmbad)
   DECKS.push({ x0:wx(-W), x1:wx(SX - 0.6), z0:wz(-D), z1:wz(D), y:g0 + FL });
-  DECKS.push({ x0:wx(SX - 0.2), x1:wx(W), z0:wz(-D), z1:wz(D), y:g0 + F2 });
+  { const Q = TH_PIT; DECKS.push({ x0:wx(SX - 0.2), x1:wx(W), z0:wz(-D), z1:wz(Q.z0), y:g0 + F2 }, { x0:wx(SX - 0.2), x1:wx(W), z0:wz(Q.z1), z1:wz(D), y:g0 + F2 }, { x0:wx(Q.x1), x1:wx(W), z0:wz(Q.z0), z1:wz(Q.z1), y:g0 + F2 }); }
   // Mauern als Hindernisse (Tür im Westen bleibt offen)
   wallSeg(g, -W, -D, -W, -1.2, 0.2); wallSeg(g, -W, 1.2, -W, D, 0.2); wallSeg(g, -W, -D, W, -D, 0.2); wallSeg(g, -W, D, W, D, 0.2); wallSeg(g, W, -D, W, D, 0.2);
   // ---- Das Warmbad (Caldarium): Boden auf Ziegelsäulen, Gewölbe, bemalte Wände, Fischmosaik, heisses Becken
   const CX0 = SX + 0.2, CX1 = W - 0.2;
-  { const fl = mk(new THREE.BoxGeometry(CX1 - CX0, 0.12, D*2 - 0.4), [R.brick, R.brick, floorM, R.brick, R.brick, R.brick], g, (CX0 + CX1)/2, F2 - 0.06, 0); fl.receiveShadow = true;
+  { const Q = TH_PIT, fm2 = new THREE.MeshStandardMaterial({ map:floorM.map.clone(), roughness:0.55 }); fm2.map.repeat.set(1, 1); fm2.map.needsUpdate = true;
+    // Boden in Stücken: über dem Heizraum bleibt eine Öffnung, durch die eine Treppe hinunterführt
+    const piece = (x0, x1, z0, z1) => { const w = x1 - x0, d = z1 - z0; wbox(g, w, 0.12, d, R.brick, (x0 + x1)/2, F2 - 0.12, (z0 + z1)/2, 0, 1);
+      const pl = scaleUV(new THREE.PlaneGeometry(w, d).rotateX(-Math.PI/2), w/1.8, d/1.8); mk(pl, fm2, g, (x0 + x1)/2, F2 + 0.002, (z0 + z1)/2).receiveShadow = true; };
+    piece(CX0, CX1, -D + 0.2, Q.z0); piece(CX0, CX1, Q.z1, D - 0.2); piece(Q.x1, CX1, Q.z0, Q.z1);
     // Unterbau: Ziegelsäulen, durch eine Bodenöffnung mit Gitter sichtbar
-    const pil = []; for (let ix=0; ix<6; ix++) for (let iz=0; iz<16; iz++) pil.push(part(new THREE.BoxGeometry(0.2, F2 - 0.12, 0.2), (ix + iz) % 3 ? '#a85a3a' : '#9a4e32', CX0 + 0.3 + ix*0.6, (F2 - 0.12)/2, -D + 0.6 + iz*0.72));
-    vmesh(pil, g); mk(new THREE.PlaneGeometry(CX1 - CX0, D*2 - 0.4).rotateX(-Math.PI/2), M('#3a2a22', { tex:null, roughness:1 }), g, (CX0 + CX1)/2, 0.03, 0);
+    const inPit = (x, z) => x > Q.x0 - 0.15 && x < Q.x1 + 0.15 && z > Q.z0 - 0.15 && z < Q.z1 + 0.15;
+    const pil = []; for (let ix=0; ix<6; ix++) for (let iz=0; iz<16; iz++){ const x = CX0 + 0.3 + ix*0.6, z = -D + 0.6 + iz*0.72; if (!inPit(x, z)) pil.push(part(new THREE.BoxGeometry(0.2, F2 - 0.12, 0.2), (ix + iz) % 3 ? '#a85a3a' : '#9a4e32', x, (F2 - 0.12)/2, z)); }
+    vmesh(pil, g); const dg = M('#3a2a22', { tex:null, roughness:1 });
+    for (const [x0, x1, z0, z1] of [[CX0, CX1, -D + 0.2, Q.z0], [Q.x1, CX1, Q.z0, D - 0.2], [CX0, Q.x1, Q.z1, D - 0.2]]) mk(new THREE.PlaneGeometry(x1 - x0, z1 - z0).rotateX(-Math.PI/2), dg, g, (x0 + x1)/2, 0.03, (z0 + z1)/2);
     wbox(g, CX1 - CX0, F2 - 0.12, 0.2, R.brick, (CX0 + CX1)/2, 0, -D + 0.25, 0, 1);
     const glow = new THREE.PointLight(0xff8a3a, 2.5, 6, 2); glow.position.set(CX1 - 0.6, 0.4, 0); g.add(glow);
     anims.push(t => { glow.intensity = 2.3 + Math.sin(t*5.3)*0.4 + Math.sin(t*11.7)*0.2; });
@@ -5238,34 +5264,40 @@ function buildThermen(){
   // Das heisse Becken an der Ostwand
   const AX0 = CX1 - 1.2, AX1 = CX1, AZ0 = -4.6, AZ1 = 4.6;
   wbox(g, 0.18, 0.6, AZ1 - AZ0, R.marble, AX0, F2, (AZ0 + AZ1)/2, 0, 1); for (const sz of [AZ0, AZ1]) wbox(g, AX1 - AX0, 0.6, 0.18, R.marble, (AX0 + AX1)/2, F2, sz, 0, 1);
-  mk(new THREE.PlaneGeometry(AX1 - AX0 - 0.1, AZ1 - AZ0 - 0.1).rotateX(-Math.PI/2), poolMat(), g, (AX0 + AX1)/2, F2 + 0.5, (AZ0 + AZ1)/2).renderOrder = 2;
+  mk(new THREE.PlaneGeometry(AX1 - AX0 - 0.1, AZ1 - AZ0 - 0.1).rotateX(-Math.PI/2), poolMat(0.5, 3.6, '#4f9aa8'), g, (AX0 + AX1)/2, F2 + 0.5, (AZ0 + AZ1)/2).renderOrder = 2;
   addSteam(g, HQ ? 12 : 7, (AX0 + AX1)/2, F2 + 0.55, 0, 1.0, 8.0, 1.8);
   wallSeg(g, AX0, AZ0, AX0, AZ1, 0.2); wallSeg(g, AX0, AZ0, AX1, AZ0, 0.2); wallSeg(g, AX0, AZ1, AX1, AZ1, 0.2);
   // Rundes Becken (Labrum) mit kaltem Wasser
-  { const lb = new THREE.Group(); lb.position.set(CX0 + 0.9, F2, 3.8); g.add(lb); mk(new THREE.CylinderGeometry(0.15, 0.22, 0.75, 16), R.marble, lb, 0, 0.375, 0);
+  { const lb = new THREE.Group(); lb.position.set(CX0 + 1.1, F2, -1.7); g.add(lb); mk(new THREE.CylinderGeometry(0.15, 0.22, 0.75, 16), R.marble, lb, 0, 0.375, 0);
     mk(lathe([[0.001, 0], [0.5, 0.02], [0.62, 0.14], [0.64, 0.2], [0.58, 0.2], [0.5, 0.08], [0.001, 0.08]], 32), R.marble, lb, 0, 0.75, 0);
-    mk(new THREE.CircleGeometry(0.56, 28).rotateX(-Math.PI/2), poolMat(), lb, 0, 0.92, 0).renderOrder = 2; colliders.push({ x:wx(CX0 + 0.9), z:wz(3.8), r:0.7 }); }
+    mk(new THREE.CircleGeometry(0.56, 28).rotateX(-Math.PI/2), poolMat(0.4, 0.4), lb, 0, 0.92, 0).renderOrder = 2; colliders.push({ x:wx(CX0 + 1.1), z:wz(-1.7), r:0.7 }); }
   // ---- Badegäste
-  const sw = [0, 1].map(i => { const grp2 = new THREE.Group(); g.add(grp2); const p = makePerson({ skin:['#c48f6c', '#d4a07a'][i], hair:['#2b1d12', '#7a4a22'][i], cloth:'#d8cbb0', linen:'#d8cbb0' }); grp2.add(p.root); p.root.rotation.x = Math.PI/2 - 0.08; p.root.position.set(0, 0, -0.85); return { grp2, p }; });
-  const sitP = person(g, { skin:'#d4a07a', hair:'#7a4a22', female:true, bun:true, cloth:'#c8a8a0', linen:'#c8a8a0' }, PO.x1 + 0.05, -1.74, -Math.PI/2); sitP.g.position.y = FL; poseSit(sitP, 0.02); sitP.g.position.x = PO.x1 + 0.2;
-  const talk = [[-5.2, -4.6, 0.6], [-4.4, -5.1, -2.5]].map(([x, z, ry], i) => { const p = person(g, i ? { skin:'#b07a58', hair:'#2b1d12', cloth:'#e8dcc0', sandals:true } : { skin:'#c99068', hair:'#9a948a', beard:true, toga:'#f0ece2', cloth:'#ece6d8', sandals:true }, x, z, ry); p.g.position.y = FL; colliders.push({ x:wx(x), z:wz(z), r:0.3 }); return p; });
-  const hb = person(g, { skin:'#c99068', hair:'#9a948a', beard:true, cloth:'#e0d4b8' }, AX0 + 0.62, -1.0, -Math.PI/2); hb.g.position.y = F2; poseSit(hb, 0.25);
-  const st = person(g, { skin:'#b98260', hair:'#3a2616', cloth:'#e8dcc0' }, CX0 + 1.5, 1.4, Math.PI/2); st.g.position.y = F2;
-  const sl = person(g, { skin:'#a87050', hair:'#2b1d12', cloth:'#a08a6a' }, CX0 + 1.1, 2.3, 0.6); sl.g.position.y = F2;
-  for (const [x, z] of [[CX0 + 1.5, 1.4], [CX0 + 1.1, 2.3]]) colliders.push({ x:wx(x), z:wz(z), r:0.3 });
+  // Im Bad trägt man nur das Nötigste: ein Lendentuch aus Leinen, die Frauen dazu ein Brustband
+  const BATH = { cloth:'#efe8da', linen:'#efe8da', bath:true };
+  // Zwei Schwimmer im Brustschwimmen: der Kopf bleibt über dem Wasser, Arme und Beine darunter
+  const sw = [0, 1].map(i => { const grp2 = new THREE.Group(); g.add(grp2); const p = makePerson(Object.assign({ skin:['#c48f6c', '#d4a07a'][i], hair:['#2b1d12', '#7a4a22'][i], female:i === 1, bun:i === 1 }, BATH)); grp2.add(p.root);
+    p.root.rotation.x = Math.PI/2 - 0.36; p.root.position.set(0, 0, -0.95); for (const l of p.legs) l.hip.rotation.order = 'YXZ'; return { grp2, p }; });
+  const sitP = person(g, Object.assign({ skin:'#d4a07a', hair:'#7a4a22', female:true, bun:true }, BATH), PO.x1 + 0.05, -1.74, -Math.PI/2); sitP.g.position.y = FL; poseSit(sitP, 0.02); sitP.g.position.x = PO.x1 + 0.2;
+  const hb = person(g, Object.assign({ skin:'#c99068', hair:'#9a948a', beard:true }, BATH), AX0 + 0.62, -1.0, -Math.PI/2); hb.g.position.y = F2; poseSit(hb, 0.25);
+  // Im Warmbad: einer schabt sich mit dem Schaber das Öl ab, der Sklave (in der Tunika) hält das Ölfläschchen
+  const st = person(g, Object.assign({ skin:'#b98260', hair:'#3a2616' }, BATH), CX0 + 0.75, -5.0, Math.PI/2); st.g.position.y = F2;
+  const sl = person(g, { skin:'#a87050', hair:'#2b1d12', cloth:'#a08a6a' }, CX0 + 1.75, -4.9, -2.2); sl.g.position.y = F2;
+  for (const [x, z] of [[CX0 + 0.75, -5.0], [CX0 + 1.75, -4.9]]) colliders.push({ x:wx(x), z:wz(z), r:0.3 });
   const strig = fist(new THREE.Group(), st.arms[1].hand, 0.05); mk(new THREE.TorusGeometry(0.1, 0.012, 6, 14, Math.PI*0.9), R.bronze, strig, 0, 0.1, 0, 0, Math.PI/2, 0); mk(new THREE.CylinderGeometry(0.012, 0.012, 0.1, 6), R.bronze, strig);
   const flask = new THREE.Group(); sl.arms[1].hand.add(flask); flask.position.set(0, -0.1, 0.03); mk(new THREE.SphereGeometry(0.06, 12, 10), R.bronze, flask); mk(new THREE.CylinderGeometry(0.015, 0.02, 0.05, 8), R.bronze, flask, 0, 0.07, 0);
   const H = new THREE.Vector3(), Dv = new THREE.Vector3(), GQ = new THREE.Quaternion();
   anims.push(t => {
-    // Zwei Schwimmer: hin und her durchs grüne Becken
-    sw.forEach(({ grp2, p }, i) => { const L = PO.z1 - PO.z0 - 2.4, c = ((t*0.5 + i*0.9)/L) % 2, dir = c < 1 ? 1 : -1, k = c < 1 ? c : 2 - c, z = PO.z0 + 1.0 + k*L;
-      grp2.position.set(PO.x0 + 1.0 + i*1.5, FL - 0.28, z); grp2.rotation.y = angLerp(grp2.rotation.y, dir > 0 ? 0 : Math.PI, 0.1);
-      const s = t*3.0 + i*1.3; p.arms[0].sh.rotation.set(-1.6 + Math.sin(s)*1.6, 0, -0.2); p.arms[1].sh.rotation.set(-1.6 - Math.sin(s)*1.6, 0, 0.2); p.arms[0].el.rotation.x = p.arms[1].el.rotation.x = -0.2;
-      p.legs[0].hip.rotation.x = Math.sin(t*7 + i)*0.25; p.legs[1].hip.rotation.x = -Math.sin(t*7 + i)*0.25; p.head.rotation.y = Math.sin(s)*0.5; });
+    // Zwei Schwimmer: Brustschwimmen hin und her durchs grüne Becken, am Ende eine ruhige Wende
+    sw.forEach(({ grp2, p }, i) => { const L = PO.z1 - PO.z0 - 2.8, sp = 0.32, per = L/sp, c = ((t + i*7.3)/per) % 2, dir = c < 1 ? 1 : -1, k = c < 1 ? c : 2 - c, z = PO.z0 + 1.0 + (dir > 0 ? k : k)*L;
+      const ph = (t*0.9 + i*0.4) % 1, glide = Math.sin(ph*TAU);   // ein Zug pro Sekunde: Arme nach vorne, auseinander, zur Brust; die Beine stossen
+      grp2.position.set(PO.x0 + 1.0 + i*1.6, FL - 0.16 - 0.52 + Math.sin(ph*TAU)*0.015, z); grp2.rotation.y = angLerp(grp2.rotation.y, dir > 0 ? 0 : Math.PI, 0.08);
+      const reach = ph < 0.35 ? ph/0.35 : ph < 0.7 ? 1 - (ph - 0.35)/0.35 : 0, spread = ph > 0.3 && ph < 0.75 ? Math.sin((ph - 0.3)/0.45*Math.PI) : 0;
+      for (const j of [0, 1]){ const sd = j ? 1 : -1, a = p.arms[j]; a.sh.quaternion.identity(); a.sh.rotation.set(-1.7 - reach*1.2, 0, sd*(0.25 + spread*1.0)); a.el.rotation.x = -1.4*(1 - reach) - 0.1; }
+      const kick = ph > 0.55 ? Math.sin((ph - 0.55)/0.45*Math.PI) : 0;
+      for (const j of [0, 1]){ const sd = j ? 1 : -1, l = p.legs[j]; l.hip.rotation.x = -0.15 - kick*0.25; l.hip.rotation.z = sd*(0.08 + kick*0.35); l.knee.rotation.x = 0.25 + (1 - kick)*0.55*(ph > 0.4 ? 1 : ph/0.4); }
+      p.head.rotation.x = -0.45; p.head.rotation.y = Math.sin(t*0.4 + i)*0.2; });
     // Am Beckenrand sitzen, die Füsse im Wasser
     for (const l of sitP.legs) l.knee.rotation.x = 1.3 + Math.sin(t*1.5 + l.hip.position.x*20)*0.2; sitP.arms[0].sh.rotation.set(0.3, 0, -0.35); sitP.arms[1].sh.rotation.set(0.3, 0, 0.35); sitP.head.rotation.y = Math.sin(t*0.4)*0.4;
-    // Zwei unterhalten sich im Umgang
-    talk.forEach((p, i) => { const sp = Math.sin(t*1.7 + i*2) > 0.2 === !i; p.arms[0].sh.rotation.set(sp ? -0.7 + Math.sin(t*3)*0.25 : -0.1, 0, -0.25); p.arms[0].el.rotation.x = sp ? -1.0 : -0.2; p.head.rotation.x = Math.sin(t*0.8 + i)*0.08; });
     // Im heissen Becken: entspannt, Arme auf dem Rand
     hb.arms[0].sh.rotation.set(-0.3, 0, -1.1); hb.arms[1].sh.rotation.set(-0.3, 0, 1.1); hb.arms[0].el.rotation.x = hb.arms[1].el.rotation.x = -0.5; hb.head.rotation.x = -0.25;
     // Mit dem Schaber das Öl vom Arm schaben, daneben der Sklave mit dem Ölfläschchen
@@ -5280,37 +5312,77 @@ function buildThermen(){
 }
 
 /* ===================== DIE FUSSBODENHEIZUNG (HYPOKAUSTUM) ===================== */
+/* Wie bei den römischen Bädern: Der Boden des Warmbads steht auf vielen kleinen Ziegelsäulen. Im Untergeschoss daneben liegt
+   der Heizraum mit dem Ofen (Praefurnium). Ein Sklave schiebt Holz hinein, die heisse Luft zieht unter den Boden und durch
+   Röhren in den Wänden hinauf. Vom Warmbad führt eine Treppe hinunter; durch die Öffnung sieht man auch von oben, wie geheizt wird. */
 function buildHypokaustum(){
-  const R = romMats(), g = grp(THERMEN[0], THERMEN[1]), EX = TH_W;
-  // Heizraum aussen an der Ostwand: ein gemauerter Kanal mit dem Feuer, das die heisse Luft unter den Boden schickt
-  const fu = new THREE.Group(); fu.position.set(EX + 0.85, 0, 0); g.add(fu);
-  mk(archWall(1.8, 1.3, 1.3, [[0, 0.42, 0.85]]), R.brick, fu, 0, 0, 0, 0, Math.PI/2, 0).castShadow = true;
-  wbox(fu, 1.5, 0.14, 2.0, R.tiles, 0, 1.3, 0, 0, 1);
-  const fire = new THREE.Group(); fire.position.set(-0.2, 0.04, 0); fu.add(fire); makeFireFx(fire, 0.3, 4);
-  addSmoke(g, HQ ? 6 : 4, EX + 1.0, TH_WALL + 1.2, 0, 0.4, '#6f6c68', 2.2);
-  // Holzstapel und der Heizer
-  const logs = []; for (let r=0; r<3; r++) for (let i=0;i<5 - r;i++) logs.push(part(new THREE.CylinderGeometry(0.08, 0.09, 0.9, 8).rotateX(Math.PI/2), i % 2 ? '#6a4a2e' : '#7a5636', EX + 2.0 + (i - (4 - r)/2)*0.19, 0.09 + r*0.16, -2.4, 0, 0.05*i, 0));
-  vmesh(logs, g);
-  const sk = person(g, { skin:'#a87050', hair:'#2b1d12', cloth:'#8a7a5a', sandals:true }, EX + 2.4, -0.6, -Math.PI/2);
+  const R = romMats(), g = keep(grp(THERMEN[0], THERMEN[1])), g0 = g.position.y, Q = TH_PIT, F2 = TH_FL2, Y = Q.y, CH = F2 - 0.12;   // CH: Unterseite des Bodens darüber
+  const wx = lx => g.position.x + lx, wz = lz => g.position.z + lz, NS = 14, ZB = Q.z1 - 0.2, SW = 0.9;   // Treppe: 14 Stufen bis ZB, 0.9 m breit
+  // Boden und Wände aus Ziegeln
+  { const fl = canvasTex(256, 256, (x, W, H) => { const r = mulberry32(951); x.fillStyle = '#6a4a38'; x.fillRect(0, 0, W, H);
+      for (let j=0;j<8;j++) for (let i=0;i<4;i++){ const v = 0.85 + r()*0.2; x.fillStyle = 'rgb(' + (150*v|0) + ',' + (88*v|0) + ',' + (62*v|0) + ')'; x.fillRect(i*64 + (j % 2)*32 + 2, j*32 + 2, 60, 28); } });
+    fl.wrapS = fl.wrapT = THREE.RepeatWrapping; fl.repeat.set((Q.x1 - Q.x0)/1.6, (Q.z1 - Q.z0)/1.6);
+    mk(new THREE.PlaneGeometry(Q.x1 - Q.x0, Q.z1 - Q.z0).rotateX(-Math.PI/2), new THREE.MeshStandardMaterial({ map:fl, roughness:0.95 }), g, (Q.x0 + Q.x1)/2, Y + 0.01, (Q.z0 + Q.z1)/2).receiveShadow = true; }
+  const WT = 0.16, wallH = CH - Y;
+  wbox(g, WT, wallH, Q.z1 - Q.z0 + 2*WT, R.brick, Q.x0 - WT/2, Y, (Q.z0 + Q.z1)/2, 0, 1);
+  wbox(g, WT, wallH, Q.z1 - Q.z0 + 2*WT, R.brick, Q.x1 + WT/2, Y, (Q.z0 + Q.z1)/2, 0, 1);
+  wbox(g, Q.x1 - Q.x0, wallH, WT, R.brick, (Q.x0 + Q.x1)/2, Y, Q.z1 + WT/2, 0, 1);
+  // Nordwand mit dem gemauerten Ofenloch; dahinter brennt das Feuer, darüber zieht die Hitze in den Hohlraum unter dem Boden
+  const FX = (Q.x0 + SW + Q.x1)/2 + 0.1, FW = 0.42, FH = 0.95;
+  { const nw = archWall(Q.x1 - Q.x0, wallH, WT + 0.02, [[FX - (Q.x0 + Q.x1)/2, FW, FH, 0]]); mk(nw, R.brick, g, (Q.x0 + Q.x1)/2, Y, Q.z0 - WT/2).castShadow = true;
+    // Ofenkammer hinter der Öffnung, rot glühend
+    wbox(g, FW*2 + 0.5, 1.3, 0.9, R.brick, FX, Y - 0.02, Q.z0 - WT - 0.45, 0, 1);
+    mk(new THREE.PlaneGeometry(FW*2 - 0.04, FH - 0.05), M('#2a0e06', { tex:null, roughness:1, emissive:'#ff5a1a', emissiveIntensity:0.35 }), g, FX, Y + (FH - 0.05)/2 + 0.02, Q.z0 - WT - 0.02);
+    // Gemauerter Bogen um die Öffnung
+    mk(new THREE.TorusGeometry(FW + 0.05, 0.07, 6, 16, Math.PI), M('#8a4a2e', { tex:'brick' }), g, FX, Y + FH - FW, Q.z0 + 0.02);
+    // Röhren (tubuli) in der Wand: man sieht sie in einer aufgebrochenen Stelle
+    for (let k=0;k<3;k++) wbox(g, 0.16, wallH - 0.2, 0.06, M('#b8704a', { tex:'brick' }), Q.x1 - 0.32 - k*0.24, Y + 0.1, Q.z0 + 0.04, 0, 1); }
+  const fire = new THREE.Group(); fire.position.set(FX, Y + 0.05, Q.z0 - WT - 0.15); g.add(fire); makeFireFx(fire, 0.22, 3.5);
+  const glow = new THREE.PointLight(0xff7a2a, 4, 6, 2); glow.position.set(FX, Y + 0.6, Q.z0 + 0.6); g.add(glow);
+  const lamp = new THREE.PointLight(0xffd8a0, 2.2, 5, 2); lamp.position.set(Q.x0 + 0.6, Y + 2.0, Q.z1 - 0.4); g.add(lamp);
+  anims.push(t => { glow.intensity = 3.6 + Math.sin(t*5.3)*0.6 + Math.sin(t*11.7)*0.3; });
+  addSmoke(g, HQ ? 5 : 3, TH_W - 0.5, TH_WALL + 1.3, Q.z0, 0.3, '#6f6c68', 2.0);
+  // Die Treppe: Stufen aus Stein von oben (Boden des Warmbads) hinunter zum Heizraum
+  { const st = [], rise = (F2 - Y)/NS, run = (ZB - Q.z0)/NS;
+    for (let k=0;k<NS;k++){ const top = F2 - (k + 1)*rise; st.push(part(new THREE.BoxGeometry(SW, top - Y, run + 0.01), k % 2 ? '#b8ae9c' : '#c4baa8', Q.x0 + SW/2, Y + (top - Y)/2, Q.z0 + (k + 0.5)*run)); }
+    vmesh(st, g);
+    // Geländer aus Bronze: an der Treppe und um die Öffnung im Warmbad
+    const rail = (ax, ay, az, bx, by, bz) => { const L = Math.hypot(bx - ax, by - ay, bz - az), m = mk(new THREE.CylinderGeometry(0.025, 0.025, L, 6), R.bronze, g, (ax + bx)/2, (ay + by)/2, (az + bz)/2);
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(bx - ax, by - ay, bz - az).normalize()); };
+    const XR = Q.x0 + SW + 0.03, zr1 = Q.z0 + (ZB - Q.z0)*0.78;
+    rail(XR, F2 + 0.9, Q.z0, XR, F2 - (zr1 - Q.z0)/(ZB - Q.z0)*(F2 - Y) + 0.9, zr1);
+    for (let k=0;k<=4;k++){ const z = Q.z0 + (zr1 - Q.z0)*k/4, y = F2 - (z - Q.z0)/(ZB - Q.z0)*(F2 - Y); rail(XR, y, z, XR, y + 0.9, z); }
+    rail(XR, F2 + 0.9, Q.z0, Q.x1, F2 + 0.9, Q.z0); rail(XR, F2 + 0.45, Q.z0, Q.x1, F2 + 0.45, Q.z0); for (let k=1;k<=3;k++){ const x = XR + (Q.x1 - XR)*k/3; rail(x, F2, Q.z0, x, F2 + 0.9, Q.z0); }
+    rail(Q.x0, F2 + 0.9, Q.z1, Q.x1, F2 + 0.9, Q.z1); for (let k=0;k<=3;k++){ const x = Q.x0 + (Q.x1 - Q.x0)*k/3; rail(x, F2, Q.z1, x, F2 + 0.9, Q.z1); }
+    // begehbar: die Treppe als Rampe, der Boden des Heizraums
+    DECKS.push({ x0:wx(Q.x0), x1:wx(Q.x0 + SW), z0:wz(Q.z0), z1:wz(ZB), ramp:{ axis:'z', a0:wz(Q.z0), a1:wz(ZB), y0:g0 + F2, y1:g0 + Y, stairs:true } });
+    DECKS.push({ x0:wx(Q.x0), x1:wx(Q.x1), z0:wz(Q.z0), z1:wz(Q.z1), y:g0 + Y });
+    // Hindernisse: Wände, Geländer (oben an der Öffnung und an der Treppe), Ofen
+    wallSeg(g, XR, Q.z0, Q.x1, Q.z0, 0.12); wallSeg(g, XR, Q.z0, XR, zr1, 0.08); wallSeg(g, Q.x0, Q.z1, Q.x1, Q.z1, 0.12);
+    wallSeg(g, Q.x0, Q.z0, Q.x0, Q.z1, 0.1); wallSeg(g, Q.x1, Q.z0, Q.x1, Q.z1, 0.1); }
+  // Holzstapel an der Südwand und der Heizer
+  const logs = []; for (let r=0; r<3; r++) for (let i=0;i<4 - r;i++) logs.push(part(new THREE.CylinderGeometry(0.075, 0.085, 0.8, 8).rotateZ(Math.PI/2), i % 2 ? '#6a4a2e' : '#7a5636', Q.x1 - 0.95 + (i - (3 - r)/2)*0.17, Y + 0.085 + r*0.15, Q.z1 - 0.35, 0, 0, 0));
+  vmesh(logs, g); wallSeg(g, Q.x1 - 1.4, Q.z1 - 0.35, Q.x1 - 0.45, Q.z1 - 0.35, 0.25);
+  const KX = FX + 0.05, KZ = Q.z0 + 1.35;
+  const sk = person(g, { skin:'#a87050', hair:'#2b1d12', cloth:'#8a7a5a', sandals:true }, KX, KZ, Math.PI); sk.g.position.y = Y; colliders.push({ x:wx(KX), z:wz(KZ), r:0.32 });
   const log = mk(new THREE.CylinderGeometry(0.075, 0.085, 0.8, 8), M('#6a4a2e', { tex:'bark' }), g); log.castShadow = true;
   const Wv = new THREE.Vector3(), V = new THREE.Vector3();
   anims.push(t => {
-    // Holz holen (zum Stapel drehen und bücken), zum Feuer drehen und das Scheit hineinschieben
+    // Holz holen (zum Stapel umdrehen und bücken), zum Ofen drehen und das Scheit hineinschieben
     const c = (t/7) % 1, turn = c < 0.12 ? sstep(0, 0.12, c) : c < 0.45 ? 1 : c < 0.6 ? 1 - sstep(0.45, 0.6, c) : 0;
-    sk.g.rotation.y = -Math.PI/2 + turn*(-Math.PI*0.75 + Math.PI/2);
+    sk.g.rotation.y = Math.PI - turn*Math.PI;
     const bend = c > 0.15 && c < 0.42 ? Math.sin((c - 0.15)/0.27*Math.PI) : 0, push = c > 0.62 && c < 0.92 ? Math.sin((c - 0.62)/0.3*Math.PI) : 0;
     sk.spine.rotation.x = bend*0.8 + push*0.5; sk.hips.position.y = 0.88 - bend*0.25 - push*0.12; for (const l of sk.legs){ l.hip.rotation.x = -(bend*0.5 + push*0.3); l.knee.rotation.x = bend*0.8 + push*0.45; }
     const has = c > 0.3 && c < 0.85; log.visible = c > 0.3 && c < 0.88;
     if (has){ sk.g.updateWorldMatrix(true, false); Wv.set(0, 0.9 - push*0.3 - bend*0.3, 0.45 + push*0.55); sk.g.localToWorld(Wv);
-      if (c > 0.78){ V.set(EX + 0.65, 0.25, 0); g.localToWorld(V); Wv.lerp(V, sstep(0.78, 0.88, c)); }
+      if (c > 0.78){ V.set(FX, Y + 0.3, Q.z0 - 0.3); g.localToWorld(V); Wv.lerp(V, sstep(0.78, 0.88, c)); }
       log.position.copy(Wv); log.rotation.set(Math.PI/2, sk.g.rotation.y, 0); }
     if (has && c < 0.8){ for (const i of [0, 1]){ V.set(i ? -0.15 : 0.15, 0.04, 0); V.applyEuler(log.rotation).add(log.position); ikWorld(sk, i, V); freeHand(sk, i); } }
-    else if (bend > 0.2){ for (const i of [0, 1]){ V.set(EX + 2.0 + (i ? -0.2 : 0.2), 0.5, -2.4); g.localToWorld(V); ikWorld(sk, i, V); freeHand(sk, i); } }
+    else if (bend > 0.2){ for (const i of [0, 1]){ V.set(Q.x1 - 0.95 + (i ? -0.2 : 0.2), Y + 0.45, Q.z1 - 0.35); g.localToWorld(V); ikWorld(sk, i, V); freeHand(sk, i); } }
     else for (const i of [0, 1]){ sk.arms[i].sh.quaternion.identity(); sk.arms[i].sh.rotation.set(0.05, 0, i ? 0.12 : -0.12); sk.arms[i].el.rotation.x = -0.25; freeHand(sk, i); }
   });
-  for (const [x, z, r] of [[EX + 0.85, 0, 0.95], [EX + 2.0, -2.4, 0.6], [EX + 2.4, -0.6, 0.35]]) wallSeg(g, x, z, x + 0.01, z, r);
-  addHotspot('hypokaustum', [fu], P.hypokaustum[0], gy(P.hypokaustum[0], P.hypokaustum[1]) + 2.4, P.hypokaustum[1], 0);
-  hotspots.hypokaustum.snapZoom = 1.6;
+  addHotspot('hypokaustum', [sk.g], P.hypokaustum[0], g0 + F2 + 1.9, P.hypokaustum[1], 0);
+  hotspots.hypokaustum.snapZoom = 1.4;
 }
 /* ===================== WASSER: AQUÄDUKT, BRUNNEN, THERMEN UND LATRINE ===================== */
 /* Fliessendes Wasser: Textur mit hellen Wellenlinien, die sich verschieben lässt */
@@ -5325,8 +5397,11 @@ function flowTex(){ if (FLOWTEX) return FLOWTEX;
 function flowMat(rx, ry, speed, opacity){ const t = flowTex().clone(); t.needsUpdate = true; t.repeat.set(rx, ry);
   const m = new THREE.MeshStandardMaterial({ map:t, roughness:0.1, metalness:0.05, transparent:true, opacity:opacity || 0.9, envMapIntensity:1.3, depthWrite:false });
   if (speed) anims.push(t2 => { t.offset.x = -t2*speed; }); return m; }
-/* Stehendes Wasser in Becken */
-function poolMat(){ return new THREE.MeshStandardMaterial({ color:C('#3f8fa4'), roughness:0.06, metalness:0.1, transparent:true, opacity:0.78, envMapIntensity:1.4, depthWrite:false }); }
+/* Stehendes Wasser in Becken: feine Wellen, die sich gleichmässig bewegen (verschobene Normalen-Textur wie beim Fluss).
+   rx, ry: wie oft sich das Wellenmuster wiederholt (etwa 1 pro 2.5 m), hex: Farbe */
+function poolMat(rx, ry, hex, opacity){ const n = TEX.water.normal.clone(); n.wrapS = n.wrapT = THREE.RepeatWrapping; n.repeat.set(rx || 0.6, ry || 0.6); n.needsUpdate = true;
+  const m = new THREE.MeshStandardMaterial({ color:C(hex || '#3f8fa4'), roughness:0.14, metalness:0, normalMap:n, normalScale:new THREE.Vector2(0.3, 0.3), transparent:true, opacity:opacity || 0.8, envMapIntensity:1.0, depthWrite:false });
+  const ph = Math.random()*10; anims.push(t => { n.offset.set((t + ph)*0.011 + Math.sin((t + ph)*0.17)*0.03, (t + ph)*0.017); }); return m; }
 /* Dampf, der aus heissem Wasser aufsteigt */
 function addSteam(parent, n, x, y, z, w, d, rise){
   for (let i=0;i<n;i++){ const m = new THREE.SpriteMaterial({ map:TEX.smoke.map, color:C('#f6f6f2'), transparent:true, opacity:0, depthWrite:false }), s = new THREE.Sprite(m); parent.add(s);
@@ -5479,20 +5554,48 @@ function buildLatrine(){
     mk(new THREE.PlaneGeometry(len, 0.18).rotateX(-Math.PI/2), flowMat(len/0.8, 0.25, 0.4), b, 0, 0.045, 0.54).renderOrder = 2;
     return b; };
   bench(0, -D/2 + 0.6, W - 1.2, 0); bench(-W/2 + 0.6, 0.1, 2.4, Math.PI/2); bench(W/2 - 0.6, 0.1, 2.4, -Math.PI/2);
-  // Nachbarn auf der Bank plaudern miteinander
-  const sitters = [[-2.4, '#c8b890', '#3a2616', false], [-1.2, '#3a5a8a', '#7a4a22', true], [0.6, '#f0ece2', '#9a948a', false], [2.4, '#8a3a2a', '#2b1d12', false]].map(([x, c, h, f], i) => {
-    const p = person(g, { skin:CA.skin[i % 3], hair:h, female:f, bun:f, cloth:c, long:f, sandals:true, toga:i === 2 ? '#f2efe6' : null, beard:i === 2 }, x, -D/2 + 0.55, 0); poseSit(p, BH); return p; });
-  const sg = person(g, { skin:'#b98260', hair:'#5a3a22', cloth:'#a89070', sandals:true }, W/2 - 0.55, 0.6, -Math.PI/2); poseSit(sg, BH);
-  const stick = fist(new THREE.Group(), sg.arms[1].hand, 0.25); mk(new THREE.CylinderGeometry(0.01, 0.01, 0.7, 6), R.wood, stick); mk(jitter(new THREE.SphereGeometry(0.06, 10, 8), 0.02, 4, 3), M('#d8c070', { tex:'grain', roughness:1 }), stick, 0, -0.38, 0);
+  // Besucher kommen von der Gasse herein, setzen sich auf einen freien Platz, plaudern mit den Nachbarn, stehen wieder auf und gehen.
+  // Einer hat den Schwamm am Stock dabei und spült ihn im Wasser der Rinne aus.
+  const wx = lx => g.position.x + lx, wz = lz => g.position.z + lz;
+  const SEATS = [-3.0, -1.8, -0.6, 0.6, 1.8, 3.0].map(x => ({ x, z:-D/2 + 0.55, yaw:0, fx:x, fz:-D/2 + 1.32 }))
+    .concat([-0.2, 0.8].map(z => ({ x:-W/2 + 0.55, z, yaw:Math.PI/2, fx:-W/2 + 1.32, fz:z })), [-0.2, 0.8].map(z => ({ x:W/2 - 0.55, z, yaw:-Math.PI/2, fx:W/2 - 1.32, fz:z })));
+  for (const q of SEATS) q.busy = null;
+  const OUTF = [{ skin:'#b98260', hair:'#5a3a22', cloth:'#a89070' }, { skin:'#c48f6c', hair:'#3a2616', cloth:'#c8b890' }, { skin:'#d4a07a', hair:'#7a4a22', female:true, bun:true, cloth:'#3a5a8a', long:true },
+    { skin:'#c99068', hair:'#9a948a', beard:true, cloth:'#f0ece2', toga:'#f2efe6' }, { skin:'#a87050', hair:'#2b1d12', cloth:'#8a3a2a' }, { skin:'#b07a58', hair:'#3a2616', female:true, bun:true, cloth:'#6a5a8a', long:true }];
+  const rr = mulberry32(919), vis = OUTF.map((o, i) => { const p = person(g, Object.assign({ sandals:true }, o), 0, 6, 0); p.g.position.y = 0; p.g.visible = false;
+    const v = { p, i, st:'off', t:2 + i*3, seat:null, path:[], wp:0, x:0, z:6, yaw:0, k:0, gait:0, side:1, col:{ x:wx(0), z:wz(6), r:0 } }; colliders.push(v.col); return v; });
+  const stick = fist(new THREE.Group(), vis[0].p.arms[1].hand, 0.25); mk(new THREE.CylinderGeometry(0.01, 0.01, 0.7, 6), R.wood, stick); mk(jitter(new THREE.SphereGeometry(0.06, 10, 8), 0.02, 4, 3), M('#d8c070', { tex:'grain', roughness:1 }), stick, 0, -0.38, 0);
+  const sitBlend = (p, k) => { p.hips.position.y = 0.88 + (BH + 0.08 - 0.88)*k; for (const l of p.legs){ l.hip.rotation.x = -1.5*k; l.knee.rotation.x = 1.5*k; } if (p.skirt){ p.skirt.rotation.x = -1.1*k; p.skirt.scale.set(1, 1 - 0.28*k, 1); } };
+  const takeSeat = (v, q) => { q.busy = v; v.seat = q; };
+  // Zu Beginn sitzen schon drei auf der Bank
+  [[0, 7], [2, 1], [3, 3]].forEach(([i, si], n) => { const v = vis[i], q = i === 0 ? SEATS[9] : SEATS[si]; takeSeat(v, q); v.st = 'sit'; v.t = 6 + n*7; v.x = q.x; v.z = q.z; v.yaw = q.yaw; v.p.g.visible = true; sitBlend(v.p, 1); });
+  const walk = (v, dt) => { const [tx, tz] = v.path[v.wp], dx = tx - v.x, dz = tz - v.z, d = Math.hypot(dx, dz);
+    if (d < 0.15){ v.wp++; return v.wp >= v.path.length; }
+    const want = Math.atan2(dx, dz); v.yaw = angLerp(v.yaw, want, Math.min(1, dt*5)); const st = Math.min(d, 1.0*dt*Math.max(0.3, Math.cos(want - v.yaw)));
+    let nx = v.x + Math.sin(v.yaw)*st, nz = v.z + Math.cos(v.yaw)*st; for (const o of vis) if (o !== v && o.p.g.visible){ const ex = nx - o.x, ez = nz - o.z, e = Math.hypot(ex, ez); if (e < 0.6 && e > 1e-4){ nx = o.x + ex/e*0.6; nz = o.z + ez/e*0.6; } }
+    v.x = nx; v.z = nz; v.gait += dt*6.5; walkPose(v.p, v.gait, 1, 0.42, true); return false; };
   const H = new THREE.Vector3(), Dv = new THREE.Vector3();
-  anims.push(t => {
-    sitters.forEach((p, i) => { const talk = Math.sin(t*0.8 + i*1.7) > 0.2, nb = sitters[i + (i % 2 ? -1 : 1)];
-      if (nb){ p.g.updateWorldMatrix(true, false); nb.head.getWorldPosition(H); lookAtW(p, H, 0.06); }
-      const gst = talk ? Math.sin(t*3 + i)*0.3 : 0; p.arms[1].sh.rotation.set(-0.5 - gst - (talk ? 0.4 : 0), 0, 0.2); p.arms[1].el.rotation.x = talk ? -1.2 : -0.6;
-      p.arms[0].sh.rotation.set(-0.45, 0, -0.15); p.arms[0].el.rotation.x = -0.7; p.spine.rotation.x = 0.1; });
-    // Den Schwamm am Stock im Wasser ausspülen
-    const dip = 0.5 + 0.5*Math.sin(t*1.6); g.updateWorldMatrix(true, false); H.set(W/2 - 1.2, 0.35 + dip*0.15, 0.6 + Math.sin(t*0.8)*0.3); g.localToWorld(H); Dv.set(-0.5, 1.2, 0).normalize(); gripAt(sg, 1, H, Dv);
-    sg.spine.rotation.x = 0.25; sg.head.rotation.x = 0.3;
+  anims.push((t, dt) => { g.updateWorldMatrix(true, false);
+    for (const v of vis){ const p = v.p; v.t -= dt;
+      if (v.st === 'off'){ if (v.t > 0) continue; const fr = SEATS.filter(q => !q.busy); if (!fr.length){ v.t = 3; continue; }
+        const q = v.i === 0 ? (fr.find(s => s.yaw !== 0) || fr[0]) : fr[Math.floor(rr()*fr.length)]; takeSeat(v, q); v.side = rr() < 0.5 ? -1 : 1;
+        v.x = v.side*10; v.z = 4.1; v.yaw = -v.side*Math.PI/2; v.path = [[v.side*1.3, 3.3], [0, 2.6], [0, 1.0], [q.fx, q.fz]]; v.wp = 0; v.st = 'in'; p.g.visible = true; standPose(p); sitBlend(p, 0); }
+      if (v.st === 'in' && walk(v, dt)){ v.st = 'down'; v.k = 0; standPose(p); }
+      if (v.st === 'down'){ v.k = Math.min(1, v.k + dt/1.1); const q = v.seat, b = sstep(0.3, 1, v.k); v.yaw = angLerp(v.yaw, q.yaw, Math.min(1, dt*6)); v.x = q.fx + (q.x - q.fx)*b; v.z = q.fz + (q.z - q.fz)*b; sitBlend(p, b);
+        if (v.k >= 1){ v.st = 'sit'; v.t = 12 + rr()*16; } }
+      if (v.st === 'sit'){ sitBlend(p, 1);
+        // mit dem nächsten Nachbarn auf der Bank plaudern
+        let nb = null, bd = 2.6; for (const o of vis) if (o !== v && o.st === 'sit'){ const d = Math.hypot(o.x - v.x, o.z - v.z); if (d < bd){ bd = d; nb = o; } }
+        const talk = nb && Math.sin(t*0.8 + v.i*1.7) > 0.2; if (nb){ nb.p.head.getWorldPosition(H); lookAtW(p, H, 0.06); } else p.head.rotation.y = Math.sin(t*0.3 + v.i)*0.4;
+        const gst = talk ? Math.sin(t*3 + v.i)*0.3 : 0; p.arms[0].sh.quaternion.identity(); p.arms[0].sh.rotation.set(-0.45, 0, -0.15); p.arms[0].el.rotation.x = -0.7; p.spine.rotation.x = 0.1;
+        if (v.i === 0){ // den Schwamm im fliessenden Wasser ausspülen
+          const q = v.seat, dip = 0.5 + 0.5*Math.sin(t*1.6), c = Math.cos(q.yaw), sn = Math.sin(q.yaw); H.set(q.x + sn*0.62 + c*0.3, 0.35 + dip*0.15, q.z + c*0.62 - sn*0.3); g.localToWorld(H); Dv.set(sn*0.5, 1.2, c*0.5).normalize(); gripAt(p, 1, H, Dv); p.spine.rotation.x = 0.25; p.head.rotation.x = 0.3; }
+        else { p.arms[1].sh.quaternion.identity(); p.arms[1].sh.rotation.set(-0.5 - gst - (talk ? 0.4 : 0), 0, 0.2); p.arms[1].el.rotation.x = talk ? -1.2 : -0.6; }
+        if (v.t <= 0){ v.st = 'up'; v.k = 1; for (const a of p.arms){ a.sh.quaternion.identity(); a.sh.rotation.set(0, 0, 0); a.el.rotation.x = -0.3; } p.spine.rotation.x = 0; } }
+      if (v.st === 'up'){ v.k = Math.max(0, v.k - dt/1.0); const q = v.seat, b = sstep(0, 0.7, v.k); v.x = q.fx + (q.x - q.fx)*b; v.z = q.fz + (q.z - q.fz)*b; sitBlend(p, b);
+        if (v.k <= 0){ q.busy = null; v.seat = null; v.side = rr() < 0.5 ? -1 : 1; v.path = [[0, 1.0], [0, 2.6], [v.side*1.3, 3.3], [v.side*10, 4.1]]; v.wp = 0; v.st = 'out'; } }
+      if (v.st === 'out' && walk(v, dt)){ v.st = 'off'; v.t = 3 + rr()*9; p.g.visible = false; }
+      p.g.position.set(v.x, 0, v.z); p.g.rotation.y = v.yaw; v.col.x = wx(v.x); v.col.z = wz(v.z); v.col.r = p.g.visible && (v.st === 'in' || v.st === 'out') ? 0.3 : 0; }
   });
   wallSeg(g, -W/2, -D/2 + 0.15, W/2, -D/2 + 0.15, 0.2); for (const sx of [-1, 1]) wallSeg(g, sx*(W/2 - 0.15), -D/2, sx*(W/2 - 0.15), D/2, 0.2);
   wallSeg(g, -W/2 + 0.6, -D/2 + 0.6, W/2 - 0.6, -D/2 + 0.6, 0.35); for (const sx of [-1, 1]) wallSeg(g, sx*(W/2 - 0.6), -D/2 + 0.6, sx*(W/2 - 0.6), 1.3, 0.35);
@@ -5965,13 +6068,10 @@ function buildTownsfolk(){
     [1.8, -13.4, Math.PI, 'pray', 7], [3.1, -13.1, Math.PI + 0.2, 'pray', 6], [-0.6, -13.6, Math.PI, 'pray', 6],
     [9.1, -3.6, Math.PI/2, 'buy', 5], [9.2, -1.4, Math.PI/2, 'buy', 5],
     [3.3, 76.0, 0, 'look', 5], [-3.3, 76.3, 0, 'look', 4],
-    // Drinnen: in der Thermenhalle ans Becken, in der Schule zuschauen, in der Kurie der Rede zuhören (durch die Tür hinein und wieder hinaus)
-    [THERMEN[0] - 5.4, THERMEN[1] + 2.8, Math.PI/2, 'watch', 12, null, [[THERMEN[0] - TH_W - 2.0, THERMEN[1]], [THERMEN[0] - TH_W + 0.9, THERMEN[1]]]],
-    [THERMEN[0] - 5.4, THERMEN[1] - 2.8, Math.PI/2, 'watch', 10, null, [[THERMEN[0] - TH_W - 2.0, THERMEN[1]], [THERMEN[0] - TH_W + 0.9, THERMEN[1]]]],
+    // Drinnen: in der Schule zuschauen, in der Kurie der Rede zuhören (durch die Tür hinein und wieder hinaus)
     [SCHOOL[0] + 1.0, SCHOOL[1] - 2.0, Math.PI/2, 'watch', 10, null, [[SCHOOL[0] - 2.4, SCHOOL[1] - 5.6], [SCHOOL[0] - 2.4, SCHOOL[1] - 3.3]]],
     [CURIA[0] + 3.2, CURIA[1] - 0.6, -Math.PI/2, 'watch', 12, null, [[CURIA[0] + 7.1, CURIA[1]], [CURIA[0] + 4.5, CURIA[1]]]],
-    [AMPHI.x - AMPHI.rx - 0.8, AMPHI.z, Math.PI/2, 'enter', 16],
-    [LATRINE[0] + 0.0, LATRINE[1] + 3.6, Math.PI, 'enter', 8] ];
+    [AMPHI.x - AMPHI.rx - 0.8, AMPHI.z, Math.PI/2, 'enter', 16] ];   // die Latrine hat eigene Besucher, die kommen und gehen
   // Läden in den Häuserblöcken: vor einer Fassade stehen und Waren anschauen
   { const bl = CITY_BLOCKS.filter(b => !b.small && Math.abs((b.x0 + b.x1)/2) < 70 && Math.abs((b.z0 + b.z1)/2) < 60); for (let i=0;i<8 && bl.length;i++){ const b = bl[Math.floor(rr()*bl.length)], s = Math.floor(rr()*4), u = 0.2 + rr()*0.6;
       const [x, z, ry] = s === 0 ? [b.x0 + (b.x1 - b.x0)*u, b.z0 - 0.9, 0] : s === 1 ? [b.x0 + (b.x1 - b.x0)*u, b.z1 + 0.9, Math.PI] : s === 2 ? [b.x0 - 0.9, b.z0 + (b.z1 - b.z0)*u, Math.PI/2] : [b.x1 + 0.9, b.z0 + (b.z1 - b.z0)*u, -Math.PI/2];
@@ -6472,13 +6572,13 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .rn-card{width:min(640px,100%)}
 .rn-legend{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
 .rn-legend span{font-family:var(--font-head);font-weight:600;background:var(--paper-2);border:1.5px solid var(--line);border-radius:8px;padding:.2em .55em;font-size:.95rem}
-.rn-legend b{font-family:"Times New Roman",Georgia,serif;font-size:1.1rem;color:#7a2a1e}
+.rn-legend b{font-family:"Times New Roman",Georgia,serif;font-size:1.1rem;color:var(--rnr)}
 .rn-tabs{display:flex;gap:8px;margin-bottom:10px}
 .rn-tabs .btn{flex:1;padding:.5em .6em;font-size:1rem}
 .rn-tabs .btn[aria-pressed="false"]{background:var(--paper-2);color:var(--ink);border-color:var(--line);box-shadow:0 3px 0 var(--line)}
 .rn-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-head);font-weight:600;margin-bottom:6px}
 .rn-q{text-align:center;background:#efe4c8;border:3px solid #9a3a28;border-radius:10px;padding:14px 10px;margin:4px 0 12px}
-.rn-q small{display:block;font-family:var(--font-head);font-size:1rem;color:var(--ink-soft);margin-bottom:4px}
+.rn-q small{display:block;font-family:var(--font-head);font-size:1rem;color:#6b5a48;margin-bottom:4px}
 .rn-big{font-family:"Times New Roman",Georgia,serif;font-weight:bold;font-size:clamp(2.4rem,9vw,3.6rem);letter-spacing:.06em;color:#2a201a;min-height:1.2em;line-height:1.15}
 .rn-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .rn-opts .btn{font-size:1.5rem;padding:.45em}
@@ -6487,7 +6587,10 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .rn-tiles .btn small{display:block;font-family:var(--font-body);font-size:.7rem;font-weight:400}
 .rn-row{display:flex;gap:8px;justify-content:center;margin-top:10px}
 .rn-msg{min-height:3.2em;font-size:1.08rem;line-height:1.45;margin:12px 0 4px;text-align:center}
-.rn-msg.ok{color:#2e7a3a}.rn-msg.no{color:#a83a24}
+.rn-msg.ok{color:var(--okc)}.rn-msg.no{color:var(--noc)}
+:root{--okc:#2e7a3a;--noc:#a83a24;--rnr:#7a2a1e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--okc:#86d391;--noc:#ff9a80;--rnr:#f0a888}}
+:root[data-theme="dark"]{--okc:#86d391;--noc:#ff9a80;--rnr:#f0a888}
 .rn-stars{font-size:1.2rem;letter-spacing:2px}
 </style>`);
 document.body.insertAdjacentHTML('beforeend', `<div id="numgame" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rnTitle">
@@ -6562,11 +6665,11 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .av-tip{position:absolute;pointer-events:none;background:var(--charcoal);color:#fffdf7;font-family:var(--font-head);font-weight:600;padding:.3em .7em;border-radius:8px;font-size:1rem;white-space:nowrap;transform:translate(-50%,-140%)}
 .av-tip small{font-weight:400;opacity:.8}
 .av-rot{position:absolute;right:8px;bottom:8px;display:flex;gap:6px}
-.av-rb{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);background:rgba(255,253,247,.92);font-size:1.3rem;line-height:1;cursor:pointer;color:var(--ink)}
+.av-rb{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);background:rgba(255,253,247,.92);font-size:1.3rem;line-height:1;cursor:pointer;color:#2b2118}
 .av-side{display:flex;flex-direction:column;gap:10px}
 .av-tabs{display:flex;gap:6px;flex-wrap:wrap}
 .av-tab{flex:1;min-width:90px;font:inherit;font-family:var(--font-head);font-weight:600;font-size:1rem;padding:.45em .6em;border:2px solid var(--line);border-radius:9px;background:var(--paper-2);color:var(--ink);cursor:pointer}
-.av-tab.on{border-color:#c8402a;background:#fff2e4}
+.av-tab.on{border-color:#7a1a1a;background:#a8302a;color:#fff}
 .av-info{border:2px solid var(--line);border-radius:10px;background:var(--paper-2);padding:12px 14px;min-height:150px}
 .av-info h3{margin:0 0 4px;font-family:var(--font-head);font-size:1.3rem}
 .av-info h3 i{font-weight:400;font-size:1rem;color:var(--ink-soft)}
@@ -6574,8 +6677,8 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .av-hint{color:var(--ink-soft)}
 .av-ask{font-family:var(--font-head);font-weight:600;font-size:1.25rem}
 .av-msg{min-height:1.5em}
-.av-msg.ok{color:#2e7a3a;font-weight:600}
-.av-msg.no{color:#a8302a;font-weight:600}
+.av-msg.ok{color:var(--okc);font-weight:600}
+.av-msg.no{color:var(--noc);font-weight:600}
 .av-stars{letter-spacing:2px;font-size:1.1rem}
 </style>`);
 const _vtmp = new THREE.Color();
@@ -6594,10 +6697,11 @@ function makeViewer(cv){
   V.setModel = obj => { for (const c of [...V.root.children]) V.root.remove(c); V.root.add(obj); V.all = []; V.hl = undefined;
     obj.traverse(m => { if (m.isMesh){ if (!m.userData.mat0) m.userData.mat0 = m.material; m.material = m.userData.mat0; V.all.push(m); } }); V.highlight(null); };
   const conv = (m0, cache, f) => { if (Array.isArray(m0)) return m0.map(q => conv(q, cache, f)); let c = cache.get(m0); if (!c){ c = m0.clone(); f(c); cache.set(m0, c); } return c; };
-  const glowM = m0 => conv(m0, V.glow, c => { if (c.emissive){ c.emissive = (c.color ? c.color.clone() : new THREE.Color('#ffffff')).lerp(new THREE.Color('#ffb060'), 0.4); c.emissiveIntensity = 0.6; } });   // heller, Farbe bleibt erkennbar
+  const glowM = m0 => conv(m0, V.glow, c => { c.transparent = true; c.opacity = 1; c.depthWrite = true; if (c.emissive){ c.emissive = (c.color ? c.color.clone() : new THREE.Color('#ffffff')).lerp(new THREE.Color('#ffb060'), 0.4); c.emissiveIntensity = 0.5; } });   // heller, Farbe bleibt erkennbar
   const fadeM = m0 => conv(m0, V.fade, c => { c.transparent = true; c.opacity = 0.13; c.depthWrite = false; });
   // Teil hervorheben: es leuchtet, der Rest wird blass; null zeigt alles normal
-  V.highlight = id => { if (id === V.hl) return; V.hl = id; for (const m of V.all){ const m0 = m.userData.mat0; m.material = !id ? m0 : m.userData.part === id ? glowM(m0) : fadeM(m0); } };
+  // Das Teil wird zuletzt gezeichnet: so liegt nichts Blasses darüber, es ist ganz zu sehen
+  V.highlight = id => { if (id === V.hl) return; V.hl = id; for (const m of V.all){ const m0 = m.userData.mat0, on = !!id && m.userData.part === id; m.material = !id ? m0 : on ? glowM(m0) : fadeM(m0); m.renderOrder = on ? 10 : 0; } };
   V.pick = e => { const r = cv.getBoundingClientRect(); V.ptr.set((e.clientX - r.left)/r.width*2 - 1, -(e.clientY - r.top)/r.height*2 + 1); V.ray.setFromCamera(V.ptr, V.cam);
     const hit = V.ray.intersectObject(V.root, true).find(h => h.object.userData.part && h.object.visible); return hit ? { id:hit.object.userData.part, x:e.clientX - r.left, y:e.clientY - r.top } : null; };
   cv.addEventListener('pointerdown', e => { V.drag = { x:e.clientX, moved:false }; try { cv.setPointerCapture(e.pointerId); } catch(err){} });
@@ -6708,7 +6812,7 @@ const CLOTH_SETS = {
   toga:{ title:'👔 Tunika, Toga und Lacerna', figs:[
     { tab:'Tunika', o:Object.assign({ cloth:'#d6c8aa' }, CL_MAN), order:['tunika', 'guertel', 'sandalen'],
       txt:'Im Alltag trugen die Männer nur die <b>Tunika</b>: ein Hemd aus Wolle mit kurzen Ärmeln, das bis zu den Knien reichte. Hosen trugen die Römer nicht!' },
-    { tab:'Toga', o:Object.assign({ cloth:'#e2d8c2', toga:'#f7f4ec' }, CL_MAN), order:['tunika', 'guertel', 'sandalen', 'toga'],
+    { tab:'Toga', o:Object.assign({ cloth:'#b0603a', toga:'#f7f4ec' }, CL_MAN), order:['tunika', 'guertel', 'sandalen', 'toga'],
       txt:'Römische <b>Bürger</b> trugen über der Tunika die <b>Toga</b>. Sie war so lang und schwer, dass man beim Anziehen Hilfe brauchte.' },
     { tab:'Lacerna', o:Object.assign({ cloth:'#b8946a', cloak:'#8a3a2a', fibula:'bronze' }, CL_MAN), order:['tunika', 'guertel', 'sandalen', 'lacerna', 'fibel'],
       txt:'Bei Regen und Kälte kam die <b>Lacerna</b> dazu, ein kurzer Umhang. Eine Spange, die <b>Fibel</b>, hielt ihn zusammen.' } ] },
@@ -6727,10 +6831,6 @@ function cvFigure(f){
   p.arms[0].sh.rotation.set(0.05, 0, -0.14); p.arms[1].sh.rotation.set(0.05, 0, 0.14); for (const a of p.arms) a.el.rotation.x = -0.18;
   // Stola: die Ärmel gehören zur Tunika darunter
   if (f.sleeves){ const tm = fabricMat(f.sleeves, 4); for (const a of p.arms) for (const m of a.sh.children) if (m.isMesh && cvColorIs(m.material, o.cloth)) m.material = tm; }
-  // Palla: zusätzlich ein Tuch schräg über die Brust und über den Rücken
-  if (o.palla){ const pm = M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide, roughness:0.95 });
-    const band = new THREE.CylinderGeometry(0.2*0.93, 0.216, 0.22, 30, 1, true); band.scale(1, 1, 0.82); mk(band, pm, p.spine, 0, 0.34, 0.004, 0, 0, -0.55);
-    const back = new THREE.CylinderGeometry(0.2, 0.28, 0.95, 24, 4, true, Math.PI*0.62, Math.PI*0.76); back.scale(1, 1, 0.8); mk(back, pm, p.spine, 0, 0.16, -0.01); }
   // Teile benennen: nach der Farbe der Stoffe
   const map = [[o.toga, 'toga'], [o.palla, 'palla'], [o.cloak, 'lacerna'], ['#c48a3e', o.fibula ? 'fibel' : null], [f.sleeves, 'tunika'], [o.cloth, f.sleeves ? 'stola' : 'tunika'],
     [toneHex(o.cloth, '#3a2a1c', 0.4), f.sleeves ? 'stola' : 'tunika'], ['#4a3322', 'guertel'], ['#4e3626', 'sandalen']];
@@ -6819,11 +6919,137 @@ function openLegionView(){ openModal('legionview'); lvSet(0); if (!LV.raf) LV.ra
 $('#lvNext').addEventListener('click', () => lvSet(LV.step === LV_STEPS.length - 1 ? 0 : LV.step + 1)); $('#lvBack').addEventListener('click', () => lvSet(LV.step - 1));
 document.querySelectorAll('[data-lvclose]').forEach(b => b.addEventListener('click', () => closeModal()));
 $('#legionview').addEventListener('click', e => { if (e.target.id === 'legionview') closeModal(); });
+/* ===================== DER ABAKUS ZUM AUSPROBIEREN ===================== */
+/* Ein Rechenbrett mit vier Rillen: M (Tausender), C (Hunderter), X (Zehner), I (Einer). Oben ein Steinchen, das 5 zählt,
+   unten vier Steinchen, die je 1 zählen. Ein Steinchen zählt, wenn es am Mittelbalken liegt. Antippen schiebt es hin oder weg
+   (die Steinchen dazwischen gehen mit), man kann sie auch hinziehen. Zuerst lernt man in kleinen Schritten, wie es geht,
+   dann rechnet man selbst. */
+document.head.insertAdjacentHTML('beforeend', `<style>
+.ab-card{width:min(700px,100%)}
+.ab-cv{display:block;width:100%;height:auto;border-radius:10px;border:2px solid var(--line);background:#efe4c8;touch-action:none;cursor:pointer}
+.ab-task{font-family:var(--font-head);font-weight:600;font-size:1.2rem;margin:10px 0 2px}
+.ab-sub{margin:0;line-height:1.45;min-height:1.4em}
+.ab-val{font-family:var(--font-head);font-weight:600;font-size:1.05rem;color:var(--ink-soft);margin:6px 0 0}
+.ab-val b{font-family:"Times New Roman",Georgia,serif;font-size:1.25rem;color:var(--ink)}
+.ab-msg{min-height:1.5em;font-weight:600;margin:6px 0 0}
+.ab-msg.ok{color:var(--okc)} .ab-msg.no{color:var(--noc)}
+</style>`);
+document.body.insertAdjacentHTML('beforeend', `<div id="abgame" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="abTitle">
+  <div class="card ab-card">
+    <button class="x" data-abclose aria-label="Schliessen">✕</button>
+    <h2 id="abTitle">🧮 Rechnen mit dem Abakus</h2>
+    <div class="av-tabs" id="abTabs"><button class="av-tab" data-m="learn">📘 Lernen</button><button class="av-tab" data-m="calc">➕ Rechnen</button></div>
+    <canvas class="ab-cv" id="abCanvas" width="680" height="400" aria-label="Abakus: Steinchen antippen oder ziehen"></canvas>
+    <p class="ab-val" id="abVal"></p>
+    <p class="ab-task" id="abTask"></p><p class="ab-sub" id="abSub"></p>
+    <p class="ab-msg" id="abMsg" role="status" aria-live="polite"></p>
+    <div class="actions"><button class="btn ghost" id="abReset">↺ Alles wegschieben</button><button class="btn ghost hidden" id="abHint">💡 Tipp</button><button class="btn hidden" id="abCheck">✓ Prüfen</button><button class="btn hidden" id="abNext">Weiter ▶</button></div>
+  </div>
+</div>`);
+const AB = { up:[0, 0, 0, 0], lo:[0, 0, 0, 0], disp:null, raf:0, drag:null, mode:'learn', step:0, task:null, round:0, score:0, res:[], ok:false, stable:0, last:0 };
+const AB_COL = ['M', 'C', 'X', 'I'], AB_PV = [1000, 100, 10, 1], AB_X = c => 130 + c*140, AB_BAR = 150;
+// Lage der Steinchen: oben (zählt, wenn unten am Balken), unten j = 0 ist das nächste am Balken
+const abUpY = on => on ? AB_BAR - 26 : 52;
+const abLoY = (j, on) => on ? AB_BAR + 26 + j*44 : 382 - (3 - j)*44;
+function abValue(){ let v = 0; for (let c=0;c<4;c++) v += (AB.up[c]*5 + AB.lo[c])*AB_PV[c]; return v; }
+function abSet(v){ for (let c=0;c<4;c++){ const d = Math.floor(v/AB_PV[c]) % 10; AB.up[c] = d >= 5 ? 1 : 0; AB.lo[c] = d % 5; } }
+function abTargets(){ const T = []; for (let c=0;c<4;c++){ T.push(abUpY(AB.up[c])); for (let j=0;j<4;j++) T.push(abLoY(j, j < AB.lo[c])); } return T; }
+function abHit(x, y){ if (!AB.disp) return null; for (let c=0;c<4;c++){ const cx = AB_X(c); if (Math.abs(x - cx) > 46) continue; const base = c*5;
+    if (Math.abs(y - AB.disp[base]) < 22) return { c, j:-1 };
+    for (let j=0;j<4;j++) if (Math.abs(y - AB.disp[base + 1 + j]) < 22) return { c, j }; } return null; }
+// Antippen: ein Steinchen und alle zwischen ihm und dem Balken gehen mit
+function abToggle(h, dir){ if (h.j < 0){ AB.up[h.c] = dir === undefined ? 1 - AB.up[h.c] : dir; }
+  else { const on = h.j < AB.lo[h.c]; if (dir === undefined ? on : dir === 0) AB.lo[h.c] = h.j; else AB.lo[h.c] = h.j + 1; }
+  if (typeof sfx === 'function') try { sfx('click'); } catch(e){} abChanged(); }
+function abDraw(){ const cv = $('#abCanvas'), x = cv.getContext('2d'), W = cv.width, H = cv.height;
+  x.clearRect(0, 0, W, H);
+  // Rahmen aus Holz, Mittelbalken, Rillen
+  x.fillStyle = '#7a5434'; x.fillRect(0, 0, W, H); x.fillStyle = '#c8a878'; x.fillRect(18, 18, W - 36, H - 36);
+  for (let i=0;i<60;i++){ x.strokeStyle = 'rgba(90,60,30,0.08)'; x.beginPath(); x.moveTo(18, 20 + i*6.1); x.lineTo(W - 18, 22 + i*6.1); x.stroke(); }
+  x.fillStyle = '#5a3a22'; x.fillRect(18, AB_BAR - 6, W - 36, 12);
+  for (let c=0;c<4;c++){ const cx = AB_X(c); x.fillStyle = '#6a4a2e'; x.fillRect(cx - 5, 28, 10, AB_BAR - 34); x.fillRect(cx - 5, AB_BAR + 6, 10, H - AB_BAR - 34);
+    x.fillStyle = '#fffdf7'; x.font = 'bold 22px "Times New Roman", Georgia, serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = '#f6eddd'; x.fillText(AB_COL[c], cx + 52, AB_BAR + 1); }
+  // Steinchen: wenn sie zählen, leuchten sie rot, sonst sind sie hell
+  for (let c=0;c<4;c++){ const cx = AB_X(c), base = c*5;
+    const bead = (y, on, five) => { x.save(); x.translate(cx, y); x.fillStyle = 'rgba(0,0,0,0.18)'; x.beginPath(); x.ellipse(2, 4, 40, 18, 0, 0, TAU); x.fill();
+      const gr = x.createLinearGradient(0, -18, 0, 18); gr.addColorStop(0, on ? '#e8705a' : '#f2ead8'); gr.addColorStop(1, on ? '#a8302a' : '#c8b898'); x.fillStyle = gr;
+      x.beginPath(); x.ellipse(0, 0, 40, 18, 0, 0, TAU); x.fill(); x.strokeStyle = on ? '#6a1a12' : '#8a7a5a'; x.lineWidth = 2; x.stroke();
+      x.fillStyle = on ? '#fff' : '#6a5a3a'; x.font = 'bold 15px Fredoka, Arial, sans-serif'; x.fillText(five ? '5' : '1', 0, 1); x.restore(); };
+    bead(AB.disp[base], AB.up[c] === 1, true); for (let j=0;j<4;j++) bead(AB.disp[base + 1 + j], j < AB.lo[c], false); }
+  // Stellenwerte unten
+  x.fillStyle = '#3a2412'; x.font = 'bold 15px Fredoka, Arial, sans-serif'; x.textAlign = 'center'; for (let c=0;c<4;c++) x.fillText(['Tausender', 'Hunderter', 'Zehner', 'Einer'][c], AB_X(c), 14); }
+function abLoop(t){ if (modal !== 'abgame'){ AB.raf = 0; return; } AB.raf = requestAnimationFrame(abLoop);
+  const dt = Math.min(0.05, (t - (AB.last || t))/1000); AB.last = t; const T = abTargets(); if (!AB.disp) AB.disp = T.slice();
+  for (let i=0;i<T.length;i++) AB.disp[i] += (T[i] - AB.disp[i])*Math.min(1, dt*12);
+  abDraw(); }
+// Eingaben: tippen oder ziehen
+{ const cv = $('#abCanvas'); const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left)*cv.width/r.width, (e.clientY - r.top)*cv.height/r.height]; };
+  cv.addEventListener('pointerdown', e => { const [x, y] = pos(e), h = abHit(x, y); if (!h) return; AB.drag = { h, y0:y }; try { cv.setPointerCapture(e.pointerId); } catch(err){} });
+  cv.addEventListener('pointerup', e => { const d = AB.drag; AB.drag = null; if (!d) return; const [, y] = pos(e), dy = y - d.y0;
+    if (Math.abs(dy) < 10) abToggle(d.h); else { const toBar = d.h.j < 0 ? dy > 0 : dy < 0; abToggle(d.h, toBar ? 1 : 0); } }); }
+const ab = s => $('#ab' + s);
+function abVal(show){ const v = abValue(); ab('Val').innerHTML = show ? 'Der Abakus zeigt: <b>' + v + '</b>' + (v > 0 && v < 4000 ? ' &nbsp;·&nbsp; römisch <b>' + toRoman(v) + '</b>' : '') : '&nbsp;'; }
+// Lernschritte: erklären, dann eine Zahl einstellen lassen
+const AB_LEARN = [
+  { t:'Das ist ein Abakus', s:'Jede Rille ist eine Stelle: ganz rechts die Einer (I), dann die Zehner (X), die Hunderter (C) und die Tausender (M). Ein Steinchen zählt, wenn es am dunklen Balken in der Mitte liegt.' },
+  { t:'Unten zählt jedes Steinchen 1', s:'Tippe in der Einer-Rille (I) unten auf das dritte Steinchen. Es schiebt sich mit den anderen zum Balken. Stelle so die Zahl 3 ein.', v:3 },
+  { t:'Oben zählt das Steinchen 5', s:'Tippe in der Einer-Rille auf das obere Steinchen, damit es zum Balken gleitet. Jetzt zeigt der Abakus 5 + 3 = 8.', v:8 },
+  { t:'Alles wieder weg', s:'Tippe auf die Steinchen am Balken, damit sie zurückgleiten, oder drücke «Alles wegschieben». Dann zeigt der Abakus 0.', v:0 },
+  { t:'Zeige die Zahl 7', s:'Tipp: 7 ist 5 + 2.', v:7 },
+  { t:'Die Zehner', s:'In der X-Rille zählt jedes Steinchen 10. Stelle die Zahl 20 ein (zuerst alles wegschieben).', v:20 },
+  { t:'Zeige die Zahl 36', s:'3 Zehner und 6 Einer. Die 6 ist 5 + 1.', v:36 },
+  { t:'Zeige die Zahl 152', s:'1 Hunderter, 5 Zehner und 2 Einer.', v:152 },
+  { t:'Geschafft!', s:'Jetzt kannst du den Abakus bedienen. Probiere nun das Rechnen!', end:true } ];
+function abLearn(i){ AB.mode = 'learn'; AB.step = i; const L = AB_LEARN[i]; AB.ok = !('v' in L);
+  ab('Task').textContent = (i + 1) + '. ' + L.t; ab('Sub').textContent = L.s; ab('Msg').textContent = ''; ab('Msg').className = 'ab-msg';
+  ab('Next').classList.toggle('hidden', 'v' in L); ab('Next').textContent = L.end ? '➕ Zum Rechnen' : 'Weiter ▶'; ab('Check').classList.add('hidden'); ab('Hint').classList.add('hidden'); abVal(true); if ('v' in L && abValue() === L.v) abChanged(); }
+// Rechenaufgaben: zuerst die erste Zahl einstellen, dann die zweite dazuzählen oder wegnehmen
+function abMakeTask(r){ const R = (a, b) => a + Math.floor(Math.random()*(b - a + 1)); let a, b, op = '+';
+  if (r < 2){ a = R(1, 4); b = R(1, 9 - a); }
+  else if (r < 4){ a = R(11, 43); b = R(11, 45); if (a % 10 + b % 10 > 9) b -= b % 10 - Math.max(0, 9 - a % 10); }
+  else if (r < 6){ a = R(15, 58); b = R(6, 29); if (a % 10 + b % 10 < 10) b += 10 - (a % 10 + b % 10); }
+  else { op = '−'; a = R(25, 98); b = R(3, a - 5); }
+  return { a, b, op, res:op === '+' ? a + b : a - b, phase:0 }; }
+function abCalc(r){ AB.mode = 'calc'; AB.round = r; if (r === 0){ AB.score = 0; AB.res = []; } AB.task = abMakeTask(r); abShowTask(); }
+function abShowTask(){ const T = AB.task, stars = Array.from({ length:8 }, (_, i) => i < AB.res.length ? (AB.res[i] ? '⭐' : '▫️') : '·').join(' ');
+  ab('Task').textContent = 'Aufgabe ' + (AB.round + 1) + ' von 8:  ' + T.a + ' ' + T.op + ' ' + T.b + ' = ?   ' + stars;
+  ab('Sub').textContent = T.phase === 0 ? 'Stelle zuerst die Zahl ' + T.a + ' auf dem Abakus ein.' : (T.op === '+' ? 'Jetzt schiebe ' + T.b + ' dazu.' : 'Jetzt nimm ' + T.b + ' weg.') + ' Was zeigt der Abakus? Drücke dann «Prüfen».';
+  ab('Msg').textContent = ''; ab('Msg').className = 'ab-msg'; ab('Next').classList.add('hidden'); ab('Check').classList.toggle('hidden', T.phase === 0); ab('Hint').classList.toggle('hidden', T.phase === 0); abVal(T.phase === 0); }
+function abHintText(){ const T = AB.task, d = [Math.floor(T.b/1000) % 10, Math.floor(T.b/100) % 10, Math.floor(T.b/10) % 10, T.b % 10], parts = [];
+  ['Tausender', 'Hunderter', 'Zehner', 'Einer'].forEach((n, c) => { if (d[c]) parts.push(d[c] + ' ' + n); });
+  let s = T.b + ' sind ' + parts.join(' und ') + '. ' + (T.op === '+' ? 'Schiebe in jeder Rille so viele Steinchen dazu.' : 'Nimm in jeder Rille so viele Steinchen weg.');
+  if (T.op === '+' && T.a % 10 + T.b % 10 > 9) s += ' Reichen die Einer nicht? Dann gibt es 1 Zehner mehr, und von den Einern bleibt der Rest: 10 Einer sind 1 Zehner.';
+  if (T.op === '−' && T.a % 10 < T.b % 10) s += ' Reichen die Einer nicht? Nimm 1 Zehner weg und lege dafür 10 Einer dazu.';
+  return s; }
+function abChanged(){ const v = abValue();
+  if (AB.mode === 'learn'){ abVal(true); const L = AB_LEARN[AB.step]; if ('v' in L && !AB.ok && v === L.v){ AB.ok = true; ab('Msg').className = 'ab-msg ok'; ab('Msg').textContent = ['Richtig! ', 'Super! ', 'Genau so! '][AB.step % 3] + 'Der Abakus zeigt ' + v + '.'; ab('Next').classList.remove('hidden'); if (typeof chime === 'function') chime(); } }
+  else if (AB.task && AB.task.phase === 0){ abVal(true); if (v === AB.task.a){ AB.task.phase = 1; setTimeout(() => { abShowTask(); ab('Msg').className = 'ab-msg ok'; ab('Msg').textContent = 'Gut, das ist ' + AB.task.a + '.'; }, 350); } } }
+ab('Check').addEventListener('click', () => { const T = AB.task, v = abValue(); if (!T || T.phase !== 1) return;
+  if (v === T.res){ AB.res.push(!T.tried); if (!T.tried) AB.score++; ab('Msg').className = 'ab-msg ok'; ab('Msg').textContent = 'Richtig! ' + T.a + ' ' + T.op + ' ' + T.b + ' = ' + T.res + '.'; abVal(true); if (typeof chime === 'function') chime();
+    T.phase = 2; ab('Check').classList.add('hidden'); ab('Hint').classList.add('hidden'); ab('Next').classList.remove('hidden'); ab('Next').textContent = AB.round < 7 ? 'Nächste Aufgabe ▶' : 'Fertig ▶'; }
+  else { ab('Msg').className = 'ab-msg no'; ab('Msg').textContent = T.tried ? 'Noch nicht. Der Abakus zeigt ' + v + '. ' + abHintText() : 'Noch nicht ganz. Zähle nochmals nach, oder schau dir den Tipp an.'; T.tried = true; } });
+ab('Hint').addEventListener('click', () => { if (AB.task){ AB.task.tried = true; ab('Msg').className = 'ab-msg'; ab('Msg').textContent = abHintText(); } });
+ab('Next').addEventListener('click', () => {
+  if (AB.mode === 'learn'){ if (AB_LEARN[AB.step].end) abMode('calc'); else abLearn(AB.step + 1); return; }
+  if (AB.round >= 8){ abSet(0); abCalc(0); return; }
+  if (AB.round < 7){ abSet(0); abCalc(AB.round + 1); return; }
+  const k = AB.score; ab('Task').textContent = (k === 8 ? '🏆 Alle 8 Aufgaben auf Anhieb gelöst!' : k >= 6 ? '🎉 ' + k + ' von 8 auf Anhieb gelöst, sehr gut!' : '👍 ' + k + ' von 8 auf Anhieb gelöst. Übung macht den Meister!') + '   ' + AB.res.map(r => r ? '⭐' : '▫️').join(' ');
+  ab('Sub').textContent = 'So rechneten die Kinder in der römischen Schule.'; ab('Msg').textContent = ''; ab('Next').textContent = 'Nochmals rechnen'; AB.round = 8; AB.task = null;
+  if (k === 8 && typeof burst === 'function') burst(); });
+ab('Reset').addEventListener('click', () => { abSet(0); abChanged(); });
+function abMode(m){ $('#abTabs').querySelectorAll('[data-m]').forEach(b => { b.classList.toggle('on', b.dataset.m === m); b.setAttribute('aria-pressed', b.dataset.m === m); }); abSet(0); if (m === 'learn') abLearn(0); else abCalc(0); }
+$('#abTabs').querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => abMode(b.dataset.m)));
+document.querySelectorAll('[data-abclose]').forEach(b => b.addEventListener('click', () => closeModal()));
+$('#abgame').addEventListener('click', e => { if (e.target.id === 'abgame') closeModal(); });
+function openAbacus(){ openModal('abgame'); AB.disp = null; abMode('learn'); if (!AB.raf) AB.raf = requestAnimationFrame(abLoop); }
+
 // Knöpfe in den Infokarten «Die Ausrüstung», «Die Legion», «Tunika und Toga» und «Stola und Palla»
-$('#btnTry').insertAdjacentHTML('beforebegin', '<button class="btn hidden" id="btnArmor">🛡️ Rüstung genau ansehen</button><button class="btn hidden" id="btnLegion">🦅 Aufbau der Legion</button><button class="btn hidden" id="btnCloth">👕 Kleider genau ansehen</button>');
+$('#btnTry').insertAdjacentHTML('beforebegin', '<button class="btn hidden" id="btnArmor">🛡️ Rüstung genau ansehen</button><button class="btn hidden" id="btnLegion">🦅 Aufbau der Legion</button><button class="btn hidden" id="btnCloth">👕 Kleider genau ansehen</button><button class="btn hidden" id="btnAbacus">🧮 Abakus ausprobieren</button>');
+$('#btnAbacus').addEventListener('click', openAbacus);
 $('#btnArmor').addEventListener('click', openArmorView); $('#btnLegion').addEventListener('click', openLegionView); $('#btnCloth').addEventListener('click', () => openClothView(CV.station));
 { const os2 = openStation; openStation = function(id){ os2(id); $('#btnArmor').classList.toggle('hidden', id !== 'ausruestung'); $('#btnLegion').classList.toggle('hidden', id !== 'legion');
-    const cl = id === 'toga' || id === 'stola'; $('#btnCloth').classList.toggle('hidden', !cl); if (cl) CV.station = id; }; }
+    const cl = id === 'toga' || id === 'stola'; $('#btnCloth').classList.toggle('hidden', !cl); if (cl) CV.station = id; $('#btnAbacus').classList.toggle('hidden', id !== 'abakus'); }; }
 function renderBook(){
   $('#bookSummary').textContent = visited.size === STATIONS.length ? 'Du hast alles entdeckt! Tippe auf ein Thema, um es nochmals zu lesen.' :
     'Du hast ' + visited.size + ' von ' + STATIONS.length + ' Dingen entdeckt. Bei den fehlenden Dingen steht ein Tipp.';
