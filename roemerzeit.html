@@ -1263,7 +1263,7 @@ const GZ = [-59, -39, -19, 1, 21, 41, 61];            // Strassen in Ost-West-Ri
 const GATES = [[0, -80, 0], [0, 80, 0], [-98, 1, 1], [98, 1, 1]];   // Tore (x, z, 1 = in der Ost- oder Westmauer)
 const TOWN = rect(0, -9, 27, 30);                     // Altstadt um das Forum (eigene Gebäude)
 const FORUM = rect(0, -9.7, 7, 8.3);                  // gepflasterter Platz (etwas erhöht)
-const ARCH = [0, 15.5];                               // Triumphbogen über der Hauptstrasse
+const ARCH = [0, 80];                                 // Triumphbogen als Stadttor im Süden (statt des gewöhnlichen Tors)
 const TEMPLE = [0, -23.5];                            // Tempel am Nordende des Forums (Front nach Süden)
 const CURIA = [-15.5, -11];                             // Senatsgebäude (Front nach Osten)
 const SCHOOL = [9.6, 9.1];                            // Schule (Ludus) an der Ecke der Hauptstrassen, Eingang im Norden
@@ -1304,6 +1304,13 @@ const STREETS = (() => { const S = [];
 function segDist(px,pz,ax,az,bx,bz){ const dx=bx-ax, dz=bz-az; const t=Math.max(0,Math.min(1,((px-ax)*dx+(pz-az)*dz)/(dx*dx+dz*dz))); return Math.hypot(px-ax-dx*t, pz-az-dz*t); }
 function pathDist(x,z){ let d=1e9; for (const p of PATHS) for (let i=0;i<p.length-1;i++) d = Math.min(d, segDist(x,z,p[i][0],p[i][1],p[i+1][0],p[i+1][1])); return d; }
 function streetDist(x, z){ let d = 1e9; for (const [a, b, w] of STREETS) d = Math.min(d, segDist(x, z, a[0], a[1], b[0], b[1]) - w/2); return d; }
+/* Der Graben vor dem Limes, aussen auf der Nordseite: 0 daneben, 1 in der Mitte; an der Strasse bleibt eine Erdbrücke */
+const LD_Z = -4.8, LD_HW = 3.4;
+function limesDitch(x, z){ const lz = z - LIMES.z - LD_Z; if (lz < -LD_HW || lz > LD_HW || x < LIMES.x0 - 4 || x > LIMES.x1 + 4) return 0;
+  return (0.5 + 0.5*Math.cos(Math.PI*lz/LD_HW))*sstep(4.6, 6.8, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
+/* Farbe der Erde im Graben: über die ganze Breite und ein Stück darüber hinaus braun */
+function limesDitchMask(x, z){ const lz = Math.abs(z - LIMES.z - LD_Z); if (lz > LD_HW + 0.9 || x < LIMES.x0 - 4 || x > LIMES.x1 + 4) return 0;
+  return sstep(LD_HW + 0.9, LD_HW - 0.2, lz)*sstep(4.2, 5.8, Math.abs(x))*sstep(LIMES.x0 - 4, LIMES.x0, x)*sstep(LIMES.x1 + 4, LIMES.x1, x); }
 function amphiE(x, z){ return Math.hypot((x - AMPHI.x)/AMPHI.rx, (z - AMPHI.z)/AMPHI.rz); }
 function groundH(x,z){
   const r = Math.hypot(x,z), dr = Math.abs(x - riverX(z));
@@ -1313,6 +1320,8 @@ function groundH(x,z){
   h += 0.25;
   // Das Forum liegt eine Stufe höher
   h += 0.12*(1 - sstep(-0.25, 0, rectD(FORUM, x, z)));
+  // Der Graben vor dem Limes
+  h -= 1.4*limesDitch(x, z);
   // Erst weit draussen sanfte Hügel; im Westen ein Hügelzug mit der Quelle des Aquädukts
   const rt = Math.max(0, r - 150);
   let rim = Math.min(rt*rt*0.004 + rt*0.1, 30)*(0.4 + 0.95*fbm(x*0.012+5.1, z*0.012-2.2, 3));
@@ -1333,7 +1342,7 @@ const P = {
   romulus:[111, 60], gruendung:[100.6, -57.5], reich:[0, -4.6], senat:[-11.4, -11], caesar:[3.4, -11.6], limes:[6.4, -120.6],
   legionaer:[-8, -95], ausruestung:[-28, -88], schildkroete:[16, -98], legion:[-42, -99],
   toga:[-7.6, 5.6], stola:[-4.8, 11], familie:[-13.4, 8.5], schule:[11.6, 8.4], zahlen:[7.0, 11.4], abakus:[6.4, 8.5], berufe:[9.6, -3.6], kueche:[-17.6, 12.3], latein:[-2.8, -3.4],
-  strasse:[-5.2, 95.2], tempel:[0, -14.4], triumphbogen:[3.0, 12.5], insula:[9.4, -8.4], amphitheater:[50.6, 62.5],
+  strasse:[-5.2, 95.2], tempel:[0, -14.4], triumphbogen:[-3.6, 84.6], insula:[9.4, -8.4], amphitheater:[50.6, 62.5],
   aquaedukt:[-110, -25.2], thermen:[11.5, -14.4], hypokaustum:[25.7, -15.2], latrine:[16, -24.2]
 };
 const START = { x:0, z:104, yaw:0 };
@@ -1403,13 +1412,14 @@ function terrainSample(x, z, y, ny, out, w){
   const townK = (1 - sstep(-1, 3 + n*2, cityD))*(0.75 + 0.2*n), harborK = 1 - sstep(-0.5, 1.5, rectD(HARBOR, x, z));
   const drillK = (1 - sstep(-0.5, 1.5, rectD(DRILL, x, z)))*0.9, campK = (1 - sstep(6, 10, Math.hypot(x - CAMP[0], z - CAMP[1])))*0.8;
   const arenaK = 1 - sstep(0.62, 0.7, amphiE(x, z));
-  const dk = Math.max(pathK*0.9, townK, drillK, campK, harborK);
+  const ldK = limesDitchMask(x, z), dk = Math.max(pathK*0.9, townK, drillK, campK, harborK, ldK);
   const fK = 1 - sstep(-0.3, 0.3, rectD(FIELD, x, z));
   const dr = Math.abs(x - riverX(z)); const sandK = gravelK(x, z, y);
   out.lerp(TC.moss, (1 - sstep(10, 24, dr)) * sstep(0.55, 0.7, fbm(x*0.12+7, z*0.12-3, 3)) * 0.5);
   _td.copy(TC.dirt).lerp(TC.dirt2, n); if (townK > 0.3) _td.lerp(TC.town, 0.5);
   out.lerp(_td, dk); _tg.copy(TC.gravel).lerp(TC.gravel2, n2); out.lerp(_tg, sandK); out.lerp(TC.arena, arenaK);
   _td.copy(TC.soil).lerp(TC.soil2, n*0.6); out.lerp(_td, fK*0.6);
+  _td.copy(TC.dirt2).lerp(TC.soil, 0.35 + n*0.2); out.lerp(_td, ldK*0.92);
   const vK = 1 - sstep(-0.3, 0.6, rectD(VINEYARD, x, z)); out.lerp(TC.plough, vK*0.55);
   let dw = Math.max(dk, sandK, arenaK, fK*0.6);
   const slope = 1 - ny;
@@ -3226,7 +3236,7 @@ function inBuilt(x, z, m){
   if (Math.hypot(x - CAMP[0], z - CAMP[1]) < m + 8) return true;
   if (rectD(FIELD, x, z) < m + 2) return true;
   if (rectD(VINEYARD, x, z) < m + 1) return true;
-  if (Math.abs(z - LIMES.z - 0.5) < m + 7.5 && x > LIMES.x0 - 3 && x < LIMES.x1 + 3) return true;
+  if (z > LIMES.z + LD_Z - LD_HW - m - 1 && z < LIMES.z + 8 + m && x > LIMES.x0 - 5 && x < LIMES.x1 + 5) return true;
   if (Math.abs(z - AQUA.z) < m + 2.4 && x > AQUA.x0 - 25 && x < AQUA.x1 + 3) return true;
   if (Math.hypot(x - P.schildkroete[0] + 1, z - P.schildkroete[1] - 1.6) < m + 5) return true;
   if (m >= 1.5 ? romScene(x, z, m) : Math.hypot(x - P.romulus[0] - 2, z - P.romulus[1]) < m + 5) return true;
@@ -3309,7 +3319,7 @@ function buildVegetation(){
       const s = R(0.8, 1.15); treeCollider(x, z, 0.4*s); return { x, y:groundH(x,z) - 0.2, z, ry:R(0,TAU), s }; }); }
   // Zypressen: Allee an der Hauptstrasse, Alleen zu den Landgütern und einzelne auf den Hügeln
   { const cg = cypressGeo(3, 9.5), pts = [];
-    for (let z = 86; z <= 140; z += 3.2) for (const x of [-4.4, 4.4]) pts.push([x, z]);
+    for (let z = 86; z <= 140; z += 3.2) for (const x of [-4.4, 4.4]) if (x < 0 || z > 96) pts.push([x, z]);   // rechts vor dem Tor wendet der Triumphzug
     for (let z = -86; z >= -140; z -= 3.2) for (const x of [-4.4, 4.4]) if (z < -110 || x > 0) pts.push([x, z]);
     for (let x = -104; x >= -140; x -= 3.2) for (const z of [-3.2, 5.2]) pts.push([x, z]);
     for (const v of VILLAS){ const c = Math.cos(v.ry), s = Math.sin(v.ry); for (let k=0;k<6;k++) for (const sd of [-2.4, 2.4]){ const lx = sd, lz = 9 + k*3.2; pts.push([v.x + lx*c + lz*s, v.z - lx*s + lz*c]); } }
@@ -3607,7 +3617,9 @@ function rectWall(w, h, depth, holes){ const s = new THREE.Shape(); s.moveTo(-w/
   const g = new THREE.ExtrudeGeometry(s, { depth, bevelEnabled:false }); g.translate(0, 0, -depth/2);
   const uv = g.attributes.uv; for (let i=0;i<uv.count;i++) uv.setXY(i, uv.getX(i)/2, uv.getY(i)/2); g.computeVertexNormals(); return g; }
 /* Figur zur Statue machen (Marmor oder Bronze) */
-function toStatue(p, mat){ p.root.traverse(o => { if (o.isMesh && o.material && !(o.material.metalness > 0.5 && mat.metalness < 0.5)) o.material = mat; }); return p; }
+/* Figur zur Statue machen: alles in Stein oder Gold. Beidseitig, sonst verschwindet die Vorderseite der Gewänder (sie sind innen offen) */
+function toStatue(p, mat){ if (mat.side !== THREE.DoubleSide){ if (!mat.userData.ds){ mat.userData.ds = mat.clone(); mat.userData.ds.side = THREE.DoubleSide; } mat = mat.userData.ds; }
+  p.root.traverse(o => { if (o.isMesh && o.material && !(o.material.metalness > 0.5 && mat.metalness < 0.5)) o.material = mat; }); return p; }
 /* Inschrift in römischen Grossbuchstaben (CanvasTexture auf Stein) */
 function inscriptionTex(lines, w, h, bg){ return canvasTex(w, h, (x, W, H) => { x.fillStyle = bg || '#d8d0c0'; x.fillRect(0, 0, W, H); const r = mulberry32(509);
   for (let i=0;i<W*H/40;i++){ x.fillStyle = r() < 0.5 ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)'; x.fillRect(r()*W, r()*H, 2, 2); }
@@ -3888,7 +3900,7 @@ function buildCuria(){
   // Gesims, Fenster hoch oben an den Seiten, Sockel aus Marmor
   for (const sx of [-1, 1]){ for (const z of [-3, 0, 3]) mk(new THREE.PlaneGeometry(0.9, 1.6), M('#2a2420', { tex:null, roughness:1 }), g, sx*(W/2 + 0.01), 5.4, z, 0, sx*Math.PI/2, 0);
     wbox(g, 0.06, 0.8, D, R.marble, sx*(W/2 + 0.02), 0, 0, 0, 1); }
-  wbox(g, W, 0.8, 0.06, R.marble, 0, 0, D/2 + 0.02, 0, 1);
+  for (const sx of [-1, 1]) wbox(g, W/2 - 1.35, 0.8, 0.06, R.marble, sx*(W/4 + 0.675), 0, D/2 + 0.02, 0, 1);   // Sockel, an der Tür offen
   for (const sx of [-1, 1]){ const dr = mk(new THREE.BoxGeometry(1.3, 4.4, 0.08), R.bronze, g, sx*1.66, 2.2, D/2 + 0.55, 0, -sx*1.1, 0); dr.castShadow = true; }
   for (let k=0;k<3;k++) wbox(g, 4.0 - k*0.3, 0.12, 0.45, R.marble, 0, -0.12 + k*0.0, D/2 + 0.2 + (2 - k)*0.0 + 0.25, 0, 1);
   // Boden mit farbigem Marmor
@@ -4028,12 +4040,7 @@ function buildLimes(){
     for (let x = X0; x < X1 - 0.1; x += 16){ const xe = Math.min(X1, x + 16); pts.push([x, Z]); gaps.push(x < GW && xe > -GW ? [Math.max(0, -GW - x), Math.min(xe - x, GW - x)] : null); }
     pts.push([X1, Z]); gaps.push([0, 1e9]);
     makePalisade(pts, gaps, 3.0); for (let i=n0; i<scene.children.length; i++) keep(scene.children[i]); }
-  // Graben vor der Palisade (dunkle Erde) und ein Erdwall dahinter
-  { const pos = [], col = [], idx = [], N = Math.ceil((X1 - X0)/2), prof = [[-6.2, 0.02, 0.62], [-5.2, 0.0, 0.42], [-4.0, -0.05, 0.3], [-2.8, 0.0, 0.42], [-1.8, 0.02, 0.62], [1.0, 0.03, 0.58], [1.8, 0.45, 0.5], [2.8, 0.5, 0.52], [3.8, 0.03, 0.6]];
-    for (let i=0;i<=N;i++){ const x = X0 + (X1 - X0)*i/N; for (const [dz, dy, c] of prof){ const z = Z + dz*(-1); const zz = Z - dz; pos.push(x, groundH(x, zz) + dy + 0.03, zz); col.push(c*0.75, c*0.6, c*0.42); } }
-    const P0 = prof.length; for (let i=0;i<N;i++) for (let k=0;k<P0 - 1;k++){ const a2 = i*P0 + k, b2 = a2 + P0; idx.push(a2, a2 + 1, b2, a2 + 1, b2 + 1, b2); }
-    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); geo.setIndex(idx); geo.computeVertexNormals();
-    const m = new THREE.Mesh(geo, VCD); m.receiveShadow = true; scene.add(m); keep(m); }
+  // Der Graben vor der Palisade ist direkt ins Gelände gegraben (siehe limesDitch im Layout)
   // Wachturm aus Stein mit Holzgeschoss und Ziegeldach
   const stoneTower = (x, z, guard, climb) => { const g = keep(grp(x, z)), H = 5.2, g0 = g.position.y;
     wbox(g, 3.4, H, 3.4, R.ashlar, 0, 0, 0, 0, 2); mk(new THREE.PlaneGeometry(0.9, 1.9), R.dark, g, 0, 0.95, -1.71, 0, Math.PI, 0);
@@ -4241,9 +4248,12 @@ function buildTestudo(){
     if (m.role === 'front'){ sh.position.set(0, 0.92, 0.42); sh.quaternion.identity(); }
     else if (m.role === 'side'){ sh.position.set(m.side*0.42, 0.95, 0.0); sh.quaternion.setFromAxisAngle(Y, m.side*Math.PI/2); if (m.r === NR - 1){ sh.position.set(m.side*0.32, 0.95, -0.3); sh.quaternion.setFromAxisAngle(Y, m.side*Math.PI*0.75); } }
     else if (m.role === 'back'){ sh.position.set(0, 0.95, -0.42); sh.quaternion.setFromAxisAngle(Y, Math.PI); }
-    else { sh.position.set(o*0.2, 1.97, 0.0); qa.setFromAxisAngle(Y, Math.PI/2); qb.setFromAxisAngle(X, -Math.PI/2 + 0.06); qa.multiply(qb); qb.setFromAxisAngle(Zv, -o*0.32); sh.quaternion.copy(qb.multiply(qa)); } }
-  // Die äusseren Soldaten der mittleren Reihen bekommen zusätzlich Schilde über dem Kopf von ihren Nachbarn (das Dach reicht bis an den Rand)
-  const extra = []; for (const m of men) if (m.role === 'side' && m.r < NR - 1){ const sh = makeScutum(); m.p.root.add(sh); sh.position.set(m.side*0.05, 2.02, 0.0); qa.setFromAxisAngle(Y, Math.PI/2); qb.setFromAxisAngle(X, -Math.PI/2 + 0.06); qa.multiply(qb); qb.setFromAxisAngle(Zv, -m.side*0.55); sh.quaternion.copy(qb.multiply(qa)); extra.push(sh); }
+    else roofShield(sh, m); }
+  // Das Dach: über jedem Soldaten liegt ein Schild flach wie ein Ziegel, die Längsseite nach vorne, jede Reihe ein wenig höher,
+  // damit sie sich überlappen. Wer vorne, aussen oder hinten eine Wand hält, bekommt sein Dachschild vom Nachbarn.
+  function roofShield(sh, m){ sh.position.set(0, 1.96 + (NR - 1 - m.r)*0.035, m.r === 0 ? 0.08 : m.r === NR - 1 ? -0.08 : 0); sh.scale.set(1.14, 1, 1);
+    qb.setFromAxisAngle(X, -Math.PI/2); sh.quaternion.copy(qb); }
+  const extra = []; for (const m of men) if (m.role !== 'roof'){ const sh = makeScutum(); m.p.root.add(sh); roofShield(sh, m); extra.push(sh); }
   const T = new THREE.Vector3(), D = new THREE.Vector3(), cols = [{ x:0, z:0, r:2.0 }]; colliders.push(...cols);
   const SPD = 0.45, PAUSE = 4;
   anims.push(t => {
@@ -4529,11 +4539,14 @@ function buildSchool(){
   const north = rectWall(HW*2, WH, 0.35, [[-2.4, 0, 1.0, 3.0], [1.6, 1.6, 0.45, 1.0], [3.6, 1.6, 0.45, 1.0]]); mk(north, R.ochre, g, 0, 0, -HD).castShadow = true;
   const south = rectWall(HW*2, WH, 0.35, [[0.6, 2.2, 0.45, 0.9], [3.4, 2.2, 0.45, 0.9]]); mk(south, R.ochre, g, 0, 0, HD).castShadow = true;
   for (const sx of [-1, 1]){ const w = rectWall(HD*2 + 0.35, WH, 0.35, [[0, 2.2, 0.45, 0.9]]); mk(w, R.ochre, g, sx*HW, 0, 0, 0, Math.PI/2, 0).castShadow = true; }
-  for (const sz of [-1, 1]) wbox(g, HW*2 + 0.39, 0.6, 0.02, R.red, 0, 0.2, sz*(HD + 0.19), 0, 2);
+  wbox(g, HW*2 + 0.39, 0.6, 0.02, R.red, 0, 0.2, HD + 0.19, 0, 2); for (const [x0, x1] of [[-HW - 0.195, -3.4], [-1.4, HW + 0.195]]) wbox(g, x1 - x0, 0.6, 0.02, R.red, (x0 + x1)/2, 0.2, -HD - 0.19, 0, 2);   // roter Sockel, an der Tür offen
   gableRoof(g, HD*2 + 0.35, HW*2 + 0.35, 1.5, 0.35, WH, 0, 0, Math.PI/2);
   mk(new THREE.PlaneGeometry(HW*2, HD*2).rotateX(Math.PI/2), M('#e8dcc4', { tex:'plaster' }), g, 0, WH - 0.02, 0);
-  { const T = hallWallTex(); wallPaint(g, T, HW*2 - 0.4, 2.8, 0, 0, -HD + 0.19, 0); wallPaint(g, T, HW*2 - 0.4, 2.8, 0, 0, HD - 0.19, Math.PI);
-    wallPaint(g, T, HD*2 - 0.4, 2.8, -HW + 0.19, 0, 0, Math.PI/2); wallPaint(g, T, HD*2 - 0.4, 2.8, HW - 0.19, 0, 0, -Math.PI/2); }
+  // Bemalte Wände innen, Tür und Fenster bleiben frei; innen an der Tür ein Rahmen mit «EXITVS – Ausgang»
+  { const T = hallWallTex(); wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, -HD + 0.19, 0, [[-2.4, 0, 1.02, 3.05], [1.6, 1.6, 0.47, 1.02], [3.6, 1.6, 0.47, 1.02]]);
+    wallPaintH(g, T, HW*2 - 0.4, 2.8, 0, 0, HD - 0.19, Math.PI, [[-0.6, 2.2, 0.47, 0.92], [-3.4, 2.2, 0.47, 0.92]]);
+    for (const sx of [-1, 1]) wallPaintH(g, T, HD*2 - 0.4, 2.8, sx*(HW - 0.19), 0, 0, -sx*Math.PI/2, [[0, 2.2, 0.47, 0.92]]);
+    exitFrame(g, -2.4, 0, -HD + 0.18, 0, 2.0, 3.0); }
   // Inschrift über der Tür: «LVDVS» heisst Schule
   mk(new THREE.PlaneGeometry(2.2, 0.55), new THREE.MeshStandardMaterial({ map:inscriptionTex(['LVDVS'], 512, 128), roughness:0.8 }), g, -2.4, 3.45, -HD - 0.19, 0, Math.PI, 0);
   for (const sx of [-3.55, -1.25]) wbox(g, 0.3, 3.1, 0.3, R.marble, sx, 0, -HD - 0.25, 0, 1);
@@ -4683,29 +4696,32 @@ function makeQuadriga(){
   return { g, team, horses, wheels, gen, sl, crown };
 }
 function buildTriumphArch(){
-  const R = romMats(), g = keep(grp(ARCH[0], ARCH[1])), W = 9, D = 2.4, H = 9.2;
+  /* Der Bogen steht als Tor in der südlichen Stadtmauer, zwischen den beiden Tortürmen */
+  const R = romMats(), g = keep(grp(ARCH[0], ARCH[1])), W = 9.8, D = 2.4, H = 9.2;
   // Bogen aus Marmor mit einer grossen Öffnung, Säulen, Gebälk und Inschrift im Aufsatz
   mk(archWall(W, 7.0, D, [[0, 2.3, 6.6]]), R.marble, g, 0, 0, 0).castShadow = true;
   wbox(g, W + 0.3, 0.5, D + 0.3, R.marble, 0, 7.0, 0, 0, 2);
   const ins = inscriptionTex(['SENATVS · POPVLVSQVE · ROMANVS', 'IMP · CAESARI · DIVI · F · AVGVSTO'], 1024, 256, '#e4ddd0');
   const att = wbox(g, W, 1.7, D, R.marble, 0, 7.5, 0, 0, 2);
   for (const sz of [-1, 1]){ mk(new THREE.PlaneGeometry(W - 1.2, 1.4), new THREE.MeshStandardMaterial({ map:ins, roughness:0.6 }), g, 0, 8.35, sz*(D/2 + 0.005), 0, sz < 0 ? Math.PI : 0, 0);
-    for (const sx of [-3.85, -2.75, 2.75, 3.85]) column(g, sx, 0, sz*(D/2 + 0.12), 7.0, 0.22); }
+    for (const sx of [-4.15, -2.85, 2.85, 4.15]) column(g, sx, 0, sz*(D/2 + 0.12), 7.0, 0.22); }
   wbox(g, W + 0.2, 0.25, D + 0.2, R.marble, 0, 9.2, 0, 0, 2);
   // Reliefs: Siegesgöttinnen in den Zwickeln
-  for (const sz of [-1, 1]) for (const sx of [-1, 1]) mk(new THREE.CircleGeometry(0.55, 18), M('#d8d0c0', { tex:'marble' }), g, sx*3.3, 5.6, sz*(D/2 + 0.01), 0, sz < 0 ? Math.PI : 0, 0);
-  { g.updateWorldMatrix(true, false); for (const sx of [-1, 1]) wallSeg(g, sx*2.45, 0, sx*4.5, 0, D/2 + 0.05); }
-  // Der Triumphzug: durch den Bogen bis vor das Forum, dort grüsst der Feldherr, dann über die Querstrasse und die Nebenstrasse wieder hinaus
+  for (const sz of [-1, 1]) for (const sx of [-1, 1]) mk(new THREE.CircleGeometry(0.55, 18), M('#d8d0c0', { tex:'marble' }), g, sx*3.5, 5.6, sz*(D/2 + 0.01), 0, sz < 0 ? Math.PI : 0, 0);
+  // Hindernisse: die beiden Pfeiler als Rechtecke, damit die Öffnung so breit bleibt, wie man sie sieht
+  { g.updateWorldMatrix(true, false); for (const sx of [-1, 1]){ wallSeg(g, sx*2.4, -D/2, sx*2.4, D/2, 0.1); for (const sz of [-1, 1]) wallSeg(g, sx*2.4, sz*D/2, sx*4.9, sz*D/2, 0.1); } }
+  // Der Triumphzug: von draussen durch den Bogen in die Stadt, gleich hinter dem Tor grüsst der Feldherr die Leute,
+  // dann um einen Häuserblock und auf der anderen Strassenseite wieder hinaus; vor dem Tor wendet er in einer Schleife
   const Q = makeQuadriga(); scene.add(Q.g);
-  // Rundweg um den Häuserblock: auf der Hauptstrasse nach Norden durch den Bogen, an der Querstrasse nach Osten, dann zurück nach Süden und Westen
-  const route = new THREE.CatmullRomCurve3([[0.5, 18], [0.5, 8], [0.9, 4.0], [3.6, 1.6], [12, 1.4], [22, 1.4], [25.4, 3.2], [26.6, 6.5], [26.6, 15], [25.6, 19.4], [22.5, 21.0], [12, 21.0], [4.2, 21.0], [1.4, 20.2]]
-    .map(([x, z]) => new THREE.Vector3(x, 0, z)), true, 'centripetal'); route.arcLengthDivisions = 600;
+  const route = new THREE.CatmullRomCurve3([[-0.3, 84.0], [-0.55, 81], [-0.55, 70], [-0.55, 50], [-0.4, 44.5], [1.6, 41.6], [6, 41], [22, 41], [25.4, 42.0], [26.8, 45], [26.8, 57], [25.6, 60.2], [22, 61], [6, 61], [2.4, 61.8], [0.7, 64.5],
+    [0.55, 70], [0.55, 82], [0.9, 85.5], [2.4, 88.6], [4.6, 92.6], [7.4, 93.4], [9.2, 90.8], [8.6, 87.4], [5.8, 85.6], [2.4, 84.9]]
+    .map(([x, z]) => new THREE.Vector3(x, 0, z)), true, 'centripetal'); route.arcLengthDivisions = 1200;
   const L = route.getLength(), SPD = 2.0, WAIT = 7, POLE = 2.7, A = new THREE.Vector3(), B = new THREE.Vector3(), TG = new THREE.Vector3();
-  let sStop = 0; { let best = 1e9; for (let k=0;k<=400;k++){ route.getPointAt(k/400, A); const d = Math.hypot(A.x - 0.5, A.z - 5.6); if (d < best){ best = d; sStop = k/400*L; } } }
+  let sStop = 0; { let best = 1e9; for (let k=0;k<=400;k++){ route.getPointAt(k/400, A); const d = Math.hypot(A.x + 0.55, A.z - 71); if (d < best){ best = d; sStop = k/400*L; } } }
   const cycle = L/SPD + WAIT; let dist = 0, lastX = null, lastZ = null;
   const cols = [{ x:0, z:0, r:1.4 }, { x:0, z:0, r:0.9 }]; colliders.push(...cols);
   // Zuschauer am Strassenrand jubeln und werfen Blüten
-  const fans = [[-3.2, 18.0, '#8a3a2a', Math.PI/2], [-3.2, 24.2, '#3a5a8a', Math.PI*0.75], [6, 24.0, '#5a6a3a', Math.PI], [11, 24.0, '#7a5a8a', Math.PI], [16, 24.0, '#c8b890', Math.PI], [21, 24.0, '#8a6a3a', Math.PI]].map(([x, z, c, ry], i) =>
+  const fans = [[-3.3, 68.6, '#8a3a2a', Math.PI/2], [-3.3, 73.4, '#3a5a8a', Math.PI/2], [3.3, 66.2, '#5a6a3a', -Math.PI/2], [3.3, 71.2, '#7a5a8a', -Math.PI/2], [10, 63.4, '#c8b890', Math.PI], [16, 63.4, '#8a6a3a', Math.PI]].map(([x, z, c, ry], i) =>
     { const p = person(scene, { skin:CA.skin[i % 3], hair:CA.hair[i % 4], female:i % 2 === 1, bun:i % 2 === 1, cloth:c, long:i % 2 === 1, sandals:true, palla:i === 3 ? '#c8a878' : null }, x, z, ry); colliders.push({ x, z, r:0.35 }); return p; });
   const petals = []; for (let i=0;i<40;i++){ const m = mk(new THREE.PlaneGeometry(0.06, 0.06), M(i % 3 ? '#e85a7a' : '#f8e070', { tex:null, side:THREE.DoubleSide }), scene); m.visible = false; m.castShadow = false; petals.push({ m, v:new THREE.Vector3(), t0:-9 }); }
   let pi = 0, lastThrow = -9;
@@ -4745,40 +4761,62 @@ function buildTemple(){
   wbox(g, 9, PH, 13, R.marble, 0, 0, -0.5, 0, 2);
   for (let i=0;i<8;i++) wbox(g, 6.2, PH*(i + 1)/8, 0.3, R.marble, 0, 0, 6 + 2.4 - (i + 0.5)*0.3, 0, 2);
   for (const sx of [-1, 1]) wbox(g, 1.4, PH, 2.4, R.marble, sx*3.8, 0, 7.2, 0, 2);
-  // Säulenhalle vorne, Cella mit Tür
+  /* Säulenhalle vorne, dahinter die Cella. Von aussen ist der Tempel so gross wie immer; innen reicht die Cella aber fast über das
+     ganze Podium und hat ein hohes, rundes Gewölbe mit Kassetten, das bis unter das Dach reicht. So wirkt der Raum mächtig. */
+  const CX = 3.8, CZ0 = -6.3, CZ1 = 2.4, DW = 1.2, DH = 4.6, SY = PH + 5.0, VH = 2.6;   // Innenmasse, halbe Türbreite, Türhöhe, Gewölbeansatz und -höhe
   for (let i=0;i<6;i++) column(g, -3.75 + i*1.5, PH, 5.2, CH, 0.3);
-  for (const sx of [-3.75, 3.75]) for (const z of [3.5, 1.8]) column(g, sx, PH, z, CH, 0.3);
-  wbox(g, 0.4, CH, 7.5, R.plaster, -3.6, PH, -2.75, 0, 2); wbox(g, 0.4, CH, 7.5, R.plaster, 3.6, PH, -2.75, 0, 2); wbox(g, 7.6, CH, 0.4, R.plaster, 0, PH, -6.5, 0, 2);
-  for (const sx of [-1, 1]) wbox(g, 2.6, CH, 0.4, R.plaster, sx*2.3, PH, 1.0, 0, 2);
-  wbox(g, 2.0, CH - 3.8, 0.4, R.plaster, 0, PH + 3.8, 1.0, 0, 2);
-  // Innen in der Cella: Boden aus farbigem Marmor, rote Wandfelder mit Goldrahmen und grünen Girlanden
-  { const ft = canvasTex(256, 256, (x, W, H) => { const r = mulberry32(631), c = ['#e8e2d4', '#9a3a2a', '#e8e2d4', '#3a5a4a']; for (let j=0;j<8;j++) for (let i=0;i<8;i++){ x.fillStyle = c[(i + j) % 2 ? ((i >> 1) + (j >> 1)) % 2 ? 1 : 3 : 0]; x.fillRect(i*32, j*32, 32, 32);
-      x.fillStyle = '#d8cfbc'; x.beginPath(); x.arc(i*32 + 16, j*32 + 16, 9, 0, TAU); x.fill(); } for (let i=0;i<3000;i++){ x.fillStyle = r() < 0.5 ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.07)'; x.fillRect(r()*W, r()*H, 2, 2); } });
-    ft.wrapS = ft.wrapT = THREE.RepeatWrapping; ft.repeat.set(2.5, 2.5); mk(new THREE.PlaneGeometry(6.8, 7.1).rotateX(-Math.PI/2), new THREE.MeshStandardMaterial({ map:ft, roughness:0.35 }), g, 0, PH + 0.03, -2.75).receiveShadow = true;
-    const wt = canvasTex(512, 512, (x, W, H) => { const r = mulberry32(632); x.fillStyle = '#7a1e18'; x.fillRect(0, 0, W, H);
-      x.fillStyle = '#e8dcc4'; x.fillRect(0, 0, W, 54); x.fillStyle = '#c8a050'; x.fillRect(0, 50, W, 8);
-      for (let i=0;i<2;i++){ const x0 = 24 + i*256; x.fillStyle = '#b8261c'; x.fillRect(x0, 92, 208, 300); x.strokeStyle = '#d8b050'; x.lineWidth = 7; x.strokeRect(x0, 92, 208, 300); x.lineWidth = 2; x.strokeRect(x0 + 14, 106, 180, 272); }
-      x.fillStyle = '#2a1a16'; x.fillRect(0, 430, W, 82); x.fillStyle = '#c8a050'; x.fillRect(0, 426, W, 6);
-      // Girlanden aus Lorbeer mit Bändern
-      for (let k=0;k<4;k++){ const x0 = k*128; for (let a=0;a<=20;a++){ const u = a/20, px = x0 + u*128, py = 62 + Math.sin(u*Math.PI)*44; x.fillStyle = a % 2 ? '#4a7a32' : '#3a6a2a'; x.beginPath(); x.ellipse(px, py, 9, 6, u*2, 0, TAU); x.fill(); }
-        x.fillStyle = '#c8402a'; x.fillRect(x0 - 3, 58, 6, 34); }
-      for (let i=0;i<6000;i++){ x.fillStyle = r() < 0.5 ? 'rgba(0,0,0,0.05)' : 'rgba(255,230,200,0.05)'; x.fillRect(r()*W, r()*H, 2, 2); } });
+  for (const sx of [-3.75, 3.75]) column(g, sx, PH, 3.6, CH, 0.3);
+  for (const sx of [-1, 1]) wbox(g, 0.4, CH, CZ1 - CZ0 + 0.8, R.plaster, sx*(CX + 0.2), PH, (CZ0 + CZ1)/2, 0, 2);
+  wbox(g, CX*2 + 0.8, CH, 0.4, R.plaster, 0, PH, CZ0 - 0.2, 0, 2);
+  for (const sx of [-1, 1]) wbox(g, CX + 0.4 - DW, CH, 0.4, R.plaster, sx*(DW + (CX + 0.4 - DW)/2), PH, CZ1 + 0.2, 0, 2);
+  wbox(g, DW*2, CH - DH, 0.4, R.plaster, 0, PH + DH, CZ1 + 0.2, 0, 2);
+  // Zwei grosse Türflügel aus Bronze stehen offen
+  for (const sx of [-1, 1]){ const lf = new THREE.Group(); lf.position.set(sx*DW, PH, CZ1 + 0.42); lf.rotation.y = sx*1.75; g.add(lf); mk(new THREE.BoxGeometry(DW, DH - 0.05, 0.08).translate(-sx*DW/2, (DH - 0.05)/2, 0), R.bronze, lf).castShadow = true;
+    for (const y of [1.2, 3.2]) mk(new THREE.BoxGeometry(DW*0.7, 1.1, 0.03).translate(-sx*DW/2, y, 0.05), R.bronze, lf); }
+  // Innen alles in Weiss: Boden aus hellem und grauem Marmor, Wände aus weissem Marmor mit Pilastern und feinen Feldern
+  { const ft = canvasTex(256, 256, (x, W, H) => { const r = mulberry32(631); for (let j=0;j<8;j++) for (let i=0;i<8;i++){ x.fillStyle = (i + j) % 2 ? '#d8d4cc' : '#f0ece4'; x.fillRect(i*32, j*32, 32, 32);
+      x.fillStyle = (i + j) % 2 ? '#f0ece4' : '#a8a49c'; x.beginPath(); x.arc(i*32 + 16, j*32 + 16, 8, 0, TAU); x.fill(); } for (let i=0;i<3000;i++){ x.fillStyle = r() < 0.5 ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.07)'; x.fillRect(r()*W, r()*H, 2, 2); } });
+    ft.wrapS = ft.wrapT = THREE.RepeatWrapping; ft.repeat.set(3, 3.4); mk(new THREE.PlaneGeometry(CX*2, CZ1 - CZ0).rotateX(-Math.PI/2), new THREE.MeshStandardMaterial({ map:ft, roughness:0.3 }), g, 0, PH + 0.03, (CZ0 + CZ1)/2).receiveShadow = true;
+    const wt = canvasTex(512, 512, (x, W, H) => { const r = mulberry32(632); x.fillStyle = '#f3f0e9'; x.fillRect(0, 0, W, H);
+      for (let k=0;k<50;k++){ x.strokeStyle = 'rgba(140,130,120,' + (0.05 + r()*0.08) + ')'; x.lineWidth = 1 + r()*1.6; x.beginPath(); let px = r()*W, py = r()*H; x.moveTo(px, py); for (let q=0;q<6;q++){ px += (r() - 0.5)*70; py += r()*50; x.lineTo(px, py); } x.stroke(); }
+      x.fillStyle = '#e2dccf'; x.fillRect(0, 446, W, 66); x.fillStyle = '#c8c0b0'; x.fillRect(0, 440, W, 6);
+      x.fillStyle = '#e8e2d6'; x.fillRect(0, 0, W, 40); x.fillStyle = '#cfc7b8'; x.fillRect(0, 40, W, 5);
+      for (const px of [0, 256, 512]){ x.fillStyle = '#ebe6dc'; x.fillRect(px - 20, 45, 40, 395); x.fillStyle = 'rgba(120,110,100,0.18)'; x.fillRect(px + 18, 45, 3, 395); for (let f=-12;f<=12;f+=8) x.fillRect(px + f, 60, 2, 370); }
+      for (let i=0;i<2;i++){ const x0 = 46 + i*256; x.strokeStyle = 'rgba(150,140,128,0.55)'; x.lineWidth = 4; x.strokeRect(x0, 92, 164, 318); x.lineWidth = 2; x.strokeRect(x0 + 12, 104, 140, 294); } });
     wt.wrapS = THREE.RepeatWrapping;
-    const wallIn = (w, x, z, ry) => { const t = wt.clone(); t.needsUpdate = true; t.repeat.set(Math.max(1, Math.round(w/2.6)), 1); mk(new THREE.PlaneGeometry(w, CH - 0.1), new THREE.MeshStandardMaterial({ map:t, roughness:0.8 }), g, x, PH + (CH - 0.1)/2, z, 0, ry, 0).receiveShadow = true; };
-    wallIn(7.0, -3.39, -2.75, Math.PI/2); wallIn(7.0, 3.39, -2.75, -Math.PI/2); wallIn(6.8, 0, -6.29, 0);
-    for (const sx of [-1, 1]) wallIn(2.55, sx*2.3, 0.79, Math.PI);
-    const lamp = new THREE.PointLight(0xffd8a0, 9, 11, 2); lamp.position.set(0, PH + 3.4, -2.6); g.add(lamp);
+    wallPaintH(g, wt, CZ1 - CZ0, SY - PH, -CX + 0.01, PH, (CZ0 + CZ1)/2, Math.PI/2, []); wallPaintH(g, wt, CZ1 - CZ0, SY - PH, CX - 0.01, PH, (CZ0 + CZ1)/2, -Math.PI/2, []);
+    wallPaintH(g, wt, CX*2, SY - PH, 0, PH, CZ0 + 0.01, 0, []); wallPaintH(g, wt, CX*2, SY - PH, 0, PH, CZ1 - 0.01, Math.PI, [[0, 0, DW, DH]]);
+    // Das runde Gewölbe mit Kassetten und an beiden Enden die halbrunden Wandflächen
+    const ct = canvasTex(256, 256, (x, W, H) => { x.fillStyle = '#ece6da'; x.fillRect(0, 0, W, H); for (let j=0;j<4;j++) for (let i=0;i<4;i++){ const x0 = i*64 + 8, y0 = j*64 + 8;
+        x.fillStyle = '#d2cabb'; x.fillRect(x0, y0, 48, 48); x.fillStyle = '#e0d9cb'; x.fillRect(x0 + 6, y0 + 6, 36, 36); x.fillStyle = '#f2ede4'; x.fillRect(x0 + 12, y0 + 12, 24, 24);
+        x.fillStyle = '#c9a85a'; x.beginPath(); x.arc(x0 + 24, y0 + 24, 4, 0, TAU); x.fill(); } });
+    ct.wrapS = ct.wrapT = THREE.RepeatWrapping; ct.repeat.set(3, 2.2);
+    const vault = new THREE.CylinderGeometry(CX, CX, CZ1 - CZ0, 32, 1, true, -Math.PI/2, Math.PI); vault.rotateX(-Math.PI/2); vault.scale(1, VH/CX, 1);
+    const vm = mk(vault, new THREE.MeshStandardMaterial({ map:ct, roughness:0.85, side:THREE.DoubleSide }), g, 0, SY, (CZ0 + CZ1)/2); vm.castShadow = false;
+    const lu = new THREE.Shape(); lu.moveTo(-CX, 0); lu.absellipse(0, 0, CX, VH, Math.PI, 0, true); lu.closePath();
+    for (const [z, ry] of [[CZ0 + 0.01, 0], [CZ1 - 0.01, Math.PI]]) mk(new THREE.ShapeGeometry(lu, 24), M('#efeae0', { tex:'marble' }), g, 0, SY, z, 0, ry, 0).castShadow = false;
+    const lamp = new THREE.PointLight(0xffe2b4, 12, 16, 2); lamp.position.set(0, PH + 4.4, -1.6); g.add(lamp);
+    const lamp2 = new THREE.PointLight(0xffd8a0, 6, 9, 2); lamp2.position.set(0, PH + 2.6, -3.6); g.add(lamp2);
+    // Zwei hohe Leuchter aus Bronze neben dem Götterbild
+    for (const sx of [-1, 1]){ const cd = new THREE.Group(); cd.position.set(sx*2.6, PH, -4.6); g.add(cd);
+      for (let k=0;k<3;k++){ const a = k/3*TAU; mk(new THREE.CylinderGeometry(0.02, 0.03, 0.4, 6), R.bronze, cd, Math.cos(a)*0.14, 0.15, Math.sin(a)*0.14, Math.sin(a)*0.6, 0, -Math.cos(a)*0.6); }
+      mk(new THREE.CylinderGeometry(0.035, 0.045, 1.9, 8), R.bronze, cd, 0, 1.1, 0); mk(new THREE.CylinderGeometry(0.2, 0.08, 0.12, 14), R.bronze, cd, 0, 2.1, 0);
+      const fl = new THREE.Group(); fl.position.y = 2.17; cd.add(fl); makeFireFx(fl, 0.07, 0.6, false); }
     // Weihrauch auf einem Dreifuss vor dem Götterbild
     const tr = new THREE.Group(); tr.position.set(0.9, PH, -3.4); g.add(tr);
     for (let k=0;k<3;k++){ const a = k/3*TAU; mk(new THREE.CylinderGeometry(0.018, 0.022, 1.05, 6), R.bronze, tr, Math.cos(a)*0.16, 0.5, Math.sin(a)*0.16, Math.sin(a)*0.15, 0, -Math.cos(a)*0.15); }
     mk(new THREE.CylinderGeometry(0.24, 0.14, 0.12, 18), R.bronze, tr, 0, 1.05, 0); const ff2 = new THREE.Group(); ff2.position.y = 1.1; tr.add(ff2); makeFireFx(ff2, 0.08, 0.8, false);
     addSmoke(g, HQ ? 6 : 4, 0.9, PH + 1.2, -3.4, 0.15, '#ece8e0', 1.4); }
-  wbox(g, 9, 0.75, 13, R.marble, 0, PH + CH, -0.5, 0, 2);
+  // Gebälk ringsum (über der Cella offen, damit das Gewölbe hinaufreicht) und das Dach
+  wbox(g, 9, 0.75, 6.0 - CZ1, R.marble, 0, PH + CH, (6.0 + CZ1)/2, 0, 2);
+  for (const sx of [-1, 1]) wbox(g, 4.5 - CX, 0.75, CZ1 + 7.0, R.marble, sx*(CX + (4.5 - CX)/2), PH + CH, (CZ1 - 7.0)/2, 0, 2);
+  wbox(g, CX*2, 0.75, CZ0 + 7.0, R.marble, 0, PH + CH, (CZ0 - 7.0)/2, 0, 2);
   gableRoof(g, 9, 13, 2.1, 0.3, PH + CH + 0.75, 0, -0.5, 0);
-  // Das Götterbild des Jupiter steht in der offenen Tür, vor dem Tempel der Altar
-  { const ju = makePerson({ skin:'#888', hair:'#888', beard:true, cloth:'#888', toga:'#888', sandals:true }); toStatue(ju, M('#ece6da', { tex:'marble' })); ju.root.scale.setScalar(1.35);
-    const sg = new THREE.Group(); sg.position.set(0, PH + 0.05, -5.3); g.add(sg); sg.add(ju.root); wbox(sg, 1.5, 0.9, 1.2, R.marble, 0, 0, 0, 0, 1); wbox(sg, 1.7, 0.12, 1.4, R.marble, 0, 0.9, 0, 0, 1); ju.root.position.y = 1.02; ju.root.scale.setScalar(2.05);
-    ju.arms[1].sh.rotation.set(-2.6, 0, 0.2); ju.arms[1].el.rotation.x = -0.2; const sp = fist(new THREE.Group(), ju.arms[1].hand, 0.6); mk(new THREE.CylinderGeometry(0.02, 0.02, 1.6, 6), R.gold, sp); ju.arms[0].sh.rotation.set(-0.6, 0, -0.3); ju.arms[0].el.rotation.x = -0.9; }
+  // Das grosse Götterbild des Jupiter auf einem hohen Sockel hinten in der Cella; die rechte Hand grüsst, die linke hält die Toga
+  { const ju = makePerson({ skin:'#888', hair:'#888', beard:true, cloth:'#888', toga:'#888', sandals:true }); toStatue(ju, M('#ece6da', { tex:'marble' }));
+    const sg = new THREE.Group(); sg.position.set(0, PH + 0.02, -5.2); g.add(sg); sg.add(ju.root); wbox(sg, 2.0, 1.3, 1.6, R.marble, 0, 0, 0, 0, 1); wbox(sg, 2.2, 0.14, 1.8, R.marble, 0, 1.3, 0, 0, 1); wbox(sg, 2.2, 0.14, 1.8, R.marble, 0, 0, 0, 0, 1);
+    ju.root.position.y = 1.44; ju.root.scale.setScalar(2.6);
+    ju.arms[1].sh.rotation.set(-1.25, 0, 0.3); ju.arms[1].el.rotation.x = -0.55; ju.arms[0].sh.rotation.set(-0.35, 0, -0.18); ju.arms[0].el.rotation.x = -0.7; }
   const alt = new THREE.Group(); alt.position.set(-3.2, 0, 9.6); g.add(alt); wbox(alt, 1.2, 1.0, 0.9, R.marble, 0, 0, 0, 0, 1); wbox(alt, 1.35, 0.12, 1.05, R.marble, 0, 1.0, 0, 0, 1);
   { const ff = new THREE.Group(); ff.position.y = 1.12; alt.add(ff); makeFireFx(ff, 0.18, 1.6, false); }
   // Ein Priester mit verhülltem Kopf giesst Wein aus einer Schale ins Feuer, eine Frau bringt Früchte
@@ -4803,10 +4841,10 @@ function buildTemple(){
     DECKS.push({ x0:gx - 4.5, x1:gx + 4.5, z0:gz - 7.0, z1:gz + 6.0, y:g0 + PH });
     wallSeg(g, -4.6, -7.1, 4.6, -7.1, 0.2); wallSeg(g, -4.6, -7.1, -4.6, 8.5, 0.2); wallSeg(g, 4.6, -7.1, 4.6, 8.5, 0.2);
     for (const sx of [-1, 1]){ wallSeg(g, sx*3.15, 6.0, sx*3.15, 8.5, 0.12); wallSeg(g, sx*3.15, 8.5, sx*4.6, 8.5, 0.12); }
-    wallSeg(g, -3.6, -6.5, 3.6, -6.5, 0.22); wallSeg(g, -3.6, -6.5, -3.6, 1.0, 0.22); wallSeg(g, 3.6, -6.5, 3.6, 1.0, 0.22); wallSeg(g, -3.6, 1.0, -1.0, 1.0, 0.22); wallSeg(g, 1.0, 1.0, 3.6, 1.0, 0.22);
+    const wz = CZ1 + 0.2, wx = CX + 0.2; wallSeg(g, -wx, CZ0 - 0.2, wx, CZ0 - 0.2, 0.22); for (const sx of [-1, 1]){ wallSeg(g, sx*wx, CZ0 - 0.2, sx*wx, wz, 0.22); wallSeg(g, sx*wx, wz, sx*DW, wz, 0.22); }
     for (let i=0;i<6;i++) colliders.push({ x:gx - 3.75 + i*1.5, z:gz + 5.2, r:0.33 });
-    for (const sx of [-3.75, 3.75]) for (const z of [3.5, 1.8]) colliders.push({ x:gx + sx, z:gz + z, r:0.33 });
-    colliders.push({ x:gx, z:gz - 5.3, r:0.95 }, { x:gx + 0.9, z:gz - 3.4, r:0.3 });
+    for (const sx of [-3.75, 3.75]) colliders.push({ x:gx + sx, z:gz + 3.6, r:0.33 });
+    colliders.push({ ax:gx - 1.0, az:gz - 5.2, bx:gx + 1.0, bz:gz - 5.2, r:0.85 }, { x:gx + 0.9, z:gz - 3.4, r:0.3 }); for (const sx of [-1, 1]) colliders.push({ x:gx + sx*2.6, z:gz - 4.6, r:0.25 }); for (const sx of [-1, 1]) wallSeg(g, sx*DW, CZ1 + 0.45, sx*(DW + 0.2), CZ1 + 1.6, 0.08);
     for (const [lx, lz, r] of [[-3.2, 9.6, 0.75], [-3.2, 10.6, 0.35], [-1.6, 11.0, 0.35]]){ const v = new THREE.Vector3(lx, 0, lz); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r }); } }
   addHotspot('tempel', [g], P.tempel[0], gy(P.tempel[0], P.tempel[1]) + 3.2, P.tempel[1], 0);
   hotspots.tempel.snapZoom = 1.4;
@@ -5085,6 +5123,28 @@ function hallWallTex(){ if (HALLTEX) return HALLTEX;
   HALLTEX.wrapS = THREE.RepeatWrapping; return HALLTEX; }
 function wallPaint(parent, tex, w, h, x, y, z, ry){ const t = tex.clone(); t.needsUpdate = true; t.repeat.set(Math.max(1, Math.round(w/3.2)), 1);
   const m = mk(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map:t, roughness:0.85 }), parent, x, y + h/2, z, 0, ry, 0); m.receiveShadow = true; m.castShadow = false; return m; }
+/* Bemalte Wand mit Aussparungen für Türen und Fenster, damit man sie auch von innen sieht.
+   holes = [[cx, y0, hw, hh]] in der Ebene der Wand: cx ab der Mitte, y0 ab unten */
+function wallPaintH(parent, tex, w, h, x, y, z, ry, holes){ const t = tex.clone(); t.needsUpdate = true; t.repeat.set(Math.max(1, Math.round(w/3.2)), 1);
+  const xs = [-w/2, w/2]; for (const [cx, , hw] of holes) xs.push(Math.max(-w/2, Math.min(w/2, cx - hw)), Math.max(-w/2, Math.min(w/2, cx + hw)));
+  const X = [...new Set(xs)].sort((a, b) => a - b), pos = [], uv = [], idx = [];
+  const quad = (x0, x1, y0, y1) => { const n = pos.length/3; for (const [px, py] of [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]){ pos.push(px, py, 0); uv.push(px/w + 0.5, py/h); } idx.push(n, n + 1, n + 2, n, n + 2, n + 3); };
+  for (let i=0;i<X.length - 1;i++){ const x0 = X[i], x1 = X[i + 1], xm = (x0 + x1)/2; if (x1 - x0 < 1e-3) continue;
+    const cut = holes.filter(([cx, , hw]) => Math.abs(xm - cx) < hw).map(([, y0, , hh]) => [Math.max(0, y0), Math.min(h, y0 + hh)]).filter(([a, b]) => b > a).sort((a, b) => a[0] - b[0]);
+    let yc = 0; for (const [a, b] of cut){ if (a > yc) quad(x0, x1, yc, a); yc = Math.max(yc, b); } if (yc < h) quad(x0, x1, yc, h); }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(idx); geo.computeVertexNormals();
+  const m = mk(geo, new THREE.MeshStandardMaterial({ map:t, roughness:0.85 }), parent, x, y, z, 0, ry, 0); m.receiveShadow = true; m.castShadow = false; return m; }
+/* Innen an einer Tür: Rahmen aus Marmor und darüber eine Tafel «EXITVS – Ausgang», damit man den Weg hinaus findet.
+   Die Tür liegt in der Ebene z = 0 der Gruppe g (Innenseite +z), w = Breite, h = Höhe; side = ±1: Tafel neben statt über der Tür */
+function exitFrame(parent, x, y, z, ry, w, h, side){ const R = romMats(), g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry; parent.add(g);
+  for (const sx of [-1, 1]) wbox(g, 0.22, h + 0.1, 0.1, R.marble, sx*(w/2 + 0.11), 0, 0.05, 0, 1);
+  wbox(g, w + 0.66, 0.18, 0.12, R.marble, 0, h, 0.06, 0, 1);
+  if (!EXITTEX) EXITTEX = canvasTex(512, 160, (c, W, H) => { c.fillStyle = '#efe6d2'; c.fillRect(0, 0, W, H); c.strokeStyle = '#9a3a28'; c.lineWidth = 10; c.strokeRect(5, 5, W - 10, H - 10);
+    c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#5a2a1a'; c.font = 'bold 66px "Times New Roman", Georgia, serif'; c.fillText('EXITVS', W/2, 62);
+    c.fillStyle = '#2a201a'; c.font = 'bold 36px Fredoka, Arial, sans-serif'; c.fillText('Ausgang  ➜', W/2, 122); });
+  const sg = mk(new THREE.PlaneGeometry(1.25, 0.39), new THREE.MeshStandardMaterial({ map:EXITTEX, roughness:0.8, emissive:C('#3a2a1a'), emissiveIntensity:0.15 }), g, side ? side*(w/2 + 0.95) : 0, side ? 2.1 : h + 0.52, 0.14); sg.castShadow = false;
+  return g; }
+let EXITTEX = null;
 function buildThermen(){
   const R = romMats(), g = keep(grp(THERMEN[0], THERMEN[1])), g0 = g.position.y, FL = TH_FL, F2 = TH_FL2, WH = TH_WALL, W = TH_W, D = TH_D, SX = TH_SPLIT, PO = TH_POOL;
   const wx = (lx) => g.position.x + lx, wz = (lz) => g.position.z + lz;
@@ -5116,7 +5176,7 @@ function buildThermen(){
     wallSeg(g, -W - 1.5, -1.5, -W, -1.5, 0.15); wallSeg(g, -W - 1.5, 1.5, -W, 1.5, 0.15);
     for (const sz of [-1, 1]) colliders.push({ x:wx(-W - 0.6), z:wz(sz*1.75), r:0.3 }); }
   // Innen: bemalte Wände der Halle
-  { const T = hallWallTex(); wallPaint(g, T, D*2 - 0.4, 3.2, -W + 0.21, FL, 0, Math.PI/2).material.side = THREE.FrontSide;
+  { const T = hallWallTex(); wallPaintH(g, T, D*2 - 0.4, 3.2, -W + 0.21, FL, 0, Math.PI/2, [[0, 0, 1.22, 3.3]]); exitFrame(g, -W + 0.2, FL, 0, Math.PI/2, 2.4, 3.0, 1);
     for (const sz of [-1, 1]) wallPaint(g, T, W + SX - 0.4, 3.2, (SX - W)/2, FL, sz*(D - 0.21), sz < 0 ? 0 : Math.PI); }
   // ---- Pfeiler und Säulen um das Becken, darüber eine Terrasse mit Brüstung und Statuen
   const piers = [];
@@ -5507,6 +5567,10 @@ function buildCityWall(){
       box(x, z, 4.4, 4.4, base, WH + 2.8); pyramid(x, z, 2.6, WH + 2.8, 1.5); colliders.push({ x, z, r:2.6 }); } }
   // Tore: Torbau mit zwei Durchgängen, daneben zwei Türme
   for (const [gx, gz, side] of GATES){ const g = grp(gx, gz); g.rotation.y = side ? Math.PI/2 : 0; keep(g);
+    // Im Süden ist der Triumphbogen das Tor: dort nur die beiden Tortürme
+    if (gx === ARCH[0] && gz === ARCH[1]){ for (const sx of [-1, 1]){ wbox(g, 4.6, WH + 4.6 - base, 5, R.ashlar, sx*7.2, base, 0, 0, 2); const t = new THREE.ConeGeometry(3.4, 1.8, 4); t.rotateY(Math.PI/4); mk(t, R.tiles, g, sx*7.2, WH + 4.6 + 0.9, 0).castShadow = true;
+        for (const y of [2.5, 5.5, 8.5]) mk(new THREE.PlaneGeometry(0.5, 0.9), R.dark, g, sx*7.2, y, 2.51); }
+      g.updateWorldMatrix(true, false); for (const sx of [-1, 1]) wallSeg(g, sx*5.4, 0, sx*9.6, 0, 2.4); continue; }
     mk(archWall(10, WH + 1.2, 3.2, [[-1.6, 1.3, 4.4], [1.6, 1.3, 4.4]]), R.ashlar, g, 0, base, 0).castShadow = true;
     for (let k=0;k<5;k++) mk(new THREE.BoxGeometry(0.7, 0.8, 0.5), R.ashlar, g, -4 + k*2, WH + 1.2 + base + 0.4, -1.4);
     for (const sx of [-1, 1]){ wbox(g, 4.6, WH + 4.6 - base, 5, R.ashlar, sx*7.2, base, 0, 0, 2); const t = new THREE.ConeGeometry(3.4, 1.8, 4); t.rotateY(Math.PI/4); mk(t, R.tiles, g, sx*7.2, WH + 4.6 + 0.9, 0).castShadow = true;
@@ -5676,7 +5740,7 @@ function buildHarbor(){
 /* ===================== GRÄBER AN DER STRASSE VOR DER STADT ===================== */
 function buildTombs(){
   const R = romMats(), tq = quadBatch(); tq.tint.set('#ece4d4');
-  const spots = []; for (let z = 86; z < 136; z += 6.5) for (const sd of [-1, 1]){ if (sd < 0 && z < 104) continue; spots.push([sd*(6.2 + ((z*7) % 3)), z, sd]); }
+  const spots = []; for (let z = 86; z < 136; z += 6.5) for (const sd of [-1, 1]){ if (sd < 0 && z < 104) continue; if (sd > 0 && z < 97) continue; spots.push([sd*(6.2 + ((z*7) % 3)), z, sd]); }   // rechts vor dem Tor wendet der Triumphzug
   for (let z = -88; z > -136; z -= 7.5){ if (z > -108 || z < LIMES.z + 9) continue; spots.push([7.0 + ((z*3) % 2), z, 1]); }
   spots.forEach(([x, z, sd], i) => { if (Math.hypot(x, z) > WORLD_R + 6) return; const g = keep(grp(x, z)); g.rotation.y = sd > 0 ? -Math.PI/2 : Math.PI/2; const kind = i % 3;
     if (kind === 0){ wbox(g, 2.4, 1.6, 2.4, R.ashlar, 0, -0.3, 0, 0, 1); mk(new THREE.CylinderGeometry(1.0, 1.1, 1.6, 16), R.marble, g, 0, 2.1, 0).castShadow = true; mk(new THREE.ConeGeometry(1.1, 0.9, 16), R.tiles, g, 0, 3.35, 0); colliders.push({ x, z, r:1.6 }); }
@@ -5866,9 +5930,11 @@ function buildGalleys(){
 /* Die Bewohner gehen auf den Strassen (rechts, wie auf einer Fahrbahn) von Ort zu Ort und tun dort etwas:
    am Brunnen trinken, vor dem Tempel beten, am Imbiss etwas kaufen, den Triumphbogen bestaunen, in die Thermen,
    die Schule, die Kurie oder ins Amphitheater gehen. Treffen sich zwei, bleiben sie manchmal stehen und plaudern.
-   Kommt man ihnen nahe, schauen sie einen an und grüssen mit «Salve!». */
+   Kommt man ihnen nahe, schauen sie einen an und grüssen mit «Salve!».
+   Damit niemand in einen anderen oder in eine Hauswand läuft, schauen sie voraus: Kommt ihnen jemand entgegen, weichen sie
+   rechtzeitig nach rechts aus; geht jemand langsamer vor ihnen, gehen sie langsamer; ist der Weg vor ihnen versperrt, gehen sie seitlich vorbei. */
 function streetGraph(){
-  const N = [], E = [], segs = STREETS.filter(([a, b]) => rectD(CITY, a[0], a[1]) < 1 || rectD(CITY, b[0], b[1]) < 1).map(([a, b, w]) => {
+  const N = [], E = [], W = [], segs = STREETS.filter(([a, b]) => rectD(CITY, a[0], a[1]) < 1 || rectD(CITY, b[0], b[1]) < 1).map(([a, b, w]) => {
     const A = [Math.max(-CITY.hw + 3, Math.min(CITY.hw - 3, a[0])), Math.max(-CITY.hl + 3, Math.min(CITY.hl - 3, a[1]))], B = [Math.max(-CITY.hw + 3, Math.min(CITY.hw - 3, b[0])), Math.max(-CITY.hl + 3, Math.min(CITY.hl - 3, b[1]))];
     return { a:A, b:B, w, v:A[0] === B[0] }; });
   const node = (x, z) => { for (let i=0;i<N.length;i++) if (Math.hypot(N[i][0] - x, N[i][1] - z) < 0.7) return i; N.push([x, z]); E.push([]); return N.length - 1; };
@@ -5880,8 +5946,8 @@ function streetGraph(){
   for (const s of segs) for (const e of [s.a, s.b]) for (const t of segs){ if (t === s || onSeg(t, e[0], e[1])) continue;
     const f = t.v ? [t.a[0], e[1]] : [e[0], t.a[1]]; if (Math.hypot(f[0] - e[0], f[1] - e[1]) < 2.6 && onSeg(t, f[0], f[1])) link(node(...e), node(...f)); }
   for (const s of segs){ const on = []; for (let i=0;i<N.length;i++) if (onSeg(s, N[i][0], N[i][1])) on.push(i);
-    on.sort((i, j) => s.v ? N[i][1] - N[j][1] : N[i][0] - N[j][0]); for (let k=0;k<on.length - 1;k++) link(on[k], on[k + 1]); }
-  return { N, E, node, link };
+    on.sort((i, j) => s.v ? N[i][1] - N[j][1] : N[i][0] - N[j][0]); for (let k=0;k<on.length - 1;k++) link(on[k], on[k + 1]); for (const i of on) W[i] = Math.min(W[i] || 99, s.w); }
+  return { N, E, W, node, link };
 }
 function graphPath(G, from, to){ const n = G.N.length, d = new Float64Array(n).fill(1e9), pr = new Int32Array(n).fill(-1), done = new Uint8Array(n); d[from] = 0;
   for (;;){ let u = -1, best = 1e9; for (let i=0;i<n;i++) if (!done[i] && d[i] < best){ best = d[i]; u = i; } if (u < 0 || u === to) break; done[u] = 1;
@@ -5898,16 +5964,20 @@ function buildTownsfolk(){
     [LACUS[0] + 1.1, LACUS[1] + 1.2, null, 'drink', 6, [LACUS[0], LACUS[1]]], [LACUS[0] - 1.1, LACUS[1] + 1.25, null, 'drink', 5, [LACUS[0], LACUS[1]]],
     [1.8, -13.4, Math.PI, 'pray', 7], [3.1, -13.1, Math.PI + 0.2, 'pray', 6], [-0.6, -13.6, Math.PI, 'pray', 6],
     [9.1, -3.6, Math.PI/2, 'buy', 5], [9.2, -1.4, Math.PI/2, 'buy', 5],
-    [1.8, 20.5, Math.PI, 'look', 5], [-1.9, 20.2, Math.PI, 'look', 4],
-    [THERMEN[0] - TH_W - 1.9, THERMEN[1], Math.PI/2, 'enter', 14], [SCHOOL[0] - 2.4, SCHOOL[1] - 5.3, 0, 'enter', 10],
-    [CURIA[0] + 6.6, CURIA[1] + 0.4, -Math.PI/2, 'enter', 12], [AMPHI.x - AMPHI.rx - 0.8, AMPHI.z, Math.PI/2, 'enter', 16],
+    [3.3, 76.0, 0, 'look', 5], [-3.3, 76.3, 0, 'look', 4],
+    // Drinnen: in der Thermenhalle ans Becken, in der Schule zuschauen, in der Kurie der Rede zuhören (durch die Tür hinein und wieder hinaus)
+    [THERMEN[0] - 5.4, THERMEN[1] + 2.8, Math.PI/2, 'watch', 12, null, [[THERMEN[0] - TH_W - 2.0, THERMEN[1]], [THERMEN[0] - TH_W + 0.9, THERMEN[1]]]],
+    [THERMEN[0] - 5.4, THERMEN[1] - 2.8, Math.PI/2, 'watch', 10, null, [[THERMEN[0] - TH_W - 2.0, THERMEN[1]], [THERMEN[0] - TH_W + 0.9, THERMEN[1]]]],
+    [SCHOOL[0] + 1.0, SCHOOL[1] - 2.0, Math.PI/2, 'watch', 10, null, [[SCHOOL[0] - 2.4, SCHOOL[1] - 5.6], [SCHOOL[0] - 2.4, SCHOOL[1] - 3.3]]],
+    [CURIA[0] + 3.2, CURIA[1] - 0.6, -Math.PI/2, 'watch', 12, null, [[CURIA[0] + 7.1, CURIA[1]], [CURIA[0] + 4.5, CURIA[1]]]],
+    [AMPHI.x - AMPHI.rx - 0.8, AMPHI.z, Math.PI/2, 'enter', 16],
     [LATRINE[0] + 0.0, LATRINE[1] + 3.6, Math.PI, 'enter', 8] ];
   // Läden in den Häuserblöcken: vor einer Fassade stehen und Waren anschauen
   { const bl = CITY_BLOCKS.filter(b => !b.small && Math.abs((b.x0 + b.x1)/2) < 70 && Math.abs((b.z0 + b.z1)/2) < 60); for (let i=0;i<8 && bl.length;i++){ const b = bl[Math.floor(rr()*bl.length)], s = Math.floor(rr()*4), u = 0.2 + rr()*0.6;
       const [x, z, ry] = s === 0 ? [b.x0 + (b.x1 - b.x0)*u, b.z0 - 0.9, 0] : s === 1 ? [b.x0 + (b.x1 - b.x0)*u, b.z1 + 0.9, Math.PI] : s === 2 ? [b.x0 - 0.9, b.z0 + (b.z1 - b.z0)*u, Math.PI/2] : [b.x1 + 0.9, b.z0 + (b.z1 - b.z0)*u, -Math.PI/2];
       if (streetDist(x, z) < 0.5) POI.push([x, z, ry, 'browse', 5]); } }
-  const places = POI.map(([x, z, ry, act, dur, look]) => ({ x, z, ry:ry === null ? Math.atan2(look[0] - x, look[1] - z) : ry, act, dur, node:access(x, z), busy:null })).filter(p => p.node >= 0);
-  const free = [...new Set(G.N.map((_, i) => i))].filter(i => G.E[i].length);
+  const places = POI.map(([x, z, ry, act, dur, look, via]) => ({ x, z, ry:ry === null ? Math.atan2(look[0] - x, look[1] - z) : ry, act, dur, via, node:via ? access(via[0][0], via[0][1]) : access(x, z), busy:null })).filter(p => p.node >= 0);
+  const nodes = [...new Set(G.N.map((_, i) => i))].filter(i => G.E[i].length);
   // Die Leute
   const OUT = [
     { skin:'#c48f6c', hair:'#3a2616', toga:'#f2efe6', cloth:'#ece6d8', sandals:true }, { skin:'#a87050', hair:'#2b1d12', cloth:'#a89878', sandals:true },
@@ -5921,25 +5991,70 @@ function buildTownsfolk(){
     x.beginPath(); x.moveTo(W/2 - 14, H - 26); x.lineTo(W/2, H - 4); x.lineTo(W/2 + 14, H - 26); x.fill(); x.fillStyle = '#2b2118'; x.font = 'bold 50px Fredoka, Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('Salve!', W/2, (H - 24)/2 + 4); });
   for (let i=0;i<NW;i++){ const kid = i % 7 === 6 && people.length, o = kid ? { scale:0.72, skin:CA.skin[i % 3], hair:CA.hair[i % 5], cloth:['#c8b890', '#e0c0c8', '#a8c0d8'][i % 3], sandals:true } : OUT[i % OUT.length];
     const p = makePerson(o), g = new THREE.Group(); g.add(p.root); scene.add(g); p.g = g;
-    const n0 = free[Math.floor(rr()*free.length)], [x0, z0] = G.N[n0];
+    const n0 = nodes[Math.floor(rr()*nodes.length)], par = kid ? people[people.length - 1] : null, [x0, z0] = par ? [par.x + 0.7, par.z] : G.N[n0];   // Kinder beginnen neben den Eltern
     const bub = new THREE.Sprite(new THREE.SpriteMaterial({ map:salve, transparent:true, depthWrite:false })); bub.scale.set(0.7, 0.3, 1); bub.position.set(0, 2.2, 0); bub.visible = false; g.add(bub);
     const loaf = mk(new THREE.SphereGeometry(0.08, 10, 8).scale(1, 0.6, 1), breadMat(), p.arms[1].hand, 0, -0.08, 0.05); loaf.visible = false;
     const w = { p, g, x:x0, z:z0, yaw:rr()*TAU, node:n0, path:[], wp:0, mode:'wait', t:1 + rr()*4, place:null, speed:kid ? 1.25 : 0.95 + rr()*0.25, lane:(0.55 + rr()*0.5),
-      col:{ x:x0, z:z0, r:0.3 }, stuck:0, gait:0, mv:0, follow:kid ? people[people.length - 1] : null, chat:null, chatT:0, greetT:0, bub, loaf, fade:1, rr:mulberry32(99 + i*13) };
+      col:{ x:x0, z:z0, r:0.3 }, trail:[], stuck:0, gait:0, mv:0, follow:kid ? people[people.length - 1] : null, chat:null, chatT:0, greetT:0, bub, loaf, fade:1, rr:mulberry32(99 + i*13) };
     colliders.push(w.col); people.push(w); }
-  // Weg zum nächsten Ort planen: über die Knoten, rechts versetzt wie auf einer Fahrbahn
+  // Hindernisse nach Ort sortiert (Raster mit 4 m Feldern), damit das Vorausschauen schnell geht; die Passanten selbst sind nicht drin
+  const PCOL = new Set(people.map(w => w.col)), GRID = new Map(), NONE = [], CS = 4, BX = CITY.hw + 8, BZ = CITY.hl + 8; let gridT = -9;
+  const gkey = (x, z) => Math.floor(x/CS)*65537 + Math.floor(z/CS);
+  const rebuild = () => { GRID.clear(); for (const c of colliders){ if (PCOL.has(c) || !(c.r > 0)) continue; const m = c.r + 1.2, seg = c.ax !== undefined;
+      const x0 = Math.max(-BX, (seg ? Math.min(c.ax, c.bx) : c.x) - m), x1 = Math.min(BX, (seg ? Math.max(c.ax, c.bx) : c.x) + m), z0 = Math.max(-BZ, (seg ? Math.min(c.az, c.bz) : c.z) - m), z1 = Math.min(BZ, (seg ? Math.max(c.az, c.bz) : c.z) + m);
+      for (let x = Math.floor(x0/CS)*CS; x <= x1; x += CS) for (let z = Math.floor(z0/CS)*CS; z <= z1; z += CS){ const k = gkey(x + 0.5, z + 0.5); let a = GRID.get(k); if (!a) GRID.set(k, a = []); a.push(c); } } };
+  const dist = (c, x, z) => { if (c.ax === undefined) return Math.hypot(x - c.x, z - c.z); const ex = c.bx - c.ax, ez = c.bz - c.az, L2 = ex*ex + ez*ez; let u = L2 > 1e-9 ? ((x - c.ax)*ex + (z - c.az)*ez)/L2 : 0; u = u < 0 ? 0 : u > 1 ? 1 : u; return Math.hypot(x - c.ax - ex*u, z - c.az - ez*u); };
+  const clear = (x, z, rad) => { for (const c of GRID.get(gkey(x, z)) || NONE) if (c.r > 0 && dist(c, x, z) < c.r + rad) return false; return true; };
+  const pushOutG = (x, z, rad) => { for (let it=0; it<2; it++) for (const c of GRID.get(gkey(x, z)) || NONE){ if (!(c.r > 0)) continue; const m = c.r + rad;
+      let px, pz; if (c.ax === undefined){ px = c.x; pz = c.z; } else { const ex = c.bx - c.ax, ez = c.bz - c.az, L2 = ex*ex + ez*ez; let u = L2 > 1e-9 ? ((x - c.ax)*ex + (z - c.az)*ez)/L2 : 0; u = u < 0 ? 0 : u > 1 ? 1 : u; px = c.ax + ex*u; pz = c.az + ez*u; }
+      const dx = x - px, dz = z - pz, d = Math.hypot(dx, dz); if (d < m && d > 1e-5){ x = px + dx/d*m; z = pz + dz/d*m; } } return [x, z]; };
+  const others = w => people.filter(o => o !== w && o.g.visible && o !== w.follow && o.follow !== w);
+  // Vorausschauen: Richtung und Tempo für den nächsten Schritt
+  const free = (w, a) => { const sx = Math.sin(a), sz = Math.cos(a); return clear(w.x + sx*0.45, w.z + sz*0.45, 0.3) && clear(w.x + sx*0.9, w.z + sz*0.9, 0.3); };
+  const steer = (w, fx, fz, d) => { const rx = -fz, rz = fx; let sx = 0, sz = 0, slow = 1;
+    const consider = (ox, oz, ovx, ovz, rad) => { const ax = ox - w.x, az = oz - w.z; if (ax > 4 || ax < -4 || az > 4 || az < -4) return;
+      const ahead = ax*fx + az*fz; if (ahead < -0.1 || Math.hypot(ax, az) > 4) return;
+      const rvx = ovx - fx*w.speed, rvz = ovz - fz*w.speed, rv2 = rvx*rvx + rvz*rvz, tc = rv2 > 1e-4 ? Math.max(0, Math.min(3, -(ax*rvx + az*rvz)/rv2)) : 0;
+      const cx = ax + rvx*tc, cz = az + rvz*tc, dm = Math.hypot(cx, cz), lim = 0.8 + rad;
+      if (dm < lim){ const urg = (lim - dm)/lim*(1 - tc/3.3), s = cx*rx + cz*rz > 0.2 ? -1 : 1; sx += rx*s*urg*1.8; sz += rz*s*urg*1.8; }
+      const side = ax*rx + az*rz; if (ahead > 0 && ahead < 1.4 && Math.abs(side) < 0.55 + rad) slow = Math.min(slow, Math.max(0.15, (ahead - 0.55)/0.85)); };
+    for (const o of others(w)){ const v = o.mv > 0.3 ? o.speed : 0; consider(o.x, o.z, Math.sin(o.yaw)*v, Math.cos(o.yaw)*v, 0); }
+    consider(player.x, player.z, 0, 0, 0.15);
+    let hx = fx + sx, hz = fz + sz; const hl = Math.hypot(hx, hz) || 1; let want = Math.atan2(hx/hl, hz/hl);
+    if (d > 0.9 && !free(w, want)){ const pref = sx*rx + sz*rz < -0.05 ? 1 : -1;   // −1: rechts herum
+      for (const k of [0.35, 0.7, 1.05, 1.4]){ if (free(w, want + pref*k)){ want += pref*k; break; } if (free(w, want - pref*k)){ want -= pref*k; break; } } }
+    return [want, slow]; };
+  // Nach dem Schritt: nicht in Wände, nicht in andere Leute und nicht in den Spieler hinein
+  const settle = (w, x, z) => { [x, z] = pushOutG(x, z, 0.33);
+    for (const o of others(w)){ const dx = x - o.x, dz = z - o.z, d = Math.hypot(dx, dz); if (d < 0.62 && d > 1e-4){ x = o.x + dx/d*0.62; z = o.z + dz/d*0.62; } }
+    { const dx = x - player.x, dz = z - player.z, d = Math.hypot(dx, dz); if (d < 0.75 && d > 1e-4){ x = player.x + dx/d*0.75; z = player.z + dz/d*0.75; } }
+    return pushOutG(x, z, 0.33); };
+  // Weg zum nächsten Ort planen: über die Knoten, rechts versetzt wie auf einer Fahrbahn (in schmalen Gassen weniger weit);
+  // wer drinnen war, geht zuerst durch die Tür wieder hinaus
   const plan = w => { const cand = places.filter(pl => !pl.busy && pl !== w.place); const pl = cand.length && w.rr() < 0.8 ? cand[Math.floor(w.rr()*cand.length)] : null;
-    const to = pl ? pl.node : free[Math.floor(w.rr()*free.length)], from = access(w.x, w.z); const ids = from >= 0 ? graphPath(G, from, to) : null;
+    const out = w.place && w.place.via ? w.place.via.slice().reverse() : [], o0 = out.length ? out[out.length - 1] : [w.x, w.z];
+    const to = pl ? pl.node : nodes[Math.floor(w.rr()*nodes.length)], from = access(o0[0], o0[1]); const ids = from >= 0 ? graphPath(G, from, to) : null;
     if (!ids){ w.mode = 'wait'; w.t = 2; return; }
-    const pts = ids.map(i => G.N[i].slice());
-    for (let k=1;k<pts.length - 1;k++){ const [ax, az] = G.N[ids[k - 1]], [bx, bz] = G.N[ids[k]], [cx, cz] = G.N[ids[k + 1]]; let nx = (bz - az) + (cz - bz), nz = -(bx - ax) - (cx - bx); const L = Math.hypot(nx, nz) || 1; pts[k][0] -= nx/L*w.lane; pts[k][1] -= nz/L*w.lane; }
-    if (pl){ pts.push([pl.x, pl.z]); pl.busy = w; } w.place = pl; w.path = pts; w.wp = 0; w.mode = 'walk'; w.stuck = 0; };
+    const pts = ids.map(i => G.N[i].slice()), end = pl ? (pl.via ? pl.via[0] : [pl.x, pl.z]) : null;
+    for (let k=0;k<pts.length;k++){ const c = G.N[ids[k]], a = k > 0 ? G.N[ids[k - 1]] : o0, b = k < ids.length - 1 ? G.N[ids[k + 1]] : end || c;
+      let ux = c[0] - a[0], uz = c[1] - a[1], vx = b[0] - c[0], vz = b[1] - c[1]; const lu = Math.hypot(ux, uz), lv = Math.hypot(vx, vz);
+      if (lu > 1e-3){ ux /= lu; uz /= lu; } else ux = uz = 0; if (lv > 1e-3){ vx /= lv; vz /= lv; } else vx = vz = 0;
+      let bx = ux + vx, bz = uz + vz; const bl = Math.hypot(bx, bz); if (bl < 1e-3) continue; bx /= bl; bz /= bl;
+      const cs = Math.max(0.7, lu > 1e-3 ? bx*ux + bz*uz : bx*vx + bz*vz), lane = Math.max(0, Math.min(w.lane, (G.W[ids[k]] || 3)/2 - 0.62))/cs;
+      pts[k][0] -= bz*lane; pts[k][1] += bx*lane; }
+    if (pl){ if (pl.via) pts.push(...pl.via.map(q => q.slice())); pts.push([pl.x, pl.z]); pl.busy = w; } w.place = pl; w.path = out.map(q => q.slice()).concat(pts); w.wp = 0; w.mode = 'walk'; w.stuck = 0; };
   const V = new THREE.Vector3(), PL = new THREE.Vector3();
   const armsDown = p => { for (const a of p.arms){ a.sh.quaternion.identity(); a.sh.rotation.set(0, 0, 0); a.el.rotation.x = -0.25; freeHand(p, p.arms.indexOf(a)); } };
   anims.push((t, dt) => {
+    if (t - gridT > 0.5 || t < gridT){ gridT = t; rebuild(); }
     for (const w of people){ const p = w.p; let go = false, tx = w.x, tz = w.z;
-      // Kinder gehen neben der Mutter oder dem Vater her
-      if (w.follow){ const f = w.follow; tx = f.x + Math.cos(f.yaw)*0.85; tz = f.z - Math.sin(f.yaw)*0.85; go = Math.hypot(tx - w.x, tz - w.z) > 0.35 && f.fade > 0.5; w.fade = f.fade; }
+      // Kinder gehen neben der Mutter oder dem Vater her, auf der Seite, wo Platz ist (sonst dahinter);
+      // sind sie zurückgeblieben, gehen sie den Weg nach, den die Eltern gegangen sind
+      if (w.follow){ const f = w.follow, c = Math.cos(f.yaw), sn = Math.sin(f.yaw), spots = [[f.x + c*0.85, f.z - sn*0.85], [f.x - c*0.85, f.z + sn*0.85], [f.x - sn*0.8, f.z - c*0.8]];
+        let k = w.side || 0; if (!clear(spots[k][0], spots[k][1], 0.4)){ k = spots.findIndex(q => clear(q[0], q[1], 0.4)); if (k < 0) k = 2; } w.side = k; [tx, tz] = spots[k];
+        if (Math.hypot(f.x - w.x, f.z - w.z) > 2.2 && f.trail.length){ let bi = 0, bd = 1e9; f.trail.forEach((q, i) => { const d = Math.hypot(q[0] - w.x, q[1] - w.z); if (d < bd){ bd = d; bi = i; } });
+          const q = f.trail[Math.min(f.trail.length - 1, bi + 1)]; tx = q[0]; tz = q[1]; }
+        go = Math.hypot(tx - w.x, tz - w.z) > 0.35 && f.fade > 0.5; w.fade = f.fade; }
       else if (w.mode === 'walk'){ const [px, pz] = w.path[w.wp]; tx = px; tz = pz; go = true;
         if (Math.hypot(px - w.x, pz - w.z) < (w.wp === w.path.length - 1 ? 0.15 : 0.6)){ w.wp++; if (w.wp >= w.path.length){ go = false; if (w.place){ w.mode = 'act'; w.t = w.place.dur*(0.8 + w.rr()*0.5); w.act0 = t; } else { w.mode = 'wait'; w.t = 1 + w.rr()*4; } } } }
       else if (w.mode === 'act' || w.mode === 'wait' || w.mode === 'chat'){ w.t -= dt; if (w.t <= 0){ if (w.place) w.place.busy = null; if (w.chat){ w.chat.chat = null; w.chat = null; } w.loaf.visible = w.mode === 'act' && w.place && w.place.act === 'buy' ? true : w.loaf.visible && w.rr() < 0.6; plan(w); } }
@@ -5951,20 +6066,24 @@ function buildTownsfolk(){
       if (greet && w.greetT < t - 8){ w.greetT = t; } const greeting = t - w.greetT < 2.2;
       if (greeting) go = false;
       // Bewegen mit Ausweichen
-      if (go){ const dx = tx - w.x, dz = tz - w.z, d = Math.hypot(dx, dz), want = Math.atan2(dx, dz);
-        w.yaw = angLerp(w.yaw, want, Math.min(1, dt*4)); const st = Math.min(d, w.speed*dt*Math.max(0.2, Math.cos(want - w.yaw))*(w.follow ? Math.min(1.4, d + 0.3) : 1));
-        const r = pushOut(w.x + Math.sin(w.yaw)*st, w.z + Math.cos(w.yaw)*st, 0.33, w.col), moved = Math.hypot(r[0] - w.x, r[1] - w.z); w.x = r[0]; w.z = r[1];
-        if (!w.follow){ w.stuck = moved < st*0.3 ? w.stuck + dt : Math.max(0, w.stuck - dt); if (w.stuck > 2.0){ if (w.place){ w.place.busy = null; w.place = null; } w.mode = 'wait'; w.t = 0.5; w.stuck = 0; } } }
+      if (go){ const dx = tx - w.x, dz = tz - w.z, d = Math.hypot(dx, dz) || 1e-6, [want, slow] = steer(w, dx/d, dz/d, d);
+        w.yaw = angLerp(w.yaw, want, Math.min(1, dt*4)); const st = Math.min(d, w.speed*slow*dt*Math.max(0.2, Math.cos(want - w.yaw))*(w.follow ? Math.min(1.4, d + 0.3) : 1));
+        const r = settle(w, w.x + Math.sin(w.yaw)*st, w.z + Math.cos(w.yaw)*st), moved = Math.hypot(r[0] - w.x, r[1] - w.z); w.x = r[0]; w.z = r[1];
+        if (!w.follow){ w.stuck = moved < st*0.3 ? w.stuck + dt : slow < 0.3 ? w.stuck + dt*0.3 : Math.max(0, w.stuck - dt); if (w.stuck > 2.0){ if (w.place){ w.place.busy = null; w.place = null; } w.mode = 'wait'; w.t = 0.5; w.stuck = 0; } }
+        else { // ein Kind, das irgendwo hängen bleibt, holt die Eltern wieder ein
+          w.stuck = moved < st*0.3 ? w.stuck + dt : Math.max(0, w.stuck - dt); const f = w.follow, bx = f.x - Math.sin(f.yaw)*0.8, bz = f.z - Math.cos(f.yaw)*0.8;
+          if ((w.stuck > 3 || Math.hypot(f.x - w.x, f.z - w.z) > 8) && clear(bx, bz, 0.4)){ w.x = bx; w.z = bz; w.stuck = 0; } } }
       else if (w.mode === 'act' && w.place) w.yaw = angLerp(w.yaw, w.place.ry, Math.min(1, dt*3));
       else if (w.mode === 'chat' && w.chatWith) w.yaw = angLerp(w.yaw, Math.atan2(w.chatWith.x - w.x, w.chatWith.z - w.z), Math.min(1, dt*3));
       else if (greeting) w.yaw = angLerp(w.yaw, Math.atan2(dpx, dpz), Math.min(1, dt*4));
       else if (w.follow) w.yaw = angLerp(w.yaw, w.follow.yaw, Math.min(1, dt*2));
       w.mv += ((go ? 1 : 0) - w.mv)*Math.min(1, dt*5); w.gait += dt*6.5*w.mv;
+      { const lt = w.trail[w.trail.length - 1]; if (!lt || Math.hypot(lt[0] - w.x, lt[1] - w.z) > 0.5){ w.trail.push([w.x, w.z]); if (w.trail.length > 12) w.trail.shift(); } }
       // Hineingehen: am Eingang verschwinden und später wieder herauskommen
       const inside = w.mode === 'act' && w.place && w.place.act === 'enter';
       w.fade = w.follow ? w.follow.fade : inside ? Math.max(Math.max(0, 1 - (t - w.act0)/0.7), Math.max(0, 1 - w.t/0.7)) : 1;
       w.g.visible = w.fade > 0.5;
-      w.g.position.set(w.x, groundH(w.x, w.z), w.z); w.g.rotation.y = w.yaw; w.col.x = w.x; w.col.z = w.z; w.col.r = w.fade > 0.5 ? 0.3 : 0;
+      { const dk = onDeck(w.x, w.z); w.g.position.set(w.x, dk !== null ? dk : groundH(w.x, w.z), w.z); } w.g.rotation.y = w.yaw; w.col.x = w.x; w.col.z = w.z; w.col.r = w.fade > 0.5 ? 0.3 : 0;
       if (!w.g.visible) continue;
       walkPose(p, w.gait, 1, 0.42*w.mv, w.mv > 0.2 && !greeting);
       p.spine.rotation.x = p._lean || 0; if (w.mv < 0.2) armsDown(p);
@@ -6430,53 +6549,98 @@ $('#btnTry').insertAdjacentHTML('beforebegin', '<button class="btn hidden" id="b
 $('#btnNum').addEventListener('click', openNumGame);
 { const os = openStation; openStation = function(id){ os(id); $('#btnNum').classList.toggle('hidden', id !== 'zahlen'); }; }
 
-/* ===================== DIE RÜSTUNG GENAU ANSCHAUEN ===================== */
-/* Ein Legionär wird Stück für Stück angezogen und dreht sich langsam. Fährt man mit der Maus über ein Teil (oder tippt darauf),
-   leuchtet es auf und sein Name erscheint. Eigene kleine 3D-Ansicht mit eigenem Licht. */
-const ARMOR_PARTS = [
-  { id:'tunika', name:'Tunika', lat:'tunica', txt:'Das Hemd aus Wolle. Darüber kam die Rüstung.' },
-  { id:'caligae', name:'Sandalen', lat:'caligae', txt:'Feste Sandalen aus Leder. In die Sohlen wurden manchmal Nägel gehämmert.' },
-  { id:'lorica', name:'Schutzpanzer', lat:'lorica', txt:'Die Rüstung aus Eisenbändern und Leder schützte Brust, Rücken und Schultern.' },
-  { id:'galea', name:'Helm', lat:'galea', txt:'Der Helm aus Eisen mit Wangenklappen und Nackenschutz.' },
-  { id:'gladius', name:'Kurzes Schwert', lat:'gladius', txt:'Mit dem kurzen Schwert wurde im Nahkampf gestochen.' },
-  { id:'pugio', name:'Dolch', lat:'pugio', txt:'Der Dolch hing am Gürtel, als Waffe und als Werkzeug.' },
-  { id:'scutum', name:'Schild', lat:'scutum', txt:'Der grosse, gebogene Schild aus Holz, bemalt und mit Metall beschlagen.' },
-  { id:'pilum', name:'Wurfspeer', lat:'pilum', txt:'Der Wurfspeer mit der langen Eisenspitze. Er verbog sich beim Aufprall.' } ];
+/* ===================== KLEINE 3D-ANSICHT: RÜSTUNG UND KLEIDER ===================== */
+/* Eine eigene kleine 3D-Szene mit Licht. Die Figur steht still; man dreht sie mit der Maus oder dem Finger (oder mit den Pfeilknöpfen).
+   Fährt man über ein Teil, leuchtet es auf, alles andere wird blass, und sein Name erscheint. */
 document.head.insertAdjacentHTML('beforeend', `<style>
-.av-card{width:min(860px,100%)}
-.av-wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+.av-card{width:min(880px,100%)}
+.av-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:start}
 @media (max-width:700px){.av-wrap{grid-template-columns:1fr}}
 .av-view{position:relative;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#f6efe0,#d8c8a8);aspect-ratio:1/1;touch-action:none}
 .av-view canvas{display:block;width:100%;height:100%;cursor:grab}
+.av-view canvas:active{cursor:grabbing}
 .av-tip{position:absolute;pointer-events:none;background:var(--charcoal);color:#fffdf7;font-family:var(--font-head);font-weight:600;padding:.3em .7em;border-radius:8px;font-size:1rem;white-space:nowrap;transform:translate(-50%,-140%)}
 .av-tip small{font-weight:400;opacity:.8}
-.av-list{display:flex;flex-direction:column;gap:6px}
-.av-list button{display:flex;justify-content:space-between;gap:8px;text-align:left;font:inherit;font-size:1rem;padding:.45em .7em;border:2px solid var(--line);border-radius:9px;background:var(--paper-2);color:var(--ink);cursor:pointer}
-.av-list button.on{border-color:#c8402a;background:#fff2e4}
-.av-list i{font-style:italic;color:var(--ink-soft)}
-.av-desc{min-height:3em;margin:10px 0 0;font-size:1.02rem;line-height:1.45}
+.av-rot{position:absolute;right:8px;bottom:8px;display:flex;gap:6px}
+.av-rb{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);background:rgba(255,253,247,.92);font-size:1.3rem;line-height:1;cursor:pointer;color:var(--ink)}
+.av-side{display:flex;flex-direction:column;gap:10px}
+.av-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.av-tab{flex:1;min-width:90px;font:inherit;font-family:var(--font-head);font-weight:600;font-size:1rem;padding:.45em .6em;border:2px solid var(--line);border-radius:9px;background:var(--paper-2);color:var(--ink);cursor:pointer}
+.av-tab.on{border-color:#c8402a;background:#fff2e4}
+.av-info{border:2px solid var(--line);border-radius:10px;background:var(--paper-2);padding:12px 14px;min-height:150px}
+.av-info h3{margin:0 0 4px;font-family:var(--font-head);font-size:1.3rem}
+.av-info h3 i{font-weight:400;font-size:1rem;color:var(--ink-soft)}
+.av-info p{margin:.25em 0;line-height:1.45}
+.av-hint{color:var(--ink-soft)}
+.av-ask{font-family:var(--font-head);font-weight:600;font-size:1.25rem}
+.av-msg{min-height:1.5em}
+.av-msg.ok{color:#2e7a3a;font-weight:600}
+.av-msg.no{color:#a8302a;font-weight:600}
+.av-stars{letter-spacing:2px;font-size:1.1rem}
 </style>`);
-document.body.insertAdjacentHTML('beforeend', `<div id="armorview" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="avTitle">
-  <div class="card av-card">
-    <button class="x" data-avclose aria-label="Schliessen">✕</button>
-    <h2 id="avTitle">🛡️ Die Rüstung eines Legionärs</h2>
-    <div class="av-wrap"><div class="av-view" id="avView"><canvas id="avCanvas" aria-label="Legionär in Rüstung, drehbar"></canvas><div class="av-tip hidden" id="avTip"></div></div>
-      <div><div class="av-list" id="avList"></div><p class="av-desc" id="avDesc">Fahre mit der Maus über die Rüstung oder tippe auf ein Teil.</p></div></div>
-  </div>
-</div>`);
-const AV = { r:null, scene:null, cam:null, root:null, parts:{}, hl:null, t0:0, raf:0, yaw:0.5, drag:null, auto:true, ray:new THREE.Raycaster(), ptr:new THREE.Vector2() };
-function avBuild(){
-  const cv = $('#avCanvas'); AV.r = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true }); AV.r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); AV.r.outputColorSpace = THREE.SRGBColorSpace; AV.r.toneMapping = THREE.ACESFilmicToneMapping; AV.r.toneMappingExposure = 1.1;
-  AV.scene = new THREE.Scene(); AV.cam = new THREE.PerspectiveCamera(30, 1, 0.1, 50); AV.cam.position.set(0, 1.25, 4.6); AV.cam.lookAt(0, 0.95, 0);
+const _vtmp = new THREE.Color();
+function makeViewer(cv){
+  const V = { cv, all:[], hl:null, yaw:0.5, yawT:0.5, drag:null, ray:new THREE.Raycaster(), ptr:new THREE.Vector2(), onHover:null, onPick:null, glow:new Map(), fade:new Map() };
+  V.r = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true }); V.r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); V.r.outputColorSpace = THREE.SRGBColorSpace; V.r.toneMapping = THREE.ACESFilmicToneMapping; V.r.toneMappingExposure = 1.1;
+  V.scene = new THREE.Scene(); V.cam = new THREE.PerspectiveCamera(30, 1, 0.1, 50); V.cam.position.set(0, 1.25, 4.6); V.cam.lookAt(0, 0.95, 0);
   // Licht und eine einfache Umgebung für die glänzenden Metallteile
   { const env = new THREE.Scene(), sky = new THREE.Mesh(new THREE.SphereGeometry(10, 24, 12), new THREE.MeshBasicMaterial({ side:THREE.BackSide, vertexColors:true }));
     const cg = sky.geometry, cc = []; for (let i=0;i<cg.attributes.position.count;i++){ const y = cg.attributes.position.getY(i)/10; const c = new THREE.Color().setHSL(0.1, 0.25, 0.35 + 0.5*Math.max(0, y)); cc.push(c.r, c.g, c.b); }
     cg.setAttribute('color', new THREE.Float32BufferAttribute(cc, 3)); env.add(sky); for (const [x, y, z] of [[4, 5, 3], [-5, 3, -2]]){ const p = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), new THREE.MeshBasicMaterial({ color:0xffffff })); p.position.set(x, y, z); p.lookAt(0, 0, 0); env.add(p); }
-    const pm = new THREE.PMREMGenerator(AV.r); AV.scene.environment = pm.fromScene(env, 0.02).texture; pm.dispose(); }
-  AV.scene.add(new THREE.HemisphereLight(0xfff4e0, 0x6a5a48, 1.2)); const sun = new THREE.DirectionalLight(0xfff0d8, 2.2); sun.position.set(2, 4, 3); AV.scene.add(sun);
-  AV.root = new THREE.Group(); AV.scene.add(AV.root);
-  mk(new THREE.CylinderGeometry(0.9, 0.95, 0.06, 40), M('#cbb894', { tex:'stone' }), AV.root, 0, -0.03, 0);
-  const p = makePerson({ skin:'#c48f6c', hair:'#2b1d12', cloth:'#a8302a', armor:true, galea:true, crest:'#c8302a', sandals:true }); AV.root.add(p.root); AV.p = p;
+    const pm = new THREE.PMREMGenerator(V.r); V.scene.environment = pm.fromScene(env, 0.02).texture; pm.dispose(); }
+  V.scene.add(new THREE.HemisphereLight(0xfff4e0, 0x6a5a48, 1.2)); const sun = new THREE.DirectionalLight(0xfff0d8, 2.2); sun.position.set(2, 4, 3); V.scene.add(sun);
+  V.root = new THREE.Group(); V.scene.add(V.root);
+  mk(new THREE.CylinderGeometry(0.9, 0.95, 0.06, 40), M('#cbb894', { tex:'stone' }), V.scene, 0, -0.03, 0);
+  V.setModel = obj => { for (const c of [...V.root.children]) V.root.remove(c); V.root.add(obj); V.all = []; V.hl = undefined;
+    obj.traverse(m => { if (m.isMesh){ if (!m.userData.mat0) m.userData.mat0 = m.material; m.material = m.userData.mat0; V.all.push(m); } }); V.highlight(null); };
+  const conv = (m0, cache, f) => { if (Array.isArray(m0)) return m0.map(q => conv(q, cache, f)); let c = cache.get(m0); if (!c){ c = m0.clone(); f(c); cache.set(m0, c); } return c; };
+  const glowM = m0 => conv(m0, V.glow, c => { if (c.emissive){ c.emissive = (c.color ? c.color.clone() : new THREE.Color('#ffffff')).lerp(new THREE.Color('#ffb060'), 0.4); c.emissiveIntensity = 0.6; } });   // heller, Farbe bleibt erkennbar
+  const fadeM = m0 => conv(m0, V.fade, c => { c.transparent = true; c.opacity = 0.13; c.depthWrite = false; });
+  // Teil hervorheben: es leuchtet, der Rest wird blass; null zeigt alles normal
+  V.highlight = id => { if (id === V.hl) return; V.hl = id; for (const m of V.all){ const m0 = m.userData.mat0; m.material = !id ? m0 : m.userData.part === id ? glowM(m0) : fadeM(m0); } };
+  V.pick = e => { const r = cv.getBoundingClientRect(); V.ptr.set((e.clientX - r.left)/r.width*2 - 1, -(e.clientY - r.top)/r.height*2 + 1); V.ray.setFromCamera(V.ptr, V.cam);
+    const hit = V.ray.intersectObject(V.root, true).find(h => h.object.userData.part && h.object.visible); return hit ? { id:hit.object.userData.part, x:e.clientX - r.left, y:e.clientY - r.top } : null; };
+  cv.addEventListener('pointerdown', e => { V.drag = { x:e.clientX, moved:false }; try { cv.setPointerCapture(e.pointerId); } catch(err){} });
+  cv.addEventListener('pointermove', e => { if (V.drag){ const dx = e.clientX - V.drag.x; if (Math.abs(dx) > 2) V.drag.moved = true; V.yaw += dx*0.012; V.yawT = V.yaw; V.drag.x = e.clientX; if (V.drag.moved) return; } if (V.onHover) V.onHover(V.pick(e)); });
+  cv.addEventListener('pointerup', e => { const d = V.drag; V.drag = null; if (d && !d.moved && V.onPick) V.onPick(V.pick(e)); });
+  cv.addEventListener('pointerleave', () => { if (!V.drag && V.onHover) V.onHover(null, true); });
+  V.turn = d => { V.yawT += d*Math.PI/4; };
+  V.render = () => { const w = cv.clientWidth, h = cv.clientHeight; if (w && (cv.width !== Math.round(w*V.r.getPixelRatio()) || cv.height !== Math.round(h*V.r.getPixelRatio()))){ V.r.setSize(w, h, false); V.cam.aspect = w/h; V.cam.updateProjectionMatrix(); }
+    V.yaw += (V.yawT - V.yaw)*0.15; V.root.rotation.y = V.yaw; V.r.render(V.scene, V.cam); };
+  return V; }
+/* Anziehen: die Teile kommen nacheinander von oben herab (order = Reihenfolge der Teile) */
+function viewerDress(parts, order, t){ order.forEach((id, i) => { const k = Math.min(1, Math.max(0, (t - 0.3 - i*0.55)/0.6)), e = 1 - Math.pow(1 - k, 3);
+  for (const m of parts[id] || []){ m.visible = k > 0; m.position.copy(m.userData.base); m.position.y += (1 - e)*0.8; } }); }
+function viewerParts(root){ const parts = {}; root.traverse(m => { if (m.isMesh && m.userData.part){ (parts[m.userData.part] = parts[m.userData.part] || []).push(m); m.userData.base = m.position.clone(); } }); return parts; }
+function viewerTip(tip, q, h){ if (q && h){ tip.innerHTML = q.name + ' <small>' + q.lat + '</small>'; tip.style.left = h.x + 'px'; tip.style.top = h.y + 'px'; tip.classList.remove('hidden'); } else tip.classList.add('hidden'); }
+const VIEW_HTML = (id, title, label) => `<div id="${id}" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="${id}T">
+  <div class="card av-card">
+    <button class="x" data-vclose aria-label="Schliessen">✕</button>
+    <h2 id="${id}T">${title}</h2>
+    <div class="av-wrap"><div class="av-view"><canvas aria-label="${label}"></canvas><div class="av-tip hidden"></div>
+      <div class="av-rot"><button class="av-rb" data-turn="-1" aria-label="Nach links drehen">⟲</button><button class="av-rb" data-turn="1" aria-label="Nach rechts drehen">⟳</button></div></div>
+      <div class="av-side"><div class="av-tabs"></div><div class="av-info" aria-live="polite"></div></div></div>
+  </div>
+</div>`;
+function viewerModal(id, title, label){ document.body.insertAdjacentHTML('beforeend', VIEW_HTML(id, title, label)); const el = $('#' + id);
+  el.querySelectorAll('[data-vclose]').forEach(b => b.addEventListener('click', () => closeModal())); el.addEventListener('click', e => { if (e.target === el) closeModal(); });
+  return { el, cv:el.querySelector('canvas'), tip:el.querySelector('.av-tip'), tabs:el.querySelector('.av-tabs'), info:el.querySelector('.av-info'), title:el.querySelector('h2') }; }
+
+/* ---------- Die Rüstung eines Legionärs, mit Quiz ---------- */
+const ARMOR_PARTS = [
+  { id:'tunika', name:'Tunika', lat:'tunica', acc:'die Tunika', nom:'die Tunika', txt:'Das Hemd aus Wolle. Darüber kam die Rüstung.' },
+  { id:'caligae', name:'Sandalen', lat:'caligae', acc:'die Sandalen', nom:'die Sandalen', txt:'Feste Sandalen aus Leder. In die Sohlen wurden manchmal Nägel gehämmert, damit sie nicht so schnell abliefen.' },
+  { id:'lorica', name:'Rüstung', lat:'lorica', acc:'die Rüstung', nom:'die Rüstung', txt:'Die Rüstung aus Eisenbändern und Leder schützte Brust, Rücken und Schultern.' },
+  { id:'galea', name:'Helm', lat:'galea', acc:'den Helm', nom:'der Helm', txt:'Der Helm aus Eisen mit Wangenklappen und Nackenschutz.' },
+  { id:'gladius', name:'Kurzes Schwert', lat:'gladius', acc:'das kurze Schwert', nom:'das kurze Schwert', txt:'Mit dem kurzen Schwert wurde im Nahkampf gestochen.' },
+  { id:'pugio', name:'Dolch', lat:'pugio', acc:'den Dolch', nom:'der Dolch', txt:'Der Dolch hing am Gürtel, als Waffe und als Werkzeug.' },
+  { id:'scutum', name:'Schild', lat:'scutum', acc:'den Schild', nom:'der Schild', txt:'Der grosse, gebogene Schild aus Holz, bemalt und mit Metall beschlagen.' },
+  { id:'pilum', name:'Wurfspeer', lat:'pilum', acc:'den Wurfspeer', nom:'der Wurfspeer', txt:'Der Wurfspeer mit der langen Eisenspitze. Er verbog sich beim Aufprall, so konnte ihn der Feind nicht zurückwerfen.' } ];
+const AV = { ui:null, V:null, parts:{}, t0:0, raf:0, mode:'explore', q:null };
+const AV_HINT = '<p class="av-hint">👆 Fahre mit der Maus über die Rüstung oder tippe darauf. Dann siehst du, wie das Teil heisst.</p><p class="av-hint">✋ Mit gedrückter Maus oder mit dem Finger kannst du den Legionär drehen.</p>';
+function avBuild(){
+  AV.ui = viewerModal('armorview', '🛡️ Die Rüstung eines Legionärs', 'Legionär in Rüstung, zum Drehen ziehen'); const V = AV.V = makeViewer(AV.ui.cv);
+  const p = makePerson({ skin:'#c48f6c', hair:'#2b1d12', cloth:'#a8302a', armor:true, galea:true, crest:'#c8302a', sandals:true }); AV.p = p;
   const skinM = p.legs[0].hip.children.find(c => c.isMesh).material, tunM = p.skirt.material;
   const sh = makeScutum(); p.root.add(sh); sh.position.set(0.42, 0.95, 0.2); sh.rotation.set(0, 0.5, 0);
   const pil = makePilum(); p.root.add(pil); pil.position.set(-0.45, 0.02, 0.15); pil.rotation.set(0.05, 0, 0.06);
@@ -6495,38 +6659,95 @@ function avBuild(){
     else if (metal) m.userData.part = 'lorica';
     else if (inKnee && mt !== skinM) m.userData.part = 'caligae';
     else if (mt && mt.color && Math.abs(mt.color.getHex() - new THREE.Color('#4e3422').getHex()) < 3) m.userData.part = 'lorica'; });
-  AV.parts = {}; p.root.traverse(m => { if (m.isMesh && m.userData.part){ (AV.parts[m.userData.part] = AV.parts[m.userData.part] || []).push(m); m.userData.base = m.position.clone(); m.userData.mat0 = m.material; } });
-  // Liste der Teile
-  $('#avList').innerHTML = ARMOR_PARTS.map(q => '<button data-av="' + q.id + '"><span>' + q.name + '</span><i>' + q.lat + '</i></button>').join('');
-  $('#avList').querySelectorAll('[data-av]').forEach(b => { b.addEventListener('mouseenter', () => avHighlight(b.dataset.av)); b.addEventListener('focus', () => avHighlight(b.dataset.av)); b.addEventListener('click', () => avHighlight(b.dataset.av)); });
-  // Drehen mit der Maus, Teile unter der Maus anzeigen
-  cv.addEventListener('pointerdown', e => { AV.drag = { x:e.clientX, moved:false }; AV.auto = false; try { cv.setPointerCapture(e.pointerId); } catch(err){} });
-  cv.addEventListener('pointermove', e => { if (AV.drag){ const dx = e.clientX - AV.drag.x; if (Math.abs(dx) > 2) AV.drag.moved = true; AV.yaw += dx*0.012; AV.drag.x = e.clientX; } avPick(e); });
-  cv.addEventListener('pointerup', e => { const d = AV.drag; AV.drag = null; if (d && !d.moved) avPick(e, true); });
-  cv.addEventListener('pointerleave', () => { if (!AV.drag) avHighlight(null); });
+  AV.parts = viewerParts(p.root); V.setModel(p.root);
+  AV.ui.tabs.innerHTML = '<button class="av-tab" data-m="explore">🔍 Entdecken</button><button class="av-tab" data-m="quiz">🎯 Quiz</button>';
+  AV.ui.tabs.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => avMode(b.dataset.m)));
+  AV.ui.el.querySelectorAll('[data-turn]').forEach(b => b.addEventListener('click', () => V.turn(+b.dataset.turn)));
+  V.onHover = (h, left) => { if (AV.mode === 'quiz'){ if (!AV.q.lock) V.highlight(h ? h.id : null); return; } if (left) { avShow(null); return; } avShow(h); };
+  V.onPick = h => { if (AV.mode === 'quiz') aqClick(h); else avShow(h); };
 }
-function avPick(e, click){ const cv = $('#avCanvas'), r = cv.getBoundingClientRect(); AV.ptr.set((e.clientX - r.left)/r.width*2 - 1, -(e.clientY - r.top)/r.height*2 + 1); AV.ray.setFromCamera(AV.ptr, AV.cam);
-  const hit = AV.ray.intersectObject(AV.root, true).find(h => h.object.userData.part && h.object.visible); avHighlight(hit ? hit.object.userData.part : (click ? null : AV.hl), hit ? [e.clientX - r.left, e.clientY - r.top] : null); }
-const AV_HL = {};
-function avHighlight(id, at){
-  const tip = $('#avTip'); if (id !== AV.hl){
-    if (AV.hl) for (const m of AV.parts[AV.hl] || []) m.material = m.userData.mat0;
-    AV.hl = id; if (id) for (const m of AV.parts[id] || []){ const k = m.userData.mat0.uuid; if (!AV_HL[k]){ const c = m.userData.mat0.clone(); c.emissive = new THREE.Color('#ff9a3a'); c.emissiveIntensity = 0.55; AV_HL[k] = c; } m.material = AV_HL[k]; }
-    $('#avList').querySelectorAll('[data-av]').forEach(b => b.classList.toggle('on', b.dataset.av === id)); }
-  const q = ARMOR_PARTS.find(z => z.id === id); $('#avDesc').innerHTML = q ? '<b>' + q.name + '</b> (<i>' + q.lat + '</i>): ' + q.txt : 'Fahre mit der Maus über die Rüstung oder tippe auf ein Teil.';
-  if (q && at){ tip.innerHTML = q.name + ' <small>' + q.lat + '</small>'; tip.style.left = at[0] + 'px'; tip.style.top = at[1] + 'px'; tip.classList.remove('hidden'); } else tip.classList.add('hidden');
-}
+function avShow(h){ const q = h ? ARMOR_PARTS.find(z => z.id === h.id) : null; AV.V.highlight(q ? q.id : null); viewerTip(AV.ui.tip, q, h);
+  AV.ui.info.innerHTML = q ? '<h3>' + q.name + ' <i>' + q.lat + '</i></h3><p>' + q.txt + '</p>' : AV_HINT; }
+function avMode(m){ AV.mode = m; AV.ui.tabs.querySelectorAll('[data-m]').forEach(b => { b.classList.toggle('on', b.dataset.m === m); b.setAttribute('aria-pressed', b.dataset.m === m); });
+  AV.ui.tip.classList.add('hidden'); if (m === 'quiz'){ AV.t0 = performance.now() - 20000; aqStart(); } else { AV.V.highlight(null); avShow(null); } }
+// Quiz: «Tippe auf den Helm!» – jedes Teil einmal, in zufälliger Reihenfolge
+function aqStart(){ const ids = ARMOR_PARTS.map(q => q.id); for (let i=ids.length - 1;i>0;i--){ const j = Math.floor(Math.random()*(i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+  AV.q = { order:ids, i:0, score:0, tries:0, lock:null, res:[] }; aqShow(); }
+function aqShow(){ const Q = AV.q, q = ARMOR_PARTS.find(z => z.id === Q.order[Q.i]); Q.tries = 0; Q.lock = null; AV.V.highlight(null);
+  const stars = Q.order.map((_, i) => i < Q.res.length ? (Q.res[i] ? '⭐' : '▫️') : '·').join(' ');
+  AV.ui.info.innerHTML = '<p class="av-hint">Frage ' + (Q.i + 1) + ' von ' + Q.order.length + '</p><p class="av-ask">Tippe auf ' + q.acc + '!</p><p class="av-msg" id="aqMsg"></p><p class="av-stars" aria-label="' + Q.score + ' richtig">' + stars + '</p>' +
+    '<div class="actions"><button class="btn hidden" id="aqNext">Weiter ▶</button></div>';
+  $('#aqNext').addEventListener('click', () => { Q.i++; if (Q.i < Q.order.length) aqShow(); else aqEnd(); }); }
+function aqClick(h){ const Q = AV.q; if (!Q || Q.lock || !h) return; const want = Q.order[Q.i], q = ARMOR_PARTS.find(z => z.id === want), got = ARMOR_PARTS.find(z => z.id === h.id), msg = $('#aqMsg');
+  if (h.id === want){ Q.lock = want; AV.V.highlight(want); Q.res.push(Q.tries === 0); if (Q.tries === 0) Q.score++; msg.className = 'av-msg ok'; msg.textContent = ['Richtig! ', 'Super! ', 'Genau! ', 'Bravo! '][Q.i % 4] + 'Das ist ' + q.nom + ' (' + q.lat + ').'; if (typeof chime === 'function') chime(); }
+  else { Q.tries++; msg.className = 'av-msg no';
+    if (Q.tries < 2){ msg.textContent = 'Das ist ' + got.nom + '. Versuche es nochmals!'; return; }
+    Q.lock = want; AV.V.highlight(want); Q.res.push(false); msg.textContent = 'Das war ' + got.nom + '. Hier leuchtet ' + q.nom + '.'; }
+  const st = AV.ui.info.querySelector('.av-stars'); if (st) st.textContent = Q.order.map((_, i) => i < Q.res.length ? (Q.res[i] ? '⭐' : '▫️') : '·').join(' ');
+  $('#aqNext').classList.remove('hidden'); setTimeout(() => $('#aqNext') && $('#aqNext').focus({ preventScroll:true }), 30); }
+function aqEnd(){ const Q = AV.q, k = Q.score, n = Q.order.length; Q.lock = 'end'; AV.V.highlight(null);
+  AV.ui.info.innerHTML = '<p class="av-ask">' + (k === n ? '🏆 Alle ' + n + ' Teile auf Anhieb gefunden!' : k >= n - 2 ? '🎉 ' + k + ' von ' + n + ' auf Anhieb gefunden, sehr gut!' : '👍 ' + k + ' von ' + n + ' auf Anhieb gefunden. Schau dir die Teile nochmals an!') + '</p>' +
+    '<p class="av-stars">' + Q.res.map(r => r ? '⭐' : '▫️').join(' ') + '</p><div class="actions"><button class="btn" id="aqAgain">Nochmals spielen</button><button class="btn ghost" id="aqLook">🔍 Entdecken</button></div>';
+  $('#aqAgain').addEventListener('click', aqStart); $('#aqLook').addEventListener('click', () => avMode('explore')); if (k === n && typeof burst === 'function') burst(); }
 function avLoop(){ if (modal !== 'armorview'){ AV.raf = 0; return; } AV.raf = requestAnimationFrame(avLoop);
-  const cv = $('#avCanvas'), w = cv.clientWidth, h = cv.clientHeight; if (w && (cv.width !== Math.round(w*AV.r.getPixelRatio()) || cv.height !== Math.round(h*AV.r.getPixelRatio()))){ AV.r.setSize(w, h, false); AV.cam.aspect = w/h; AV.cam.updateProjectionMatrix(); }
-  const t = (performance.now() - AV.t0)/1000;
-  // Anziehen: die Teile kommen nacheinander von oben herab
-  ARMOR_PARTS.forEach((q, i) => { const k = Math.min(1, Math.max(0, (t - 0.3 - i*0.55)/0.6)), e = 1 - Math.pow(1 - k, 3);
-    for (const m of AV.parts[q.id] || []){ m.visible = k > 0; m.position.copy(m.userData.base); m.position.y += (1 - e)*0.8; } });
-  if (AV.auto) AV.yaw += 0.006; AV.root.rotation.y = AV.yaw;
-  AV.r.render(AV.scene, AV.cam); }
-function openArmorView(){ if (!AV.r) avBuild(); openModal('armorview'); AV.t0 = performance.now(); AV.auto = true; AV.yaw = 0.5; avHighlight(null); if (!AV.raf) AV.raf = requestAnimationFrame(avLoop); }
-document.querySelectorAll('[data-avclose]').forEach(b => b.addEventListener('click', () => closeModal()));
-$('#armorview').addEventListener('click', e => { if (e.target.id === 'armorview') closeModal(); });
+  viewerDress(AV.parts, ARMOR_PARTS.map(q => q.id), (performance.now() - AV.t0)/1000); AV.V.render(); }
+function openArmorView(){ if (!AV.V) avBuild(); openModal('armorview'); AV.t0 = performance.now(); AV.V.yaw = AV.V.yawT = 0.5; avMode('explore'); if (!AV.raf) AV.raf = requestAnimationFrame(avLoop); }
+
+/* ---------- Die Kleider der Römer: Figuren zum Wechseln ---------- */
+const CLOTH_PARTS = {
+  tunika:{ name:'Tunika', lat:'tunica', txt:'Das einfache Kleid aus Wolle oder Leinen. Alle trugen eine Tunika: Männer, Frauen und Kinder.' },
+  guertel:{ name:'Gürtel', lat:'cingulum', txt:'Der Gürtel aus Leder hält die Tunika in der Mitte zusammen.' },
+  sandalen:{ name:'Sandalen', lat:'soleae', txt:'Eine Sohle aus Leder, mit Riemen am Fuss festgebunden.' },
+  toga:{ name:'Toga', lat:'toga', txt:'Ein langes Tuch aus weisser Wolle, bis zu 6 Meter lang. Es wurde kunstvoll um den Körper gewickelt und über die linke Schulter gelegt.' },
+  lacerna:{ name:'Lacerna', lat:'lacerna', txt:'Ein kurzer Umhang gegen Regen und Kälte.' },
+  fibel:{ name:'Fibel', lat:'fibula', txt:'Eine Spange aus Bronze, ähnlich wie eine Sicherheitsnadel. Sie hält den Umhang an der Schulter zusammen.' },
+  stola:{ name:'Stola', lat:'stola', txt:'Das lange Kleid der verheirateten Frauen. Es reichte bis zu den Füssen und hatte einen Gürtel.' },
+  palla:{ name:'Palla', lat:'palla', txt:'Der grosse Umhang der Frauen. Sie legten ihn um die Schultern oder zogen ihn über den Kopf.' } };
+const CL_MAN = { skin:'#c48f6c', hair:'#3a2616', sandals:true }, CL_WOMAN = { skin:'#d4a07a', hair:'#5a3a22', female:true, bun:true, sandals:true };
+const CLOTH_SETS = {
+  toga:{ title:'👔 Tunika, Toga und Lacerna', figs:[
+    { tab:'Tunika', o:Object.assign({ cloth:'#d6c8aa' }, CL_MAN), order:['tunika', 'guertel', 'sandalen'],
+      txt:'Im Alltag trugen die Männer nur die <b>Tunika</b>: ein Hemd aus Wolle mit kurzen Ärmeln, das bis zu den Knien reichte. Hosen trugen die Römer nicht!' },
+    { tab:'Toga', o:Object.assign({ cloth:'#e2d8c2', toga:'#f7f4ec' }, CL_MAN), order:['tunika', 'guertel', 'sandalen', 'toga'],
+      txt:'Römische <b>Bürger</b> trugen über der Tunika die <b>Toga</b>. Sie war so lang und schwer, dass man beim Anziehen Hilfe brauchte.' },
+    { tab:'Lacerna', o:Object.assign({ cloth:'#b8946a', cloak:'#8a3a2a', fibula:'bronze' }, CL_MAN), order:['tunika', 'guertel', 'sandalen', 'lacerna', 'fibel'],
+      txt:'Bei Regen und Kälte kam die <b>Lacerna</b> dazu, ein kurzer Umhang. Eine Spange, die <b>Fibel</b>, hielt ihn zusammen.' } ] },
+  stola:{ title:'👗 Tunika, Stola und Palla', figs:[
+    { tab:'Tunika', o:Object.assign({ cloth:'#e6dcc4' }, CL_WOMAN), order:['tunika', 'guertel', 'sandalen'],
+      txt:'Auch die Frauen trugen zuerst eine <b>Tunika</b>. Zu Hause genügte sie oft.' },
+    { tab:'Stola', o:Object.assign({ cloth:'#6a7aa8', long:true }, CL_WOMAN), sleeves:'#ece2cc', order:['tunika', 'stola', 'guertel', 'sandalen'],
+      txt:'Verheiratete Frauen zogen über die Tunika die <b>Stola</b>, ein langes Kleid bis zu den Füssen. Die Ärmel der Tunika schauten heraus.' },
+    { tab:'Palla', o:Object.assign({ cloth:'#6a7aa8', long:true, palla:'#a8564a' }, CL_WOMAN), sleeves:'#ece2cc', order:['tunika', 'stola', 'guertel', 'sandalen', 'palla'],
+      txt:'Draussen legten die Frauen die <b>Palla</b> um, einen grossen Umhang. Sie konnten ihn auch über den Kopf ziehen.' } ] } };
+const CV = { ui:null, V:null, set:null, fig:0, cache:{}, t0:0, raf:0 };
+function cvColorIs(mt, hex){ if (!mt || !mt.color || !hex) return false; _vtmp.set(hex); return Math.abs(mt.color.r - _vtmp.r) + Math.abs(mt.color.g - _vtmp.g) + Math.abs(mt.color.b - _vtmp.b) < 0.004; }
+function cvFigure(f){
+  const p = makePerson(f.o), o = f.o, fem = !!o.female, tunicHex = f.sleeves || o.cloth;
+  // Arme leicht vom Körper weg, damit man die Kleider gut sieht
+  p.arms[0].sh.rotation.set(0.05, 0, -0.14); p.arms[1].sh.rotation.set(0.05, 0, 0.14); for (const a of p.arms) a.el.rotation.x = -0.18;
+  // Stola: die Ärmel gehören zur Tunika darunter
+  if (f.sleeves){ const tm = fabricMat(f.sleeves, 4); for (const a of p.arms) for (const m of a.sh.children) if (m.isMesh && cvColorIs(m.material, o.cloth)) m.material = tm; }
+  // Palla: zusätzlich ein Tuch schräg über die Brust und über den Rücken
+  if (o.palla){ const pm = M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide, roughness:0.95 });
+    const band = new THREE.CylinderGeometry(0.2*0.93, 0.216, 0.22, 30, 1, true); band.scale(1, 1, 0.82); mk(band, pm, p.spine, 0, 0.34, 0.004, 0, 0, -0.55);
+    const back = new THREE.CylinderGeometry(0.2, 0.28, 0.95, 24, 4, true, Math.PI*0.62, Math.PI*0.76); back.scale(1, 1, 0.8); mk(back, pm, p.spine, 0, 0.16, -0.01); }
+  // Teile benennen: nach der Farbe der Stoffe
+  const map = [[o.toga, 'toga'], [o.palla, 'palla'], [o.cloak, 'lacerna'], ['#c48a3e', o.fibula ? 'fibel' : null], [f.sleeves, 'tunika'], [o.cloth, f.sleeves ? 'stola' : 'tunika'],
+    [toneHex(o.cloth, '#3a2a1c', 0.4), f.sleeves ? 'stola' : 'tunika'], ['#4a3322', 'guertel'], ['#4e3626', 'sandalen']];
+  p.root.traverse(m => { if (!m.isMesh) return; const mt = Array.isArray(m.material) ? m.material[0] : m.material; for (const [hex, id] of map) if (id && cvColorIs(mt, hex)){ m.userData.part = id; break; } });
+  return { p, parts:viewerParts(p.root) }; }
+function cvBuild(){ CV.ui = viewerModal('clothview', '👕 Kleider der Römer', 'Römerin oder Römer in ihren Kleidern, zum Drehen ziehen'); const V = CV.V = makeViewer(CV.ui.cv); V.cam.position.set(0, 1.15, 3.8); V.cam.lookAt(0, 0.92, 0);
+  CV.ui.el.querySelectorAll('[data-turn]').forEach(b => b.addEventListener('click', () => V.turn(+b.dataset.turn)));
+  V.onHover = (h, left) => cvShow(left ? null : h); V.onPick = h => cvShow(h); }
+function cvShow(h){ const f = CV.set.figs[CV.fig], q = h ? CLOTH_PARTS[h.id] : null; CV.V.highlight(q ? h.id : null); viewerTip(CV.ui.tip, q, h);
+  CV.ui.info.innerHTML = '<p>' + f.txt + '</p>' + (q ? '<h3 style="margin-top:10px">' + q.name + ' <i>' + q.lat + '</i></h3><p>' + q.txt + '</p>' : '<p class="av-hint" style="margin-top:10px">👆 Fahre über die Kleider oder tippe darauf, dann erscheint ihr Name. ✋ Ziehen dreht die Figur.</p>'); }
+function cvSelect(i){ CV.fig = i; const f = CV.set.figs[i], key = CV.setId + i; if (!CV.cache[key]) CV.cache[key] = cvFigure(f); CV.cur = CV.cache[key];
+  CV.V.setModel(CV.cur.p.root); CV.t0 = performance.now(); CV.ui.tabs.querySelectorAll('[data-f]').forEach(b => { const on = +b.dataset.f === i; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); cvShow(null); }
+function cvLoop(){ if (modal !== 'clothview'){ CV.raf = 0; return; } CV.raf = requestAnimationFrame(cvLoop);
+  if (CV.cur) viewerDress(CV.cur.parts, CV.set.figs[CV.fig].order, (performance.now() - CV.t0)/1000); CV.V.render(); }
+function openClothView(setId){ if (!CV.V) cvBuild(); CV.setId = setId; CV.set = CLOTH_SETS[setId]; CV.ui.title.textContent = CV.set.title;
+  CV.ui.tabs.innerHTML = CV.set.figs.map((f, i) => '<button class="av-tab" data-f="' + i + '">' + f.tab + '</button>').join(''); CV.ui.tabs.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => cvSelect(+b.dataset.f)));
+  openModal('clothview'); CV.V.yaw = CV.V.yawT = 0.35; cvSelect(0); if (!CV.raf) CV.raf = requestAnimationFrame(cvLoop); }
 
 /* ===================== SO IST EINE LEGION AUFGEBAUT ===================== */
 /* Schritt für Schritt: ein Legionär → 8 in einem Zelt → 80 in einer Zenturie → 6 Zenturien sind eine Kohorte → 10 Kohorten sind eine Legion. */
@@ -6598,10 +6819,11 @@ function openLegionView(){ openModal('legionview'); lvSet(0); if (!LV.raf) LV.ra
 $('#lvNext').addEventListener('click', () => lvSet(LV.step === LV_STEPS.length - 1 ? 0 : LV.step + 1)); $('#lvBack').addEventListener('click', () => lvSet(LV.step - 1));
 document.querySelectorAll('[data-lvclose]').forEach(b => b.addEventListener('click', () => closeModal()));
 $('#legionview').addEventListener('click', e => { if (e.target.id === 'legionview') closeModal(); });
-// Knöpfe in den Infokarten «Die Ausrüstung» und «Die Legion»
-$('#btnTry').insertAdjacentHTML('beforebegin', '<button class="btn hidden" id="btnArmor">🛡️ Rüstung genau ansehen</button><button class="btn hidden" id="btnLegion">🦅 Aufbau der Legion</button>');
-$('#btnArmor').addEventListener('click', openArmorView); $('#btnLegion').addEventListener('click', openLegionView);
-{ const os2 = openStation; openStation = function(id){ os2(id); $('#btnArmor').classList.toggle('hidden', id !== 'ausruestung'); $('#btnLegion').classList.toggle('hidden', id !== 'legion'); }; }
+// Knöpfe in den Infokarten «Die Ausrüstung», «Die Legion», «Tunika und Toga» und «Stola und Palla»
+$('#btnTry').insertAdjacentHTML('beforebegin', '<button class="btn hidden" id="btnArmor">🛡️ Rüstung genau ansehen</button><button class="btn hidden" id="btnLegion">🦅 Aufbau der Legion</button><button class="btn hidden" id="btnCloth">👕 Kleider genau ansehen</button>');
+$('#btnArmor').addEventListener('click', openArmorView); $('#btnLegion').addEventListener('click', openLegionView); $('#btnCloth').addEventListener('click', () => openClothView(CV.station));
+{ const os2 = openStation; openStation = function(id){ os2(id); $('#btnArmor').classList.toggle('hidden', id !== 'ausruestung'); $('#btnLegion').classList.toggle('hidden', id !== 'legion');
+    const cl = id === 'toga' || id === 'stola'; $('#btnCloth').classList.toggle('hidden', !cl); if (cl) CV.station = id; }; }
 function renderBook(){
   $('#bookSummary').textContent = visited.size === STATIONS.length ? 'Du hast alles entdeckt! Tippe auf ein Thema, um es nochmals zu lesen.' :
     'Du hast ' + visited.size + ' von ' + STATIONS.length + ' Dingen entdeckt. Bei den fehlenden Dingen steht ein Tipp.';
@@ -6966,7 +7188,7 @@ function zoned(fn, R, center){
   };
 }
 buildTemple = zoned(buildTemple); buildCuria = zoned(buildCuria); buildEmpireMap = zoned(buildEmpireMap); buildCaesar = zoned(buildCaesar); buildStonemason = zoned(buildStonemason); buildSchool = zoned(buildSchool);
-buildTriumphArch = zoned(buildTriumphArch, 62, [3, 16]); buildInsulaHouse = zoned(buildInsulaHouse); buildShops = zoned(buildShops); buildDomus = zoned(buildDomus); buildTogaScene = zoned(buildTogaScene); buildGarden = zoned(buildGarden);
+buildTriumphArch = zoned(buildTriumphArch, 62, [3, 78]); buildInsulaHouse = zoned(buildInsulaHouse); buildShops = zoned(buildShops); buildDomus = zoned(buildDomus); buildTogaScene = zoned(buildTogaScene); buildGarden = zoned(buildGarden);
 buildThermen = zoned(buildThermen); buildHypokaustum = zoned(buildHypokaustum); buildLatrine = zoned(buildLatrine);
 buildAqueduct = zoned(buildAqueduct); buildFountain = zoned(buildFountain); buildAmphitheater = zoned(buildAmphitheater, 55); buildRoadWorks = zoned(buildRoadWorks);
 buildDrill = zoned(buildDrill, 55, [DRILL.cx, DRILL.cz]); buildArmory = zoned(buildArmory); buildTestudo = zoned(buildTestudo, 55, P.schildkroete); buildCamp = zoned(buildCamp); buildLimes = zoned(buildLimes, 60);
