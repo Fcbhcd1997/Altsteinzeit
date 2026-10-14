@@ -1502,7 +1502,7 @@ function makePerson(o){
   const clothHex = o.leather ? o.leather : Array.isArray(cloth) ? cloth[0] : cloth;
   const lthM = o.leather ? M(clothHex, { tex:'leather', side:THREE.DoubleSide }) : fabricMat(cloth, linen ? 5 : 4, linen);
   const trimM = o.leather ? M('#4a3322', { tex:'leather' }) : M(toneHex(clothHex, '#3a2a1c', 0.4), { tex:'wool', rep:6 });
-  const legM = o.trousers ? fabricMat(o.trousers, 3) : kid || (fem && !o.leggings) || (o.sandals && !o.leggings) ? skinM : M(o.leggings || '#6a4a32', { tex:'leather' });   // Römer in Sandalen: nackte Beine
+  const legM = o.trousers ? fabricMat(o.trousers, 3) : o.bath || kid || (fem && !o.leggings) || (o.sandals && !o.leggings) ? skinM : M(o.leggings || '#6a4a32', { tex:'leather' });   // Römer in Sandalen: nackte Beine
   const shoeM = M(o.shoes || '#4e3626', { tex:'leather', roughness:0.8 });
   const beltM = M('#4a3322', { tex:'leather' });
   const eyeM = M('#e2d9cc', { tex:null, roughness:0.2 }), irisM = M('#22140b', { tex:null, roughness:0.08 });
@@ -1510,13 +1510,14 @@ function makePerson(o){
   hips.position.y = 0.88; root.add(hips); hips.add(spine);
   const wq = fem ? 0.93 : 1;
   const torso = lathe([[0.001,-0.02],[0.15*wq,-0.02],[0.158*wq,0.08],[0.148*wq,0.2],[0.166*wq,0.35],[0.18*wq,0.45],[0.188*wq,0.52],[0.165*wq,0.58],[0.1,0.618],[0.045,0.64],[0.001,0.645]], 30);
-  torso.scale(1, 1, 0.72); mk(torso, lthM, spine);
+  torso.scale(1, 1, 0.72); mk(torso, o.bath ? skinM : lthM, spine);   // im Bad: nur ein Lendentuch (und bei Frauen ein Brustband)
   // Kittel bis zum Knie, Frauen tragen lange Kleider
-  const yb = kid ? (o.long ? -0.62 : -0.3) : (o.toga || o.long) ? -0.8 : (o.dress || fem) ? -0.66 : -0.4;
+  const yb = o.bath ? -0.13 : kid ? (o.long ? -0.62 : -0.3) : (o.toga || o.long) ? -0.8 : (o.dress || fem) ? -0.66 : -0.4;
   // Viele Ringe übereinander, damit sich der Stoff dort wölben kann, wo ein Bein dagegen drückt (siehe fitSkirts)
-  const sk = ragged(lathe(densify([[0.158*wq,0.06],[0.17,-0.06],[0.2,-0.22],[fem ? 0.24 : 0.215, yb*0.75],[fem ? 0.255 : 0.226, yb]], 0.045), 30), yb, yb + 0.06, linen ? 0.025 : 0.06, 7, seed);
+  const sk = ragged(lathe(densify(o.bath ? [[0.158*wq,0.06],[0.168,-0.04],[0.172, yb]] : [[0.158*wq,0.06],[0.17,-0.06],[0.2,-0.22],[fem ? 0.24 : 0.215, yb*0.75],[fem ? 0.255 : 0.226, yb]], 0.045), 30), yb, yb + 0.06, o.bath ? 0 : linen ? 0.025 : 0.06, 7, seed);
   sk.scale(1, 1, 0.8); const skirt = mk(sk, lthM, hips);
-  mk(new THREE.TorusGeometry(0.163*wq, 0.017, 6, 30).rotateX(Math.PI/2).scale(1, 1, 0.74), beltM, spine, 0, 0.02, 0);
+  if (!o.bath) mk(new THREE.TorusGeometry(0.163*wq, 0.017, 6, 30).rotateX(Math.PI/2).scale(1, 1, 0.74), beltM, spine, 0, 0.02, 0);
+  else if (fem) mk(new THREE.CylinderGeometry(0.176*wq, 0.172*wq, 0.11, 30, 1, true).scale(1, 1, 0.76), lthM, spine, 0, 0.44, 0);
   // Römer: Purpurstreifen (Clavus) auf der Tunika, Toga über der linken Schulter, Rüstung der Legionäre
   if (o.clavus) for (const sx of [-0.06, 0.06]) mk(new THREE.BoxGeometry(0.03, 0.5, 0.01), M(o.clavus, { tex:'wool', rep:4 }), spine, sx, 0.33, 0.128*wq + 0.004);
   if (o.toga){ const tm = M(o.toga, { tex:'wool', rep:4, side:THREE.DoubleSide, roughness:0.95 });
@@ -1544,7 +1545,7 @@ function makePerson(o){
   // Gürteltasche wie beim «Ötzi»
   if (o.pouch) mk(bumpy(new THREE.SphereGeometry(0.055, 12, 10), 0.1, 6, seed).scale(1, 0.85, 0.55), M('#5e4026', { tex:'leather' }), spine, 0.09, -0.04, 0.12);
   // Halsausschnitt mit gesäumtem Rand
-  mk(new THREE.TorusGeometry(0.062, 0.012, 6, 20).rotateX(Math.PI/2 - 0.25).scale(1, 1, 0.85), trimM, spine, 0, 0.63, 0.012);
+  if (!o.bath) mk(new THREE.TorusGeometry(0.062, 0.012, 6, 20).rotateX(Math.PI/2 - 0.25).scale(1, 1, 0.85), trimM, spine, 0, 0.63, 0.012);
   // Weste aus Ziegenfell (kurzhaarig)
   if (o.vest){ const prof = [[0.08,0.655],[0.165,0.6],[0.2,0.5],[0.205,0.36],[0.198,0.2]], vp = lathe(prof, 30); bumpy(vp, 0.05, 7, seed); ragged(vp, 0.19, 0.26, 0.04, 6, seed + 1); vp.scale(1.02, 1, 0.8);
     mk(vp, M(o.vest, { tex:'fur', side:THREE.DoubleSide, sheenColor:toneHex(o.vest, '#000000', 0.5) }), spine); }
@@ -1590,9 +1591,13 @@ function makePerson(o){
     hairParts.push(xf(new THREE.CapsuleGeometry(0.008, 0.032, 4, 10), 0, -0.037, 0.095, 0, 0, Math.PI/2));
   }
   bake(head, hairM, hairParts.map(g => { if (g.attributes.tsway) g.deleteAttribute('tsway'); return g; }));
-  // Palla: Umhang der Römerinnen, über den Kopf gezogen
+  // Palla: das grosse Tuch der Römerinnen. Es ist über den Kopf gezogen (vorne fürs Gesicht offen), fällt über Schultern und Rücken
+  // bis zu den Knien, und ein Ende liegt schräg über der Brust
   if (o.palla){ const pm = M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide, roughness:0.95 });
-    mk(new THREE.SphereGeometry(0.142, 26, 14, 0, TAU, 0, Math.PI*0.6).scale(1.02, 1.04, 1.12), pm, head, 0, 0.012, -0.022, -0.42, 0, 0); }
+    mk(new THREE.SphereGeometry(0.142, 26, 14, Math.PI/2 + 0.95, TAU - 1.9, 0, Math.PI*0.78).scale(1.03, 1.08, 1.2), pm, head, 0, 0.014, -0.012);
+    const mg = new THREE.LatheGeometry([[0.1, 0.73], [0.15, 0.67], [0.24, 0.6], [0.29, 0.5], [0.29, 0.3], [0.292, 0.05], [0.3, -0.25], [0.31, -0.5]].map(q => new THREE.Vector2(q[0], q[1])), 34, 0.9, TAU - 1.8);
+    ragged(mg, -0.5, -0.44, 0.03, 7, seed + 11); mg.scale(1, 1, 0.8); mg.computeVertexNormals(); mk(mg, pm, spine);
+    const band = new THREE.CylinderGeometry(0.205*wq, 0.222*wq, 0.2, 30, 1, true); band.scale(1, 1, 0.84); mk(band, pm, spine, 0, 0.36, 0.004, 0, 0, -0.55); }
   // Römischer Helm (Galea) mit Nackenschutz, Wangenklappen und Federbusch; Lorbeerkranz
   if (o.galea){ const hm = METAL[o.galea === true ? 'iron' : o.galea]();
     bake(head, hm, [xf(new THREE.SphereGeometry(0.132, 28, 14, 0, TAU, 0, Math.PI*0.5).scale(1, 0.98, 1.08), 0, 0.03, -0.006, -0.08, 0, 0),
@@ -1616,7 +1621,7 @@ function makePerson(o){
   for (const sd of [-1,1]){
     const sh = new THREE.Group(); sh.position.set(sd*0.205*wq, 0.53, 0); sh.rotation.z = sd*0.08; spine.add(sh);
     bake(sh, armM, [ xf(new THREE.SphereGeometry(0.058, 16, 12), 0, -0.01, 0), xf(new THREE.CapsuleGeometry(0.05, 0.19, 4, 14), 0, -0.145, 0) ]);
-    if (!o.sleeves) mk(lathe([[0.062,-0.12],[0.063,-0.05],[0.061,-0.005],[0.047,0.03],[0.024,0.047],[0.001,0.052]], 20), lthM, sh, 0, -0.008, 0);
+    if (!o.sleeves && !o.bath) mk(lathe([[0.062,-0.12],[0.063,-0.05],[0.061,-0.005],[0.047,0.03],[0.024,0.047],[0.001,0.052]], 20), lthM, sh, 0, -0.008, 0);
     if (o.toga && sd > 0) mk(lathe([[0.072,-0.24],[0.072,-0.1],[0.07,-0.005],[0.05,0.035],[0.02,0.05],[0.001,0.054]], 20), M(o.toga, { tex:'wool', rep:4, side:THREE.DoubleSide }), sh, 0, -0.008, 0);
     if (o.palla) mk(lathe([[0.07,-0.16],[0.071,-0.05],[0.068,-0.005],[0.05,0.035],[0.02,0.05],[0.001,0.054]], 20), M(o.palla, { tex:'wool', rep:3, side:THREE.DoubleSide }), sh, 0, -0.008, 0);
     if (o.armor) mk(new THREE.SphereGeometry(0.07, 14, 8, 0, TAU, 0, Math.PI*0.55).scale(1.1, 0.9, 1.05), METAL[o.armor === true ? 'iron' : o.armor](), sh, 0, 0.0, 0);
@@ -1639,7 +1644,7 @@ function makePerson(o){
       mk(new THREE.SphereGeometry(0.058, 16, 10).scale(0.82, 0.5, 1.6), skinM, knee, 0, -0.41, 0.04);
       bake(knee, shoeM, [ xf(new THREE.BoxGeometry(0.1, 0.022, 0.24), 0, -0.437, 0.04), ...[0, 1, 2].map(k => xf(new THREE.TorusGeometry(0.052 - k*0.004, 0.007, 5, 16), 0, -0.4 + k*0.04, 0.02 - k*0.012, Math.PI/2 - 0.2, 0, 0)),
         xf(new THREE.TorusGeometry(0.044, 0.007, 5, 14), 0, -0.42, 0.11, Math.PI/2 + 0.6, 0, 0) ]);
-    } else if (kid && o.barefoot){
+    } else if ((kid && o.barefoot) || o.bath){
       mk(new THREE.SphereGeometry(0.06, 16, 10).scale(0.8, 0.55, 1.6), skinM, knee, 0, -0.41, 0.04);
     } else {
       bake(knee, shoeM, [ xf(bumpy(new THREE.CylinderGeometry(0.066, 0.072, 0.12, 18, 2, true), 0.08, 9, seed+sd), 0, -0.37, 0),
@@ -3216,7 +3221,7 @@ function makeCrow(){ const g = new THREE.Group(), m = M('#18181c', { tex:null, r
 const DECKS = [];
 /* Begehbare Flächen über dem Boden (Böden, Stufen). Eine Rampe { ramp:{ axis:'x'|'z', a0, a1, y0, y1 } } steigt gleichmässig an: so klettert man Leitern hinauf. */
 function onDeck(x, z){ for (const d of DECKS){ if (x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1){ if (d.ramp){ const r = d.ramp, u = Math.max(0, Math.min(1, ((r.axis === 'x' ? x : z) - r.a0)/(r.a1 - r.a0))); return r.y0 + (r.y1 - r.y0)*u; } return d.y; } } return null; }
-function onRamp(x, z){ for (const d of DECKS) if (d.ramp && x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1) return true; return false; }
+function onRamp(x, z){ for (const d of DECKS) if (d.ramp && !d.ramp.stairs && x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1) return true; return false; }
 function makeGate(rc, lz){
   const HMt = houseMats(), [gx0, gz0] = rcW(rc, rc.hw + 0.25, lz), gate = new THREE.Group(); gate.position.set(gx0, groundH(gx0, gz0), gz0); gate.rotation.y = rc.yaw + Math.PI/2 + 0.05; scene.add(gate);
   const wg = new THREE.PlaneGeometry(1.9, 0.9); wg.translate(0, 0.5, 0); scaleUV(wg, 1.9, 1); mk(wg, HMt.wattle, gate);
