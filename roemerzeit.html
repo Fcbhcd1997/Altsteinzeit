@@ -347,7 +347,7 @@ const STATIONS = [
         "Numitors Tochter <b>Rhea Silvia</b> bekam Zwillinge: <b>Romulus und Remus</b>. Ihr Vater soll der Kriegsgott <b>Mars</b> gewesen sein. Amulius liess die Babys im Fluss <b>Tiber</b> aussetzen.",
         "Doch die Zwillinge überlebten! Eine <b>Wölfin</b> fand sie und zog sie auf wie ihre eigenen Kinder. Später entdeckte sie ein <b>Hirte</b> und nahm sie mit nach Hause."],
   fact:"Die Figur der Wölfin mit den Zwillingen ist bis heute das Wahrzeichen der Stadt Rom.",
-  video:{ title:"Romulus und Remus", source:"Studyflix", url:"https://studyflix.de/geschichte/romulus-und-remus-3855?topic_id=591" },
+  video:{ title:"Romulus und Remus", source:"YouTube", url:"https://www.youtube.com/watch?v=EJofIA4m708", embed:"https://www.youtube-nocookie.com/embed/EJofIA4m708?autoplay=1&rel=0&playsinline=1" },
   hint:"Eine Wölfin am Fluss." },
 { id:"gruendung", cat:"rom", icon:"🏛️", title:"Die Gründung Roms",
   text:["Als die Zwillinge erwachsen waren, holten sie sich den Thron von Alba Longa zurück. Dort, wo die Wölfin sie gerettet hatte, wollten sie eine eigene Stadt bauen.",
@@ -5684,7 +5684,7 @@ function showVideo(st){ const v = $('#infoVideo'), vd = st.video; if (!v) return
   v.innerHTML = '<button class="vid-btn" type="button">' + label + '</button>';
   v.querySelector('button').addEventListener('click', () => { stopSpeech();
     v.innerHTML = '<div class="vid-frame"><iframe src="' + esc(vd.embed) + '" title="Film: ' + esc(vd.title) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>' +
-      '<a class="vid-src" href="' + esc(vd.url) + '" target="_blank" rel="noopener noreferrer">Film bei ' + esc(vd.source) + ' öffnen ↗</a>'; }); }
+      '<a class="vid-src" href="' + esc(vd.url) + '" target="_blank" rel="noopener noreferrer">Startet der Film nicht? Bei ' + esc(vd.source) + ' öffnen ↗</a>'; }); }
 function openStation(id){
   const st = BY_ID[id]; const isNew = !visited.has(id);
   if (isNew){ visited.add(id); saveVisited(); updateProgress(); chime(); }
