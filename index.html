@@ -189,7 +189,7 @@ try { if (localStorage.getItem(ZKEY) === '1') setClosed(true); } catch(e){}
 
 /* ---------- Welten laden ---------- */
 function makeFrame(id){
-  var f = document.createElement('iframe'); f.className = 'world'; f.title = BY[id].name + ' – 3D-Welt'; f.src = BY[id].file;
+  var f = document.createElement('iframe'); f.className = 'world'; f.title = BY[id].name + ' – 3D-Welt'; f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media'; f.allowFullscreen = true; f.src = BY[id].file;
   worlds.appendChild(f);
   frames[id] = f; state[id] = { ready:false, p:0, msg:'', modal:'start', error:false };
   return f;
