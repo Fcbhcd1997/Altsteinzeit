@@ -104,6 +104,14 @@ kbd{font-family:var(--font-head);font-weight:600;min-width:2em;text-align:center
 .info-text p{margin:0 0 .75em;max-width:62ch}
 .fact{background:var(--fact);border-left:6px solid var(--fact-line);padding:12px 16px;border-radius:4px;font-size:1.08rem;line-height:1.55}
 .fact-h{font-family:var(--font-head);font-weight:600;margin-bottom:2px}
+.info-video{margin:2px 0 16px}
+.vid-btn{display:flex;align-items:center;gap:14px;width:100%;padding:10px 14px;border:2px solid var(--line);border-radius:10px;background:var(--paper-2);color:var(--ink);text-decoration:none;font:inherit;font-size:1.05rem;cursor:pointer;text-align:left;box-shadow:0 3px 0 var(--line)}
+.vid-btn:hover{border-color:var(--charcoal)}.vid-btn:focus-visible{outline:3px solid #3c7fd6;outline-offset:2px}
+.vid-play{flex:none;width:46px;height:46px;border-radius:50%;background:#c8402a;color:#fff;display:grid;place-items:center;font-size:1.2rem;border:2px solid var(--charcoal);padding-left:3px}
+.vid-txt{display:flex;flex-direction:column;line-height:1.35}.vid-txt small{color:var(--ink-soft);font-size:.86rem}
+.vid-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid var(--line);background:#000}
+.vid-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-src{display:inline-block;margin-top:6px;font-size:.9rem;color:var(--ink-soft)}
 .cat-rom{--cat:var(--c-rom)} .cat-legion{--cat:var(--c-legion)} .cat-alltag{--cat:var(--c-alltag)} .cat-bauten{--cat:var(--c-bauten)}
 
 /* Forscherheft */
@@ -245,6 +253,7 @@ body.touch .hud-bottom{padding-left:160px}
     <div class="info-art hidden" id="infoArt" role="img"></div>
     <div class="new-badge hidden" id="infoNew">⭐ Neu entdeckt!</div>
     <div class="info-text" id="infoText"></div>
+    <div class="info-video hidden" id="infoVideo"></div>
     <div class="fact"><div class="fact-h">💡 Wusstest du?</div><div id="infoFact"></div></div>
     <div class="actions">
       <button class="btn ghost" id="btnRead">🔊 Vorlesen</button>
@@ -338,6 +347,7 @@ const STATIONS = [
         "Numitors Tochter <b>Rhea Silvia</b> bekam Zwillinge: <b>Romulus und Remus</b>. Ihr Vater soll der Kriegsgott <b>Mars</b> gewesen sein. Amulius liess die Babys im Fluss <b>Tiber</b> aussetzen.",
         "Doch die Zwillinge überlebten! Eine <b>Wölfin</b> fand sie und zog sie auf wie ihre eigenen Kinder. Später entdeckte sie ein <b>Hirte</b> und nahm sie mit nach Hause."],
   fact:"Die Figur der Wölfin mit den Zwillingen ist bis heute das Wahrzeichen der Stadt Rom.",
+  video:{ title:"Romulus und Remus", source:"Studyflix", url:"https://studyflix.de/geschichte/romulus-und-remus-3855?topic_id=591" },
   hint:"Eine Wölfin am Fluss." },
 { id:"gruendung", cat:"rom", icon:"🏛️", title:"Die Gründung Roms",
   text:["Als die Zwillinge erwachsen waren, holten sie sich den Thron von Alba Longa zurück. Dort, wo die Wölfin sie gerettet hatte, wollten sie eine eigene Stadt bauen.",
@@ -3113,6 +3123,8 @@ const VILLAS = [
 ];
 /* Weinberg zwischen der Stadt und dem Fluss */
 const VINEYARD = rect(48, 104, 4.2, 7.5, 0.06);
+/* Platz für die Szene mit Korb, Wölfin und Hirte am Ufer */
+function romScene(x, z, m){ return Math.hypot(x - P.romulus[0] - 6, (z - P.romulus[1])*0.75) < m + 9; }
 function inBuilt(x, z, m){
   if (rectD(CITY, x, z) < m + 2.5) return true;
   if (rectD(HARBOR, x, z) < m + 1) return true;
@@ -3123,7 +3135,7 @@ function inBuilt(x, z, m){
   if (Math.abs(x - LIMES.x + 2) < m + 4.5 && z > LIMES.z0 - 3 && z < LIMES.z1 + 3) return true;
   if (Math.abs(z - AQUA.z) < m + 2.4 && x > AQUA.x0 - 25 && x < AQUA.x1 + 3) return true;
   if (Math.hypot(x - P.schildkroete[0] + 1, z - P.schildkroete[1] - 1.6) < m + 5) return true;
-  if (Math.hypot(x - P.romulus[0] - 2, z - P.romulus[1]) < m + 5) return true;
+  if (m >= 1.5 ? romScene(x, z, m) : Math.hypot(x - P.romulus[0] - 2, z - P.romulus[1]) < m + 5) return true;
   if (Math.hypot(x - P.ausruestung[0] + 1.6, z - P.ausruestung[1] + 1.4) < m + 3.5) return true;
   if (Math.hypot(x - P.aquaedukt[0] - 3, z - P.aquaedukt[1]) < m + 6) return true;
   if (Math.abs(x) < 13 && Math.abs(z) > 80) return true;              // Gräberstrassen vor den Toren
@@ -3262,7 +3274,7 @@ function buildVegetation(){
       if (blocked(x,z,{ path:1.5, built:1, wet:0.3, gravel:true, station:2 })) return null; return { x, y:groundH(x,z) - 0.02, z, ry:R(0,TAU), s:R(0.8, 1.3) }; }); }
   // Hohes Schilfrohr am Fluss
   const reed = mergeParts([0,1,2,3,4,5,6,7].map(i => part(new THREE.CylinderGeometry(0.01, 0.016, 2.2, 4).translate(0, 1.1, 0), i % 2 ? '#8a9a54' : '#a4a464', (i%4 - 1.5)*0.08, 0, (Math.floor(i/4) - 0.5)*0.12, (i - 3.5)*0.04, 0, (i%2 - 0.5)*0.12)));
-  scatterMulti([[reed, VC, true]], 200, () => { const z = R(-60, 60), x = riverX(z) - R(6.5, 8.5); if (blocked(x,z,{ path:2, station:4 })) return null; return { x, y:groundH(x,z) - 0.05, z, ry:R(0,TAU), s:R(0.8, 1.2) }; });
+  scatterMulti([[reed, VC, true]], 200, () => { const z = R(-60, 60), x = riverX(z) - R(6.5, 8.5); if (blocked(x,z,{ path:2, station:4 }) || romScene(x, z, 0)) return null; return { x, y:groundH(x,z) - 0.05, z, ry:R(0,TAU), s:R(0.8, 1.2) }; });
   // Steine: Kies am Fluss und Tuffbrocken in der Wiese
   scatterMulti([[lowRock(HQ ? 2 : 1, 5), rockMat('#7e766a'), true]], HQ ? 2600 : 900, () => { const z = R(-70, 70), x = riverX(z) + R(-9, 6);
     if (gravelK(x,z) < 0.45) return null; if (nearStation(x,z,1.0)) return null; const s = R(0.035, 0.2) * (rnd() < 0.08 ? 2 : 1);
@@ -3541,46 +3553,108 @@ function addCirclingBirds(cx, cz, n, rad, h, col){
 }
 
 /* ===================== DIE WÖLFIN MIT ROMULUS UND REMUS ===================== */
+/* Ablauf in einer Schleife: Der Korb mit den Zwillingen treibt auf dem Fluss heran und bleibt am Ufer unter dem Feigenbaum hängen.
+   Eine Wölfin kommt, zieht den Korb an Land, die Babys krabbeln heraus und die Wölfin säugt sie. Dann kommt der Hirte Faustulus,
+   die Wölfin tritt zur Seite, der Hirte nimmt die beiden auf den Arm und trägt sie davon. */
 function buildRomulus(){
-  const [px, pz] = P.romulus, g = keep(grp(px + 2.2, pz + 0.4)); g.rotation.y = -Math.PI/2 - 0.3;
-  // Der Feigenbaum am Ufer und die Felsen mit der Höhle (Lupercal)
-  { const tr = new THREE.Group(); tr.position.set(-2.4, localGround(g, -2.4, 2.4), 2.4); g.add(tr);
-    const bark = M('#8a7c6a', { tex:'bark' }); mk(taperTube(new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.2, 1.0, 0.1), new THREE.Vector3(0.1, 2.0, 0.3), new THREE.Vector3(0.4, 2.8, 0.2)]), 12, 8, t => 0.2 - 0.1*t), bark, tr);
-    for (const [x, y, z, r] of [[0.9, 2.4, 0.4, 0.5], [-0.6, 2.6, 0.2, 0.45], [0.3, 3.3, -0.2, 0.42]]) mk(taperTube(new THREE.CatmullRomCurve3([new THREE.Vector3(0.15, 2.1, 0.2), new THREE.Vector3((0.15 + x)/2, (2.1 + y)/2 + 0.2, (0.2 + z)/2), new THREE.Vector3(x, y, z)]), 8, 6, t => 0.08 - 0.05*t), bark, tr);
-    const lv = []; for (let i=0;i<26;i++){ const a = i*2.4, rr = 0.6 + (i % 5)*0.25; lv.push(xf(jitter(new THREE.SphereGeometry(0.45, 10, 8), 0.12, 3, i), Math.cos(a)*rr + 0.2, 2.6 + (i % 4)*0.3, Math.sin(a)*rr, 0, a, 0, 1, 0.7, 1)); }
-    bake(tr, M('#e0e8d0', { tex:'leafy', rep:2 }), lv).castShadow = true;
-    const fr = []; for (let i=0;i<10;i++){ const a = i*1.7; fr.push(xf(new THREE.SphereGeometry(0.05, 8, 6), Math.cos(a)*1.0 + 0.2, 2.3 + (i % 3)*0.3, Math.sin(a)*1.0)); } bake(tr, M('#5a2a4a', { tex:null, roughness:0.5 }), fr); }
-  { const rk = []; for (let i=0;i<14;i++){ const a = i/13*Math.PI, d = 3.2 + (i % 3)*0.4; rk.push(part(ROCK_GEOS[i%8], i % 2 ? '#8a8274' : '#7a7266', Math.cos(a)*d - 1.0, 0.2 + (i % 4)*0.35, -2.6 - Math.sin(a)*1.4, i, i*2, 0, 1.0 + (i % 3)*0.3, 0.8 + (i % 2)*0.5, 0.9)); }
-    for (let i=0;i<5;i++) rk.push(part(ROCK_GEOS[(i + 3)%8], '#7e766a', -1.2 + i*0.6, 1.7 + (i % 2)*0.3, -3.0, i, i, 0, 0.9, 0.7, 0.9)); vmesh(rk, g);
-    mk(new THREE.CircleGeometry(0.9, 18, 0, Math.PI), M('#1a1612', { tex:null, roughness:1 }), g, -1.0, 0.05, -2.2, 0, 0, 0).scale.set(1.2, 1.3, 1); }
-  // Der Korb, in dem die Zwillinge auf dem Tiber angeschwemmt wurden
-  { const bk = makeBasket(0.38, 0.22, g); bk.position.set(2.6, localGround(g, 2.6, 1.8) - 0.04, 1.8); bk.scale.set(1.5, 1, 1); bk.rotation.set(0.15, 0.6, -0.2);
-    mk(new THREE.PlaneGeometry(0.6, 0.3), M('#e8dcc0', { tex:'weave', side:THREE.DoubleSide }), bk, 0, 0.2, 0, -0.9, 0, 0.2); }
-  // Die Wölfin säugt die beiden Babys
+  const Z = P.romulus[1]; let xw = P.romulus[0]; while (xw < P.romulus[0] + 25 && groundH(xw, Z) > RIVER_Y + 0.05) xw += 0.1;
+  const ease = k => k < 0 ? 0 : k > 1 ? 1 : k*k*(3 - 2*k), lerp = (a, b, k) => a + (b - a)*k, gyw = (x, z) => groundH(x, z);
+  // Der Feigenbaum am Ufer und Büsche, hinter denen Wölfin und Hirte auftauchen
+  const fig = keep(grp(xw - 3.4, Z + 3.0));
+  { const bark = M('#8a7c6a', { tex:'bark' }); mk(taperTube(new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.2, 1.0, 0.1), new THREE.Vector3(0.1, 2.0, 0.3), new THREE.Vector3(0.4, 2.8, 0.2)]), 12, 8, t => 0.2 - 0.1*t), bark, fig);
+    for (const [x, y, z] of [[0.9, 2.4, 0.4], [-0.6, 2.6, 0.2], [0.3, 3.3, -0.2]]) mk(taperTube(new THREE.CatmullRomCurve3([new THREE.Vector3(0.15, 2.1, 0.2), new THREE.Vector3((0.15 + x)/2, (2.1 + y)/2 + 0.2, (0.2 + z)/2), new THREE.Vector3(x, y, z)]), 8, 6, t => 0.08 - 0.05*t), bark, fig);
+    const lv = []; for (let i=0;i<40;i++){ const a = i*2.4, rr = 0.3 + (i % 6)*0.36; lv.push(xf(jitter(new THREE.SphereGeometry(0.55, 10, 8), 0.14, 3, i), Math.cos(a)*rr + 0.2, 2.35 + (i % 4)*0.26 + (1.8 - rr)*0.25, Math.sin(a)*rr, 0, a, 0, 1, 0.62, 1)); }
+    bake(fig, M('#e0e8d0', { tex:'leafy', rep:2 }), lv).castShadow = true;
+    const fr = []; for (let i=0;i<12;i++){ const a = i*1.7; fr.push(xf(new THREE.SphereGeometry(0.05, 8, 6), Math.cos(a)*1.0 + 0.2, 2.3 + (i % 3)*0.3, Math.sin(a)*1.0)); } bake(fig, M('#5a2a4a', { tex:null, roughness:0.5 }), fr); }
+  const A = [xw - 9.5, Z + 7.5], B = [xw - 13, Z - 8], Cx = [xw - 14, Z + 8.5];
+  for (const [bx, bz, n] of [[A[0] + 0.4, A[1] + 1.1, 7], [B[0] - 0.6, B[1] - 1.0, 6], [Cx[0] - 0.8, Cx[1] + 1.0, 7], [xw - 1.0, Z + 5.0, 4]]){ const bg = keep(grp(bx, bz)), parts = [];
+    for (let k=0;k<n;k++){ const a = k*2.3; parts.push(xf(jitter(new THREE.SphereGeometry(0.75, 10, 8), 0.2, 3, k + bx|0), Math.cos(a)*0.9, 0.55 + (k % 3)*0.25, Math.sin(a)*0.7, 0, a, 0, 1, 0.8, 1)); }
+    bake(bg, M('#c8d4b8', { tex:'leafy', rep:2 }), parts).castShadow = true; colliders.push({ x:bx, z:bz, r:1.4 }); }
+  // Schilf am Ufer
+  { const rd = []; for (let i=0;i<26;i++){ const z = Z - 9 + i*0.75 + Math.sin(i*1.7)*0.3, x = xw - 0.4 + Math.cos(i*2.1)*0.6; if (Math.abs(z - Z) < 2.2) continue;
+      for (let k=0;k<4;k++) rd.push(part(new THREE.CylinderGeometry(0.008, 0.014, 1.6, 4).translate(0, 0.8, 0), k % 2 ? '#8a9a54' : '#a4a464', x + (k - 1.5)*0.07, gyw(x, z) - 0.05, z + (k % 2)*0.06, (k - 1.5)*0.06, 0, 0.08*k)); }
+    keep(vmesh(rd, scene)); }
+  // Der Korb mit Tuch
+  const bk = new THREE.Group(); scene.add(bk); { const b = makeBasket(0.38, 0.22, bk); b.scale.set(1.5, 1, 1); mk(new THREE.PlaneGeometry(0.6, 0.3), M('#e8dcc0', { tex:'weave', side:THREE.DoubleSide }), b, 0, 0.21, -0.12, -1.2, 0, 0.1); }
+  // Die Wölfin
   const wolf = makeAnimal('dog', 911, { col:{ back:'#5a544c', flank:'#7a7268', belly:'#a8a094', leg:'#6a6258', face:'#6a6258', muzzle:'#b8b0a4', nose:'#1a1412' } });
-  wolf.scale.setScalar(1.45); wolf.position.set(0, localGround(g, 0, 0), 0); wolf.rotation.y = 0; g.add(wolf); addUdder(wolf, 4, 0.035);
-  const babies = [[0.13, -0.12, -0.5], [-0.15, 0.12, 0.6]].map(([x, z, ry], i) => { const b = person(g, { scale:0.34, skin:'#e0b090', hair:i ? '#5a3a22' : '#3a2616', cloth:'#e8dcc0', linen:'#e8dcc0', barefoot:true }, x*1.45, z*1.45, ry);
-    poseSit(b, 0); b.root.position.y = -0.02; return b; });
-  // Der Hirte Faustulus entdeckt die Kinder
-  const sh = person(scene, { skin:'#b07a58', hair:'#5a4a3a', beard:true, cloth:'#8a7a5a', leather:null, cloak:'#6a5a44', sandals:true }, px - 2.8, pz + 3.8, 0);
-  const staff = fist(new THREE.Group(), sh.arms[1].hand, 0.75); mk(new THREE.CylinderGeometry(0.018, 0.022, 1.7, 6), M('#6a4a2a', { tex:'wood' }), staff); mk(new THREE.TorusGeometry(0.08, 0.016, 6, 12, Math.PI*1.2), M('#6a4a2a', { tex:'wood' }), staff, 0.08, 0.86, 0, 0, 0, 0.3);
-  const near = [px - 0.6, pz + 1.3], far = [px - 2.8, pz + 3.8], W = new THREE.Vector3();
-  const look = () => { W.set(g.position.x, g.position.y + 0.6, g.position.z); lookAtW(sh, W, 0.08); };
-  const staffPose = () => { sh.arms[1].sh.quaternion.identity(); sh.arms[1].sh.rotation.set(-0.3, 0, 0.2); sh.arms[1].el.rotation.x = -0.6; freeHand(sh, 1); };
-  routine(sh, [
-    { to:near, carry:true, act:() => staffPose() },
-    { d:6, act:(k, t, sec) => { staffPose(); look(); const wow = sec < 2.5 ? Math.sin(sec/2.5*Math.PI) : 0; sh.arms[0].sh.quaternion.identity(); sh.arms[0].sh.rotation.set(-0.4 - wow*1.6, 0, -0.3 - wow*0.4); sh.arms[0].el.rotation.x = -0.4; freeHand(sh, 0); sh.spine.rotation.x = sec > 2.5 ? 0.25 : 0; } },
-    { to:far, carry:true, act:() => staffPose() },
-    { d:3, act:() => { staffPose(); look(); } }
-  ], { speed:0.7 });
-  const tw = []; anims.push(t => {
-    animalPose(wolf.userData.rig, t, { walk:0, graze:false, look:Math.sin(t*0.3)*0.6 });
-    babies.forEach((b, i) => { b.head.rotation.x = -0.55 + Math.sin(t*2 + i)*0.05; const r = Math.sin(t*1.3 + i*2)*0.2; b.arms[0].sh.rotation.set(-1.8 + r, 0, -0.2); b.arms[1].sh.rotation.set(-1.6 - r, 0, 0.2); b.arms[0].el.rotation.x = b.arms[1].el.rotation.x = -0.5;
-      for (const l of b.legs) l.knee.rotation.x = 1.3 + Math.sin(t*2.5 + i + l.hip.position.x*40)*0.15; });
+  const WS = 1.45; wolf.scale.setScalar(WS); scene.add(wolf); addUdder(wolf, 4, 0.035);
+  // Die Zwillinge
+  const babies = [0, 1].map(i => { const b = person(scene, { scale:0.34, skin:'#e0b090', hair:i ? '#5a3a22' : '#3a2616', cloth:'#e8dcc0', linen:'#e8dcc0', barefoot:true }, xw, Z, 0); return b; });
+  // Der Hirte Faustulus
+  const sh = person(scene, { skin:'#b07a58', hair:'#5a4a3a', beard:true, cloth:'#8a7a5a', cloak:'#6a5a44', sandals:true }, B[0], B[1], 0);
+  const cols = [{ x:0, z:0, r:0.55 }, { x:0, z:0, r:0.35 }]; colliders.push(...cols);
+  const T = 46, L0 = [xw + 0.6, Z - 1.0], S0 = [xw + 2.6, Z - 26], W0 = [L0[0] - 1.0, L0[1] + 0.1], W1 = [xw - 2.6, Z - 0.4], W2 = [xw - 3.0, Z - 2.8], SH1 = [xw - 3.95, Z - 0.3];
+  // Die Wölfin steht beim Säugen längs zum Ufer (Kopf nach Norden), die Zwillinge sitzen unter dem Euter
+  const udZ = wolf.userData.rig.sp.hl*0.52*WS, BB = [[W1[0] - 0.08, W1[1] + udZ - 0.24], [W1[0] - 0.04, W1[1] + udZ + 0.26]];
+  SH1[0] = W1[0] - 0.85; SH1[1] = W1[1] + udZ;
+  const V = new THREE.Vector3(), V2 = new THREE.Vector3(), Q = new THREE.Quaternion();
+  let wPrev = null, sPrev = null, wYaw = 0, sYaw = 0;
+  const setVis = (o, s0, k) => { o.visible = k > 0.02; o.scale.setScalar(s0*Math.max(0.02, k)); };
+  const walkTo = (pts, t0, t1, c) => { const k = ease((c - t0)/(t1 - t0)); return [lerp(pts[0][0], pts[1][0], k), lerp(pts[0][1], pts[1][1], k), c > t0 && c < t1]; };
+  function babyPose(b, mode, t, i){ for (const l of b.legs){ l.hip.rotation.set(0, 0, 0); l.knee.rotation.set(0, 0, 0); } b.spine.rotation.set(0, 0, 0); b.root.rotation.set(0, 0, 0); b.root.position.y = 0;
+    for (const a of b.arms){ a.sh.quaternion.identity(); a.el.rotation.set(0, 0, 0); }
+    if (mode === 'sit' || mode === 'nurse' || mode === 'basket'){ poseSit(b, 0); b.root.position.y = -0.02; b.head.rotation.x = mode === 'nurse' ? -0.6 + Math.sin(t*2 + i)*0.05 : Math.sin(t*0.8 + i)*0.2;
+      const r = Math.sin(t*1.3 + i*2)*0.2; b.arms[0].sh.rotation.set(mode === 'nurse' ? -1.8 + r : -0.6 + r, 0, -0.25); b.arms[1].sh.rotation.set(mode === 'nurse' ? -1.6 - r : -0.6 - r, 0, 0.25); b.arms[0].el.rotation.x = b.arms[1].el.rotation.x = -0.5; }
+    else if (mode === 'crawl'){ poseKneel(b); b.hips.position.y = 0.42; b.spine.rotation.x = 1.15; b.head.rotation.x = -0.9; const s = Math.sin(t*6 + i);
+      b.arms[0].sh.rotation.set(-1.25 + s*0.35, 0, -0.1); b.arms[1].sh.rotation.set(-1.25 - s*0.35, 0, 0.1); for (const l of b.legs){ l.hip.rotation.x = -0.4; l.knee.rotation.x = 1.9; } }
+    else if (mode === 'carry'){ poseSit(b, 0); b.head.rotation.x = -0.2; b.arms[0].sh.rotation.set(-0.8, 0, -0.4); b.arms[1].sh.rotation.set(-0.8, 0, 0.4); b.arms[0].el.rotation.x = b.arms[1].el.rotation.x = -0.9; } }
+  anims.push((t, dt) => {
+    const c = ((t % T) + T) % T;
+    // ---- Korb: treibt heran, bleibt hängen, wird an Land gezogen
+    let bx, bz, by, byaw = 0.3, inWater = true;
+    if (c < 11){ const k = 1 - Math.pow(1 - c/11, 2); bx = lerp(S0[0], L0[0], k); bz = lerp(S0[1], L0[1], k); byaw = 0.3 + Math.sin(c*0.7)*0.4; }
+    else if (c < 14){ bx = L0[0]; bz = L0[1]; byaw = 0.3; }
+    else if (c < 17){ const k = ease((c - 14)/3); bx = lerp(L0[0], W1[0] + 1.0, k); bz = lerp(L0[1], W1[1] - 0.1, k); inWater = k < 0.5; }
+    else { bx = W1[0] + 1.0; bz = W1[1] - 0.1; inWater = false; }
+    const gb = gyw(bx, bz); by = Math.max(gb + 0.02, RIVER_Y - 0.09) + (inWater ? Math.sin(t*2.3)*0.03 : 0);
+    bk.position.set(bx, by, bz); bk.rotation.set(inWater ? Math.sin(t*1.7)*0.06 : 0, byaw, inWater ? Math.sin(t*1.3)*0.06 : 0);
+    setVis(bk, 1, c < 1 ? c : c > 43 ? 44 - c : 1);
+    // ---- Wölfin
+    let wx, wz, wv = 0, look = 0, graze = false, wk = 1, fYaw = null;
+    if (c < 8){ wx = A[0]; wz = A[1]; wk = 0; }
+    else if (c < 13){ [wx, wz] = walkTo([A, W0], 8, 13, c); wv = 1; wk = Math.min(1, (c - 8)/0.6); }
+    else if (c < 14){ wx = W0[0]; wz = W0[1]; graze = true; fYaw = Math.PI/2; }
+    else if (c < 17){ const k = ease((c - 14)/3); wx = lerp(W0[0], W1[0], k); wz = lerp(W0[1], W1[1], k); graze = true; wv = 0.7; fYaw = Math.PI/2; }
+    else if (c < 27){ wx = W1[0]; wz = W1[1]; fYaw = c < 17.4 ? Math.PI/2 : Math.PI; look = c < 19 ? 0 : -0.5 + Math.sin(t*0.4)*0.35; }
+    else if (c < 30){ [wx, wz] = walkTo([W1, W2], 27, 30, c); wv = 1; }
+    else if (c < 36){ wx = W2[0]; wz = W2[1]; fYaw = 0.4; look = Math.sin(t*0.5)*0.4; }
+    else if (c < 43){ [wx, wz] = walkTo([W2, A], 36, 42.5, c); wv = 1; wk = c > 42.4 ? Math.max(0, 43 - c)/0.6 : 1; }
+    else { wx = A[0]; wz = A[1]; wk = 0; }
+    if (wPrev){ const dx = wx - wPrev[0], dz = wz - wPrev[1]; if (fYaw !== null) wYaw = angLerp(wYaw, fYaw, Math.min(1, dt*4)); else if (Math.hypot(dx, dz) > 1e-4) wYaw = angLerp(wYaw, Math.atan2(dx, dz), Math.min(1, dt*5)); }
+    wPrev = [wx, wz]; wolf.position.set(wx, gyw(wx, wz), wz); wolf.rotation.y = wYaw; setVis(wolf, WS, wk);
+    animalPose(wolf.userData.rig, t, { walk:wv, graze, look });
+    cols[0].x = wx; cols[0].z = wz; cols[0].r = wk > 0.5 ? 0.55 : 0;
+    // ---- Hirte
+    let sx, sz, sv = 0, sk = 1, kneel = 0, carry = false, sfy = null;
+    if (c < 25){ sx = B[0]; sz = B[1]; sk = 0; }
+    else if (c < 31){ [sx, sz] = walkTo([B, SH1], 25, 31, c); sv = 1; sk = Math.min(1, (c - 25)/0.6); }
+    else if (c < 34.5){ sx = SH1[0]; sz = SH1[1]; kneel = c < 32 ? ease((c - 31)/1) : c < 33.6 ? 1 : 1 - ease((c - 33.6)/0.9); carry = c >= 32.6; sfy = Math.PI/2; }
+    else if (c < 42){ [sx, sz] = walkTo([SH1, Cx], 34.5, 42, c); sv = 1; carry = true; sk = c > 41.4 ? Math.max(0, 42 - c)/0.6 : 1; }
+    else { sx = Cx[0]; sz = Cx[1]; sk = 0; carry = false; }
+    if (sPrev){ const dx = sx - sPrev[0], dz = sz - sPrev[1]; if (sfy !== null) sYaw = angLerp(sYaw, sfy, Math.min(1, dt*4)); else if (Math.hypot(dx, dz) > 1e-4) sYaw = angLerp(sYaw, Math.atan2(dx, dz), Math.min(1, dt*5)); }
+    sPrev = [sx, sz]; sh.g.position.set(sx, gyw(sx, sz), sz); sh.g.rotation.y = sYaw; setVis(sh.g, 1, sk);
+    cols[1].x = sx; cols[1].z = sz; cols[1].r = sk > 0.5 ? 0.35 : 0;
+    if (sv > 0.5) walkPose(sh, t*6, 1, 0.38, !carry); else standPose(sh);
+    sh.spine.rotation.set(0, 0, 0);
+    if (kneel > 0){ sh.hips.position.y = 0.88 - 0.4*kneel; for (const l of sh.legs){ l.hip.rotation.x = -0.1*kneel; l.knee.rotation.x = 1.5*kneel; } sh.spine.rotation.x = 0.45*kneel; }
+    sh.g.updateWorldMatrix(true, false);
+    if (carry){ for (const i of [0, 1]){ V.set(i ? -0.16 : 0.16, 0.98 - (kneel ? 0.3*kneel : 0), 0.32); sh.g.localToWorld(V); ikWorld(sh, i, V); freeHand(sh, i); } }
+    else if (kneel > 0.3){ for (const i of [0, 1]){ const [px, pz] = BB[i]; V.set(px, gyw(px, pz) + 0.3, pz); ikWorld(sh, i, V); freeHand(sh, i); } }
+    else if (sv < 0.5 && c > 30.5 && c < 31.5){ for (const i of [0, 1]){ sh.arms[i].sh.quaternion.identity(); sh.arms[i].sh.rotation.set(-0.3, 0, i ? 0.2 : -0.2); sh.arms[i].el.rotation.x = -0.8; freeHand(sh, i); } }
+    if (c > 30 && c < 32 && !carry){ V.set(BB[0][0], gyw(BB[0][0], BB[0][1]) + 0.3, BB[0][1]); lookAtW(sh, V, 0.1); }
+    // ---- Zwillinge
+    babies.forEach((b, i) => { let mode, x, z, y, yaw = Math.PI/2;
+      if (c < 17){ mode = 'basket'; bk.updateWorldMatrix(true, false); V.set(i ? -0.16 : 0.16, 0.05, 0.02); bk.localToWorld(V); x = V.x; z = V.z; y = V.y; yaw = byaw + (i ? -0.4 : 0.5); }
+      else if (c < 19.5){ mode = 'crawl'; const k = ease((c - 17)/2.5), sx0 = bx + (i ? -0.16 : 0.16)*0.3, sz0 = bz + (i ? 0.2 : -0.2); x = lerp(sx0, BB[i][0], k); z = lerp(sz0, BB[i][1], k); y = gyw(x, z); yaw = -Math.PI/2; }
+      else if (!carry){ mode = c < 27 ? 'nurse' : 'sit'; x = BB[i][0]; z = BB[i][1]; y = gyw(x, z); yaw = mode === 'nurse' ? (i ? Math.PI : 0) : -Math.PI/2; }
+      else { mode = 'carry'; V.set(i ? -0.2 : 0.2, 0.88 - 0.3*kneel, 0.36); sh.g.localToWorld(V); x = V.x; y = V.y; z = V.z; yaw = sYaw + (i ? Math.PI/2 : -Math.PI/2); }
+      b.g.position.set(x, y, z); b.g.rotation.y = yaw; b.g.visible = sk > 0.05 || !carry; babyPose(b, mode, t, i);
+      if (mode === 'carry') b.root.rotation.z = i ? 0.25 : -0.25; });
   });
-  { g.updateWorldMatrix(true, false); for (const [lx, lz, r] of [[0, 0, 0.75], [-2.4, 2.4, 0.35], [2.6, 1.8, 0.5], [-1.0, -3.0, 2.0]]){ W.set(lx, 0, lz); g.localToWorld(W); colliders.push({ x:W.x, z:W.z, r }); } }
-  addHotspot('romulus', [g], P.romulus[0], gy(P.romulus[0], P.romulus[1]) + 2.2, P.romulus[1], 0);
-  hotspots.romulus.snapZoom = 1.8;
+  colliders.push({ x:xw - 3.4, z:Z + 3.0, r:0.35 });
+  addHotspot('romulus', [fig, bk], P.romulus[0], gy(P.romulus[0], P.romulus[1]) + 2.4, P.romulus[1], 0);
+  hotspots.romulus.snapZoom = 1.6;
 }
 
 /* ===================== ROMULUS ZIEHT DIE HEILIGE FURCHE ===================== */
@@ -5144,15 +5218,6 @@ function buildTemplePrecinct(){
 }
 
 /* ===================== DER HAFEN ===================== */
-function makeShip(L){ const g = new THREE.Group(), wood = M('#6a4a2e', { tex:'wood' }), dark = M('#4a3220', { tex:'wood' });
-  const hull = new THREE.CylinderGeometry(1.6, 1.6, L, 20, 1, true, Math.PI/2, Math.PI); hull.rotateX(Math.PI/2); hull.scale(1, 0.75, 1); mk(hull, M('#5a3e26', { tex:'wood', side:THREE.DoubleSide }), g, 0, 0.9, 0).castShadow = true;
-  mk(new THREE.BoxGeometry(3.1, 0.1, L - 0.4), wood, g, 0, 0.85, 0);
-  // Schwanenhals am Heck, Mast mit eingerolltem Segel
-  mk(new THREE.TorusGeometry(0.9, 0.16, 8, 14, Math.PI*0.8), dark, g, 0, 1.6, -L/2 + 0.2, 0, Math.PI/2, 0.6);
-  mk(new THREE.CylinderGeometry(0.1, 0.14, 7.5, 8), dark, g, 0, 4.5, 0.6); mk(new THREE.CylinderGeometry(0.06, 0.06, 5.5, 6).rotateZ(Math.PI/2), dark, g, 0, 7.6, 0.6);
-  mk(new THREE.CylinderGeometry(0.22, 0.22, 5.2, 10).rotateZ(Math.PI/2), M('#e8dcc0', { tex:'weave' }), g, 0, 7.4, 0.6);
-  for (let i=0;i<5;i++){ const a = makeRomAmphora(); a.rotation.z = Math.PI/2; a.position.set(-0.8 + (i % 3)*0.8, 1.2, -2 + Math.floor(i/3)*0.9); g.add(a); }
-  return g; }
 function buildHarbor(){
   const R = romMats(), H = HARBOR, qx = H.cx + H.hw;
   // Kaimauer aus Quadern und Pflaster auf dem Kai
@@ -5167,11 +5232,10 @@ function buildHarbor(){
   const pile = []; for (const z of [-30, -6, 10, 26, 34]){ for (let i=0;i<7;i++){ const a = makeRomAmphora(i % 2 ? '#b8724a' : '#c8865a'); a.position.set(qx - 2.2 + (i % 3)*0.4, 0.25, z + Math.floor(i/3)*0.4); a.rotation.y = i; scene.add(a); keep(a); }
     colliders.push({ x:qx - 1.8, z:z + 0.4, r:0.9 }); }
   for (const z of [-20, 14]) for (let i=0;i<4;i++){ const s = makeSack(i % 2 ? '#c8b890' : '#b8a878'); s.position.set(qx - 1.6 + (i % 2)*0.6, groundH(qx - 1.6, z), z + (i >> 1)*0.6); scene.add(s); keep(s); }
-  // Schiffe am Kai, die leicht schaukeln
-  const ships = [[-24, 15], [4, 13], [27, 16]].map(([z, L], i) => { const s = makeShip(L); s.position.set(qx + 3.6, RIVER_Y - 0.55, z); s.rotation.y = 0.02*(i - 1); scene.add(s); keep(s); return s; });
+  // Kriegsgaleeren am Kai und auf dem Fluss
+  buildGalleys();
   for (const z of [-30, -18, -2, 10, 20, 34]) { mk(new THREE.CylinderGeometry(0.18, 0.22, 0.8, 10), R.stone, scene, qx - 0.4, groundH(qx - 0.4, z) + 0.4, z).userData.keep = true; colliders.push({ x:qx - 0.4, z, r:0.3 }); }
   colliders.push({ ax:qx + 0.2, az:H.cz - H.hl - 2, bx:qx + 0.2, bz:H.cz + H.hl + 2, r:0.3 });
-  anims.push(t => { ships.forEach((s, i) => { s.position.y = RIVER_Y - 0.55 + Math.sin(t*0.8 + i*2)*0.06; s.rotation.z = Math.sin(t*0.6 + i)*0.015; }); });
   // Träger bringen Amphoren vom Schiff ins Lager
   const por = [[-6.0, 0.4], [10.0, 1.4]].map(([z, ph], i) => { const p = person(scene, { skin:CA.skin[(i + 1) % 3], hair:CA.hair[i*2], cloth:'#a89070', sandals:true }, qx - 1, z, 0);
     const amp = makeRomAmphora(); p.root.add(amp); amp.position.set(0.0, 1.62, -0.05); amp.rotation.set(Math.PI/2 - 0.2, 0, 0); amp.scale.setScalar(0.8);
@@ -5190,6 +5254,185 @@ function buildTombs(){
     if (kind === 0){ wbox(g, 2.4, 1.6, 2.4, R.ashlar, 0, -0.3, 0, 0, 1); mk(new THREE.CylinderGeometry(1.0, 1.1, 1.6, 16), R.marble, g, 0, 2.1, 0).castShadow = true; mk(new THREE.ConeGeometry(1.1, 0.9, 16), R.tiles, g, 0, 3.35, 0); colliders.push({ x, z, r:1.6 }); }
     else if (kind === 1){ wbox(g, 1.4, 1.0, 1.0, R.marble, 0, -0.2, 0, 0, 1); mk(new THREE.PlaneGeometry(0.9, 0.55), new THREE.MeshStandardMaterial({ map:inscriptionTex(['D · M'], 256, 150, '#e8e2d6'), roughness:0.7 }), g, 0, 0.45, 0.51); mk(new THREE.CylinderGeometry(0.5, 0.5, 1.4, 3, 1, false).rotateZ(Math.PI/2).rotateY(Math.PI/2), R.marble, g, 0, 0.95, 0).scale.set(1, 0.4, 1); colliders.push({ x, z, r:0.9 }); }
     else { wbox(g, 0.7, 1.7, 0.25, R.marble, 0, -0.1, 0, 0, 1); mk(new THREE.PlaneGeometry(0.55, 0.8), new THREE.MeshStandardMaterial({ map:inscriptionTex(['D · M', 'VIXIT', 'ANN · XL'], 160, 230, '#e8e2d6'), roughness:0.7 }), g, 0, 1.0, 0.13); colliders.push({ x, z, r:0.5 }); } });
+}
+/* ===================== RÖMISCHE KRIEGSGALEERE ===================== */
+/* Langer roter Rumpf mit goldenem Band, viele Ruder in einer Reihe, gelbes Deck mit dunklem Geländer,
+   Turm mit Zinnen auf dem Vorschiff, Kajüte mit weissem Dach am Heck, grosses weisses Rahsegel,
+   kleines Vorsegel am schrägen Bugmast, eingerollter Heckzierrat, rote Fahne und ein Rammsporn aus Bronze.
+   Bug zeigt nach +z, y = 0 ist die Wasserlinie. */
+let GALMAT = null;
+function galleyMats(){ if (GALMAT) return GALMAT;
+  const flag = canvasTex(128, 160, (x, W, H) => {
+    x.fillStyle = '#a8201a'; x.fillRect(0, 0, W, H); x.fillStyle = 'rgba(0,0,0,0.12)'; for (let i=0;i<W;i+=6) x.fillRect(i, 0, 2, H);
+    x.strokeStyle = '#e8c050'; x.lineWidth = 6; x.strokeRect(8, 8, W - 16, H - 30);
+    // goldener Lorbeerkranz mit Adler-Zeichen und SPQR
+    x.lineWidth = 5; x.beginPath(); x.arc(W/2, 62, 30, 0.6, Math.PI*2 - 0.6 + Math.PI, false); x.stroke();
+    x.fillStyle = '#e8c050'; x.beginPath(); x.moveTo(W/2, 40); x.lineTo(W/2 + 20, 56); x.lineTo(W/2 + 8, 58); x.lineTo(W/2 + 6, 78); x.lineTo(W/2 - 6, 78); x.lineTo(W/2 - 8, 58); x.lineTo(W/2 - 20, 56); x.closePath(); x.fill();
+    x.font = 'bold 26px serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('SPQR', W/2, 112);
+    for (let i=0;i<W;i+=8){ x.fillRect(i + 2, H - 22, 4, 22); } });
+  const canvasSail = canvasTex(256, 256, (x, W, H) => { const r = mulberry32(417); x.fillStyle = '#f4f0e6'; x.fillRect(0, 0, W, H);
+    for (let i=0;i<5000;i++){ x.fillStyle = r() < 0.5 ? 'rgba(150,135,110,0.05)' : 'rgba(255,255,255,0.1)'; x.fillRect(r()*W, r()*H, 2, 2); }
+    x.fillStyle = 'rgba(140,125,100,0.22)'; for (let i=1;i<8;i++) x.fillRect(i*W/8 - 1, 0, 2, H);
+    x.fillStyle = 'rgba(140,125,100,0.12)'; for (let i=1;i<6;i++) x.fillRect(0, i*H/6 - 1, W, 2);
+    x.strokeStyle = 'rgba(120,100,80,0.45)'; x.lineWidth = 5; x.strokeRect(2, 2, W - 4, H - 4); });
+  GALMAT = {
+    hull:VCD,
+    deck:M('#d9b25e', { tex:'wood', roughness:0.75 }),
+    rail:M('#3a2418', { tex:'wood' }),
+    gold:M('#d4a43a', { roughness:0.45, metalness:0.35 }),
+    red:M('#9c2a1e', { tex:'wood', roughness:0.7 }),
+    dark:M('#1c1410', { roughness:0.95 }),
+    white:M('#f2ede2', { tex:'weave', roughness:0.9, side:THREE.DoubleSide }),
+    sail:new THREE.MeshStandardMaterial({ map:canvasSail, roughness:0.95, side:THREE.DoubleSide }),
+    oar:M('#c49a64', { tex:'wood', roughness:0.75 }),
+    bronze:M('#c8a050', { roughness:0.35, metalness:0.55 }),
+    rope:new THREE.LineBasicMaterial({ color:0x2e2218 }),
+    flag:new THREE.MeshStandardMaterial({ map:flag, roughness:0.9, side:THREE.DoubleSide })
+  };
+  return GALMAT; }
+
+function makeGalley(L, opts){ opts = opts || {}; const G = galleyMats(), g = new THREE.Group();
+  const W0 = L*0.085, sm = k => { k = Math.max(0, Math.min(1, k)); return k*k*(3 - 2*k); };
+  // Form des Rumpfs entlang der Länge (s = 0 Heck, s = 1 Bug)
+  const halfW = s => Math.max(0.02, W0*Math.pow(sm(s/0.3), 0.5)*Math.pow(sm((1 - s)/0.24), 0.6));
+  const top = s => 1.25 + 1.15*Math.pow(Math.max(0, 1 - s/0.22), 2) + 0.55*Math.pow(Math.max(0, (s - 0.82)/0.18), 2);
+  const bot = s => -0.7 + 1.05*Math.pow(Math.max(0, 1 - s/0.2), 2) + 0.35*Math.pow(Math.max(0, (s - 0.85)/0.15), 1.5);
+  const zOf = s => -L/2 + s*L;
+  g.userData.hull = { halfW, top, bot, zOf, L };
+  // Rumpf: Querschnitte von Kiel bis Reling; Farbbänder (dunkler Handlauf, goldener Streifen, Rot, Unterwasser)
+  { const N = 44, DY = [0, 0.07, 0.075, 0.3, 0.305, 0.5, 0.7, 0.9], C = { cap:new THREE.Color('#3a2418'), gold:new THREE.Color('#d6a83a'), red:new THREE.Color('#a3261b'), low:new THREE.Color('#4a2a1e') };
+    const pos = [], col = [], idx = []; let cols = 0;
+    for (let i=0;i<=N;i++){ const s = i/N, w = halfW(s), t = top(s), b = bot(s), H = t - b, z = zOf(s);
+      const rows = DY.slice(); for (let k=1;k<=4;k++) rows.push(0.9 + (t - 0.9)*k/4); rows.push(t + 0.02); for (let k=1;k<=3;k++) rows.push(t + 0.02 + (H - t - 0.02)*k/3);
+      const prof = []; for (const dy of rows){ const c = Math.min(1, Math.max(0, dy/H)); prof.push([Math.sqrt(1 - c*c), t - Math.min(dy, H), dy]); }
+      // von der Reling links über den Kiel zur Reling rechts
+      const ring = [...prof.map(p => [-p[0], p[1], p[2]]), ...prof.slice(0, -1).reverse().map(p => [p[0], p[1], p[2]])];
+      cols = ring.length;
+      for (const [sx, y, dy] of ring){ pos.push(sx*w, y, z); const c = dy < 0.072 ? C.cap : dy < 0.302 ? C.gold : y < 0.02 ? C.low : C.red; col.push(c.r, c.g, c.b); } }
+    for (let i=0;i<N;i++) for (let j=0;j<cols - 1;j++){ const a = i*cols + j, b = a + cols; idx.push(a, a + 1, b, a + 1, b + 1, b); }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); geo.setIndex(idx); geo.computeVertexNormals();
+    mk(geo, G.hull, g); }
+  // Deck aus gelben Planken
+  const deckY = s => top(s) - 0.12;
+  { const pos = [], uv = [], idx = [], N = 36, s0 = 0.03, s1 = 0.975;
+    for (let i=0;i<=N;i++){ const s = s0 + (s1 - s0)*i/N, w = halfW(s) - 0.03, y = deckY(s), z = zOf(s); pos.push(-w, y, z, w, y, z); uv.push(-w*0.8, z*0.25, w*0.8, z*0.25); }
+    for (let i=0;i<N;i++){ const a = i*2; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(idx); geo.computeVertexNormals();
+    mk(geo, G.deck, g).castShadow = false; }
+  // Geländer: Pfosten und Handlauf auf beiden Seiten
+  { const posts = [], sA = 0.1, sB = 0.9, n = Math.round((sB - sA)*L/0.7);
+    for (const sd of [-1, 1]){ const pts = [];
+      for (let i=0;i<=n;i++){ const s = sA + (sB - sA)*i/n, w = halfW(s) - 0.07; posts.push([sd*w, deckY(s), zOf(s)]); pts.push(new THREE.Vector3(sd*w, deckY(s) + 0.62, zOf(s))); }
+      mk(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), n*2, 0.04, 5, false), G.rail, g); }
+    const im = new THREE.InstancedMesh(new THREE.BoxGeometry(0.06, 0.62, 0.06).translate(0, 0.31, 0), G.rail, posts.length), m4 = new THREE.Matrix4();
+    posts.forEach((p, i) => { m4.makeTranslation(p[0], p[1], p[2]); im.setMatrixAt(i, m4); }); im.castShadow = true; g.add(im); }
+  // Turm mit Zinnen und Bogenöffnungen auf dem Vorschiff
+  { const s = 0.76, w = Math.min(halfW(s)*1.25, 1.35), h = 1.7, tw = grp0(g, 0, deckY(s), zOf(s));
+    mk(new THREE.BoxGeometry(w*2, h, w*1.7), G.red, tw, 0, h/2, 0);
+    mk(new THREE.BoxGeometry(w*2 + 0.12, 0.16, w*1.7 + 0.12), G.gold, tw, 0, h, 0);
+    mk(new THREE.BoxGeometry(w*2 + 0.06, 0.1, w*1.7 + 0.06), G.gold, tw, 0, 0.05, 0);
+    const arch = new THREE.Shape(); arch.moveTo(-0.17, 0); arch.lineTo(0.17, 0); arch.lineTo(0.17, 0.42); arch.absarc(0, 0.42, 0.17, 0, Math.PI, false); arch.lineTo(-0.17, 0); const ag = new THREE.ShapeGeometry(arch, 8);
+    const faces = [[0, 0, w*0.85 + 0.01, 0], [0, 0, -w*0.85 - 0.01, Math.PI], [w + 0.01, 0, 0, Math.PI/2], [-w - 0.01, 0, 0, -Math.PI/2]];
+    for (const [fx, , fz, ry] of faces){ const n = Math.abs(fx) > 0 ? 2 : 2, span = Math.abs(fx) > 0 ? w*1.7 : w*2;
+      for (let k=0;k<n;k++){ const o = (k - (n - 1)/2)*span*0.45, x = fx + (Math.abs(fx) > 0 ? 0 : o), z = fz + (Math.abs(fx) > 0 ? o : 0); mk(ag, G.dark, tw, x, h*0.35, z, 0, ry, 0).castShadow = false; } }
+    // Zinnen rundherum (eine Geometrie)
+    const mer = []; const mw = 0.24, nx = Math.max(3, Math.round(w*2/0.5)), nz = Math.max(3, Math.round(w*1.7/0.5));
+    for (let i=0;i<nx;i++){ const x = -w + 0.12 + i*(w*2 - 0.24)/(nx - 1); mer.push([x, w*0.85 - 0.02], [x, -w*0.85 + 0.02]); }
+    for (let i=1;i<nz - 1;i++){ const z = -w*0.85 + 0.12 + i*(w*1.7 - 0.24)/(nz - 1); mer.push([w - 0.02, z], [-w + 0.02, z]); }
+    const im = new THREE.InstancedMesh(new THREE.BoxGeometry(mw, 0.3, mw), G.red, mer.length), m4 = new THREE.Matrix4();
+    mer.forEach(([x, z], i) => { m4.makeTranslation(x, h + 0.23, z); im.setMatrixAt(i, m4); }); im.castShadow = true; tw.add(im); }
+  // Kajüte mit weissem Dach am Heck
+  { const s = 0.2, w = halfW(s)*0.75, cb = grp0(g, 0, deckY(s), zOf(s));
+    mk(new THREE.BoxGeometry(w*2, 0.95, 1.9), G.red, cb, 0, 0.475, 0);
+    mk(new THREE.BoxGeometry(w*2 + 0.06, 0.08, 1.96), G.gold, cb, 0, 0.92, 0);
+    for (const sd of [-1, 1]) mk(new THREE.PlaneGeometry(0.4, 0.45), G.dark, cb, sd*(w + 0.01), 0.5, 0, 0, sd*Math.PI/2, 0).castShadow = false;
+    const roof = new THREE.CylinderGeometry(w + 0.18, w + 0.18, 2.2, 14, 1, false, -Math.PI/2, Math.PI); roof.rotateX(Math.PI/2); roof.scale(1, 0.38, 1); mk(roof, G.white, cb, 0, 0.96, 0); }
+  // Mast mit Rah und grossem weissem Rahsegel
+  const sM = 0.47, mz = zOf(sM), my = deckY(sM), mH = L*0.5, sailW = L*0.42, sailH = mH*0.6;
+  mk(new THREE.CylinderGeometry(0.09, 0.14, mH, 8), G.rail, g, 0, my + mH/2, mz);
+  mk(new THREE.CylinderGeometry(0.06, 0.06, sailW + 0.6, 6).rotateZ(Math.PI/2), G.rail, g, 0, my + mH - 0.5, mz + 0.12);
+  { const geo = new THREE.PlaneGeometry(sailW, sailH, 10, 8), p = geo.attributes.position;
+    for (let i=0;i<p.count;i++){ const u = p.getX(i)/(sailW/2), v = (p.getY(i) + sailH/2)/sailH; p.setZ(i, (1 - u*u)*(0.25 + 0.75*Math.sin(v*Math.PI*0.9))*sailH*0.12); }
+    geo.computeVertexNormals(); const sail = mk(geo, G.sail, g, 0, my + mH - 0.55 - sailH/2, mz + 0.2); g.userData.sail = sail; }
+  // Schräger Bugmast mit kleinem Vorsegel
+  { const s = 0.92, by = deckY(s), bz = zOf(s), len = L*0.16, a = 0.62, tx = 0, ty = by + Math.cos(a)*len, tz = bz + Math.sin(a)*len;
+    mk(new THREE.CylinderGeometry(0.05, 0.08, len, 6), G.rail, g, 0, by + Math.cos(a)*len/2, bz + Math.sin(a)*len/2, a, 0, 0);
+    const fw = L*0.1, fh = L*0.07; mk(new THREE.CylinderGeometry(0.035, 0.035, fw + 0.3, 5).rotateZ(Math.PI/2), G.rail, g, tx, ty - 0.1, tz);
+    const geo = new THREE.PlaneGeometry(fw, fh, 4, 3), p = geo.attributes.position; for (let i=0;i<p.count;i++){ const u = p.getX(i)/(fw/2); p.setZ(i, (1 - u*u)*fh*0.12); } geo.computeVertexNormals();
+    mk(geo, G.sail, g, tx, ty - 0.15 - fh/2, tz + 0.05); g.userData.bowTop = [tx, ty, tz]; }
+  // Tauwerk: Stagen, Wanten, Brassen
+  { const top0 = [0, my + mH - 0.1, mz], yE = my + mH - 0.5, bt = g.userData.bowTop, sb = 0.08, sw = halfW(0.47) - 0.07, segs = [];
+    const add = (a, b) => segs.push(a[0], a[1], a[2], b[0], b[1], b[2]);
+    add(top0, [0, deckY(0.9) + 0.6, zOf(0.9)]); add(top0, [0, deckY(sb) + 0.6, zOf(sb)]); add(top0, bt);
+    for (const sd of [-1, 1]){ add(top0, [sd*sw, deckY(0.43), zOf(0.43)]); add(top0, [sd*sw, deckY(0.55), zOf(0.55)]);
+      add([sd*(sailW/2 + 0.25), yE, mz + 0.12], [sd*(halfW(0.2) - 0.1), deckY(0.2) + 0.6, zOf(0.2)]);
+      add([sd*sailW/2, yE - sailH + 0.05, mz + 0.2], [sd*(halfW(0.4) - 0.1), deckY(0.4) + 0.6, zOf(0.4)]); }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(segs, 3)); g.add(new THREE.LineSegments(geo, G.rope)); }
+  // Eingerollter Heckzierrat (Aplustre) und Bugsteven
+  { const t0 = top(0), z0 = zOf(0), cv = (dx, k) => new THREE.CatmullRomCurve3([[0, t0 - 0.3, z0 + 0.4], [0, t0 + 0.4, z0 - 0.1], [0, t0 + 1.3, z0 - 0.35], [0, t0 + 2.1, z0 - 0.1], [0, t0 + 2.45, z0 + 0.45], [0, t0 + 2.2, z0 + 0.95], [0, t0 + 1.85, z0 + 0.8], [0, t0 + 1.8, z0 + 0.5]].map(([x, y, z]) => new THREE.Vector3(x + dx, y - (1 - k)*0.2, z + (1 - k)*0.25)));
+    mk(taperTube(cv(0, 1), 40, 8, t => 0.24 - 0.17*t), G.red, g);
+    for (const sd of [-1, 1]) mk(taperTube(cv(sd*0.2, 0.85), 34, 6, t => 0.1 - 0.07*t), G.gold, g);
+    const t1 = top(1), z1 = zOf(1);
+    mk(taperTube(new THREE.CatmullRomCurve3([[0, t1 - 0.5, z1 - 0.05], [0, t1 + 0.1, z1 + 0.05], [0, t1 + 0.5, z1 - 0.05], [0, t1 + 0.55, z1 - 0.35]].map(p => new THREE.Vector3(...p))), 16, 6, t => 0.12 - 0.06*t), G.red, g); }
+  // Rammsporn aus Bronze mit drei Finnen an der Wasserlinie
+  { const z1 = zOf(1), rm = grp0(g, 0, 0.1, z1 + 0.05);
+    const body = new THREE.CylinderGeometry(0.05, 0.24, 1.2, 4, 1); body.rotateX(Math.PI/2); body.rotateZ(Math.PI/4); body.scale(0.75, 1.45, 1); mk(body, G.bronze, rm, 0, 0, 0);
+    for (const y of [-0.17, 0, 0.17]) mk(new THREE.BoxGeometry(0.36, 0.035, 0.28), G.bronze, rm, 0, y, 0.42);
+    mk(new THREE.BoxGeometry(0.06, 0.42, 0.06), G.bronze, rm, 0, 0, 0.56);
+    mk(new THREE.BoxGeometry(0.34, 0.62, 0.45), G.bronze, rm, 0, 0.02, -0.62); }
+  // Steuerruder an beiden Seiten des Hecks
+  for (const sd of [-1, 1]){ const s = 0.1, w = halfW(s), r = mk(new THREE.CylinderGeometry(0.06, 0.07, 3.2, 6), G.rail, g, sd*(w + 0.25), deckY(s) - 0.7, zOf(s) - 0.4, 0.55, 0, sd*0.12);
+    mk(new THREE.BoxGeometry(0.06, 1.0, 0.4), G.rail, r, 0, -1.4, 0); }
+  // Rote Fahne (Vexillum) am Heck
+  { const s = 0.1, fy = deckY(s), fz = zOf(s), fl = grp0(g, 0, fy, fz);
+    mk(new THREE.CylinderGeometry(0.035, 0.035, 2.8, 6), G.rail, fl, 0, 1.4, 0);
+    mk(new THREE.CylinderGeometry(0.03, 0.03, 0.95, 6).rotateZ(Math.PI/2), G.gold, fl, 0, 2.62, 0);
+    mk(new THREE.SphereGeometry(0.07, 8, 6), G.gold, fl, 0, 2.86, 0);
+    const cloth = mk(new THREE.PlaneGeometry(0.9, 1.1), G.flag, fl, 0, 2.06, 0, 0, Math.PI/2, 0); cloth.castShadow = false; g.userData.flag = cloth; }
+  // Ruder: eine Reihe auf jeder Seite (instanziert), Drehpunkt in der Ruderpforte unter dem goldenen Band
+  { const n = opts.oars || Math.round(L*0.95), sA = 0.24, sB = 0.72, inb = 1.0, out = L*0.19, list = [];
+    for (const sd of [-1, 1]) for (let i=0;i<n;i++){ const s = sA + (sB - sA)*i/(n - 1); list.push({ sd, x:sd*halfW(s)*0.99, y:top(s) - 0.42, z:zOf(s) }); }
+    const shaft = new THREE.CylinderGeometry(0.04, 0.05, inb + out, 6); shaft.rotateZ(Math.PI/2); shaft.translate((out - inb)/2, 0, 0);
+    const blade = new THREE.BoxGeometry(0.8, 0.24, 0.04); blade.translate(out - 0.3, 0, 0);
+    const ims = [new THREE.InstancedMesh(shaft, G.oar, list.length), new THREE.InstancedMesh(blade, G.oar, list.length)];
+    for (const im of ims){ im.castShadow = true; im.frustumCulled = false; g.add(im); }
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(0, 0, 0, 'YZX'), v = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1);
+    // sweep: + = Blatt nach vorne; pitch: Neigung nach unten; drawIn: Ruder eingezogen (m)
+    g.userData.setOars = (fn) => { list.forEach((o, i) => { const [sweep, pitch, drawIn] = fn(o, i);
+      e.set(0, o.sd > 0 ? -sweep : Math.PI + sweep, -pitch); q.setFromEuler(e);
+      v.set(o.x - o.sd*(drawIn || 0), o.y, o.z); m4.compose(v, q, one); for (const im of ims) im.setMatrixAt(i, m4); });
+      for (const im of ims) im.instanceMatrix.needsUpdate = true; };
+    g.userData.oarCount = list.length;
+    g.userData.setOars(() => [0, 0.26, 0]); }
+  return g; }
+function grp0(parent, x, y, z){ const o = new THREE.Group(); o.position.set(x, y, z); parent.add(o); return o; }
+
+/* Am Kai festgemachte Galeeren und eine, die auf dem Fluss auf und ab rudert */
+function buildGalleys(){
+  const qx = HARBOR.cx + HARBOR.hw, moored = [];
+  for (const [z, L, ry] of [[-21, 17, 0.0], [19, 18, Math.PI]]){ const s = makeGalley(L); s.position.set(qx + 5.3, RIVER_Y, z); s.rotation.y = ry; scene.add(s); keep(s); moored.push(s);
+    s.userData.setOars((o, i) => [0.04*Math.sin(i*1.7), 0.3, 0]);
+    // Laufplanke vom Kai aufs Deck
+    const H = s.userData.hull, zz = z + (ry ? -1 : 1)*H.zOf(0.4), w = H.halfW(0.4), y1 = RIVER_Y + H.top(0.4) - 0.1, y0 = groundH(qx - 0.6, zz) + 0.02;
+    const x0 = qx - 0.6, x1 = qx + 5.3 - w + 0.25, len = Math.hypot(x1 - x0, y1 - y0);
+    mk(new THREE.BoxGeometry(len, 0.07, 0.7), M('#7a5a3a', { tex:'wood' }), scene, (x0 + x1)/2, (y0 + y1)/2, zz, 0, 0, Math.atan2(y1 - y0, x1 - x0)).userData.keep = true; }
+  anims.push(t => { moored.forEach((s, i) => { s.position.y = RIVER_Y + Math.sin(t*0.7 + i*2)*0.05; s.rotation.z = Math.sin(t*0.55 + i)*0.012; s.rotation.x = Math.sin(t*0.4 + i*1.3)*0.006;
+    if (s.userData.flag) s.userData.flag.rotation.y = Math.PI/2 + Math.sin(t*1.6 + i)*0.25; }); });
+  // Die rudernde Galeere: fährt flussabwärts, wendet, fährt flussaufwärts und wendet wieder
+  const gal = makeGalley(19); scene.add(gal); keep(gal);
+  const Z0 = -210, Z1 = 210, V = 3.2, TT = 14, legT = (Z1 - Z0)/V, cyc = 2*legT + 2*TT, off = 3.5, dXdz = z => 2.5*0.022*Math.cos(z*0.022) + 1.5*0.011*Math.cos(z*0.011 + 1.3);
+  const wake = (() => { const geo = new THREE.PlaneGeometry(1, 1); geo.rotateX(-Math.PI/2);
+    const tex = canvasTex(64, 128, (x, W, H) => { const gr = x.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, 'rgba(255,255,255,0.0)'); gr.addColorStop(0.8, 'rgba(255,255,255,0.32)'); gr.addColorStop(1, 'rgba(255,255,255,0.12)'); x.fillStyle = gr; x.fillRect(0, 0, W, H); x.globalCompositeOperation = 'destination-in'; const gx = x.createLinearGradient(0, 0, W, 0); gx.addColorStop(0, 'rgba(0,0,0,0)'); gx.addColorStop(0.5, 'rgba(0,0,0,1)'); gx.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gx; x.fillRect(0, 0, W, H); });
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map:tex, transparent:true, depthWrite:false, fog:true })); m.scale.set(4.5, 1, 26); m.renderOrder = 2; scene.add(m); keep(m); return m; })();
+  anims.push(t => { const c = ((t + 40) % cyc + cyc) % cyc; let z, dir, turn = 0;
+    if (c < legT){ z = Z0 + V*c; dir = 1; } else if (c < legT + TT){ z = Z1; dir = 1; turn = (c - legT)/TT; } else if (c < 2*legT + TT){ z = Z1 - V*(c - legT - TT); dir = -1; } else { z = Z0; dir = -1; turn = (c - 2*legT - TT)/TT; }
+    const x = riverX(z) + off, base = Math.atan2(dXdz(z), 1), k = turn*turn*(3 - 2*turn);
+    gal.position.set(x, RIVER_Y + Math.sin(t*0.9)*0.04, z); gal.rotation.y = dir > 0 ? base + Math.PI*k : base + Math.PI + Math.PI*k; gal.rotation.z = Math.sin(t*0.7)*0.01;
+    const moving = turn === 0, ph = t*2.6;
+    // beim Wenden rudert die eine Seite vorwärts, die andere rückwärts
+    gal.userData.setOars(o => { const p = moving ? ph : ph*(o.sd > 0 ? 1 : -1); return [0.36*Math.sin(p), 0.24 - 0.1*Math.cos(p), 0]; });
+    if (gal.userData.flag) gal.userData.flag.rotation.y = Math.PI/2 + Math.sin(t*2.1)*0.35;
+    wake.visible = moving; if (moving){ const yaw = gal.rotation.y; wake.position.set(x - Math.sin(yaw)*22, RIVER_Y + 0.03, z - Math.cos(yaw)*22); wake.rotation.y = yaw; } });
 }
 /* ===================== ZUSTAND & SPEICHER ===================== */
 const STORE = 'roemerzeit-stadt-v1';
@@ -5425,13 +5668,23 @@ let lastFocus = null;
 function openModal(id){ closeModal(true); modal = id; tell({ type:'modal', modal:id }); lastFocus = document.activeElement; const el = document.getElementById(id); el.classList.remove('hidden');
   { const cd = el.querySelector('.card'); if (cd) cd.scrollTop = 0; }   /* Karten immer von oben zeigen */ const f = el.querySelector('[data-close], .btn'); if (f) setTimeout(() => f.focus({ preventScroll:true }), 30); keys = {}; resetJoy(); }
 function closeModal(silent){
-  if (!modal) return; const was = modal; document.getElementById(modal).classList.add('hidden'); modal = null; stopSpeech(); tell({ type:'modal', modal:null });
+  if (!modal) return; const was = modal; document.getElementById(modal).classList.add('hidden'); modal = null; stopSpeech(); stopVideo(); tell({ type:'modal', modal:null });
   if (!silent && was === 'info' && !celebrated && visited.size === STATIONS.length){ celebrated = true; setTimeout(() => { openModal('done'); burst(); }, 250); }
   if (!silent && was === 'start' && !started) beginGame();
 }
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal()));
 document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m && m.id !== 'start') closeModal(); }));
 
+/* Film zu einer Station: Knopf, der den Film in einem neuen Fenster öffnet, oder (wenn erlaubt) Einbettung erst nach dem Klick */
+function stopVideo(){ const v = $('#infoVideo'); if (v && v.querySelector('iframe')) v.innerHTML = ''; }
+function showVideo(st){ const v = $('#infoVideo'), vd = st.video; if (!v) return; v.innerHTML = ''; v.classList.toggle('hidden', !vd); if (!vd) return;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[c]);
+  const label = '<span class="vid-play" aria-hidden="true">▶</span><span class="vid-txt"><b>🎬 Film: ' + esc(vd.title) + '</b><small>' + esc(vd.source) + (vd.embed ? ' · hier abspielen' : ' · öffnet in einem neuen Fenster') + '</small></span>';
+  if (!vd.embed){ v.innerHTML = '<a class="vid-btn" href="' + esc(vd.url) + '" target="_blank" rel="noopener noreferrer">' + label + '</a>'; return; }
+  v.innerHTML = '<button class="vid-btn" type="button">' + label + '</button>';
+  v.querySelector('button').addEventListener('click', () => { stopSpeech();
+    v.innerHTML = '<div class="vid-frame"><iframe src="' + esc(vd.embed) + '" title="Film: ' + esc(vd.title) + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>' +
+      '<a class="vid-src" href="' + esc(vd.url) + '" target="_blank" rel="noopener noreferrer">Film bei ' + esc(vd.source) + ' öffnen ↗</a>'; }); }
 function openStation(id){
   const st = BY_ID[id]; const isNew = !visited.has(id);
   if (isNew){ visited.add(id); saveVisited(); updateProgress(); chime(); }
@@ -5439,6 +5692,7 @@ function openStation(id){
   $('#infoIcon').textContent = st.icon; $('#infoCat').textContent = CATS[st.cat].name; $('#infoTitle').textContent = st.title;
   $('#infoText').innerHTML = st.text.map(p => '<p>' + p + '</p>').join('');
   $('#infoFact').innerHTML = st.fact; $('#infoNew').classList.toggle('hidden', !isNew);
+  showVideo(st);
   $('#btnRead').onclick = () => speak(st.title + '. ' + st.text.join(' ') + ' Wusstest du? ' + st.fact);
   const art = $('#infoArt'), ca = typeof CLIPART !== 'undefined' ? CLIPART[id] : null;
   if (ca){ art.innerHTML = typeof ca === 'function' ? ca() : '<img src="' + ca + '" alt="">'; art.setAttribute('aria-label', 'Bild: ' + st.title); art.classList.remove('hidden'); } else { art.innerHTML = ''; art.classList.add('hidden'); }
