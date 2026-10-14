@@ -152,7 +152,8 @@ var ERAS = [
   { id:'altsteinzeit', file:'altsteinzeit.html', name:'Altsteinzeit', icon:'🦣', date:'bis ca. 10 000 v. Chr.', year:15000, sub:'Im Lager der Jäger und Sammler' },
   { id:'jungsteinzeit', file:'jungsteinzeit.html', name:'Jungsteinzeit', icon:'🌾', date:'ca. 5500 – 2200 v. Chr.', year:4000, sub:'Im Dorf der ersten Bauern' },
   { id:'bronzezeit', file:'bronzezeit.html', name:'Bronzezeit', icon:'🥉', date:'ca. 2200 – 800 v. Chr.', year:1500, sub:'Im Dorf der Bronzegiesser' },
-  { id:'eisenzeit', file:'eisenzeit.html', name:'Eisenzeit', icon:'⚒️', date:'ca. 800 – 15 v. Chr.', year:400, sub:'Bei den Kelten' }
+  { id:'eisenzeit', file:'eisenzeit.html', name:'Eisenzeit', icon:'⚒️', date:'ca. 800 – 15 v. Chr.', year:400, sub:'Bei den Kelten' },
+  { id:'roemerzeit', file:'roemerzeit.html', name:'Römerzeit', icon:'🏛️', date:'ca. 753 v. Chr. – 476 n. Chr.', year:-99, sub:'In der römischen Stadt' }
 ];
 var BY = {}; ERAS.forEach(function(e, i){ e.index = i; BY[e.id] = e; });
 var touch = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || false;
@@ -212,7 +213,7 @@ function updateZs(){ var m = cur && state[cur].modal, away = busy || (!!m && m !
 
 /* ---------- Zeitreise-Bildschirm ---------- */
 (function(){ var s = $('#streaks'); for (var i=0;i<22;i++){ var e = document.createElement('i'); e.style.top = (4 + Math.random()*92) + '%'; e.style.width = (18 + Math.random()*30) + 'vw'; e.style.animationDelay = (-Math.random()*1.1) + 's'; e.style.animationDuration = (0.7 + Math.random()*0.8) + 's'; s.appendChild(e); } })();
-function fmtYear(y){ y = Math.round(y); return (y >= 10000 ? y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : y.toString()) + ' v. Chr.'; }
+function fmtYear(y){ y = Math.round(y); if (y <= 0) return (1 - y) + ' n. Chr.'; return (y >= 10000 ? y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : y.toString()) + ' v. Chr.'; }
 var yearRaf = 0;
 function runYear(from, to, ms){
   cancelAnimationFrame(yearRaf); var t0 = performance.now(), el = $('#reiseYear');
