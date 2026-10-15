@@ -490,46 +490,94 @@ const STATIONS = [
 /* ---- Auf der Burg ---- */
 { id:"burg", cat:"burg", icon:"🏰", title:"Die Burg",
   text:["Reiche und adelige Menschen wohnten häufig auf <b>Burgen</b>. Oft lebten viele hundert Menschen auf einer Burg.",
-        "Eine dicke <b>Burgmauer</b> mit mehreren <b>Türmen</b> schützte die Burg. In der Mauer gab es Öffnungen, durch die man den Feind beobachten oder Gegenstände hinabwerfen konnte.",
+        "Die Burg war von einem <b>Graben</b> umgeben, der die Angreifer abhalten sollte. Wenn es die Lage erlaubte, leitete man Wasser hinein. Eine dicke <b>Ringmauer</b> umschloss die Burg. Zusammen mit dem Graben ergab das eine gewaltige Höhe.",
         "Die Bauern der Umgebung zahlten dem Burgherrn <b>Steuern</b> in Form von Nahrung. Dafür durften sie im Krieg in der Burg <b>Schutz</b> suchen."],
-  fact:"Ein Wassergraben rund um die Burg machte es Angreifern noch schwerer, an die Mauer heranzukommen.",
-  hint:"Hohe Mauern mit Zinnen und Türmen." },
+  fact:"Auch wenn kein Wasser im Graben war, kamen Angreifer nur mühsam über den tiefen Graben und die hohe Mauer.",
+  hint:"Hohe Mauern mit Zinnen und ein Graben voll Wasser." },
 { id:"zugbruecke", cat:"burg", icon:"⛓️", title:"Die Zugbrücke",
   text:["Die <b>Zugbrücke</b> war die Verbindung zwischen der Burg und der Aussenwelt. Sie führte über den Burggraben zum Tor.",
         "Mit Ketten und einer Winde konnte man sie <b>hochziehen</b>. Dann war die Burg von aussen nicht mehr zu erreichen, und die Brücke verschloss zusätzlich das Tor.",
         "Hinter der Brücke schützte oft noch ein schweres Gitter das Tor: das <b>Fallgitter</b>. Es konnte schnell heruntergelassen werden."],
   fact:"Die Winde für die Zugbrücke drehten oft mehrere Knechte zusammen, denn die Brücke war sehr schwer.",
   hint:"Eine Brücke, die sich heben kann." },
+{ id:"torturm", cat:"burg", icon:"🚪", title:"Der Torturm",
+  text:["Der einzige Weg in die Burg führte durch den <b>Torturm</b>. Das Tor war die <b>Schwachstelle</b> der Burg, denn es musste gross genug sein für Pferde und Wagen.",
+        "Darum schützte man es besonders gut: Das schwere <b>Fallgatter</b> liess sich schnell herunterlassen. In der Torstube darüber drehten die Wächter die <b>Winde</b> für die Zugbrücke.",
+        "Über dem Tor ragte die <b>Pechnase</b> aus der Mauer. Durch das offene Loch in ihrem Boden konnten die Verteidiger Angreifer mit heissem Pech oder Wasser begiessen."],
+  fact:"Pech ist eine klebrige, schwarze Masse aus Baumharz. Heiss gemacht war es eine gefährliche Waffe.",
+  hint:"Steig die Holztreppe zur Torstube über dem Tor hinauf." },
+{ id:"wehrgang", cat:"burg", icon:"🏹", title:"Wehrgang und Schiessscharten",
+  text:["Oben auf der Mauer verlief der <b>Wehrgang</b>. Auf diesem schmalen Steg konnten die Soldaten rasch dorthin laufen, wo sie für die Verteidigung gebraucht wurden.",
+        "Die Wehrgänge waren aus Stein oder Holz gebaut. Oft hatten sie ein <b>Dach</b>, das die Verteidiger vor Regen und Pfeilen schützte.",
+        "Rund um die Burg gab es <b>Schiessscharten</b>: kleine, schmale Öffnungen in der Mauer. Durch sie konnten die Verteidiger mit dem <b>Bogen</b> oder der <b>Armbrust</b> schiessen und waren selbst gut geschützt."],
+  fact:"Die Mauerzähne oben auf der Mauer heissen Zinnen. Zwischen ihnen konnten die Bogenschützen hinausschauen und schiessen.",
+  hint:"Eine steinerne Treppe führt vom Hof hinauf auf die Mauer." },
+{ id:"wachtturm", cat:"burg", icon:"🛡️", title:"Der Wachtturm",
+  text:["Im <b>Wachtturm</b> wohnten die Soldaten, welche die Burg bewachten. Oben auf der Plattform hielten sie Ausschau, ob sich Feinde näherten.",
+        "Im Turm lagen die <b>Mannschaftsräume</b>, wo die Soldaten schliefen und assen, und die <b>Waffenkammer</b> mit Speeren, Schwertern, Schilden und Armbrüsten.",
+        "Ganz unten lag das <b>Verlies</b>, ein dunkles Gefängnis ohne Fenster. Gefangene wurden durch ein Loch in der Decke, das <b>Angstloch</b>, an einem Seil hinuntergelassen."],
+  fact:"Das Verlies hatte meist keine Tür. Wer dort gefangen war, kam nur über ein Seil oder eine Leiter wieder hinaus.",
+  hint:"Ein grosser Turm vorne an der Mauer, mit einer Tür zum Hof." },
 { id:"bergfried", cat:"burg", icon:"🗼", title:"Der Bergfried",
   text:["Der <b>Bergfried</b> ist der <b>höchste Turm</b> einer Burg. Von oben konnten die Wächter weit ins Land hinausschauen.",
-        "Er war der <b>letzte Zufluchtsort</b>, wenn Feinde in die Burg eingedrungen waren. Seine Mauern waren mehrere Meter dick.",
-        "Der Eingang lag hoch oben in der Mauer. Man erreichte ihn nur über eine <b>Leiter</b> oder eine Holztreppe, die man im Notfall hochziehen konnte."],
-  fact:"Ganz unten im Bergfried gab es manchmal ein <b>Verlies</b>, einen dunklen Raum ohne Fenster.",
-  hint:"Der höchste Turm mit dem Eingang hoch oben." },
+        "Er diente den Bewohnern im Notfall als <b>letzter Zufluchtsort</b>. Darum lagerten darin Vorräte, und er konnte vorübergehend als <b>Wohnturm</b> benutzt werden.",
+        "Der Eingang lag hoch oben in der Mauer. Man erreichte ihn nur über eine <b>Leiter</b> oder einen kleinen Steg vom Wehrgang aus, den man im Notfall abbauen konnte."],
+  fact:"Die Mauern eines Bergfrieds waren oft mehrere Meter dick.",
+  hint:"Der höchste Turm. Sein Eingang liegt oben beim Wehrgang." },
 { id:"palas", cat:"burg", icon:"🍗", title:"Der Palas und das Festmahl",
-  text:["Der <b>Palas</b> war das Wohnhaus des Burgherrn. Darin lag der grosse Saal, in dem gegessen, gefeiert und Gäste empfangen wurden.",
+  text:["Der <b>Palas</b> war das Wohngebäude der Ritterfamilie. Er war mehrstöckig und hatte Schlafräume, eine Küche, Keller und Vorratsräume. Im grossen <b>Saal</b> wurde gegessen, gefeiert und Gäste empfangen.",
         "Im Alltag ass man vor allem <b>Getreide</b> und <b>Eier</b>. Weil die Zähne der Menschen so schlecht waren, kochte man das Getreide oft zu <b>Brei</b>. Fleisch gab es selten, denn die Tiere waren zu wertvoll.",
         "Bei einem <b>Fest</b> brachte man Rehe, Hasen, Wildschweine oder Hirsche von der <b>Jagd</b> mit. Zu trinken gab es Wasser, Milch, Säfte, Wein und Bier. Weil das Wasser oft schmutzig war, tranken viele lieber Wein oder Bier."],
   fact:"Gabeln gab es noch kaum. Man ass mit Messer, Löffel und den Fingern. Statt auf Tellern lag das Essen oft auf dicken Brotscheiben.",
-  hint:"Eine lange Tafel mit Braten in der grossen Halle." },
+  hint:"Eine lange Tafel im grossen Saal. Die Treppe führt aussen am Palas hinauf." },
+{ id:"kueche", cat:"burg", icon:"🍲", title:"Die Burgküche",
+  text:["In der <b>Burgküche</b> wurde auf einer grossen, offenen <b>Herdstelle</b> gekocht. Über dem Feuer hing ein Kessel mit Brei oder Suppe.",
+        "Für ein Fest drehte ein Küchenjunge stundenlang den <b>Bratspiess</b> mit dem Fleisch. Der Rauch zog durch einen grossen Kamin ab.",
+        "Im <b>Vorratsraum</b> lagerten Getreide, Wein, Käse, Äpfel und geräuchertes Fleisch. Die Vorräte mussten reichen, wenn die Burg <b>belagert</b> wurde und niemand mehr hinein- oder hinausgehen konnte."],
+  fact:"Damit Fleisch lange haltbar blieb, wurde es gesalzen oder im Rauch getrocknet. Kühlschränke gab es noch nicht.",
+  hint:"Im Erdgeschoss des Palas brennt ein grosses Feuer." },
 { id:"kemenate", cat:"burg", icon:"🔥", title:"Die Kemenate",
   text:["Die <b>Kemenate</b> war das Spiel- und Schlafzimmer der Kinder und ihrer Mütter.",
         "Hier gab es etwas Besonderes: einen <b>Kamin</b>. Oft war die Kemenate der einzige warme Raum der Burg, denn die dicken Steinmauern waren kalt und feucht.",
         "Die Burgherrin und ihre Töchter spannen hier Wolle, stickten und spielten mit den Kindern. Wandteppiche hielten die Kälte ein wenig ab."],
   fact:"Das Wort «Kemenate» kommt vom lateinischen «caminata». Das heisst «Raum mit Kamin».",
-  hint:"Ein warmes Zimmer mit Kamin." },
+  hint:"Ein warmes Zimmer mit Kamin, ganz oben im Palas." },
+{ id:"abort", cat:"burg", icon:"🚽", title:"Der Abort",
+  text:["Eine Toilette nannte man im Mittelalter <b>Abort</b>. Auf der Burg lag er in einem kleinen <b>Erker</b>, der an der Aussenwand aus der Mauer ragte.",
+        "Im Erker gab es ein Brett mit einem Loch. Darunter war der Erker offen, und alles fiel einfach in die Tiefe, in den <b>Burggraben</b>.",
+        "Das roch nicht gut! Aber so blieb wenigstens die Burg selbst sauber. Statt Toilettenpapier brauchte man Moos, Heu oder Stofffetzen."],
+  fact:"Eine Wasserspülung gab es noch nicht. Darum war das Wasser im Burggraben ziemlich schmutzig.",
+  hint:"Ganz oben im Palas: Wohin führt die kleine Tür in der Aussenmauer?" },
 { id:"kapelle", cat:"burg", icon:"✝️", title:"Die Burgkapelle",
   text:["In vielen Burgen gab es eine eigene kleine Kirche, die <b>Burgkapelle</b>.",
         "Hier beteten der Burgherr, seine Familie und die Bewohner der Burg. Ein Priester, der <b>Burgkaplan</b>, hielt die Messe.",
         "Der Glaube war für die Menschen im Mittelalter sehr wichtig. Sie hofften, dass Gott sie vor Krankheit, Hunger und Krieg beschützt."],
   fact:"Der Burgkaplan konnte meistens lesen und schreiben. Darum schrieb er auch die Briefe und Urkunden für den Burgherrn.",
   hint:"Eine kleine Kirche in der Burg." },
-{ id:"burghof", cat:"burg", icon:"🐴", title:"Leben im Burghof",
+{ id:"burghof", cat:"burg", icon:"⚒️", title:"Leben im Burghof",
   text:["Neben der Familie des <b>Burgherrn</b> und der <b>Burgherrin</b> lebten viele Menschen auf der Burg: <b>Mägde</b> und <b>Knechte</b>, Küchenpersonal, der <b>Stallmeister</b>, <b>Steinmetze</b>, <b>Zimmermänner</b> und <b>Schmiede</b>.",
-        "Auf dem <b>Burghof</b> standen der Stall, das <b>Brunnenhaus</b> und die Werkstätten. Hier wurde gehämmert, gesägt und Wasser geschöpft.",
+        "Im <b>Burghof</b> gab es eine <b>Schmiedewerkstatt</b> und weitere Werkstätten. Der Schmied machte Hufeisen, Nägel und Waffen, der Zimmermann sägte Balken für Dächer und Brücken.",
         "Die Besatzung verteidigte die Burg bei Angriffen. Nur wenige Ritter konnten es sich leisten, auf einer Burg zu leben. Viele waren dort nur Angestellte und gingen oft auf die <b>Jagd</b>, um für Nahrung zu sorgen."],
-  fact:"Ein tiefer Brunnen war für eine Burg lebenswichtig. Ohne Wasser hätte sie bei einer Belagerung nicht lange durchgehalten.",
-  hint:"Stall, Brunnen und Schmiede im Hof." },
+  fact:"Ohne Schmied ging auf der Burg nichts: Er beschlug die Pferde und flickte Werkzeuge, Ketten und Rüstungen.",
+  hint:"Wo hämmert der Schmied auf den Amboss?" },
+{ id:"brunnen", cat:"burg", icon:"🪣", title:"Der Ziehbrunnen",
+  text:["Im Burghof stand der <b>Ziehbrunnen</b>. Hier holten die Mägde und Knechte das <b>Trinkwasser</b> aus der Tiefe des Bodens.",
+        "Mit einer <b>Seilwinde</b> liessen sie einen Eimer in den Brunnen hinunter und kurbelten ihn voll Wasser wieder herauf.",
+        "Ein Brunnen war für eine Burg <b>lebenswichtig</b>. Ohne Wasser hätte sie bei einer Belagerung nicht lange durchgehalten."],
+  fact:"Manche Burgbrunnen waren über 100 Meter tief! Oft gruben die Arbeiter viele Jahre daran.",
+  hint:"Wo zieht eine Magd den Eimer herauf?" },
+{ id:"stall", cat:"burg", icon:"🐴", title:"Die Stallungen",
+  text:["In der Nähe des Brunnens lagen die <b>Stallungen</b> für die Pferde. Pferde waren sehr wertvoll: Die Ritter brauchten sie für den Kampf, die Jagd und auf Reisen.",
+        "Der <b>Stallmeister</b> und seine Knechte fütterten die Pferde mit Hafer und Heu, striegelten ihr Fell und streuten frisches Stroh.",
+        "Auf der Burg gab es auch <b>Schweine-, Ziegen- und Hühnerställe</b>. So hatten die Bewohner Fleisch, Milch und Eier, auch wenn die Burg belagert wurde."],
+  fact:"Ein gutes Streitross war sehr teuer. Dafür hätte man manchmal einen ganzen Bauernhof kaufen können.",
+  hint:"Wo stehen die Pferde in ihren Boxen?" },
+{ id:"garten", cat:"burg", icon:"🌿", title:"Der Kräutergarten",
+  text:["Viele Burgen hatten einen <b>Kräutergarten</b>. Darin wuchsen Kräuter, Gemüse und Heilpflanzen.",
+        "Mit <b>Kräutern</b> wie Salbei, Petersilie oder Thymian würzte man das Essen. Kohl, Rüben und Zwiebeln kamen in den Suppentopf.",
+        "Viele Pflanzen dienten als <b>Medizin</b>. Die Burgherrin und die Mägde wussten, welches Kraut bei Husten, Bauchweh oder Wunden half."],
+  fact:"Ärzte gab es auf dem Land kaum. Darum war das Wissen über Heilkräuter sehr wichtig.",
+  hint:"Beete mit Kräutern hinter einem geflochtenen Zaun." },
 { id:"gaukler", cat:"burg", icon:"🤹", title:"Gaukler und Spielleute",
   text:["<b>Gaukler</b> und <b>Spielleute</b> zogen von Dorf zu Dorf und von Burg zu Burg. Sie gehörten zu den Fahrenden, die keinem Stand angehörten.",
         "Auf den Burgen blieben sie oft einige Tage. Sie jonglierten, zeigten Kunststücke, erzählten Geschichten und machten Musik.",
@@ -614,6 +662,27 @@ function caFeastTable(x, y, s){ return caT(x, y, s, caR(-100, -36, 200, 10, 2, C
   caC(22, -42, 4, '#f4f0e0') + caC(30, -42, 4, '#f4f0e0') + caP('M60 -36L58 -54H70L68 -36Z', '#c8a040') + caP('M-80 -36L-82 -52H-70L-72 -36Z', '#8a6a4a')); }
 function caFireplace(x, y, s){ return caT(x, y, s, caR(-50, -110, 100, 110, 2, MC.stone) + caR(-56, -76, 112, 10, 2, MC.stone2) + caP('M-34 0V-56H34V0Z', '#2a2018') + caFire(0, 0, 0.8) + caP('M-30 -110H30V-140H-30Z', MC.stone)); }
 function caHorseKnight(x, y, s, c){ return caT(x, y, s, caHorse('#8a5a32') + caP('M-36 -50L-30 -24H30L36 -50Z', c || MC.royal) + caWho(0, -40, 0.75, { tunic:MC.mail, sleeves:true, pants:MC.mail, arms:[80, 10], bend:[10, 10], hold:[{ svg:caItem.spear(90, '#d8d8d8'), rot:80 }], over:caSurcoat(c || MC.royal) + caGreatHelm('#e8e0d0') })); }
+/* Beschriftung mit Strich zum Bauteil */
+function caLabel(x, y, tx, ty, t){ return caL(x, y, tx, ty, '#3a2a1a', 1.6) + '<text x="' + tx + '" y="' + (ty + (ty > y ? 11 : -3)) + '" font-size="12" text-anchor="middle" fill="#3a2a1a" font-family="Fredoka,Arial,sans-serif" font-weight="600">' + t + '</text>'; }
+function caCren(x0, x1, y, h){ let z = ''; for (let x = x0; x < x1 - 4; x += 16) z += caR(x, y - h, 10, h, 1, MC.stone); return z; }
+function caGateTower(x, y, s){ return caT(x, y, s, caR(-60, -170, 120, 170, 2, MC.stone) + caCren(-60, 60, -170, 14) +
+  caP('M-24 0V-60Q-24 -84 0 -84Q24 -84 24 -60V0Z', '#2a2420') + '<path d="M-21 -66H21M-22 -52H22M-22 -38H22M-13 -80V-30M0 -84V-30M13 -80V-30" stroke="#7a7a80" stroke-width="3.2"/>' +
+  '<path d="M-20 -30L-18 -22L-16 -30M-6 -30L-4 -22L-2 -30M6 -30L8 -22L10 -30M16 -30L18 -22L20 -30" stroke="#7a7a80" stroke-width="2.4" fill="none"/>' +
+  caR(-30, -132, 60, 28, 2, MC.stone2) + caR(-26, -104, 52, 5, 1, '#2a2420') + caE(-8, -92, 3, 5, '#1a1410') + caE(9, -86, 3, 5, '#1a1410') + caE(1, -76, 2.6, 4, '#1a1410') +
+  caR(-46, -150, 6, 22, 2, '#2a2420') + caR(40, -150, 6, 22, 2, '#2a2420') + caL(-30, -100, -40, 26, '#3a3a3e', 2.6) + caL(30, -100, 40, 26, '#3a3a3e', 2.6)); }
+function caWallWalk(x, y, s){ return caT(x, y, s, caR(-150, -110, 300, 110, 1, MC.stone) + caCren(-150, 150, -110, 18) + caP('M-156 -150L156 -150L170 -126H-170Z', MC.roof) + [-120, -40, 40, 120].map(px => caR(px - 3, -150, 6, 40, 1, CA.wood2)).join('') +
+  [-110, -30, 50, 130].map(px => caR(px - 3, -70, 6, 26, 2, '#2a2420')).join('')); }
+function caWatchCut(x, y, s){ return caT(x, y, s, caR(-80, -210, 160, 250, 2, MC.stone) + caCren(-80, 80, -210, 14) + caR(-66, -196, 132, 66, 1, '#5a4636') + caR(-66, -126, 132, 76, 1, '#5a4636') + caR(-66, -46, 132, 42, 1, '#2a2018') +
+  caR(-80, -130, 160, 6, 1, CA.wood2) + caR(-80, -50, 160, 6, 1, CA.wood2) + caR(-12, -51, 24, 7, 1, '#1a1410') + '<path d="M-10 -50V-44M-4 -50V-44M2 -50V-44M8 -50V-44" stroke="#7a7a80" stroke-width="2"/>' +
+  caR(-60, -112, 50, 8, 2, CA.wood) + caR(-60, -122, 50, 8, 2, '#c8a860') + [0, 1, 2, 3].map(i => caL(20 + i*10, -60, 26 + i*10, -122, CA.wood2, 3) + caP('M' + (22 + i*10) + ' -128L' + (26 + i*10) + ' -138L' + (30 + i*10) + ' -128Z', '#c8ccd4')).join('')); }
+function caOriel(x, y, s){ return caT(x, y, s, caR(-120, -200, 120, 200, 1, MC.stone) + caR(0, -150, 46, 40, 2, MC.stone2) + caP('M-2 -150L50 -150L44 -166H-2Z', MC.slate) + caP('M2 -110L42 -110L34 -96H10Z', MC.stone2) + caR(6, -146, 34, 30, 1, '#5a4636') + caR(10, -128, 26, 8, 2, CA.wood) + caE(23, -128, 6, 2, '#1a1410') +
+  caR(-130, -2, 260, 40, 2, CA.water) + caE(22, -60, 3, 4, '#6a4a2a') + caE(22, -30, 3, 4, '#6a4a2a') + '<path d="M58 -40q6 -6 0 -12q-6 -6 0 -12M70 -34q6 -6 0 -12q-6 -6 0 -12" stroke="#7a9a3a" stroke-width="2.6" fill="none"/>'); }
+function caWellCut(x, y, s){ return caT(x, y, s, caR(-60, -6, 120, 50, 1, '#8a7258') + caR(-18, -6, 36, 50, 1, '#2a2420') + caR(-18, 30, 36, 14, 1, CA.water) + caR(-34, -36, 68, 30, 4, MC.stone) + caL(-28, -36, -28, -96, CA.wood2, 5) + caL(28, -36, 28, -96, CA.wood2, 5) +
+  caP('M-42 -94L0 -122L42 -94Z', MC.roof) + caL(-30, -80, 30, -80, CA.wood, 6) + caL(0, -80, 0, 22, '#8a7450', 1.6) + caP('M-7 22L-6 34H6L7 22Z', CA.wood) + caL(30, -80, 38, -70, CA.iron, 3)); }
+function caStable(x, y, s){ return caT(x, y, s, caR(-140, -110, 280, 110, 1, '#6a5038') + caP('M-150 -110L0 -150L150 -110Z', MC.roof) + [-140, -70, 0, 70, 140].map(px => caR(px - 4, -110, 8, 110, 1, CA.wood2)).join('') + caR(-140, -12, 280, 12, 1, '#c8a860')); }
+function caBeds(x, y, s){ let z = ''; for (let i=0;i<3;i++){ const bx = -100 + i*80; z += caR(bx - 30, -16, 60, 16, 2, CA.wood) + caR(bx - 26, -20, 52, 6, 2, '#4a3a28');
+    for (let k=0;k<5;k++) z += caP('M' + (bx - 20 + k*10) + ' -20Q' + (bx - 24 + k*10) + ' -' + (34 + (k % 2)*8) + ' ' + (bx - 16 + k*10) + ' -' + (44 + (k % 2)*6) + 'Q' + (bx - 14 + k*10) + ' -30 ' + (bx - 16 + k*10) + ' -20Z', ['#5a8a3a', '#7aa04a', '#4a7a5a'][(i + k) % 3]); }
+  return caT(x, y, s, z + '<path d="M-150 -30H150M-150 -10H150" stroke="#8a6a3a" stroke-width="3"/>' + [-150, -110, -70, -30, 10, 50, 90, 130].map(px => caL(px, 0, px, -38, '#6a4a2a', 3)).join('')); }
 const CLIPART = {
   staende: () => caArt('day', caPyramid(160, 192, 1) + caWho(160, 72, 0.5, { tunic:'#7a2a6a', hair:CA.hair[4], beard:true, arms:[30, 20], over:caCrown() }) +
     caWho(22, 192, 0.5, { tunic:'#6a6458', hair:CA.hair[0], beard:true, sit:true, arms:[70, 10] }) + caWho(300, 192, 0.5, { tunic:'#3a8a3a', hair:CA.hair[2], arms:[150, 150] }, true)),
@@ -657,6 +726,19 @@ const CLIPART = {
   kemenate: () => caArt('inside', caFireplace(90, 186, 1) + caWho(190, 188, 0.95, { sit:true, tunic:'#6a3a8a', dress:true, long:true, hair:CA.hair[3], arms:[70, 60], bend:[30, 30], hold:[{ svg:caItem.needle(), rot:20 }], over:caHood('#f2ece0') }) +
     caWho(270, 190, 0.6, { kid:true, tunic:'#c8402a', hair:CA.hair[2], arms:[140, 20] }, true) + caWho(240, 190, 0.6, { kid:true, tunic:'#e0c0c8', dress:true, long:true, hair:CA.hair[3], arms:[60, 30] })),
   kapelle: () => caArt('day', caChurch(160, 186, 1.1) + caWho(50, 190, 0.85, { tunic:'#2a2420', dress:true, long:true, hair:CA.hair[4], arms:[90, 90], bend:[60, 60] }) + caWho(270, 190, 0.85, { tunic:MC.crimson, hair:CA.hair[0], beard:true, arms:[90, 90], bend:[70, 70] }, true)),
+  torturm: () => caArt('day', caR(0, 176, 320, 24, 1, CA.water) + caGateTower(160, 178, 0.92) + caWho(160, 12, 0.32, { tunic:MC.crimson, helmet:true, arms:[150, 20] }) +
+    caLabel(188, 66, 262, 52, 'Pechnase') + caLabel(178, 128, 262, 140, 'Fallgatter') + caLabel(120, 30, 56, 30, 'Torturm')),
+  wehrgang: () => caArt('day', caWallWalk(160, 196, 1) + caWho(80, 86, 0.62, { tunic:'#5a6a3a', hair:CA.hair[1], arms:[80, 100], bend:[0, 40], hold:[{ svg:caItem.stick(36), rot:0 }] }) +
+    caWho(220, 86, 0.62, { tunic:MC.mail, helmet:true, arms:[120, 30], hold:[{ svg:caItem.spear(70, '#d8d8d8'), rot:10 }] }, true) + caLabel(130, 148, 160, 176, 'Schiessscharte') + caLabel(160, 60, 160, 22, 'Wehrgang mit Dach')),
+  wachtturm: () => caArt('inside', caWatchCut(160, 160, 0.82) + caWho(160, -6, 0.3, { tunic:MC.crimson, helmet:true, arms:[150, 20] }) +
+    caWho(140, 56, 0.42, { tunic:MC.mail, helmet:true, sit:true, arms:[70, 30] }) + caWho(182, 56, 0.42, { tunic:'#7a6a4a', hair:CA.hair[0], beard:true, sit:true, arms:[60, 20] }, true) +
+    caWho(160, 152, 0.34, { tunic:'#6a6458', hair:CA.hair[4], beard:true, sit:true, arms:[40, 40] }) + caLabel(102, 150, 40, 170, 'Verlies') + caLabel(115, 70, 40, 76, 'Mannschaftsraum') + caLabel(196, 92, 282, 100, 'Waffen')),
+  kueche: () => caArt('inside', caFireplace(150, 186, 1.2) + caL(80, 116, 220, 116, '#3a3a3e', 3) + caE(150, 116, 22, 10, '#b8642a') + caP('M110 120Q112 150 150 152Q188 150 190 120Z', '#2a2a2e') +
+    caWho(250, 188, 0.85, { tunic:'#e8e0cc', hair:CA.hair[1], beard:true, arms:[120, 30], hold:[{ svg:caItem.staff(40), rot:-30 }] }, true) + caWho(56, 188, 0.6, { kid:true, tunic:'#8a7a5a', hair:CA.hair[2], arms:[100, 20] })),
+  abort: () => caArt('day', caOriel(200, 184, 0.92) + caLabel(226, 52, 286, 34, 'Abort') + caLabel(150, 186, 80, 160, 'Burggraben')),
+  brunnen: () => caArt('day', caWellCut(150, 150, 1.05) + caWho(232, 140, 0.78, { tunic:'#8a7a5a', dress:true, long:true, hair:CA.hair[1], arms:[120, 140], bend:[20, 20], over:caHood('#e8e0cc') }, true) + caLabel(150, 182, 66, 186, 'tief im Boden: Wasser')),
+  stall: () => caArt('day', caStable(160, 186, 1) + caT(96, 184, 0.78, caHorse('#4a3022')) + caT(226, 184, 0.78, caHorse('#e0d8c8'), 0, true) + caWho(160, 190, 0.7, { tunic:'#6a5a3a', hair:CA.hair[0], arms:[110, 30], hold:[{ svg:caItem.brush(), rot:0 }] })),
+  garten: () => caArt('day', caBeds(160, 190, 1) + caWho(262, 176, 0.7, { tunic:'#6a7a5a', dress:true, long:true, hair:CA.hair[3], arms:[100, 30], hold:[{ svg:caItem.basket(), rot:0 }], over:caHood('#e8e0cc') }, true)),
   burghof: () => caArt('day', '<path d="M0 150H320V200H0Z" fill="#b8a888"/>' + caR(0, 40, 320, 110, 1, MC.stone) + caR(20, 80, 90, 70, 1, CA.wood) + caP('M14 80L65 50L116 80Z', MC.thatch) + caT(66, 150, 0.7, caHorse('#4a3022')) +
     caT(190, 150, 1, caR(-24, -30, 48, 30, 3, MC.stone2) + caL(-22, -30, -22, -70, CA.wood2, 4) + caL(22, -30, 22, -70, CA.wood2, 4) + caP('M-30 -70L0 -86L30 -70Z', MC.roof)) +
     caWho(240, 190, 0.85, { tunic:'#5a4a3a', hair:CA.hair[0], arms:[150, 30], bend:[10, 10], hold:[{ svg:caItem.hammer(), rot:10 }] }, true) + caAnvil(275, 190, 1) + caWho(140, 190, 0.85, { tunic:'#8a7a5a', dress:true, long:true, hair:CA.hair[1], arms:[60, 20], hold:[{ svg:caItem.bucket(), rot:0 }], over:caHood('#e8e0cc') })),
@@ -694,6 +776,13 @@ const QUIZ = [
  { q:"Wie wurde die Pest auf die Menschen übertragen?", a:["Durch Flöhe von Ratten","Durch Sonnenlicht","Durch Kartoffeln","Durch Musik"], why:"Rattenflöhe trugen das Pest-Bakterium von den Ratten auf die Menschen." },
  { q:"Wie viele Menschen starben zwischen 1347 und 1353 an der Pest?", a:["Etwa ein Drittel aller Menschen in Europa","Fast niemand","Nur die Könige","Genau 100 Menschen"], why:"Es waren etwa 25 Millionen Menschen." },
  { q:"Was steckte im Schnabel der Pestärzte?", a:["Duftende Kräuter","Ein Vogel","Eine Glocke","Gold"], why:"Man glaubte, die Pest komme von stinkender Luft. Die Kräuter sollten schützen." },
+ { q:"Wozu diente die Pechnase über dem Tor?", a:["Angreifer mit heissem Pech zu begiessen","Den Rauch aus der Küche abzuleiten","Die Pferde zu füttern","Die Glocke zu läuten"], why:"Die Pechnase ragte über dem Tor aus der Mauer und war unten offen." },
+ { q:"Was ist ein Fallgatter?", a:["Ein schweres Gitter, das das Tor verschliesst","Eine Falle für Ratten","Ein Zaun im Kräutergarten","Ein Gürtel des Ritters"], why:"Es liess sich schnell herunterlassen, wenn Feinde kamen." },
+ { q:"Wozu dienten die Schiessscharten?", a:["Durch sie schossen die Verteidiger mit Bogen und Armbrust","Durch sie kam frische Luft in den Stall","Durch sie warf man den Abfall hinaus","Durch sie floss das Regenwasser ab"], why:"Die schmalen Öffnungen schützten die Schützen und liessen sie trotzdem hinausschiessen." },
+ { q:"Was ist der Wehrgang?", a:["Ein Steg oben auf der Mauer für die Verteidiger","Ein Weg durch den Kräutergarten","Ein Tanz der Gaukler","Der Gang zum Abort"], why:"Auf ihm liefen die Soldaten rasch dorthin, wo sie gebraucht wurden." },
+ { q:"Wo lag das Verlies?", a:["Ganz unten im Wachtturm","Oben auf dem Dach des Palas","Im Kräutergarten","Auf der Zugbrücke"], why:"Es war ein dunkles Gefängnis ohne Fenster. Man kam nur durch das Angstloch hinein." },
+ { q:"Wo lag der Abort auf der Burg?", a:["In einem Erker an der Aussenwand","Mitten im Burghof","Im Brunnen","In der Kapelle"], why:"Unten war der Erker offen, und alles fiel in den Burggraben." },
+ { q:"Warum war der Ziehbrunnen für eine Burg so wichtig?", a:["Ohne Wasser hätte die Burg eine Belagerung nicht überstanden","Weil man darin die Kleider wusch","Weil darin Fische lebten","Weil man darin den Wein kühlte"], why:"Das Trinkwasser kam aus der Tiefe des Bodens." },
  { q:"Was ist der Bergfried?", a:["Der höchste Turm der Burg","Der Burggraben","Das Schlafzimmer der Kinder","Ein Friedhof auf dem Berg"], why:"Er war der letzte Zufluchtsort bei einem Angriff." },
  { q:"Was war die Kemenate?", a:["Ein Zimmer mit Kamin für die Kinder und Mütter","Der Pferdestall","Die Waffenkammer","Der Wassergraben"], why:"Oft war die Kemenate der einzige warme Raum der Burg." },
  { q:"Mit wie vielen Jahren wurde ein Junge zum Pagen?", a:["Mit 7 Jahren","Mit 21 Jahren","Mit 2 Jahren","Mit 40 Jahren"], why:"Mit 7 Jahren wurde er Page, mit 14 Knappe und mit 21 Ritter." },
@@ -1294,9 +1383,17 @@ function rectD(r, x, z){ // > 0 ausserhalb, < 0 innerhalb (Abstand zur Kante)
   return Math.max(Math.abs(lx) - r.hw, Math.abs(lz) - r.hl);
 }
 const WORLD_R = 118;                                        // so weit darf man gehen
-/* Die Burg: runde Ringmauer (Mitte der Mauer bei WR), davor der Wassergraben von M0 bis M1, das Tor im Süden */
-const CASTLE = { x:-46, z:-42, WR:19, WT:2.4, M0:22.3, M1:27, MY:-1.0, MB:-3.0, GATE:22.2 };
-const castleD = (x, z) => Math.hypot(x - CASTLE.x, z - CASTLE.z);
+/* Die Burg: eine viereckige Wasserburg wie auf dem Bild im Arbeitsblatt. Lokale Koordinaten: Ursprung in der Burgmitte, +z zeigt nach Süden.
+   Die Mauerlinie läuft bei X0..X1 und Z0..Z1, der Hof liegt flach auf der Höhe CY, der Wehrgang auf WY. Rundherum der Wassergraben (M0..M1 von der Mauerlinie). */
+const CASTLE = { x:-46, z:-42, X0:-20, X1:19, Z0:-19, Z1:19, WT:2.4, CY:1.0, WH:7.0, M0:1.7, M1:10.5, MY:-0.8, MB:-2.6 };
+CASTLE.WY = CASTLE.CY + CASTLE.WH;
+/* Abstand zur Mauerlinie: innen negativ, aussen positiv (an den Ecken gerundet) */
+function castleSD(x, z){ const C = CASTLE, lx = x - C.x - (C.X0 + C.X1)/2, lz = z - C.z - (C.Z0 + C.Z1)/2, qx = Math.abs(lx) - (C.X1 - C.X0)/2, qz = Math.abs(lz) - (C.Z1 - C.Z0)/2;
+  return Math.hypot(Math.max(qx, 0), Math.max(qz, 0)) + Math.min(Math.max(qx, qz), 0); }
+const castleD = (x, z) => castleSD(x, z) + 19;
+/* Punkt im Abstand d von der Mauerlinie in Richtung a (von der Burgmitte aus) */
+function castlePt(a, d){ const C = CASTLE, cx = C.x + (C.X0 + C.X1)/2, cz = C.z + (C.Z0 + C.Z1)/2, ux = Math.sin(a), uz = Math.cos(a); let lo = 0, hi = 80;
+  for (let i=0;i<30;i++){ const m = (lo + hi)/2; if (castleSD(cx + ux*m, cz + uz*m) < d) lo = m; else hi = m; } return [cx + ux*lo, cz + uz*lo]; }
 function cW(lx, lz){ return [CASTLE.x + lx, CASTLE.z + lz]; }
 /* Die Stadt mit Mauer, Marktplatz, Rathaus und Kirche; Tor im Süden und Wassertor im Osten zum Hafen */
 const TOWN = rect(50, -46, 24, 21);
@@ -1318,13 +1415,13 @@ const FIELDS = [rect(-72, 74, 9, 6, 0.1), rect(-52, 80, 8, 6, 0.1), rect(-86, 58
 const PYRAMID = [13, 74];
 const PATHS = [
   [[0,140],[0,30]],                                         // Landstrasse vom Start her
-  [[0,30],[-20,10],[-42,-9],[-46,-14]],                     // zur Burg
+  [[0,30],[-20,10],[-33,-4],[-37,-11.5]],                   // zur Burg
   [[0,30],[30,4],[50,-16],[50,-22]],                        // zur Stadt
   [[0,40],[-26,44],[-40,46]],                               // ins Dorf
   [[0,40],[12,44]],                                         // zum Turnierplatz
   [[-56,48],[-72,28],[-76.5,13]],                           // vom Dorf zur Motte
   [[-50,56],[-60,70]],                                      // zu den Feldern
-  [[-42,-9],[-70,-2],[-76.4,10]],                            // von der Burg zur Motte
+  [[-33,-4],[-58,-2],[-70,-1],[-76.4,10]],                   // von der Burg zur Motte
   [[74,-44],[92,-44]],                                      // vom Wassertor zum Hafen
   [[1.5,77],[7,80]]                                         // zur Ständepyramide
 ];
@@ -1336,7 +1433,7 @@ function segDist(px,pz,ax,az,bx,bz){ const dx=bx-ax, dz=bz-az; const t=Math.max(
 function pathDist(x,z){ let d=1e9; for (const p of PATHS) for (let i=0;i<p.length-1;i++) d = Math.min(d, segDist(x,z,p[i][0],p[i][1],p[i+1][0],p[i+1][1])); return d; }
 function streetDist(x, z){ let d = 1e9; for (const [a, b, w] of STREETS) d = Math.min(d, segDist(x, z, a[0], a[1], b[0], b[1]) - w/2); return d; }
 /* Wassergraben der Burg: 0 ausserhalb, 1 am flachen Grund */
-function moatK(x, z){ const d = castleD(x, z), C = CASTLE; if (d < C.M0 - 0.2 || d > C.M1 + 0.2) return 0; return sstep(C.M0 - 0.2, C.M0 + 1.0, d)*sstep(C.M1 + 0.2, C.M1 - 1.0, d); }
+function moatK(x, z){ const d = castleSD(x, z), C = CASTLE; if (d < C.M0 - 0.1 || d > C.M1 + 0.2) return 0; return sstep(C.M0 - 0.1, C.M0 + 0.9, d)*sstep(C.M1 + 0.2, C.M1 - 1.6, d); }
 /* Motte: Erdhügel mit flacher Kuppe, rundherum ein Graben */
 function motteH(x, z){ const d = Math.hypot(x - MOTTE.x, z - MOTTE.z), M = MOTTE;
   let h = d < M.top ? M.H : d < M.r0 ? M.H*Math.pow(1 - (d - M.top)/(M.r0 - M.top), 1.15) : 0;
@@ -1358,8 +1455,12 @@ function groundH(x,z){
   h *= 1 - 0.85*flatK(x, z);
   h += 0.2;
   // Die Burg steht etwas erhöht, rundherum der Wassergraben
-  const dc = castleD(x, z); if (dc < CASTLE.M0) h += 0.5*(1 - sstep(CASTLE.M0 - 3, CASTLE.M0, dc));
-  h += (CASTLE.MB - h)*moatK(x, z);
+  { const C = CASTLE, sd = castleSD(x, z); if (sd < C.M0 + 0.3){ h += (C.CY - h)*(1 - sstep(C.M0 - 0.2, C.M0 + 0.3, sd));
+      // Unter dem Wachtturm liegt das Verlies, ein tiefes Loch im Boden
+      const lx = x - C.x, lz = z - C.z; if (lx > -7.5 && lx < -0.5 && lz > 16.7 && lz < 23.7) h = C.CY - 3.4; }
+    h += (C.MB - h)*moatK(x, z);
+    // Der Tordurchgang liegt auf der Höhe des Hofes
+    { const lx = x - C.x, lz = z - C.z; if (lx > 6.8 && lx < 11.2 && lz > 14 && lz < 23.6) h = C.CY; } }
   // Der Erdhügel der Motte
   h += motteH(x, z);
   // Im Norden und Westen bewaldete Hügel, in der Ferne die Alpen
@@ -1377,15 +1478,19 @@ function groundH(x,z){
   return h;
 }
 const P = {
-  staende:[7.0, 80.0], koenig:[-55.5, -49.6], klerus:[37.8, -51.4], adel:[42, 38.6],
+  staende:[7.0, 80.0], koenig:[-33.7, -57.4], klerus:[37.8, -51.4], adel:[42, 38.6],
   dorf:[-45.6, 46.2], abgaben:[-36.4, 39.4], frondienst:[-25.5, 13.5], feld:[-64, 72.5], essen:[-35.2, 55.6], bauernhaus:[-62.4, 51.8],
   stadt:[52.0, -19.0], markt:[45.2, -38.6], rathaus:[52, -51.4], pranger:[55.0, -40.4], handwerk:[48.5, -33.4], weberin:[60.2, -38.8], hygiene:[37.6, -43.6], pest:[90.4, -40.6], pestarzt:[62.6, -59.6],
-  burg:[-60, -8.6], zugbruecke:[-43.2, -12.6], bergfried:[-44.4, -46.4], palas:[-55.5, -44.4], kemenate:[-55.5, -37.4], kapelle:[-35.6, -43.6], burghof:[-47.6, -38.6], gaukler:[-41.6, -35.6],
+  burg:[-52, -8], zugbruecke:[-34.2, -13.4], torturm:[-37, -22.8], wehrgang:[-65.7, -34.4], wachtturm:[-49, -23], bergfried:[-63.5, -59], palas:[-36.4, -54.6], kueche:[-36.5, -55.6], kemenate:[-37.2, -53.6], abort:[-25, -58.1],
+  kapelle:[-47.5, -52], stall:[-54.6, -56.4], garten:[-55.2, -50.6], brunnen:[-48, -43], burghof:[-30.6, -39.4], gaukler:[-41.8, -35.4],
   ritter:[47.2, 54.0], page:[69.4, 52.6], knappe:[31.0, 54.0], schwertleite:[19.6, 53.6], turnier:[15.4, 42.6], tjost:[36.0, 50.2], motte:[-75.4, 12.8]
 };
 const START = { x:0, z:98, yaw:0 };
 /* Feste Standplätze beim Sprung von der Karte, wo der Blick sonst verdeckt wäre */
-const STANDS = { kapelle:[-37.5, -44.4], kemenate:[-52.6, -39.0], handwerk:[51.6, -32.6], ritter:[43.6, 54.4], pest:[84.0, -37.5], abgaben:[-39.0, 43.2], turnier:[19.6, 42.4], burg:[-66.0, -2.0] };
+const STANDS = { handwerk:[51.6, -32.6], ritter:[43.6, 54.4], pest:[84.0, -37.5], abgaben:[-39.0, 43.2], turnier:[19.6, 42.4],
+  // in der Burg, teils in oberen Stockwerken: [x, z, Fusshöhe]
+  torturm:[-35.4, -24.6, 6.0], wehrgang:[-65.7, -38, 8.0], wachtturm:[-50.8, -24.4, 1.04], bergfried:[-63.5, -56.6, 8.0], palas:[-34.6, -50.6, 5.4], koenig:[-33.7, -54, 5.4],
+  kemenate:[-35.4, -51.2, 9.8], abort:[-29.1, -58.1, 9.8], zugbruecke:[-30.5, -9], kueche:[-35.2, -50.4, 1.0], kapelle:[-49, -52, 1.05], stall:[-54.6, -53.6], garten:[-55.1, -46.8], brunnen:[-48, -39.4], burghof:[-33.8, -39] };
 function addSplat(mat){
   return patch(mat, { key:'splat',
     uniforms:{ tGrass:{ value:TEX.grassGround.map }, tDirt:{ value:TEX.dirt.map }, tRock:{ value:TEX.rock.map }, mGrass:{ value:TEX.grassGround.mean }, mDirt:{ value:TEX.dirt.mean }, mRock:{ value:TEX.rock.mean } },
@@ -1451,7 +1556,7 @@ function terrainSample(x, z, y, ny, out, w){
   const pd = pathDist(x,z); const pathK = 1 - sstep(0.8, 2.0 + n*0.9, pd);
   // Festgetretener Boden in der Stadt, im Burghof, auf dem Dorfplatz und dem Turnierplatz
   const townK = (1 - sstep(-1, 2 + n*2, rectD(TOWN, x, z)))*(0.75 + 0.2*n);
-  const castK = (1 - sstep(CASTLE.WR - 1, CASTLE.WR + 2.2, castleD(x, z)))*0.85;
+  const castK = (1 - sstep(-1.0, 1.2, castleSD(x, z)))*0.85;
   const villK = (1 - sstep(8, 12 + n*3, Math.hypot(x - VILLAGE[0], z - VILLAGE[1])))*0.7;
   const tourK = (1 - sstep(-1, 1.5, rectD(TOURNEY, x, z)))*(0.35 + 0.35*sstep(4, 0, Math.abs(z - TILT.z)));
   const quayK = (x > QUAY.x0 - 1 && z > QUAY.z0 - 1 && z < QUAY.z1 + 1) ? 1 - sstep(QUAY.x1 - 4, QUAY.x1 + 2, x)*0 : 0;
@@ -1494,9 +1599,13 @@ function drawMinimapBase(){
   box(RATHAUS, '#8a3a2a'); { const [a, b] = w2m(CHURCH.tx0, CHURCH.z0); c.fillStyle = '#6a6a74'; c.fillRect(a, b, (CHURCH.x1 - CHURCH.tx0)*MSC, (CHURCH.z1 - CHURCH.z0)*MSC); }
   { const [a, b] = w2m(QUAY.x0, QUAY.z0); c.fillStyle = '#c8b89a'; c.fillRect(a, b, (QUAY.x1 - QUAY.x0)*MSC, (QUAY.z1 - QUAY.z0)*MSC); }
   // Burg: Graben, Mauerring, Bergfried
-  circ(CASTLE.x, CASTLE.z, (CASTLE.M0 + CASTLE.M1)/2, null, '#5aa0c8', (CASTLE.M1 - CASTLE.M0)*MSC);
-  circ(CASTLE.x, CASTLE.z, CASTLE.WR, '#c8bca4', '#6a6458', 2.5);
-  { const [a, b] = w2m(CASTLE.x + 0.5, CASTLE.z - 14.5); c.fillStyle = '#6a6458'; c.fillRect(a, b, 7*MSC, 7*MSC); }
+  { const C = CASTLE, d = (C.M0 + C.M1)/2, rr = (x0, z0, x1, z1, r) => { c.beginPath(); c.moveTo(...w2m(x0 + r, z0)); c.arcTo(...w2m(x1, z0), ...w2m(x1, z1), r*MSC); c.arcTo(...w2m(x1, z1), ...w2m(x0, z1), r*MSC); c.arcTo(...w2m(x0, z1), ...w2m(x0, z0), r*MSC); c.arcTo(...w2m(x0, z0), ...w2m(x1, z0), r*MSC); c.closePath(); };
+    rr(C.x + C.X0 - d, C.z + C.Z0 - d, C.x + C.X1 + d, C.z + C.Z1 + d, d); c.strokeStyle = '#5aa0c8'; c.lineWidth = (C.M1 - C.M0)*MSC; c.stroke();
+    const lb = (x0, z0, x1, z1, fill) => { const [a, b] = w2m(C.x + x0, C.z + z0); c.fillStyle = fill; c.fillRect(a, b, (x1 - x0)*MSC, (z1 - z0)*MSC); };
+    lb(C.X0 - 1.2, C.Z0 - 1.2, C.X1 + 1.2, C.Z1 + 1.2, '#6a6458'); lb(C.X0 + 1.2, C.Z0 + 1.2, C.X1 - 1.2, C.Z1 - 1.2, '#c8bca4');
+    lb(KEEP.x0, KEEP.z0, KEEP.x1, KEEP.z1, '#5a544a'); lb(PALAS.x0, PALAS.z0, PALAS.x1, PALAS.z1, '#8a3a2a'); lb(WATCH.x0, WATCH.z0, WATCH.x1, WATCH.z1, '#5a544a'); lb(GATE.x0, GATE.z0, GATE.x1, GATE.z1, '#5a544a');
+    lb(CHAPEL.x0, CHAPEL.z0, CHAPEL.x1, CHAPEL.z1, '#6a6a74'); lb(STABLE.x0, STABLE.z0, STABLE.x1, STABLE.z1, '#b04a30');
+    for (const t of CTOWERS) circ(C.x + t.x, C.z + t.z, t.r, '#5a544a'); }
   // Dorf
   circ(VILLAGE[0], VILLAGE[1], 10, '#c8b88a');
   c.fillStyle = '#b04a30'; for (const h of (typeof FARMS !== 'undefined' ? FARMS : [])){ const [a, b] = w2m(h.x - 2.5, h.z - 2.5); c.fillRect(a, b, 5*MSC, 5*MSC); }
@@ -3279,7 +3388,7 @@ function treeCollider(x, z, r){ if (Math.hypot(x, z) < (typeof WORLD_R !== 'unde
 /* ===================== PFLANZEN IM MITTELALTER ===================== */
 /* Laubwald auf den Hügeln, Tannen weiter oben, Obstbäume beim Dorf, Weiden am Fluss, Wiesen mit Blumen */
 function inBuilt(x, z, m){
-  if (castleD(x, z) < CASTLE.M1 + m + 2) return true;
+  if (castleSD(x, z) < CASTLE.M1 + m + 2) return true;
   if (rectD(TOWN, x, z) < m + 3) return true;
   if (x > QUAY.x0 - 1 - m && x < QUAY.x1 + m && z > QUAY.z0 - m - 2 && z < QUAY.z1 + m + 2) return true;
   if (Math.hypot(x - VILLAGE[0], z - VILLAGE[1]) < 21 + m) return true;
@@ -3366,7 +3475,7 @@ function buildVegetation(){
   const reed = mergeParts([0,1,2,3,4,5].map(i => part(new THREE.CylinderGeometry(0.008, 0.014, 1.5, 4).translate(0, 0.75, 0), i % 2 ? '#7a8a44' : '#9a9a58', (i%3 - 1)*0.08, 0, (Math.floor(i/3) - 0.5)*0.1, (i - 2.5)*0.05, 0, (i%2 - 0.5)*0.12)));
   scatterMulti([[reed, VC, true]], 260, () => { let x, z;
     if (rnd() < 0.7){ z = R(-100, 100); x = riverX(z) - R(6.5, 8.5); if (z > QUAY.z0 - 4 && z < QUAY.z1 + 4) return null; }
-    else { const a = R(0, TAU), d = rnd() < 0.5 ? CASTLE.M1 - R(0.3, 0.9) : CASTLE.M0 + R(0.3, 0.9); x = CASTLE.x + Math.sin(a)*d; z = CASTLE.z + Math.cos(a)*d; if (Math.abs(a) < 0.25 || Math.abs(a - TAU) < 0.25) return null; }
+    else { const a = R(0, TAU), d = rnd() < 0.6 ? CASTLE.M1 - R(0.4, 1.4) : CASTLE.M0 + R(0.6, 1.2); [x, z] = castlePt(a, d); const lx = x - CASTLE.x, lz = z - CASTLE.z; if (lz > 20 && lx > 4 && lx < 14) return null; }
     if (blocked(x,z,{ path:2, station:4 })) return null; return { x, y:groundH(x,z) - 0.05, z, ry:R(0,TAU), s:R(0.8, 1.2) }; });
   // Steine: Kies am Fluss und Findlinge in der Wiese
   scatterMulti([[lowRock(HQ ? 2 : 1, 5), rockMat('#77716a'), true]], HQ ? 2400 : 900, () => { const z = R(-110, 110), x = riverX(z) + R(-9, 6);
@@ -3511,7 +3620,14 @@ function makeCrow(){ const g = new THREE.Group(), m = M('#18181c', { tex:null, r
 
 const DECKS = [];
 /* Begehbare Flächen über dem Boden (Böden, Stufen). Eine Rampe { ramp:{ axis:'x'|'z', a0, a1, y0, y1 } } steigt gleichmässig an: so klettert man Leitern hinauf. */
-function onDeck(x, z){ for (const d of DECKS){ if (x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1){ if (d.ramp){ const r = d.ramp, u = Math.max(0, Math.min(1, ((r.axis === 'x' ? x : z) - r.a0)/(r.a1 - r.a0))); return r.y0 + (r.y1 - r.y0)*u; } return d.y; } } return null; }
+/* Stockwerke: Böden mit lv:true zählen nur, wenn man sie von der jetzigen Fusshöhe (LV.y) aus erreicht. So kann man unter einem
+   oberen Stockwerk durchgehen und über Treppen hinaufsteigen. Hindernisse mit y0/y1 gelten nur auf dieser Höhe. */
+const LV = { y:null };
+function deckH(d, x, z){ if (d.ramp){ const r = d.ramp, u = Math.max(0, Math.min(1, ((r.axis === 'x' ? x : z) - r.a0)/(r.a1 - r.a0))); return r.y0 + (r.y1 - r.y0)*u; } return d.y; }
+function onDeck(x, z, ref){ let best = null;
+  for (const d of DECKS){ if (x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1){ const h = deckH(d, x, z); if (!d.lv) return h;
+    const r0 = ref !== undefined ? ref : LV.y !== null ? LV.y : groundH(x, z); if (h > r0 + 0.8) continue; if (best === null || h > best) best = h; } }
+  return best; }
 function onRamp(x, z){ for (const d of DECKS) if (d.ramp && !d.ramp.stairs && x > d.x0 && x < d.x1 && z > d.z0 && z < d.z1) return true; return false; }
 function makeGate(rc, lz){
   const HMt = houseMats(), [gx0, gz0] = rcW(rc, rc.hw + 0.25, lz), gate = new THREE.Group(); gate.position.set(gx0, groundH(gx0, gz0), gz0); gate.rotation.y = rc.yaw + Math.PI/2 + 0.05; scene.add(gate);
@@ -3980,236 +4096,651 @@ function burgherO(seed, female){ const r = mulberry32(seed*41 + 3), pick = a => 
   else { o.beard = r() < 0.4; if (r() < 0.45) o.hood = pick(['#8a2a2a', '#2a4a6a', '#4a5a2a', '#6a4a2a']); else if (r() < 0.5) o.beret = pick(['#2a2a2a', '#5a2a2a', '#2a3a5a']); }
   return o; }
 /* ===================== DIE BURG ===================== */
-/* Wasserburg mit runder Ringmauer, sechs Türmen und Torturm. Lokale Koordinaten: Ursprung in der Burgmitte, +z zeigt nach Süden zum Tor. */
-const CTOWERS = [Math.PI/6, Math.PI/2, Math.PI*5/6, Math.PI*7/6, Math.PI*3/2, Math.PI*11/6];
-const KEEP = { x:2, z:-10, w:7, H:24 };
-const PALAS = { x0:-14, x1:-5, z0:-10, z1:7, zk:2, H1:5.2, H2:3.4 };
-const CHAPEL = { x0:7.5, x1:14.5, z0:-5.5, z1:-0.5 };
-let castleY = 0;
-function castleGrp(){ const g = new THREE.Group(); g.position.set(CASTLE.x, castleY, CASTLE.z); scene.add(g); return g; }
+/* Viereckige Wasserburg nach dem Bild im Arbeitsblatt: (1) Graben, (2) Ringmauer, (3) Torturm, (4) Fallgatter, (5) Pechnase, (6) Zugbrücke,
+   (7) gedeckter Wehrgang, (8) Schiessscharten, (9) Wachtturm, (10) Bergfried, (11) Palas, (12) Kapelle, (13) Abort, (14) Ziehbrunnen, (15) Stallungen.
+   Lokale Koordinaten: Ursprung in der Burgmitte, +z zeigt nach Süden. Alle Höhen sind absolut (die Burggruppe liegt auf y = 0). */
+const KEEP = { x0:-23, x1:-13, z0:-22, z1:-12, T:1.6 };
+const PALAS = { x0:5, x1:20.2, z0:-20.2, z1:-6, ix0:6.4, ix1:18.2, iz0:-18.2, iz1:-7.4 };
+const WATCH = { x0:-9, x1:1, z0:15.2, z1:25.2, T:1.4 };
+const GATE = { x0:5.5, x1:12.5, z0:15.2, z1:23.4 };
+const CHAPEL = { x0:-4, x1:3, z0:-12.5, z1:-7.5 };
+const STABLE = { x0:-13, x1:-1.5, z0:-17.8, z1:-13 };
+const GARDEN = { x0:-12, x1:-6.5, z0:-11, z1:-6 };
+const PIGPEN = { x0:-18.8, x1:-11, z0:7, z1:15.5 };
+const SMITHY = { x0:14, x1:17.8, z0:-2, z1:6 };
+const WELL = [-2, -1];
+const CTOWERS = [{ x:-20, z:19, r:3.6, top:CASTLE.CY + 11.6, roof:true, walk:true }, { x:21.2, z:21.2, r:3.0, top:CASTLE.CY + 10.4 }, { x:-3.5, z:-21.2, r:3.0, top:CASTLE.CY + 11.0, roof:true }, { x:21.4, z:6, r:2.8, top:CASTLE.CY + 9.8 }];
+/* Stockwerke: Wehrgang, Bergfried (Eingang, Wohnraum, Plattform), Palas (Saal, Kemenate, Dach), Wachtturm, Torturm */
+const HY = { CY:CASTLE.CY, WY:CASTLE.WY, K1:CASTLE.WY, K2:CASTLE.CY + 12.2, KT:CASTLE.CY + 17.6, P1:CASTLE.CY + 4.4, P2:CASTLE.CY + 8.8, PT:CASTLE.CY + 13.0,
+  W1:CASTLE.CY + 4.4, WT:CASTLE.CY + 9.0, GR:CASTLE.CY + 5.0 };
+function castleGrp(){ const g = new THREE.Group(); g.position.set(CASTLE.x, 0, CASTLE.z); scene.add(g); return g; }
 const cLW = (lx, lz) => [CASTLE.x + lx, CASTLE.z + lz];
-function buildCastle(){
-  const MT = mMats(), C = CASTLE; castleY = groundH(C.x, C.z);
-  // Ringmauer mit Zinnen zwischen den Türmen und dem Torturm
-  const stops = [0, ...CTOWERS, TAU], gapAt = a => a === 0 || a === TAU ? 0.2 : 0.12;
-  for (let i=0;i<stops.length - 1;i++){ const a0 = stops[i] + gapAt(stops[i]), a1 = stops[i + 1] - gapAt(stops[i + 1]), n = Math.max(2, Math.round((a1 - a0)*C.WR/3.2));
-    for (let k=0;k<n;k++){ const b0 = a0 + (a1 - a0)*k/n, b1 = a0 + (a1 - a0)*(k + 1)/n;
-      battlement(C.x + Math.sin(b0)*C.WR, C.z + Math.cos(b0)*C.WR, C.x + Math.sin(b1)*C.WR, C.z + Math.cos(b1)*C.WR, C.WT, 8, { out:-1, ext:0.35, inner:true }); } }
-  // Runde Türme: drei mit Kegeldach, drei mit Zinnenkranz
-  CTOWERS.forEach((a, i) => roundTower(C.x + Math.sin(a)*C.WR, C.z + Math.cos(a)*C.WR, 2.7, 11 + (i % 2)*1.5, i % 2 ? { roof:M('#b05a40', { tex:'tiles' }), steep:2.3 } : {}));
-  // Torturm mit Durchgang und Fallgitter
-  const gt = squareTower(C.x, C.z + C.WR, 6.6, 12, 0, { gate:3.2, roof:mMats().slate, steep:1.1 });
-  // Wassergraben
-  const wg = new THREE.RingGeometry(C.M0 - 0.3, C.M1 + 0.3, 96, 1).rotateX(-Math.PI/2); const water = mk(wg, waterMat(1.4, 1.4, '#3a5a52', 0.86), scene, C.x, C.MY, C.z); water.castShadow = false; water.renderOrder = 2; keep(water);
-  // Hindernisse: Grabenrand aussen (mit Lücke für die Brücke) und Innenseite der Ringmauer (mit Lücke für das Tor)
-  const ring = (r, gap) => { const N = 72; for (let i=0;i<N;i++){ const a0 = i/N*TAU, a1 = (i + 1)/N*TAU, m = (a0 + a1)/2; if (Math.abs(Math.atan2(Math.sin(m), Math.cos(m))) < gap) continue;
-    colliders.push({ ax:C.x + Math.sin(a0)*r, az:C.z + Math.cos(a0)*r, bx:C.x + Math.sin(a1)*r, bz:C.z + Math.cos(a1)*r, r:0.15 }); } };
-  ring(C.M1 + 0.35, 2.2/(C.M1 + 0.35)); ring(C.WR - C.WT/2 - 0.2, 0.2);
-  // Seitenwände des Tordurchgangs bis zur Mauer innen
-  for (const sd of [-1, 1]) colliders.push({ ax:C.x + sd*1.65, az:C.z + C.WR - 3.3, bx:C.x + sd*1.65, bz:C.z + C.GATE, r:0.12 });
-  // Boden im Tor (Pflaster)
-  pavedStrip(C.x, C.z + C.WR - 4, C.x, C.z + C.GATE + 0.1, 3.0, MT.cobble, 0.05);
-  // Fallgitter im Tor: oben, und es fällt, wenn die Brücke hochgezogen wird
-  const pc = new THREE.Group(); pc.position.set(C.x, groundH(C.x, C.z + C.WR + 2.6), C.z + C.WR + 2.6); scene.add(pc); keep(pc);
-  const bars = []; for (let i=0;i<7;i++) bars.push(part(new THREE.BoxGeometry(0.07, 3.8, 0.07), '#2a2a2c', -1.5 + i*0.5, 1.9, 0)); for (let k=0;k<6;k++) bars.push(part(new THREE.BoxGeometry(3.2, 0.07, 0.07), '#2a2a2c', 0, 0.3 + k*0.65, 0));
-  for (let i=0;i<7;i++) bars.push(part(new THREE.ConeGeometry(0.06, 0.2, 6).rotateX(Math.PI), '#2a2a2c', -1.5 + i*0.5, -0.1, 0));
-  const grid = vmesh(bars, pc, false, new THREE.MeshStandardMaterial({ vertexColors:true, metalness:0.7, roughness:0.45 })); grid.position.y = 3.3;
-  CASTLE.portcullis = grid;
-  keep(gt);
+
+/* ---------- Bauhelfer: Teile sammeln und am Schluss je Material zu einem Objekt verschmelzen ---------- */
+const CB = { stone:[], stone2:[], plank:[], tiles:[], slate:[], floor:[], parts:[] };
+function cbFlush(g){ const MT = mMats();
+  for (const [k, mat] of [['stone', MT.stone], ['stone2', MT.stone2], ['plank', MT.plank], ['tiles', MT.tiles], ['slate', MT.slate], ['floor', MT.floor]]) if (CB[k].length){ mk(mergeGeo(CB[k]), mat, g); CB[k] = []; }
+  if (CB.parts.length){ vmesh(CB.parts, g); CB.parts = []; } }
+function cbox(list, x0, x1, y0, y1, z0, z1, tile){ list.push(xf(boxUV(x1 - x0, y1 - y0, z1 - z0, tile || 2), (x0 + x1)/2, (y0 + y1)/2, (z0 + z1)/2)); }
+function cbx(list, cx, cz, th, w, y0, y1, d, tile){ list.push(xf(boxUV(w, y1 - y0, d, tile || 2), cx, (y0 + y1)/2, cz, 0, th, 0)); }
+/* Wand von A nach B mit Öffnungen [s (Abstand von A bis zur Mitte), unten (über y0), halbe Breite, Höhe, Bogen] */
+function cwallH(list, ax, az, bx, bz, y0, h, T, holes){ const L = Math.hypot(bx - ax, bz - az), th = Math.atan2(-(bz - az), bx - ax);
+  const geo = holes && holes.length ? holeWall(L, h, T, holes.map(([s, b, hw, hh, arch]) => [s - L/2, b, hw, hh, arch])) : boxUV(L, h, T, 2).translate(0, h/2, 0);
+  list.push(xf(geo, (ax + bx)/2, y0, (az + bz)/2, 0, th, 0)); }
+/* Hindernisse in lokalen Koordinaten; mit y0/y1 gelten sie nur auf dieser Höhe */
+function cseg(ax, az, bx, bz, r, y0, y1){ const c = { ax:CASTLE.x + ax, az:CASTLE.z + az, bx:CASTLE.x + bx, bz:CASTLE.z + bz, r:r === undefined ? 0.15 : r }; if (y0 !== undefined){ c.y0 = y0; c.y1 = y1; } colliders.push(c); return c; }
+function ccirc(x, z, r, y0, y1){ const c = { x:CASTLE.x + x, z:CASTLE.z + z, r }; if (y0 !== undefined){ c.y0 = y0; c.y1 = y1; } colliders.push(c); return c; }
+function csegGaps(ax, az, bx, bz, gaps, r, y0, y1){ const L = Math.hypot(bx - ax, bz - az), ux = (bx - ax)/L, uz = (bz - az)/L; let s = 0;
+  for (const [g0, g1] of (gaps || []).slice().sort((a, b) => a[0] - b[0])){ if (g0 > s + 0.01) cseg(ax + ux*s, az + uz*s, ax + ux*g0, az + uz*g0, r, y0, y1); s = Math.max(s, g1); }
+  if (L > s + 0.01) cseg(ax + ux*s, az + uz*s, bx, bz, r, y0, y1); }
+/* Rechteck-Hindernis (alle vier Seiten) */
+function cbox4(x0, x1, z0, z1, r, y0, y1){ cseg(x0, z0, x1, z0, r, y0, y1); cseg(x1, z0, x1, z1, r, y0, y1); cseg(x1, z1, x0, z1, r, y0, y1); cseg(x0, z1, x0, z0, r, y0, y1); }
+/* Begehbarer Boden in einem Stockwerk */
+function cdeck(x0, x1, z0, z1, y, ramp){ const d = { x0:CASTLE.x + x0, x1:CASTLE.x + x1, z0:CASTLE.z + z0, z1:CASTLE.z + z1, y, lv:true }; if (ramp) d.ramp = ramp; DECKS.push(d); return d; }
+/* Holzgeländer von A nach B auf Höhe y (Pfosten und zwei Latten) */
+function crail(ax, az, bx, bz, y, hex){ const L = Math.hypot(bx - ax, bz - az), n = Math.max(1, Math.round(L/1.2)), c = hex || '#5a3e28';
+  for (let i=0;i<=n;i++){ const x = ax + (bx - ax)*i/n, z = az + (bz - az)*i/n; CB.parts.push(part(new THREE.BoxGeometry(0.08, 1.05, 0.08), c, x, y + 0.52, z)); }
+  for (const h of [0.5, 1.02]) CB.parts.push(rodPart(ax, y + h, az, bx, y + h, bz, 0.035, c)); }
+/* Treppe im Band x0..x1 / z0..z1 (lokal), axis 'x' oder 'z', up = +1 (steigt in +Richtung) oder -1, von y0 nach y1.
+   open: offene Längsseiten ('-x', '+x' bei axis 'z'; '-z', '+z' bei axis 'x') bekommen ein Geländer; far:true sichert oben auch die Wandseite.
+   Unten kann man nicht unter die Treppe laufen, oben nicht ins Treppenloch fallen. */
+function cstairs(o){ const { x0, x1, z0, z1, axis, up, y0, y1 } = o, alongZ = axis === 'z';
+  const a0 = up > 0 ? (alongZ ? z0 : x0) : (alongZ ? z1 : x1), a1 = up > 0 ? (alongZ ? z1 : x1) : (alongZ ? z0 : x0), len = Math.abs(a1 - a0), dir = Math.sign(a1 - a0);
+  cdeck(x0, x1, z0, z1, 0, { axis, a0:(alongZ ? CASTLE.z : CASTLE.x) + a0, a1:(alongZ ? CASTLE.z : CASTLE.x) + a1, y0, y1, stairs:true });
+  const n = Math.max(2, Math.round((y1 - y0)/0.2)), rise = (y1 - y0)/n, run = len/n, lo = alongZ ? x0 : z0, hi = alongZ ? x1 : z1;
+  const P = (s, t) => alongZ ? [t, s] : [s, t];
+  for (let i=0;i<n;i++){ const s0 = a0 + dir*i*run, s1 = s0 + dir*run, top = y0 + (i + 1)*rise, sa = Math.min(s0, s1), sb = Math.max(s0, s1);
+    if (o.stone){ const b = o.base !== undefined ? o.base : y0 - 0.05; if (alongZ) cbox(CB.stone2, x0, x1, b, top, sa, sb, 1.2); else cbox(CB.stone2, sa, sb, b, top, z0, z1, 1.2); }
+    else if (alongZ) cbox(CB.plank, x0 + 0.06, x1 - 0.06, top - 0.07, top, sa - 0.04, sb + 0.04, 1); else cbox(CB.plank, sa - 0.04, sb + 0.04, top - 0.07, top, z0 + 0.06, z1 - 0.06, 1); }
+  if (!o.stone) for (const t of [lo + 0.05, hi - 0.05]){ const A = P(a0, t), B = P(a1, t); CB.parts.push(rodPart(A[0], y0 - 0.1, A[1], B[0], y1 - 0.1, B[1], 0.07, '#4e3424')); }
+  // entry: auf den untersten Metern steigt man von der Seite her ein (wenn das untere Ende an einer Wand liegt)
+  const exit = o.exit === undefined ? 1.1 : o.exit, entry = o.entry || 0, sE = a1 - dir*exit, sR = a0 + dir*entry, k45 = Math.min(0.95, 0.45/(y1 - y0)), sU = a0 + dir*Math.max(len*k45, entry);
+  for (const side of o.open || []){ const t = side[0] === '-' ? lo : hi;
+    cseg(...P(sR, t), ...P(sE, t), 0.08, y0 + 0.45, y1 + 0.6);                 // Geländer
+    if (entry > 0) cseg(...P(a0, t), ...P(sR, t), 0.08, y0 + 1.5, y1 + 0.6);   // oben: nicht ins Treppenloch
+    cseg(...P(sU, t), ...P(a1, t), 0.1, y0 - 0.6, y0 + 0.45);                  // nicht darunter durch
+    if (!o.noRail){ const A = P(sR, t), B = P(sE, t), yA = y0 + (y1 - y0)*entry/len, yB = y0 + (y1 - y0)*Math.abs(sE - a0)/len;
+      for (let k=0;k<=Math.max(1, Math.round(Math.abs(sE - a0)/1.3));k++){ const u = k/Math.max(1, Math.round(Math.abs(sE - a0)/1.3)), x = A[0] + (B[0] - A[0])*u, z = A[1] + (B[1] - A[1])*u, y = yA + (yB - yA)*u;
+        CB.parts.push(part(new THREE.BoxGeometry(0.07, 1.0, 0.07), '#5a3e28', x, y + 0.5, z)); }
+      CB.parts.push(rodPart(A[0], yA + 1.0, A[1], B[0], yB + 1.0, B[1], 0.035, '#5a3e28')); } }
+  if (o.far){ const t = (o.open || []).some(s => s[0] === '-') ? hi : lo; cseg(...P(a0, t), ...P(a1, t), 0.08, y1 - 0.5, y1 + 0.6); }
+  cseg(...P(a1, lo), ...P(a1, hi), 0.1, y0 - 0.6, y0 + 0.45);                   // Stirnseite oben (unten)
+  if (o.guardBottom !== false) cseg(...P(a0, lo), ...P(a0, hi), 0.1, y0 + 0.9, y1 + 0.6);   // Stirnseite unten (oben)
 }
-/* ---------- Zugbrücke: wird ab und zu hochgezogen (aber nie, wenn du darauf oder davor stehst) ---------- */
+/* Zinnenkranz auf einer geraden Strecke: Brüstung aussen, darüber Mauerzähne mit Schiessscharten */
+function crenel(ax, az, bx, bz, nx, nz, y, off, T){ const L = Math.hypot(bx - ax, bz - az), ux = (bx - ax)/L, uz = (bz - az)/L, th = Math.atan2(-uz, ux), t = T || 0.55, o = off === undefined ? 0 : off;
+  const cx = (ax + bx)/2 + nx*o, cz = (az + bz)/2 + nz*o; cbx(CB.stone, cx, cz, th, L, y, y + 1.0, t, 1.6);
+  const n = Math.max(1, Math.round(L/1.5));
+  for (let i=0;i<n;i++){ const s = (i + 0.5)*L/n, x = ax + ux*s + nx*o, z = az + uz*s + nz*o; cbx(CB.stone, x, z, th, Math.min(0.95, L/n - 0.5), y + 1.0, y + 2.0, t, 1.2);
+    CB.parts.push(part(new THREE.BoxGeometry(0.1, 0.55, 0.04), '#14110e', x + nx*(t/2 + 0.01), y + 1.5, z + nz*(t/2 + 0.01), 0, th, 0)); } }
+
+/* ---------- Ringmauer, Türme, Graben ---------- */
+function buildCastle(){
+  const MT = mMats(), C = CASTLE, g = castleGrp(), base = C.MB - 0.4, WY = HY.WY, CY = HY.CY, h = C.WT/2;
+  // Mauerstücke: Mauerlinie A→B, Normale nach aussen, Wehrgang begehbar?
+  const walls = [[-13, -19, 5, -19, 0, -1], [19, -6, 19, 20.2, 1, 0], [-16.5, 19, -9, 19, 0, 1, true], [1, 19, 5.5, 19, 0, 1], [12.5, 19, 20.2, 19, 0, 1], [-20, -12, -20, 15.5, -1, 0, true]];
+  for (const [ax, az, bx, bz, nx, nz, walk] of walls){
+    const L = Math.hypot(bx - ax, bz - az), ux = (bx - ax)/L, uz = (bz - az)/L, th = Math.atan2(-uz, ux), mx = (ax + bx)/2, mz = (az + bz)/2;
+    cbx(CB.stone, mx, mz, th, L, base, WY, C.WT, 2);                                   // Mauerkörper
+    cbx(CB.stone2, mx + nx*0.5, mz + nz*0.5, th, L, base, CY + 0.25, C.WT + 1.0, 2);   // Sockel im Wasser
+    crenel(ax, az, bx, bz, nx, nz, WY, h - 0.275);
+    // Schiessscharten in der Mauer (aussen)
+    for (let s = 2; s < L - 1; s += 3.6) CB.parts.push(part(new THREE.BoxGeometry(0.13, 1.1, 0.04), '#14110e', ax + ux*s + nx*(h + 0.01), CY + 3.6, az + uz*s + nz*(h + 0.01), 0, th, 0));
+    // Hindernis an der Innenseite (bis unter den Wehrgang)
+    cseg(ax - nx*(h + 0.05), az - nz*(h + 0.05), bx - nx*(h + 0.05), bz - nz*(h + 0.05), 0.15, -50, WY - 0.5);
+    if (walk){
+      // Wehrgang: Boden oben auf der Mauer, aussen die Zinnen, innen ein Holzgeländer
+      const ox = nx*(h - 0.55), oz = nz*(h - 0.55), ix = -nx*h, iz = -nz*h;
+      cdeck(Math.min(ax + ox, bx + ix, ax + ix, bx + ox), Math.max(ax + ox, bx + ix, ax + ix, bx + ox), Math.min(az + oz, bz + iz, az + iz, bz + oz), Math.max(az + oz, bz + iz, az + iz, bz + oz), WY);
+      cseg(ax + ox, az + oz, bx + ox, bz + oz, 0.1, WY - 0.5, WY + 3);
+    }
+  }
+  // Westlicher Wehrgang: Treppe vom Hof hinauf, Absatz oben, Geländer mit Lücke beim Absatz
+  cstairs({ x0:-18.8, x1:-16.8, z0:-5.0, z1:3.5, axis:'z', up:-1, y0:CY, y1:WY, open:['+x'], stone:true, base:CY - 0.1, exit:0.01, guardBottom:false });
+  cbox(CB.stone2, -18.8, -16.8, CY - 0.1, WY, -6.6, -5.0, 1.2); cdeck(-18.8, -16.8, -6.6, -5.0, WY);
+  cseg(-18.8, -6.6, -16.8, -6.6, 0.1, -50, WY + 3); cseg(-16.8, -6.6, -16.8, -5.0, 0.1, -50, WY + 3); cseg(-16.8, -5.0, -16.8, -4.2, 0.08, WY - 0.6, WY + 3);
+  crail(-16.8, -6.6, -16.8, -5.0, WY); crail(-18.8, -6.6, -16.8, -6.6, WY);
+  csegGaps(-18.8, -12, -18.8, 15.5, [[5.3, 7.1], [16.0, 27.4]], 0.08, WY - 0.5, WY + 3);   // Geländer innen am Westgang (Lücken beim Absatz und bei der Holzgalerie)
+  crail(-18.85, -12, -18.85, -6.7, WY); crail(-18.85, -4.9, -18.85, 4.0, WY);
+  // Im Süden ist der Westgang mit einer Holzgalerie zum Hof hin verbreitert (auf Kragbalken)
+  { const gx = -17.6; cdeck(-18.8, gx, 4.0, 15.4, WY); cbox(CB.plank, -18.8, gx, WY - 0.14, WY - 0.02, 4.0, 15.4, 1);
+    for (let z = 4.4; z < 15.3; z += 1.8) CB.parts.push(rodPart(-18.8, WY - 1.5, z, gx + 0.1, WY - 0.16, z, 0.07, '#4e3424'), part(new THREE.BoxGeometry(1.3, 0.14, 0.14), '#4e3424', (gx - 18.8)/2, WY - 0.2, z));
+    cseg(gx, 4.0, gx, 15.4, 0.08, WY - 0.5, WY + 3); cseg(-18.8, 4.0, gx, 4.0, 0.08, WY - 0.5, WY + 3); cseg(-18.8, 15.4, gx, 15.4, 0.08, WY - 0.5, WY + 3);
+    crail(gx - 0.04, 4.0, gx - 0.04, 15.4, WY); crail(-18.8, 4.0, gx, 4.0, WY); crail(-18.8, 15.4, gx, 15.4, WY); }
+  cseg(-16.5, 17.8, -9, 17.8, 0.08, WY - 0.5, WY + 3); crail(-16.4, 17.75, -9.1, 17.75, WY);   // Geländer am Südgang
+  cseg(-9, 17.8, -9, 19.65, 0.1, WY - 0.5, WY + 3);                            // Ende am Wachtturm
+  // Gedeckter Wehrgang (7): Holzpfosten innen, ein Pultdach mit Ziegeln liegt auf den Zinnen und fällt zum Hof hin ab
+  const galW = (ax, az, bx, bz, nx, nz, ext) => { const L = Math.hypot(bx - ax, bz - az), n = Math.round(L/2.4), ux = (bx - ax)/L, uz = (bz - az)/L, e = ext || 0, ip = h + 0.05 + e;
+    for (let i=0;i<=n;i++){ const s = i*L/n, x = ax + ux*s - nx*ip, z = az + uz*s - nz*ip; CB.parts.push(part(new THREE.BoxGeometry(0.2, 2.5, 0.2), '#4e3424', x, WY + 1.25, z)); }
+    CB.parts.push(rodPart(ax - nx*ip, WY + 2.5, az - nz*ip, bx - nx*ip, WY + 2.5, bz - nz*ip, 0.1, '#4e3424'));
+    const p = (s, k) => [ax + ux*s + nx*k, az + uz*s + nz*k], yo = WY + 3.05, yi = WY + 2.4 - e*0.2, ko = h + 0.15, ki = -(h + 0.6 + e);
+    const A = [...p(0, ko)], B = [...p(L, ko)], Cc = [...p(L, ki)], D = [...p(0, ki)], V = (q, y) => [q[0], y, q[1]];
+    const a3 = V(A, yo), b3 = V(B, yo), c3 = V(Cc, yi), d3 = V(D, yi), U = L/1.4, W2 = (ko - ki)/1.4;
+    const pos = [...a3, ...b3, ...c3, ...a3, ...c3, ...d3, ...a3, ...c3, ...b3, ...a3, ...d3, ...c3], uv = [0, 0, U, 0, U, W2, 0, 0, U, W2, 0, W2, 0, 0, U, W2, U, 0, 0, 0, 0, W2, U, W2];
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.computeVertexNormals(); CB.tiles.push(geo);
+    for (let i=0;i<=n;i++){ const s = i*L/n; CB.parts.push(rodPart(ax + ux*s + nx*ki*0.75, yi + 0.03, az + uz*s + nz*ki*0.75, ax + ux*s + nx*(ko - 0.2), yo - 0.06, az + uz*s + nz*(ko - 0.2), 0.05, '#4e3424')); } };
+  galW(-20, -12, -20, 4.0, -1, 0); galW(-20, 4.0, -20, 15.4, -1, 0, 1.15); galW(-16.4, 19, -9, 19, 0, 1);
+  // Der Wehrgang führt in den runden Eckturm hinein
+  cdeck(-20.65, -18.8, 15.4, 16.7, WY); cdeck(-17.6, -16.4, 17.8, 19.65, WY);
+  cseg(-20.65, 15.4, -20.65, 16.3, 0.1, WY - 0.5, WY + 3); cseg(-18.8, 15.4, -18.8, 16.3, 0.08, WY - 0.5, WY + 3);
+  cseg(-16.4, 19.65, -17.3, 19.65, 0.1, WY - 0.5, WY + 3); cseg(-16.4, 17.8, -17.3, 17.8, 0.08, WY - 0.5, WY + 3);
+  // Runde Türme
+  const DS = M('#cec6b6', { tex:'castle', side:THREE.DoubleSide });
+  for (const t of CTOWERS){ const r = t.r, tg = new THREE.Group(); tg.position.set(t.x, 0, t.z); g.add(tg);
+    const cyl = (y0, y1, a0, al) => { const cg = new THREE.CylinderGeometry(r, r*1.04, y1 - y0, 32, 1, true, a0 || 0, al || TAU); scaleUV(cg, (al || TAU)*r/2.2, (y1 - y0)/2.2); cg.translate(0, (y0 + y1)/2, 0); return cg; };
+    if (t.walk){
+      // Unten und oben geschlossen, auf der Höhe des Wehrgangs zwei Türöffnungen (Norden und Osten)
+      const m = 0.05, n0 = Math.PI - 0.461 - m, n1 = Math.PI + 0.243 + m, e0 = Math.PI/2 - 0.243 - m, e1 = Math.PI/2 + 0.461 + m;
+      const parts = [cyl(base, WY - 0.1), cyl(WY + 2.5, t.top), cyl(WY - 0.1, WY + 2.5, e1, n0 - e1), cyl(WY - 0.1, WY + 2.5, n1, e0 + TAU - n1)];
+      mk(mergeGeo(parts), DS, tg);
+      for (const a of [n0, n1, e0, e1]) cbx(CB.stone2, t.x + Math.sin(a)*(r - 0.45), t.z + Math.cos(a)*(r - 0.45), Math.atan2(-Math.cos(a), Math.sin(a)), 0.95, WY - 0.1, WY + 2.6, 0.22, 1);
+      mk(new THREE.CircleGeometry(r - 0.1, 28).rotateX(Math.PI/2), MT.floor, tg, 0, WY + 3.0, 0);
+      mk(new THREE.CircleGeometry(r - 0.1, 28).rotateX(-Math.PI/2), MT.floor, tg, 0, WY - 0.02, 0);
+      cdeck(t.x - 2.6, t.x + 2.6, t.z - 2.6, t.z + 2.6, WY);
+      const N = 40; for (let i=0;i<N;i++){ const a0 = i/N*TAU, a1 = (i + 1)/N*TAU, am = (a0 + a1)/2; if ((am > n0 && am < n1) || (am > e0 && am < e1)) continue;
+        cseg(t.x + Math.sin(a0)*(r - 0.85), t.z + Math.cos(a0)*(r - 0.85), t.x + Math.sin(a1)*(r - 0.85), t.z + Math.cos(a1)*(r - 0.85), 0.12, WY - 0.5, WY + 3); }
+    } else { const cg = cyl(base, t.top); mk(cg, MT.stone, tg); }
+    for (let k=0;k<3;k++) for (let i=0;i<6;i++){ const a = i/6*TAU + k*0.5, y = CY + 2.5 + k*(t.top - CY - 4)/3; CB.parts.push(part(new THREE.BoxGeometry(0.13, 0.9, 0.08), '#14110e', t.x + Math.sin(a)*(r + 0.02), y, t.z + Math.cos(a)*(r + 0.02), 0, a, 0)); }
+    if (t.roof){ mk(new THREE.CylinderGeometry(r + 0.15, r + 0.15, 0.35, 32), MT.stone2, tg, 0, t.top + 0.1, 0);
+      const rg = new THREE.ConeGeometry(r + 0.5, r*2.5, 32, 1, true); scaleUV(rg, TAU*r/1.6, r*2.5/1.6); mk(rg, M('#8a92a0', { tex:'slate', side:THREE.DoubleSide }), tg, 0, t.top + 0.25 + r*1.25, 0);
+      CB.parts.push(part(new THREE.SphereGeometry(0.14, 8, 6), '#c8a040', t.x, t.top + 0.3 + r*2.5, t.z), part(new THREE.CylinderGeometry(0.03, 0.03, 1.4, 6), '#3a3a3a', t.x, t.top + 0.3 + r*2.5 + 0.7, t.z)); }
+    else { const zk = []; for (let i=0;i<16;i++){ const a = i/16*TAU; zk.push(xf(boxUV(r*0.3, 1.0, 0.55, 1.2), Math.sin(a)*(r - 0.25), t.top + 0.5 + (i % 2)*0.45, Math.cos(a)*(r - 0.25), 0, a, 0)); } mk(mergeGeo(zk), MT.stone, tg);
+      mk(new THREE.CircleGeometry(r - 0.1, 28).rotateX(-Math.PI/2), MT.stone2, tg, 0, t.top, 0); }
+  }
+  // Wassergraben: Wasserfläche zwischen Mauer und äusserem Ufer
+  { const sh = new THREE.Shape(), d = C.M1 + 0.4, x0 = C.X0, x1 = C.X1, z0 = C.Z0, z1 = C.Z1;
+    sh.moveTo(x0, z0 - d); sh.lineTo(x1, z0 - d); sh.absarc(x1, z0, d, -Math.PI/2, 0, false); sh.lineTo(x1 + d, z1); sh.absarc(x1, z1, d, 0, Math.PI/2, false); sh.lineTo(x0, z1 + d); sh.absarc(x0, z1, d, Math.PI/2, Math.PI, false); sh.lineTo(x0 - d, z0); sh.absarc(x0, z0, d, Math.PI, Math.PI*1.5, false);
+    const hd = C.WT/2 - 0.2, hole = new THREE.Path(), Wt = WATCH, G = GATE; hole.moveTo(x0 + hd, z0 + hd); hole.lineTo(x0 + hd, z1 - hd);
+    for (const [a, b, e] of [[Wt.x0 + 0.2, Wt.x1 - 0.2, Wt.z1 - 0.2], [G.x0 + 0.2, G.x1 - 0.2, G.z1 - 0.05]]){ hole.lineTo(a, z1 - hd); hole.lineTo(a, e); hole.lineTo(b, e); hole.lineTo(b, z1 - hd); }
+    hole.lineTo(x1 - hd, z1 - hd); hole.lineTo(x1 - hd, z0 + hd); hole.closePath(); sh.holes.push(hole);
+    const wg = new THREE.ShapeGeometry(sh, 16); wg.rotateX(Math.PI/2); const uv = wg.attributes.uv; for (let i=0;i<uv.count;i++) uv.setXY(i, uv.getX(i)/8, uv.getY(i)/8);
+    const nrm = wg.attributes.normal; for (let i=0;i<nrm.count;i++) nrm.setXYZ(i, 0, 1, 0);
+    const water = mk(wg, waterMat(1.4, 1.4, '#3a5a52', 0.88), g, 0, C.MY, 0); water.castShadow = false; water.renderOrder = 2; water.material.side = THREE.DoubleSide; }
+  // Hindernis am äusseren Grabenrand (mit Lücke für die Zugbrücke)
+  { const d = C.M1 + 0.45, pts = [], x0 = C.X0, x1 = C.X1, z0 = C.Z0, z1 = C.Z1, arc = (cx, cz, a0) => { for (let i=0;i<=6;i++){ const a = a0 + i/6*Math.PI/2; pts.push([cx + Math.cos(a)*d, cz + Math.sin(a)*d]); } };
+    arc(x1, z1, 0); arc(x0, z1, Math.PI/2); arc(x0, z0, Math.PI); arc(x1, z0, Math.PI*1.5); pts.push(pts[0]);
+    for (let i=0;i<pts.length - 1;i++){ const [ax, az] = pts[i], [bx, bz] = pts[i + 1];
+      if (az > z1 + d - 0.5 && bz > z1 + d - 0.5){ const gx0 = 7.3, gx1 = 10.7, lo = Math.min(ax, bx), hi2 = Math.max(ax, bx); if (hi2 > gx0 && lo < gx1){ if (lo < gx0) cseg(lo, az, gx0, az, 0.15); if (hi2 > gx1) cseg(gx1, az, hi2, az, 0.15); continue; } }
+      cseg(ax, az, bx, bz, 0.15); } }
+  cbFlush(g); keep(g);
+}
+/* ---------- Torturm (3) mit Fallgatter (4), Pechnase (5) und der Torstube darüber ---------- */
+function buildGateTower(){
+  const MT = mMats(), C = CASTLE, G = GATE, g = castleGrp(), gs = castleGrp(), base = C.MB - 0.4, CY = HY.CY, GR = HY.GR, TOP = GR + 3.8, cx = (G.x0 + G.x1)/2, W = G.x1 - G.x0;
+  // Vorder- und Rückwand mit dem Torbogen, seitliche Blöcke, Decke des Durchgangs
+  cwallH(CB.stone, G.x0, G.z1 - 0.5, G.x1, G.z1 - 0.5, base, GR - base, 1.0, [[W/2, CY - base, 1.7, 4.2, true]]);
+  cwallH(CB.stone, G.x0, G.z0 + 0.5, G.x1, G.z0 + 0.5, CY - 0.3, GR - CY + 0.3, 1.0, [[W/2, 0.3, 1.7, 4.2, true]]);
+  for (const [a, b] of [[G.x0, cx - 1.7], [cx + 1.7, G.x1]]) cbox(CB.stone, a, b, base, GR, G.z0 + 1, G.z1 - 1, 2);
+  cbox(CB.stone2, G.x0 + 1, G.x1 - 1, CY + 4.2, GR, G.z0 + 1, G.z1 - 1, 1.6);
+  // Torstube: Wände mit Fenstern, Tür im Osten, Öffnung zur Pechnase und Löcher für die Ketten
+  cwallH(CB.stone, G.x0, G.z1 - 0.5, G.x1, G.z1 - 0.5, GR, TOP - GR, 1.0, [[W/2, 0, 0.7, 1.5, false], [W/2 - 1.3, 0.25, 0.15, 0.3, false], [W/2 + 1.3, 0.25, 0.15, 0.3, false]]);
+  cwallH(CB.stone, G.x0, G.z0 + 0.5, G.x1, G.z0 + 0.5, GR, TOP - GR, 1.0, [[2.2, 1.0, 0.35, 1.3, true], [4.8, 1.0, 0.35, 1.3, true]]);
+  cwallH(CB.stone, G.x1 - 0.5, G.z0 + 1, G.x1 - 0.5, G.z1 - 1, GR, TOP - GR, 1.0, [[17.0 - (G.z0 + 1), 0, 0.6, 2.3, true], [4.4, 1.1, 0.12, 1.0, false]]);
+  cwallH(CB.stone, G.x0 + 0.5, G.z0 + 1, G.x0 + 0.5, G.z1 - 1, GR, TOP - GR, 1.0, [[3.1, 1.1, 0.12, 1.0, false]]);
+  cbox(CB.stone2, G.x0, G.x1, TOP - 0.3, TOP, G.z0, G.z1, 2);
+  for (const [ax, az, bx, bz, nx, nz] of [[G.x0, G.z1, G.x1, G.z1, 0, 1], [G.x1, G.z0, G.x1, G.z1, 1, 0], [G.x0, G.z0, G.x0, G.z1, -1, 0], [G.x0, G.z0, G.x1, G.z0, 0, -1]]) crenel(ax, az, bx, bz, nx, nz, TOP, -0.275);
+  cbox(CB.floor, G.x0 + 1, G.x1 - 1, TOP - 0.42, TOP - 0.3, G.z0 + 1, G.z1 - 1, 1.6);
+  // Pechnase: ein Erker über dem Tor, unten offen; drei Kragsteine tragen ihn
+  { const y0 = GR + 0.1, y1 = GR + 2.3, z0 = G.z1, z1 = G.z1 + 1.0; cbox(CB.stone, cx - 1.4, cx + 1.4, y0 + 0.3, y1, z1 - 0.25, z1, 1.2); for (const sx of [-1, 1]) cbox(CB.stone, cx + sx*1.4 - (sx > 0 ? 0.25 : 0), cx + sx*1.4 + (sx < 0 ? 0.25 : 0), y0 + 0.3, y1, z0, z1, 1.2);
+    cbox(CB.stone2, cx - 1.5, cx + 1.5, y1, y1 + 0.25, z0, z1 + 0.1, 1.2); for (const sx of [-1.2, 0, 1.2]) cbox(CB.stone2, cx + sx - 0.17, cx + sx + 0.17, y0 - 0.25, y0 + 0.3, z0, z1, 0.8);
+    CB.parts.push(part(new THREE.BoxGeometry(2.3, 0.02, 0.6), '#0e0c0a', cx, y0 + 0.31, (z0 + z1)/2 - 0.1)); }
+  // Treppe vom Hof zur Torstube (aussen am Turm) mit Absatz
+  cstairs({ x0:12.5, x1:14.3, z0:10.2, z1:16.4, axis:'z', up:1, y0:CY, y1:GR, open:['-x', '+x'], exit:0.01 });
+  { const pl = []; cbox(CB.plank, 12.5, 14.3, GR - 0.12, GR, 16.4, 17.6, 1); for (const [x, z] of [[14.2, 16.5], [14.2, 17.5]]) pl.push(part(new THREE.BoxGeometry(0.16, GR - CY, 0.16), '#4e3424', x, (GR + CY)/2, z)); CB.parts.push(...pl);
+    crail(14.3, 16.4, 14.3, 17.6, GR); cdeck(12.5, 14.3, 16.4, 17.6, GR); cdeck(11.4, 12.6, 16.4, 17.6, GR);
+    cseg(14.3, 16.4, 14.3, 17.6, 0.1, GR - 0.5, GR + 3); cseg(12.5, 17.6, 14.3, 17.6, 0.1, GR - 0.5, GR + 3); }
+  cdeck(G.x0 + 1, G.x1 - 1, G.z0 + 1, G.z1 - 1, GR);
+  // Hindernisse: Durchgang und Aussenseiten unten, Stube oben
+  for (const x of [cx - 1.7, cx + 1.7]) cseg(x, G.z0 - 0.1, x, G.z1 + 0.1, 0.12, -50, CY + 3);
+  csegGaps(G.x0, G.z0, G.x1, G.z0, [[W/2 - 1.7, W/2 + 1.7]], 0.15, -50, CY + 3);
+  cseg(G.x1, G.z0, G.x1, 17.8, 0.15, -50, CY + 3); cseg(G.x0, G.z0, G.x0, 17.8, 0.15, -50, CY + 3);
+  const R0 = GR - 0.5, R1 = GR + 3;
+  cseg(G.x0 + 1, G.z0 + 1, G.x1 - 1, G.z0 + 1, 0.15, R0, R1); cseg(G.x0 + 1, G.z1 - 1, G.x1 - 1, G.z1 - 1, 0.15, R0, R1); cseg(G.x0 + 1, G.z0 + 1, G.x0 + 1, G.z1 - 1, 0.15, R0, R1);
+  csegGaps(G.x1 - 1, G.z0 + 1, G.x1 - 1, G.z1 - 1, [[16.4 - (G.z0 + 1), 17.6 - (G.z0 + 1)]], 0.15, R0, R1);
+  cseg(G.x1 - 1, 16.4, G.x1, 16.4, 0.1, R0, R1); cseg(G.x1 - 1, 17.6, G.x1, 17.6, 0.1, R0, R1);
+  // Fallgatter im Torbogen: oben in der Stube, es fällt, wenn die Zugbrücke hochgezogen wird
+  { const pc = new THREE.Group(); pc.position.set(cx, CY, G.z1 - 1.15); gs.add(pc);
+    const bars = []; for (let i=0;i<7;i++) bars.push(part(new THREE.BoxGeometry(0.08, 4.2, 0.08), '#2a2a2c', -1.5 + i*0.5, 2.1, 0)); for (let k=0;k<7;k++) bars.push(part(new THREE.BoxGeometry(3.3, 0.08, 0.08), '#2a2a2c', 0, 0.3 + k*0.62, 0));
+    for (let i=0;i<7;i++) bars.push(part(new THREE.ConeGeometry(0.06, 0.22, 6).rotateX(Math.PI), '#2a2a2c', -1.5 + i*0.5, -0.1, 0));
+    const grid = vmesh(bars, pc, false, new THREE.MeshStandardMaterial({ vertexColors:true, metalness:0.7, roughness:0.45 })); grid.position.y = 4.25; CASTLE.portcullis = grid; }
+  // Winde für die Zugbrücke: eine Trommel mit Speichen in der Mitte der Stube, die Ketten laufen durch die Mauer nach aussen
+  const WZ = 19.6, WYc = GR + 0.95;
+  { const wg = new THREE.Group(); wg.position.set(cx, WYc, WZ); g.add(wg); const wm = M('#7a5636', { tex:'wood' });
+    mk(new THREE.CylinderGeometry(0.28, 0.28, 2.4, 14).rotateZ(Math.PI/2), wm, wg); for (const sx of [-1.3, 1.3]) mk(new THREE.BoxGeometry(0.2, 1.3, 0.3), M('#5a3e28', { tex:'wood' }), g, cx + sx, GR + 0.6, WZ);
+    for (const sx of [-1.05, 1.05]) for (let k=0;k<4;k++) mk(new THREE.CylinderGeometry(0.04, 0.04, 1.3, 6), wm, wg, sx, 0, 0, k*Math.PI/4, 0, 0);
+    for (const sx of [-0.9, 0.9]) mk(new THREE.CylinderGeometry(0.3, 0.3, 0.2, 14).rotateZ(Math.PI/2), METAL.iron(), wg, sx, 0, 0);
+    CASTLE.winch = wg;
+    for (const sx of [-1, 1]) CB.parts.push(rodPart(cx + sx*0.9, WYc + 0.28, WZ, cx + sx*1.3, GR + 0.4, G.z1 - 0.9, 0.04, '#3a3a3e'));
+    cseg(cx - 1.45, WZ, cx + 1.45, WZ, 0.35, GR - 0.5, GR + 3); }
+  // Kessel mit heissem Pech auf einem Feuer neben der Pechnase, ein Wächter mit Schöpfkelle; ein zweiter dreht die Winde
+  { const kx = cx + 1.45, kz = G.z1 - 1.75, kg = new THREE.Group(); kg.position.set(kx, GR, kz); g.add(kg);
+    for (let i=0;i<3;i++){ const a = i/3*TAU; mk(new THREE.CylinderGeometry(0.02, 0.02, 1.0, 5), METAL.iron(), kg, Math.sin(a)*0.35, 0.48, Math.cos(a)*0.35, Math.cos(a)*0.3, 0, -Math.sin(a)*0.3); }
+    mk(new THREE.SphereGeometry(0.3, 14, 10, 0, TAU, Math.PI/2, Math.PI/2), M('#2a2a2c', { tex:null, metalness:0.6, roughness:0.5, side:THREE.DoubleSide }), kg, 0, 0.62, 0);
+    mk(new THREE.CircleGeometry(0.27, 14).rotateX(-Math.PI/2), M('#120e0a', { tex:null, roughness:0.2 }), kg, 0, 0.55, 0);
+    const ff = new THREE.Group(); ff.position.y = 0.03; kg.add(ff); makeFireFx(ff, 0.18, 2.2); addSmoke(kg, 4, 0, 0.9, 0, 0.12, '#3a3632', 1.2);
+    ccirc(kx, kz, 0.45, GR - 0.5, GR + 3);
+    const gd = mPerson(g, { skin:'#c89a78', hair:'#4a3020', beard:true, cloth:'#6a6a70', sleeves:true, mail:true, surcoat:['#a8242a', '#e8c040'], kettle:true, leggings:'#3a2a1c' }, cx + 0.3, G.z1 - 2.2, -0.15);
+    gd.g.position.y = GR; const ladle = new THREE.Group(); mk(new THREE.CylinderGeometry(0.015, 0.015, 1.0, 6).translate(0, 0.4, 0), M('#5a3e28', { tex:'wood' }), ladle); mk(new THREE.SphereGeometry(0.07, 10, 6, 0, TAU, Math.PI/2, Math.PI/2), METAL.iron(), ladle, 0, 0.9, 0); fist(ladle, gd.arms[0].hand, 0.1);
+    const wd = mPerson(g, { skin:'#d8b090', hair:'#6a4a2a', cloth:'#7a7a80', sleeves:true, mail:true, surcoat:['#a8242a', '#e8c040'], leggings:'#4a3a2a' }, cx - 1.05, WZ - 1.05, 0);
+    wd.g.position.y = GR; const Hw = new THREE.Vector3();
+    for (const p of [gd, wd]) ccirc(p.g.position.x, p.g.position.z, 0.35, GR - 0.5, GR + 3);
+    anims.push(t => { gd.arms[0].sh.rotation.set(-0.9 + Math.sin(t*0.8)*0.3, 0, -0.3); gd.arms[0].el.rotation.x = -0.6; gd.head.rotation.x = 0.35; gd.face.talk = Math.max(0, Math.sin(t*5))*0.3*(Math.sin(t*0.3) > 0.4 ? 1 : 0);
+      const a = CASTLE.winch.rotation.x; for (const i of [0, 1]){ const b = a + i*Math.PI/2 + (Math.abs(Math.sin(a + i*Math.PI/2)) < 0.3 ? 0 : 0); Hw.set(cx - 1.05 + CASTLE.x, WYc + Math.sin(b)*0.62, WZ - Math.abs(Math.cos(b))*0.62 + CASTLE.z); ikWorld(wd, i, Hw); }
+      wd.spine.rotation.x = 0.15; });
+    addHotspot('torturm', [gd.root, wd.root], P.torturm[0], GR + 2.2, P.torturm[1], 0); }
+  { const lamp = new THREE.PointLight(0xffc890, 2.2, 7, 2); lamp.position.set(cx, GR + 2.6, (G.z0 + G.z1)/2); g.add(lamp); }
+  // Pflaster im Tordurchgang
+  pavedStrip(CASTLE.x + cx, CASTLE.z + G.z0 - 0.6, CASTLE.x + cx, CASTLE.z + G.z1 + 0.05, 3.4, MT.cobble, 0.05);
+  cbFlush(gs); keep(gs);
+}
+/* ---------- Zugbrücke (6): wird ab und zu hochgezogen (aber nie, wenn du darauf oder davor stehst) ---------- */
 function buildDrawbridge(){
-  const C = CASTLE, z0 = C.z + C.GATE, L = C.M1 + 0.7 - C.GATE, W = 3.0, yIn = groundH(C.x, C.z + C.WR) + 0.08, yOut = groundH(C.x, C.z + C.M1 + 0.8) + 0.08;
-  const hinge = new THREE.Group(); hinge.position.set(C.x, yIn, z0); scene.add(hinge); keep(hinge);
-  const deck = new THREE.Group(); hinge.add(deck); deck.rotation.x = Math.atan2(yIn - yOut, L);   // flach von der Burg zum Ufer
+  const C = CASTLE, G = GATE, cx = (G.x0 + G.x1)/2, z0 = C.z + G.z1, L = C.Z1 + C.M1 + 0.3 - G.z1, W = 3.0, X = C.x + cx, yIn = HY.CY + 0.06, yOut = groundH(X, z0 + L + 0.4) + 0.08;
+  const hinge = new THREE.Group(); hinge.position.set(X, yIn, z0); scene.add(hinge); keep(hinge);
+  const deck = new THREE.Group(); hinge.add(deck); deck.rotation.x = Math.atan2(yIn - yOut, L);
   const planks = []; for (let i=0;i<Math.round(L/0.32); i++) planks.push(part(new THREE.BoxGeometry(W, 0.12, 0.3), i % 3 ? '#7a5636' : '#6a4a2e', 0, -0.06, i*0.32 + 0.16));
   for (const sd of [-1, 1]){ planks.push(part(new THREE.BoxGeometry(0.22, 0.26, L), '#4a3220', sd*(W/2 - 0.1), -0.1, L/2), part(new THREE.BoxGeometry(0.08, 0.08, L), '#5a3e28', sd*(W/2 - 0.04), 0.95, L/2));
     for (let i=0;i<5;i++) planks.push(part(new THREE.BoxGeometry(0.08, 0.95, 0.08), '#5a3e28', sd*(W/2 - 0.04), 0.48, 0.2 + i*(L - 0.4)/4)); }
   for (let i=0;i<3;i++) planks.push(part(new THREE.BoxGeometry(W, 0.1, 0.12), '#2a2a2c', 0, 0.01, 0.6 + i*(L - 1.2)/2));
   vmesh(planks, deck);
-  // Ketten vom Tor zum Ende der Brücke
+  // Widerlager am Ufer
+  { const ab = grp(X, z0 + L + 0.8); mk(boxUV(4.2, 1.6, 1.6, 1.2), mMats().stone2, ab, 0, -0.75, 0); keep(ab); }
   const chainM = new THREE.MeshStandardMaterial({ color:C_('#3a3a3e'), metalness:0.8, roughness:0.4 });
   const chains = [-1, 1].map(sd => { const m = mk(new THREE.CylinderGeometry(0.04, 0.04, 1, 6), chainM, scene); m.castShadow = false; keep(m); return { m, sd }; });
-  const top = sd => new THREE.Vector3(C.x + sd*(W/2 - 0.1), yIn + 5.2, z0 + 0.1), end = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
-  // Begehbare Fläche und Hindernisse an den Seiten
-  const dk = { x0:C.x - W/2 + 0.15, x1:C.x + W/2 - 0.15, z0:z0 - 0.05, z1:z0 + L, ramp:{ axis:'z', a0:z0, a1:z0 + L, y0:yIn, y1:yOut, stairs:true } }; DECKS.push(dk);
-  for (const sd of [-1, 1]) colliders.push({ ax:C.x + sd*(W/2 + 0.05), az:z0, bx:C.x + sd*(W/2 + 0.05), bz:z0 + L - 0.2, r:0.12 });
-  const block = { ax:C.x - 2.4, az:z0 + L + 0.4, bx:C.x + 2.4, bz:z0 + L + 0.4, r:0.2 }, blockIn = { ax:C.x - 1.8, az:z0 - 0.3, bx:C.x + 1.8, bz:z0 - 0.3, r:0.2 };
+  const top = sd => new THREE.Vector3(X + sd*1.3, HY.GR + 0.4, z0 + 0.02), end = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
+  const dk = { x0:X - W/2 + 0.15, x1:X + W/2 - 0.15, z0:z0 - 0.05, z1:z0 + L, ramp:{ axis:'z', a0:z0, a1:z0 + L, y0:yIn, y1:yOut, stairs:true } }; DECKS.push(dk);
+  for (const sd of [-1, 1]) colliders.push({ ax:X + sd*(W/2 + 0.05), az:z0, bx:X + sd*(W/2 + 0.05), bz:z0 + L - 0.2, r:0.12 });
+  const block = { ax:X - 2.4, az:z0 + L + 0.4, bx:X + 2.4, bz:z0 + L + 0.4, r:0.2 }, blockIn = { ax:X - 1.8, az:z0 - 0.4, bx:X + 1.8, bz:z0 - 0.4, r:0.2 };
   let k = 0, phase = 0, wait = 35, on = false; const flat = deck.rotation.x;
   anims.push((t, dt) => {
-    const near = Math.hypot(player.x - C.x, player.z - (z0 + L/2)) < L/2 + 5 || (Math.abs(player.x - C.x) < 2.2 && player.z > C.z + C.WR - 4 && player.z < z0 + 1);
+    const near = Math.hypot(player.x - X, player.z - (z0 + L/2)) < L/2 + 5 || (Math.abs(player.x - X) < 2.2 && player.z > C.z + G.z0 - 1 && player.z < z0 + 1);
     if (phase === 0){ wait -= dt; if (wait <= 0 && !near){ phase = 1; } else if (wait <= 0) wait = 4; }
-    else if (phase === 1){ k = Math.min(1, k + dt/5); if (k >= 1){ phase = 2; wait = 8; } }
+    else if (phase === 1){ k = Math.min(1, k + dt/6); if (k >= 1){ phase = 2; wait = 8; } }
     else if (phase === 2){ wait -= dt; if (wait <= 0){ phase = 3; } }
-    else { k = Math.max(0, k - dt/5); if (k <= 0){ phase = 0; wait = 40 + Math.random()*20; } }
+    else { k = Math.max(0, k - dt/6); if (k <= 0){ phase = 0; wait = 40 + Math.random()*20; } }
     deck.rotation.x = flat + (-Math.PI/2 - 0.02 - flat)*sstep(0, 1, k);
-    const closed = k > 0.02; if (closed !== on){ on = closed; if (on){ colliders.push(block, blockIn); dk.x1 = dk.x0; } else { colliders.splice(colliders.indexOf(block), 1); colliders.splice(colliders.indexOf(blockIn), 1); dk.x1 = C.x + W/2 - 0.15; } }
-    if (CASTLE.portcullis) CASTLE.portcullis.position.y = 3.3 - 3.2*sstep(0.3, 0.9, k);
+    const closed = k > 0.02; if (closed !== on){ on = closed; if (on){ colliders.push(block, blockIn); dk.x1 = dk.x0; } else { colliders.splice(colliders.indexOf(block), 1); colliders.splice(colliders.indexOf(blockIn), 1); dk.x1 = X + W/2 - 0.15; } }
+    if (CASTLE.portcullis) CASTLE.portcullis.position.y = 4.25 - 4.25*sstep(0.3, 0.9, k);
+    if (CASTLE.winch) CASTLE.winch.rotation.x = -k*7;
     deck.updateWorldMatrix(true, false);
     for (const ch of chains){ end.set(ch.sd*(W/2 - 0.1), 0.3, L - 0.3); deck.localToWorld(end); const a = top(ch.sd); ch.m.position.copy(a).add(end).multiplyScalar(0.5); ch.m.scale.y = a.distanceTo(end); ch.m.quaternion.setFromUnitVectors(up, end.clone().sub(a).normalize()); }
   });
   addHotspot('zugbruecke', [deck], P.zugbruecke[0], gy(P.zugbruecke[0], P.zugbruecke[1]) + 2.6, P.zugbruecke[1], 0);
 }
 function C_(hex){ return C(hex); }
-/* ---------- Bergfried mit hohem Eingang, Holztreppe und einem Wächter oben ---------- */
-function buildKeep(){
-  const MT = mMats(), K = KEEP, [kx, kz] = cLW(K.x, K.z);
-  squareTower(kx, kz, K.w, K.H, 0, { roof:null });
-  const g = castleGrp(); g.position.y = groundH(kx, kz) - 0.5;
-  // Eingang in 7 m Höhe (Südseite), dorthin eine steile Holztreppe
-  const door = 7.5, fz = K.z + K.w/2;
-  mk(archWindow(1.1, 2.0, false), MT.dark, g, K.x + 1.2, door, fz + 0.02);
-  const st = [], N = 16; for (let i=0;i<N;i++){ const y = 0.5 + i*(door - 0.4)/N, x = K.x - 3.2 + i*(4.2/N); st.push(part(new THREE.BoxGeometry(0.34, 0.08, 1.0), '#6a4a2e', x, y, fz + 0.6)); }
-  for (const sd of [0, 1]) st.push(part(new THREE.BoxGeometry(Math.hypot(4.2, door), 0.14, 0.1), '#4a3220', K.x - 1.1, door/2 + 0.45, fz + 0.12 + sd*0.96, 0, 0, Math.atan2(door, 4.2)));
-  st.push(part(new THREE.BoxGeometry(1.4, 0.12, 1.1), '#6a4a2e', K.x + 1.3, door - 0.06, fz + 0.6));
-  vmesh(st, g);
-  wallSeg(g, K.x - 3.3, fz + 0.6, K.x + 1.8, fz + 0.6, 0.55);
-  // Wächter geht oben auf dem Turm hin und her und schaut in die Ferne
-  const top = K.H + 0.5, gd = mPerson(g, { skin:'#c49a78', hair:'#4a3020', beard:true, cloth:'#6a6a70', sleeves:true, mail:true, surcoat:'#a8242a', kettle:true, leggings:'#4a3a2a' }, K.x - 2, K.z - 2, 0);
-  gd.g.position.y = top; const spear = makeSpear('iron', 2.2); fist(spear, gd.arms[0].hand, 0.9);
-  routine(gd, [{ to:[K.x + 2, K.z - 2] }, { d:3, yaw:Math.PI/2 }, { to:[K.x + 2, K.z + 2] }, { d:4, yaw:0 }, { to:[K.x - 2, K.z + 2] }, { d:3, yaw:-Math.PI/2 }, { to:[K.x - 2, K.z - 2] }, { d:3, yaw:Math.PI }], { speed:0.7 });
-  anims.push(() => { gd.g.position.y = top; gd.arms[0].el.rotation.x = -0.9; });
-  addHotspot('bergfried', [g], P.bergfried[0], gy(P.bergfried[0], P.bergfried[1]) + 2.6, P.bergfried[1], 0);
+/* ---------- Wachtturm (9): unten die Waffenkammer mit dem Verlies darunter, oben der Mannschaftsraum und die Plattform ---------- */
+function wallTorch(g, x, y, z, ry, light){ const tg = new THREE.Group(); tg.position.set(x, y, z); tg.rotation.y = ry; g.add(tg);
+  mk(new THREE.CylinderGeometry(0.03, 0.04, 0.5, 6), M('#3a2a1a', { tex:'wood' }), tg, 0, 0, 0.12, -0.5, 0, 0); mk(new THREE.BoxGeometry(0.06, 0.2, 0.12), METAL.iron(), tg, 0, -0.1, 0.02);
+  const ff = new THREE.Group(); ff.position.set(0, 0.25, 0.22); tg.add(ff); makeFireFx(ff, 0.1, light || 0, false); return tg; }
+function buildWatchTower(){
+  const MT = mMats(), C = CASTLE, Wt = WATCH, g = castleGrp(), gs = castleGrp(), base = C.MB - 0.4, CY = HY.CY, U1 = HY.W1, TOP = HY.WT, T = Wt.T;
+  const { x0, x1, z0, z1 } = Wt, ix0 = x0 + T, ix1 = x1 - T, iz0 = z0 + T, iz1 = z1 - T, dx = -4.8;
+  // Mauern mit Tür, Fenstern und Schiessscharten
+  cwallH(CB.stone, x0, z0 + T/2, x1, z0 + T/2, base, TOP - base, T, [[dx - x0, CY - base, 0.7, 2.5, true], [7.6, U1 - base + 1.0, 0.3, 1.1, true]]);
+  cwallH(CB.stone, x0, z1 - T/2, x1, z1 - T/2, base, TOP - base, T, [[3.0, CY - base + 1.2, 0.12, 1.0, false], [7.0, CY - base + 1.2, 0.12, 1.0, false], [5.0, U1 - base + 1.0, 0.3, 1.1, true]]);
+  cwallH(CB.stone, x1 - T/2, z0 + T, x1 - T/2, z1 - T, base, TOP - base, T, [[3.6, U1 - base + 1.1, 0.12, 1.0, false], [3.6, CY - base + 1.2, 0.12, 1.0, false]]);
+  cwallH(CB.stone, x0 + T/2, z0 + T, x0 + T/2, z1 - T, base, TOP - base, T, [[3.6, U1 - base + 1.1, 0.12, 1.0, false]]);
+  // Boden mit dem Angstloch (ein Gitter darüber), Zwischenboden, Plattform
+  const hx0 = -4.6, hx1 = -3.4, hz0 = 19.6, hz1 = 20.8;
+  for (const [a, b, c, d] of [[ix0, ix1, iz0, hz0], [ix0, ix1, hz1, iz1], [ix0, hx0, hz0, hz1], [hx1, ix1, hz0, hz1]]) cbox(CB.stone2, a, b, CY - 0.3, CY + 0.04, c, d, 1.2);
+  for (let i=0;i<6;i++) CB.parts.push(part(new THREE.BoxGeometry(0.05, 0.05, 1.3), '#2a2a2c', hx0 + 0.1 + i*0.2, CY + 0.06, (hz0 + hz1)/2));
+  for (let i=0;i<5;i++) CB.parts.push(part(new THREE.BoxGeometry(1.3, 0.05, 0.05), '#2a2a2c', (hx0 + hx1)/2, CY + 0.07, hz0 + 0.1 + i*0.25));
+  const s1 = { x0:ix0, x1:ix0 + 1.7, z0:17.0, z1:22.6 }, s2 = { x0:ix1 - 1.7, x1:ix1, z0:17.6, z1:23.2 };
+  cbox(CB.floor, s1.x1, ix1, U1 - 0.3, U1, iz0, iz1, 1.6); cbox(CB.floor, ix0, s1.x1, U1 - 0.3, U1, s1.z1, iz1, 1.6); cbox(CB.floor, ix0, s1.x1, U1 - 0.3, U1, iz0, s1.z0, 1.6);
+  for (const [a, b, c, d] of [[x0, s2.x0, z0, z1], [s2.x1, x1, z0, z1], [s2.x0, s2.x1, z0, s2.z0], [s2.x0, s2.x1, s2.z1, z1]]) cbox(CB.stone2, a, b, TOP - 0.3, TOP, c, d, 1.6);
+  for (const [ax, az, bx, bz, nx, nz] of [[x0, z0, x1, z0, 0, -1], [x1, z0, x1, z1, 1, 0], [x0, z1, x1, z1, 0, 1], [x0, z0, x0, z1, -1, 0]]) crenel(ax, az, bx, bz, nx, nz, TOP, -0.275);
+  cstairs(Object.assign({ axis:'z', up:1, y0:CY + 0.04, y1:U1, open:['+x'], entry:1.2 }, s1));
+  cstairs(Object.assign({ axis:'z', up:-1, y0:U1, y1:TOP, open:['-x'], far:true, entry:1.2 }, s2));
+  // Begehbare Böden
+  cdeck(ix0, ix1, iz0, iz1, CY + 0.04); cdeck(dx - 0.7, dx + 0.7, z0 - 0.1, iz0 + 0.2, CY + 0.04);
+  cdeck(s1.x1, ix1, iz0, iz1, U1); cdeck(ix0, s1.x1, s1.z1, iz1, U1);
+  cdeck(x0 + 0.3, s2.x0, z0 + 0.3, z1 - 0.3, TOP); cdeck(s2.x1, x1 - 0.3, z0 + 0.3, z1 - 0.3, TOP); cdeck(s2.x0, s2.x1, z0 + 0.3, s2.z0, TOP); cdeck(s2.x0, s2.x1, s2.z1, z1 - 0.3, TOP);
+  // Hindernisse: aussen im Hof, Türleibung, Innenwände, Brüstung oben
+  csegGaps(x0, z0, x1, z0, [[dx - 0.7 - x0, dx + 0.7 - x0]], 0.15, -50, CY + 3); cseg(x1, z0, x1, 17.8, 0.15, -50, CY + 3); cseg(x0, z0, x0, 17.8, 0.15, -50, CY + 3);
+  for (const x of [dx - 0.7, dx + 0.7]) cseg(x, z0, x, iz0, 0.1, -50, CY + 3);
+  cseg(ix0, iz0, ix0, iz1, 0.15, -50, TOP - 0.5); cseg(ix1, iz0, ix1, iz1, 0.15, -50, TOP - 0.5); cseg(ix0, iz1, ix1, iz1, 0.15, -50, TOP - 0.5);
+  csegGaps(ix0, iz0, ix1, iz0, [[dx - 0.7 - ix0, dx + 0.7 - ix0]], 0.15, -50, CY + 2.4); cseg(ix0, iz0, ix1, iz0, 0.15, CY + 2.4, TOP - 0.5);
+  cbox4(x0 + 0.55, x1 - 0.55, z0 + 0.55, z1 - 0.55, 0.1, TOP - 0.5, TOP + 3);
+  // Waffenkammer: Speere an der Wand, Schilde, Schwerter, Armbrüste, ein Fass mit Pfeilen, eine Truhe
+  const wpn = [];
+  for (let i=0;i<7;i++){ const x = -5.5 + i*0.45; wpn.push(part(new THREE.CylinderGeometry(0.018, 0.02, 2.6, 6), '#6a4a2e', x, CY + 1.35, iz1 - 0.25, 0.12, 0, 0), part(new THREE.ConeGeometry(0.035, 0.26, 6), '#9aa0a8', x, CY + 2.75, iz1 - 0.1, 0.12, 0, 0)); }
+  wpn.push(part(new THREE.BoxGeometry(3.4, 0.1, 0.25), '#5a3e28', -4.15, CY + 0.25, iz1 - 0.35), part(new THREE.BoxGeometry(3.4, 0.08, 0.08), '#5a3e28', -4.15, CY + 2.2, iz1 - 0.1));
+  for (let i=0;i<3;i++){ const x = -2.9 + i*0.32; wpn.push(part(new THREE.BoxGeometry(0.05, 0.85, 0.012), '#b8bcc4', x, CY + 1.0, iz0 + 0.16), part(new THREE.BoxGeometry(0.2, 0.04, 0.05), '#4a3a2a', x, CY + 1.45, iz0 + 0.16), part(new THREE.BoxGeometry(0.04, 0.2, 0.04), '#4a3020', x, CY + 1.58, iz0 + 0.16)); }
+  wpn.push(part(new THREE.BoxGeometry(1.2, 0.08, 0.1), '#5a3e28', -2.6, CY + 1.72, iz0 + 0.1));
+  vmesh(wpn, g);
+  [['#a8242a', '#e8c040', 'cross'], ['#2e4a8a', '#f2ece0', 'chevron'], ['#a8242a', '#e8c040', 'cross']].forEach(([a, b, k], i) => { const sh = heaterShield(a, b, k); sh.position.set(ix1 - 0.05, CY + 1.9, 19.0 + i*0.95); sh.rotation.y = -Math.PI/2; sh.scale.setScalar(1.25); g.add(sh); });
+  for (let i=0;i<2;i++){ const cb = new THREE.Group(); cb.position.set(-6.0 + i*0.0, CY + 1.6 + i*0.0, iz1 - 0.12); g.add(cb); }
+  { const xb = []; for (let i=0;i<2;i++){ const x = -1.4 - i*0.0, z = 17.2 + i*0.7; xb.push(part(new THREE.BoxGeometry(0.06, 0.06, 0.8), '#6a4a2e', ix1 - 0.12, CY + 1.3 + i*0.5, z + 0.2), part(new THREE.BoxGeometry(0.04, 0.6, 0.04), '#3a3a3e', ix1 - 0.14, CY + 1.3 + i*0.5, z + 0.5, 0, 0, 0)); } vmesh(xb, g); }
+  makeBarrel(g, -2.6, CY + 0.04, 17.4, 1); { const ar = []; for (let i=0;i<14;i++){ const a = i/14*TAU, r = 0.12 + (i % 3)*0.05; ar.push(part(new THREE.CylinderGeometry(0.008, 0.008, 0.75, 4), '#8a6a44', -2.6 + Math.cos(a)*r, CY + 1.05, 17.4 + Math.sin(a)*r, Math.sin(a)*0.15, 0, Math.cos(a)*0.15), part(new THREE.BoxGeometry(0.05, 0.08, 0.005), '#e8e0cc', -2.6 + Math.cos(a)*r, CY + 1.4, 17.4 + Math.sin(a)*r)); } vmesh(ar, g); }
+  wbox(g, 1.1, 0.6, 0.6, M('#6a4a2e', { tex:'plank' }), -5.2, CY + 0.04, 23.3, 0, 0.8);
+  ccirc(-2.6, 17.4, 0.45, -50, CY + 2); cseg(-5.9, 23.2, -2.3, 23.2, 0.15, -50, CY + 2);
+  wallTorch(g, ix0 + 0.15, CY + 2.2, 20.0, Math.PI/2, 2.5);
+  // Das Verlies: ein dunkles Loch ohne Fenster; ein Gefangener sitzt auf Stroh, nur durch das Gitter fällt etwas Licht
+  { const fy = CY - 3.4; const st = []; for (let i=0;i<40;i++){ const a = R(0, TAU), d = R(0, 1.1); st.push(part(new THREE.CylinderGeometry(0.008, 0.008, 0.4, 3), i % 2 ? '#b8a060' : '#9a8448', -4.6 + Math.cos(a)*d, fy + 0.04, 21.6 + Math.sin(a)*d, Math.PI/2, R(0, 3), 0)); } vmesh(st, g);
+    const pr = mPerson(g, Object.assign(peasantO(77, false), { cloth:'#6a6458', hood:null, strawhat:false, beard:true, hair:'#4a3a2a' }), -4.6, 21.8, Math.PI); poseSit(pr, 0.15); pr.g.position.y = fy;
+    const jug = makePot('krug', 'fired', 12); jug.position.set(-3.6, fy, 21.2); g.add(jug);
+    const ch = []; ch.push(rodPart(-4.6, fy + 0.15, 22.3, -4.6, fy + 0.9, iz1 - 0.05, 0.02, '#3a3a3e')); vmesh(ch, g);
+    const lamp = new THREE.PointLight(0xc8d4e8, 1.4, 5, 2); lamp.position.set(-4, fy + 2.4, 20.2); g.add(lamp);
+    anims.push(t => { pr.head.rotation.x = 0.4 + Math.sin(t*0.3)*0.1; pr.head.rotation.y = Math.sin(t*0.17)*0.3; pr.arms[0].sh.rotation.set(-0.6, 0, -0.2); pr.arms[1].sh.rotation.set(-0.6, 0, 0.2); pr.arms[0].el.rotation.x = pr.arms[1].el.rotation.x = -1.2; }); }
+  // Mannschaftsraum: Etagenbett, Tisch mit Bänken, drei Soldaten würfeln
+  { const fy = U1, bd = [];
+    for (const x of [-5.6, -2.4]) for (const z of [21.5, 23.6]) bd.push(part(new THREE.BoxGeometry(0.12, 2.0, 0.12), '#5a3e28', x, fy + 1.0, z));
+    for (const y of [0.4, 1.4]) bd.push(part(new THREE.BoxGeometry(3.3, 0.12, 2.1), '#6a4a2e', -4.0, fy + y, 22.55), part(new THREE.BoxGeometry(3.1, 0.14, 1.9), '#c8a860', -4.0, fy + y + 0.13, 22.55), part(new THREE.BoxGeometry(1.4, 0.06, 1.9), '#7a6a4a', -4.6, fy + y + 0.22, 22.55));
+    bd.push(part(new THREE.BoxGeometry(1.8, 0.07, 0.8), '#7a5636', -4.0, fy + 0.78, 18.9)); for (const sx of [-0.75, 0.75]) bd.push(part(new THREE.BoxGeometry(0.08, 0.78, 0.7), '#5a3e28', -4.0 + sx, fy + 0.39, 18.9));
+    for (const sz of [-0.75, 0.75]) bd.push(part(new THREE.BoxGeometry(1.8, 0.07, 0.3), '#6a4a2e', -4.0, fy + 0.45, 18.9 + sz), part(new THREE.BoxGeometry(0.07, 0.45, 0.25), '#5a3e28', -4.8, fy + 0.22, 18.9 + sz), part(new THREE.BoxGeometry(0.07, 0.45, 0.25), '#5a3e28', -3.2, fy + 0.22, 18.9 + sz));
+    for (let i=0;i<3;i++) bd.push(part(new THREE.BoxGeometry(0.03, 0.03, 0.03), '#f2ece0', -4.2 + i*0.15, fy + 0.83, 18.95 + (i % 2)*0.1, 0, i, 0.5));
+    for (let i=0;i<3;i++) bd.push(part(new THREE.SphereGeometry(0.17, 12, 8, 0, TAU, 0, Math.PI/2), '#7a7e86', -5.4 + i*0.55, fy + 1.9, iz0 + 0.18), part(new THREE.CylinderGeometry(0.02, 0.02, 0.2, 5), '#5a3e28', -5.4 + i*0.55, fy + 1.82, iz0 + 0.08, Math.PI/2, 0, 0));
+    vmesh(bd, g);
+    cseg(-5.75, 21.4, -2.25, 21.4, 0.12, U1 - 0.5, U1 + 3); cbox4(-4.95, -3.05, 18.05, 19.75, 0.1, U1 - 0.5, U1 + 3);
+    const sol = [[-4.6, 18.15, 0], [-3.4, 18.15, 0], [-4.0, 19.65, Math.PI]].map(([x, z, ry], i) => { const p = mPerson(g, { skin:['#c89a78', '#d8b090', '#b88a68'][i], hair:['#4a3020', '#7a5a3a', '#2a1a10'][i], beard:i !== 1, cloth:'#6a6a70', sleeves:true, mail:i !== 2, surcoat:['#a8242a', '#e8c040'], leggings:'#4a3a2a' }, x, z, ry); poseSit(p, 0.45); p.g.position.y = fy; return p; });
+    const sleeper = mPerson(g, { skin:'#c89a78', hair:'#5a3a22', cloth:'#8a7a5a', sleeves:true, leggings:'#4a3a2a' }, -3.4, 22.55, -Math.PI/2); sleeper.g.position.y = fy + 0.62; sleeper.g.rotation.z = 0; sleeper.root.rotation.x = -Math.PI/2; sleeper.root.position.y = 0.12;
+    const H = new THREE.Vector3();
+    anims.push(t => { sol.forEach((p, i) => { const thr = Math.max(0, Math.sin(t*1.3 + i*2.1)); p.spine.updateWorldMatrix(true, false); H.set(0.12, 0.35 + thr*0.15, 0.35 + thr*0.1); p.spine.localToWorld(H); ikWorld(p, 0, H);
+        p.head.rotation.x = 0.35; p.face.talk = Math.max(0, Math.sin(t*6 + i))*0.5*(Math.sin(t*0.5 + i*2) > 0.3 ? 1 : 0); });
+      sleeper.spine.scale.y = 1 + Math.sin(t*1.1)*0.02; });
+    wallTorch(g, ix1 - 0.15, U1 + 2.2, 20.4, -Math.PI/2, 0); }
+  // Oben: ein Wächter mit der Armbrust schaut über den Graben, eine Fahne weht
+  { const gd = mPerson(g, { skin:'#c49a78', hair:'#4a3020', beard:true, cloth:'#6a6a70', sleeves:true, mail:true, surcoat:['#a8242a', '#e8c040'], kettle:true, leggings:'#4a3a28' }, -5.5, 23.9, 0);
+    gd.g.position.y = TOP; const xb = new THREE.Group(); mk(new THREE.BoxGeometry(0.05, 0.06, 0.75), M('#6a4a2e', { tex:'wood' }), xb, 0, 0, 0.2); mk(new THREE.BoxGeometry(0.6, 0.03, 0.04), METAL.iron(), xb, 0, 0.02, 0.5); gd.spine.add(xb); xb.position.set(0, 0.42, 0.2);
+    anims.push(t => { gd.arms[0].sh.rotation.set(-1.35, 0, -0.25); gd.arms[1].sh.rotation.set(-1.4, 0, 0.35); gd.arms[0].el.rotation.x = -0.35; gd.arms[1].el.rotation.x = -0.5; gd.head.rotation.y = Math.sin(t*0.25)*0.5; gd.g.rotation.y = Math.sin(t*0.12)*0.5; });
+    ccirc(-5.5, 23.9, 0.4, TOP - 0.5, TOP + 3);
+    const pole = []; pole.push(part(new THREE.CylinderGeometry(0.05, 0.06, 4.0, 8), '#5a3e28', x1 - 0.9, TOP + 2.0, z0 + 0.9)); vmesh(pole, g);
+    const fl = mk(new THREE.PlaneGeometry(1.4, 0.9, 6, 1), M('#a8242a', { tex:'wool', side:THREE.DoubleSide }), g, x1 - 0.9 - 0.72, TOP + 3.5, z0 + 0.9); const fp = fl.geometry.attributes.position, fx0 = Float32Array.from(fp.array);
+    anims.push(t => { for (let i=0;i<fp.count;i++){ const x = fx0[i*3]; fp.setZ(i, Math.sin(t*4 + x*3)*0.12*(x + 0.7)); } fp.needsUpdate = true; });
+    ccirc(x1 - 0.9, z0 + 0.9, 0.2, TOP - 0.5, TOP + 3); }
+  cbFlush(gs); keep(gs);
+  addHotspot('wachtturm', [gs], P.wachtturm[0], CY + 2.5, P.wachtturm[1], 0);
 }
-/* ---------- Palas: Thronsaal mit König und Lehnsmann, Festtafel, Kemenate mit Kamin ---------- */
+/* ---------- Bergfried (10): Eingang hoch oben beim Wehrgang, Vorratsraum, Wohnraum für den Notfall, Plattform mit Wächter ---------- */
+function buildKeep(){
+  const MT = mMats(), C = CASTLE, Kp = KEEP, g = castleGrp(), gs = castleGrp(), base = C.MB - 0.4, K1 = HY.K1, K2 = HY.K2, KT = HY.KT, T = Kp.T;
+  const { x0, x1, z0, z1 } = Kp, ix0 = x0 + T, ix1 = x1 - T, iz0 = z0 + T, iz1 = z1 - T, dx = -19.7, dw = 0.65;
+  cwallH(CB.stone, x0, z1 - T/2, x1, z1 - T/2, base, KT - base, T, [[dx - x0, K1 - base, dw, 2.3, true], [7.0, K2 - base + 1.0, 0.22, 1.1, true], [7.0, K1 - base + 1.2, 0.12, 1.0, false]]);
+  cwallH(CB.stone, x0, z0 + T/2, x1, z0 + T/2, base, KT - base, T, [[5.0, K2 - base + 1.1, 0.12, 1.0, false], [5.0, C.CY - base + 4.0, 0.12, 1.0, false]]);
+  cwallH(CB.stone, x1 - T/2, z0 + T, x1 - T/2, z1 - T, base, KT - base, T, [[2.0, K2 - base + 1.0, 0.22, 1.1, true], [4.6, K1 - base + 1.2, 0.12, 1.0, false]]);
+  cwallH(CB.stone, x0 + T/2, z0 + T, x0 + T/2, z1 - T, base, KT - base, T, [[3.4, K2 - base + 1.1, 0.12, 1.0, false]]);
+  // Kleine Holzbrücke vom Wehrgang zur Tür (im Notfall konnte man sie abbauen)
+  for (let i=0;i<5;i++) cbox(CB.plank, -20.62, -18.82, K1 - 0.02, K1 + 0.06, -11.95 + i*0.32, -11.68 + i*0.32, 1);
+  // Böden: Vorratsraum (auf Höhe des Wehrgangs), Wohnraum, Plattform
+  const sA = { x0:ix1 - 1.7, x1:ix1, z0:-20.2, z1:-14.2 }, sB = { x0:ix0, x1:ix0 + 1.7, z0:-20.2, z1:-14.2 };
+  cbox(CB.floor, ix0, ix1, K1 - 0.3, K1, iz0, iz1, 1.6); cbox(CB.stone2, ix0, ix1, C.CY - 0.3, K1 - 0.3, iz0, iz1, 2);
+  cbox(CB.floor, ix0, sA.x0, K2 - 0.3, K2, iz0, iz1, 1.6); cbox(CB.floor, sA.x0, ix1, K2 - 0.3, K2, iz0, sA.z0, 1.6); cbox(CB.floor, sA.x0, ix1, K2 - 0.3, K2, sA.z1, iz1, 1.6);
+  for (const [a, b, c, d] of [[x0, sB.x0, z0, z1], [sB.x1, x1, z0, z1], [sB.x0, sB.x1, z0, sB.z0], [sB.x0, sB.x1, sB.z1, z1]]) cbox(CB.stone2, a, b, KT - 0.3, KT, c, d, 1.6);
+  for (const [ax, az, bx, bz, nx, nz] of [[x0, z0, x1, z0, 0, -1], [x1, z0, x1, z1, 1, 0], [x0, z1, x1, z1, 0, 1], [x0, z0, x0, z1, -1, 0]]) crenel(ax, az, bx, bz, nx, nz, KT, -0.275);
+  cstairs(Object.assign({ axis:'z', up:-1, y0:K1, y1:K2, open:['-x'], entry:1.2 }, sA));
+  cstairs(Object.assign({ axis:'z', up:1, y0:K2, y1:KT, open:['+x'], far:true, entry:1.2 }, sB));
+  cdeck(ix0, ix1, iz0, iz1, K1); cdeck(dx - dw, dx + dw, iz1 - 0.1, z1 + 0.1, K1);
+  cdeck(ix0, sA.x0, iz0, iz1, K2); cdeck(sA.x0, ix1, iz0, sA.z0, K2); cdeck(sA.x0, ix1, sA.z1, iz1, K2);
+  cdeck(x0 + 0.3, sB.x0, z0 + 0.3, z1 - 0.3, KT); cdeck(sB.x1, x1 - 0.3, z0 + 0.3, z1 - 0.3, KT); cdeck(sB.x0, sB.x1, z0 + 0.3, sB.z0, KT); cdeck(sB.x0, sB.x1, sB.z1, z1 - 0.3, KT);
+  // Hindernisse
+  cseg(-18.8, z1, x1, z1, 0.15, -50, K1 - 0.5); cseg(x1, -17.8, x1, z1, 0.15, -50, KT - 0.5);
+  csegGaps(-20.65, z1, -18.8, z1, [[dx - dw + 20.65, dx + dw + 20.65]], 0.15, K1 - 0.5, K1 + 3);
+  for (const x of [dx - dw, dx + dw]) cseg(x, iz1, x, z1, 0.1, K1 - 0.5, K1 + 3);
+  cseg(ix0, iz0, ix0, iz1, 0.15, K1 - 0.5, KT - 0.5); cseg(ix1, iz0, ix1, iz1, 0.15, K1 - 0.5, KT - 0.5); cseg(ix0, iz0, ix1, iz0, 0.15, K1 - 0.5, KT - 0.5);
+  csegGaps(ix0, iz1, ix1, iz1, [[dx - dw - ix0, dx + dw - ix0]], 0.15, K1 - 0.5, K1 + 2.4); cseg(ix0, iz1, ix1, iz1, 0.15, K1 + 2.4, KT - 0.5);
+  cbox4(x0 + 0.55, x1 - 0.55, z0 + 0.55, z1 - 0.55, 0.1, KT - 0.5, KT + 3);
+  // Vorratsraum: Getreidesäcke, Wasserfässer, geräuchertes Fleisch an der Decke, eine Truhe
+  { const fy = K1; for (let i=0;i<6;i++){ const s = makeSack(i % 2 ? '#c8b48a' : '#b8a47a', g); s.position.set(-20.9 + (i % 3)*0.5, fy + Math.floor(i/3)*0.42, -19.9 + (i % 2)*0.1); }
+    for (let i=0;i<3;i++) makeBarrel(g, -17.2 + i*0.75, fy, -19.9, 1.1);
+    const mt = []; for (let i=0;i<4;i++){ const x = -18.6 + i*0.6; mt.push(rodPart(x, K2 - 0.3, -17.0, x, K2 - 0.9, -17.0, 0.01, '#8a7450'), part(new THREE.SphereGeometry(0.16, 10, 8).scale(0.8, 1.4, 0.7), '#7a3a20', x, K2 - 1.15, -17.0)); }
+    mt.push(part(new THREE.BoxGeometry(2.6, 0.08, 0.08), '#4e3424', -17.7, K2 - 0.32, -17.0)); vmesh(mt, g);
+    wbox(g, 1.0, 0.6, 0.55, M('#7a5232', { tex:'plank' }), -20.7, fy, -15.2, 0, 0.8);
+    cseg(-21.4, -19.3, -16.4, -19.3, 0.2, K1 - 0.5, K1 + 2); cbox4(-21.2, -20.2, -15.5, -14.9, 0.05, K1 - 0.5, K1 + 2);
+    wallTorch(g, ix0 + 0.15, fy + 2.2, -17.0, Math.PI/2, 2.2); }
+  // Wohnraum für den Notfall: Bett an der Südwand, ein Kohlebecken wärmt, Tisch mit Kerze, Truhe
+  { const fy = K2, fr = [];
+    fr.push(part(new THREE.BoxGeometry(2.0, 0.45, 1.4), '#6a4a2e', -18.3, fy + 0.22, -14.4), part(new THREE.BoxGeometry(1.9, 0.18, 1.3), '#e0d6c0', -18.3, fy + 0.52, -14.4), part(new THREE.BoxGeometry(1.2, 0.1, 1.3), '#2e4a8a', -18.0, fy + 0.62, -14.4));
+    fr.push(part(new THREE.BoxGeometry(0.9, 0.06, 0.6), '#7a5636', -18.6, fy + 0.75, -16.9), part(new THREE.BoxGeometry(0.08, 0.75, 0.5), '#5a3e28', -19.0, fy + 0.37, -16.9), part(new THREE.BoxGeometry(0.08, 0.75, 0.5), '#5a3e28', -18.2, fy + 0.37, -16.9));
+    fr.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.14, 8), '#f2ece0', -18.6, fy + 0.85, -16.9));
+    for (let i=0;i<3;i++){ const a = i/3*TAU; fr.push(part(new THREE.CylinderGeometry(0.02, 0.02, 0.6, 5), '#2a2a2c', -17.0 + Math.sin(a)*0.22, fy + 0.3, -16.8 + Math.cos(a)*0.22, Math.cos(a)*0.25, 0, -Math.sin(a)*0.25)); }
+    fr.push(part(new THREE.CylinderGeometry(0.32, 0.22, 0.18, 14), '#2a2a2c', -17.0, fy + 0.62, -16.8));
+    vmesh(fr, g); { const ff = new THREE.Group(); ff.position.set(-17.0, fy + 0.68, -16.8); g.add(ff); makeFireFx(ff, 0.14, 2.4, false); }
+    { const fl = new THREE.Group(); fl.position.set(-18.6, fy + 0.95, -16.9); g.add(fl); makeFireFx(fl, 0.025, 0, false); }
+    cbox4(-19.35, -17.25, -15.15, iz1, 0.05, K2 - 0.5, K2 + 2); cbox4(-19.1, -18.1, -17.25, -16.55, 0.05, K2 - 0.5, K2 + 2); ccirc(-17.0, -16.8, 0.4, K2 - 0.5, K2 + 2); }
+  // Wächter geht oben auf dem Turm hin und her und schaut in die Ferne
+  { const gd = mPerson(g, { skin:'#c49a78', hair:'#4a3020', beard:true, cloth:'#6a6a70', sleeves:true, mail:true, surcoat:'#a8242a', kettle:true, leggings:'#4a3a2a' }, -16.0, -20.6, 0);
+    gd.g.position.y = KT; const spear = makeSpear('iron', 2.2); fist(spear, gd.arms[0].hand, 0.9);
+    routine(gd, [{ to:[-14.4, -20.6] }, { d:3, yaw:Math.PI/2 }, { to:[-14.4, -13.4] }, { d:4, yaw:0 }, { to:[-16.0, -13.4] }, { d:3, yaw:Math.PI }, { to:[-16.0, -20.6] }, { d:3, yaw:Math.PI }], { speed:0.7 });
+    anims.push(() => { gd.g.position.y = KT; gd.arms[0].el.rotation.x = -0.9; }); }
+  cbFlush(gs); keep(gs);
+  addHotspot('bergfried', [gs], P.bergfried[0], K1 + 2.4, P.bergfried[1], 0);
+}
+/* ---------- Palas (11): unten Küche und Vorratsraum, im ersten Stock der Rittersaal, oben Kemenate, Schlafraum und der Abort (13) im Erker ---------- */
 function buildPalas(){
-  const MT = mMats(), Pa = PALAS, g = castleGrp(), W = Pa.x1 - Pa.x0, D = Pa.z1 - Pa.z0, cx = (Pa.x0 + Pa.x1)/2, cz = (Pa.z0 + Pa.z1)/2, T = 0.7, H1 = Pa.H1, H2 = Pa.H2, fy = 0.12;
-  g.position.y = groundH(...cLW(cx, cz)) - 0.05;
-  // Ostwand mit Tür zum Saal und hohen Rundbogenfenstern
-  const doorZ = -4.2, east = holeWall(D, H1, T, [[doorZ - cz, 0, 0.9, 3.0, true], [-8.4 - cz, 1.6, 0.5, 2.4, true], [0.2 - cz, 1.6, 0.5, 2.4, true], [4.6 - cz, 1.4, 0.4, 1.6, true]]);
-  mk(east, MT.stone, g, Pa.x1 - T/2, 0, cz, 0, -Math.PI/2, 0);
-  mk(holeWall(D, H1, T, [[3 - cz, 1.6, 0.35, 1.4, true], [-6 - cz, 1.8, 0.3, 1.6, true]]), MT.stone, g, Pa.x0 + T/2, 0, cz, 0, Math.PI/2, 0);
-  wbox(g, W, H1, T, MT.stone, cx, 0, Pa.z0 + T/2, 0, 2); mk(holeWall(W, H1, T, [[0, 1.8, 0.4, 1.6, true]]), MT.stone, g, cx, 0, Pa.z1 - T/2);
-  // Trennwand zur Kemenate mit Tür
-  mk(holeWall(W - 2*T, H1, 0.4, [[-6.8 - cx, 0, 0.6, 2.2, false]]), MT.stone, g, cx, 0, Pa.zk);
-  // Obergeschoss, Dach, Boden und Decke
-  wbox(g, W, H2, D, MT.stone, cx, H1, cz, 0, 2);
-  saddleRoof(g, { w:W, d:D, rise:W*0.55, y:H1 + H2, x:cx, z:cz, mat:MT.tiles, ov:0.4, ovG:0.3 });
-  for (const sd of [-1, 1]) mk(gableTri(W, W*0.55, 0.4), MT.stone, g, cx, H1 + H2, cz + sd*(D/2 - 0.2));
-  const win = []; for (let k=0;k<4;k++) for (const sd of [-1, 1]) win.push(part(archWindow(0.6, 1.2, false), '#141210', sd > 0 ? Pa.x1 + 0.02 : Pa.x0 - 0.02, H1 + 1.0, Pa.z0 + 2.5 + k*4, 0, sd*Math.PI/2, 0));
-  win.push(part(new THREE.BoxGeometry(0.9, 0.9, 1.0), '#7a7268', Pa.x0 + 0.4, H1 + H2 + 2.2, 4.2), part(new THREE.BoxGeometry(0.7, 0.3, 0.8), '#5a524a', Pa.x0 + 0.4, H1 + H2 + 2.75, 4.2));   // Kamin
-  vmesh(win, g, true);
-  const fl = mk(boxUV(W - 2*T, 0.12, D - 2*T, 1.4), MT.floor, g, cx, fy - 0.06, cz); fl.receiveShadow = true;
-  wbox(g, W - 2*T, 0.2, D - 2*T, MT.floor, cx, H1 - 0.2, cz, 0, 2);
-  const beams = []; for (let z = Pa.z0 + 1.2; z < Pa.z1 - 0.5; z += 1.6) beams.push(part(new THREE.BoxGeometry(W - 2*T, 0.3, 0.25), '#3e2a1a', cx, H1 - 0.35, z)); vmesh(beams, g);
-  { const [wx0, wz0] = cLW(Pa.x0 + T, Pa.z0 + T), [wx1, wz1] = cLW(Pa.x1 - T, Pa.z1 - T); DECKS.push({ x0:wx0, x1:wx1, z0:wz0, z1:wz1, y:g.position.y + fy }); }
-  // Hindernisse: Aussenwände mit Tür, Trennwand mit Tür
-  const ws = (ax, az, bx, bz) => wallSeg(g, ax, az, bx, bz, 0.15), xo = Pa.x1 - 0.1, xi = Pa.x0 + 0.1;
-  ws(xo, Pa.z0, xo, doorZ - 0.95); ws(xo, doorZ + 0.95, xo, Pa.z1); ws(xi, Pa.z0, xi, Pa.z1); ws(Pa.x0, Pa.z0 + 0.1, Pa.x1, Pa.z0 + 0.1); ws(Pa.x0, Pa.z1 - 0.1, Pa.x1, Pa.z1 - 0.1);
-  ws(Pa.x0, Pa.zk, -7.45, Pa.zk); ws(-6.15, Pa.zk, Pa.x1, Pa.zk);
-  // Licht im Saal und Fackeln an den Wänden
-  const lamp = new THREE.PointLight(0xffd6a0, 9, 14, 2); lamp.position.set(cx, 3.8, -4); g.add(lamp);
-  for (const [x, z, ry] of [[Pa.x0 + T + 0.15, -7, Math.PI/2], [Pa.x0 + T + 0.15, -1, Math.PI/2], [Pa.x1 - T - 0.15, -6.6, -Math.PI/2]]){ const tg = new THREE.Group(); tg.position.set(x, 2.6, z); tg.rotation.y = ry; g.add(tg);
-    mk(new THREE.CylinderGeometry(0.03, 0.04, 0.5, 6), M('#3a2a1a', { tex:'wood' }), tg, 0, 0, 0.12, -0.5, 0, 0); mk(new THREE.BoxGeometry(0.06, 0.2, 0.12), METAL.iron(), tg, 0, -0.1, 0.02); const ff = new THREE.Group(); ff.position.set(0, 0.25, 0.22); tg.add(ff); makeFireFx(ff, 0.1, 0, false); }
-  // Wandbehänge mit Wappen
+  const MT = mMats(), C = CASTLE, Pa = PALAS, g = castleGrp(), gs = castleGrp(), base = C.MB - 0.4, CY = HY.CY, P1 = HY.P1, P2 = HY.P2, PT = HY.PT;
+  const { x0, x1, z0, z1, ix0, ix1, iz0, iz1 } = Pa, W = x1 - x0;
+  // Aussenmauern mit Türen und Fenstern
+  cwallH(CB.stone, x0, z1 - 0.7, x1, z1 - 0.7, base, PT - base, 1.4, [[2.9, CY - base, 0.7, 2.4, true], [5.3, P1 - base, 0.7, 2.7, true],
+    [2.2, P1 - base + 1.2, 0.45, 2.0, true], [8.2, P1 - base + 1.2, 0.45, 2.0, true], [11.6, P1 - base + 1.2, 0.45, 2.0, true],
+    [2.5, P2 - base + 1.1, 0.35, 1.5, true], [6.0, P2 - base + 1.1, 0.35, 1.5, true], [9.6, P2 - base + 1.1, 0.35, 1.5, true], [12.8, P2 - base + 1.1, 0.35, 1.5, true]]);
+  cwallH(CB.stone, x0, z0 + 1.0, x1, z0 + 1.0, base, PT - base, 2.0, [[4.0, P1 - base + 1.4, 0.35, 1.7, true], [9.5, P1 - base + 1.4, 0.35, 1.7, true], [4.0, P2 - base + 1.2, 0.3, 1.3, true], [9.5, P2 - base + 1.2, 0.3, 1.3, true], [12.5, CY - base + 1.6, 0.12, 0.9, false]]);
+  cwallH(CB.stone, x1 - 1.0, iz0, x1 - 1.0, iz1, base, PT - base, 2.0, [[2.1, P2 - base, 0.65, 2.2, true], [5.4, P1 - base + 1.3, 0.4, 1.8, true], [7.6, P2 - base + 1.2, 0.3, 1.3, true], [8.0, CY - base + 1.6, 0.12, 0.9, false]]);
+  cwallH(CB.stone, x0 + 0.7, iz0, x0 + 0.7, iz1, base, PT - base, 1.4, [[5.4, P1 - base + 1.3, 0.4, 1.8, true], [8.6, P2 - base + 1.2, 0.35, 1.4, true], [8.0, CY - base + 1.3, 0.3, 1.0, true]]);
+  // Zinnen oben, dahinter ein flaches Schieferdach
+  for (const [ax, az, bx, bz, nx, nz] of [[x0, z0, x1, z0, 0, -1], [x1, z0, x1, z1, 1, 0], [x0, z1, x1, z1, 0, 1], [x0, z0, x0, z1, -1, 0]]) crenel(ax, az, bx, bz, nx, nz, PT, -0.275);
+  cbox(CB.stone2, x0, x1, PT - 0.3, PT, z0, z1, 2);
+  saddleRoof(gs, { w:z1 - z0 - 1.4, d:W - 1.4, rise:2.6, y:PT, x:(x0 + x1)/2, z:(z0 + z1)/2, ry:Math.PI/2, mat:MT.slate, ov:0.0, ovG:0.0 });
+  for (const sd of [-1, 1]) mk(gableTri(z1 - z0 - 1.4, 2.6, 0.3), MT.stone, gs, sd > 0 ? x1 - 0.85 : x0 + 0.85, PT, (z0 + z1)/2, 0, Math.PI/2, 0);
+  { const ch = []; for (const [cx, cz] of [[x0 + 1.4, -12.8], [9.3, z0 + 1.0]]) ch.push(part(new THREE.BoxGeometry(0.9, 2.6, 0.9), '#9a9282', cx, PT + 1.3, cz), part(new THREE.BoxGeometry(1.1, 0.3, 1.1), '#7a7268', cx, PT + 2.7, cz)); vmesh(ch, gs);
+    addSmoke(g, 6, x0 + 1.4, PT + 3.0, -12.8, 0.3, '#b8b4ac', 2.4); addSmoke(g, 6, 9.3, PT + 3.0, z0 + 1.0, 0.3, '#b8b4ac', 2.4); }
+  // Böden: Küche/Vorrat (Steinplatten), Saal (Holzdielen mit Balken), Obergeschoss (mit Treppenloch), Decke
+  const sP = { x0:16.4, x1:ix1, z0:-13.6, z1:-8.0 };
+  cbox(CB.stone2, ix0, ix1, CY - 0.3, CY + 0.04, iz0, iz1, 1.2);
+  cbox(CB.floor, ix0, ix1, P1 - 0.12, P1, iz0, iz1, 1.6);
+  for (let z = iz0 + 0.8; z < iz1 - 0.3; z += 1.5) cbox(CB.floor, ix0, ix1, P1 - 0.42, P1 - 0.12, z - 0.14, z + 0.14, 1.6);
+  cbox(CB.floor, ix0, sP.x0, P2 - 0.3, P2, iz0, iz1, 1.6); cbox(CB.floor, sP.x0, ix1, P2 - 0.3, P2, iz0, sP.z0, 1.6); cbox(CB.floor, sP.x0, ix1, P2 - 0.3, P2, sP.z1, iz1, 1.6);
+  cbox(CB.floor, ix0, ix1, PT - 0.6, PT - 0.3, iz0, iz1, 1.6);
+  // Trennwände: unten zwischen Küche und Vorratsraum, oben zwischen Kemenate und Schlafraum
+  cwallH(CB.stone, 12.4, iz0, 12.4, iz1, CY, P1 - 0.42 - CY, 0.4, [[7.6, 0, 0.7, 2.2, true]]);
+  cwallH(CB.stone, 12.4, iz0, 12.4, iz1, P2, PT - 0.6 - P2, 0.4, [[9.4, 0, 0.7, 2.2, true]]);
+  // Aussentreppe zum Saal mit Absatz vor der Tür
+  cstairs({ x0:12.0, x1:17.4, z0:-6.0, z1:-4.2, axis:'x', up:-1, y0:CY, y1:P1, open:['+z'], stone:true, base:CY - 0.1, exit:0.01, entry:1.2 });
+  cbox(CB.stone2, 9.2, 12.0, CY - 0.1, P1, -6.0, -4.2, 1.2); cdeck(9.2, 12.0, -6.0, -4.2, P1); cdeck(9.6, 11.0, iz1 - 0.1, -5.9, P1);
+  cseg(9.2, -4.2, 12.0, -4.2, 0.1, -50, P1 + 3); cseg(9.2, -6.0, 9.2, -4.2, 0.1, -50, P1 + 3); crail(9.25, -4.25, 12.0, -4.25, P1); crail(9.25, -6.0, 9.25, -4.25, P1);
+  // Treppe vom Saal hinauf zur Kemenate und zum Schlafraum
+  cstairs(Object.assign({ axis:'z', up:-1, y0:P1, y1:P2, open:['-x'], entry:1.2 }, sP));
+  // Begehbare Böden
+  cdeck(ix0, ix1, iz0, iz1, P1);
+  cdeck(ix0, sP.x0, iz0, iz1, P2); cdeck(sP.x0, ix1, iz0, sP.z0, P2); cdeck(sP.x0, ix1, sP.z1, iz1, P2);
+  // Abort (13): ein Erker an der Aussenmauer, unten offen zum Graben
+  { const ex0 = x1, ex1 = x1 + 1.7, ez0 = -17.2, ez1 = -15.0, y0 = P2;
+    cbox(CB.stone, ex1 - 0.2, ex1, y0 - 0.2, y0 + 2.6, ez0, ez1, 1.2); for (const [a, b] of [[ez0, ez0 + 0.2], [ez1 - 0.2, ez1]]) cbox(CB.stone, ex0, ex1, y0 - 0.2, y0 + 2.6, a, b, 1.2);
+    cbox(CB.plank, ex0, ex1 - 0.2, y0 - 0.12, y0, ez0 + 0.2, ez1 - 0.2, 1);
+    for (const z of [ez0 + 0.3, (ez0 + ez1)/2, ez1 - 0.3]) cbox(CB.stone2, ex0, ex1 - 0.1, y0 - 0.9, y0 - 0.2, z - 0.15, z + 0.15, 0.8);
+    const rf = new THREE.Group(); rf.position.set((ex0 + ex1)/2 + 0.1, y0 + 2.6, (ez0 + ez1)/2); gs.add(rf); mk(boxUV(2.4, 0.12, 2.0, 1.2), MT.slate, rf, 0, 0.35, 0, 0, 0, -0.35);
+    // Sitzbrett mit Loch, das Loch führt hinab in den Graben
+    const st = []; st.push(part(new THREE.BoxGeometry(0.5, 0.45, 1.8), '#7a5636', ex1 - 0.45, y0 + 0.22, (ez0 + ez1)/2), part(new THREE.CylinderGeometry(0.15, 0.15, 0.02, 14), '#0e0c0a', ex1 - 0.45, y0 + 0.46, (ez0 + ez1)/2));
+    st.push(part(new THREE.BoxGeometry(0.45, 0.02, 0.45), '#0e0c0a', ex1 - 0.45, y0 - 0.21, (ez0 + ez1)/2)); vmesh(st, g);
+    cdeck(x1 - 2.0, ex0 + 0.05, -16.75, -15.45, P2); cdeck(ex0, ex1 - 0.2, ez0 + 0.2, ez1 - 0.2, P2);
+    for (const z of [-16.75, -15.45]) cseg(x1 - 2.0, z, ex0, z, 0.1, P2 - 0.5, P2 + 3);
+    cseg(ex1 - 0.7, ez0, ex1 - 0.7, ez1, 0.1, P2 - 0.5, P2 + 3); cseg(ex0, ez0 + 0.2, ex1, ez0 + 0.2, 0.1, P2 - 0.5, P2 + 3); cseg(ex0, ez1 - 0.2, ex1, ez1 - 0.2, 0.1, P2 - 0.5, P2 + 3);
+    addHotspot('abort', [gs], P.abort[0], P2 + 2.2, P.abort[1], 0); }
+  // Hindernisse: Aussenseite im Hof, Innenseiten je Stockwerk, Trennwände, Türleibungen
+  csegGaps(x0, z1, 17.8, z1, [[2.2, 3.6]], 0.15, -50, CY + 2.6); cseg(x0, z1, 17.8, z1, 0.15, CY + 2.6, P1 - 0.5); csegGaps(x0, z1, 17.8, z1, [[4.6, 6.0]], 0.15, P1 - 0.5, P1 + 3);
+  cseg(x0, -17.8, x0, z1, 0.15, -50, PT);
+  csegGaps(ix0, iz1, ix1, iz1, [[0.8, 2.2]], 0.15, -50, CY + 2.6); csegGaps(ix0, iz1, ix1, iz1, [[3.2, 4.6]], 0.15, P1 - 0.5, P1 + 2.8); cseg(ix0, iz1, ix1, iz1, 0.15, P2 - 0.5, PT);
+  for (const x of [7.2, 8.6]) cseg(x, iz1, x, z1, 0.1, -50, CY + 2.6); for (const x of [9.6, 11.0]) cseg(x, iz1, x, z1, 0.1, P1 - 0.5, P1 + 2.8);
+  cseg(ix0, iz0, ix0, iz1, 0.15, -50, PT); cseg(ix0, iz0, ix1, iz0, 0.15, -50, PT);
+  cseg(ix1, iz0, ix1, iz1, 0.15, -50, P2 - 0.5); csegGaps(ix1, iz0, ix1, iz1, [[1.45, 2.75]], 0.15, P2 - 0.5, PT);
+  csegGaps(12.4, iz0, 12.4, iz1, [[6.9, 8.3]], 0.15, -50, CY + 2.6); csegGaps(12.4, iz0, 12.4, iz1, [[8.7, 10.1]], 0.15, P2 - 0.5, PT);
+
+  /* --- Küche: grosse Herdstelle mit Kessel und Bratspiess, der Koch rührt, ein Küchenjunge dreht den Spiess, eine Magd schneidet Gemüse --- */
+  { const fy = CY + 0.04, hx = 9.3, hz = iz0 + 0.55, hd = [];
+    hd.push(part(new THREE.BoxGeometry(3.6, 0.35, 1.3), '#8a8274', hx, fy + 0.17, hz + 0.25), part(new THREE.BoxGeometry(0.4, 2.2, 1.3), '#9a9282', hx - 1.9, fy + 1.1, hz + 0.25), part(new THREE.BoxGeometry(0.4, 2.2, 1.3), '#9a9282', hx + 1.9, fy + 1.1, hz + 0.25));
+    hd.push(part(new THREE.BoxGeometry(4.2, 0.35, 1.5), '#9a9282', hx, fy + 2.35, hz + 0.35), part(new THREE.BoxGeometry(3.4, 1.6, 0.9), '#8a8274', hx, fy + 3.3, hz + 0.1));
+    hd.push(part(new THREE.BoxGeometry(3.4, 1.9, 0.05), '#1a1410', hx, fy + 1.3, iz0 + 0.03));
+    hd.push(part(new THREE.CylinderGeometry(0.015, 0.015, 1.4, 5), '#2a2a2c', hx - 0.6, fy + 1.6, hz + 0.3), part(new THREE.CylinderGeometry(0.02, 0.02, 3.4, 6), '#2a2a2c', hx, fy + 1.0, hz + 0.55, 0, 0, Math.PI/2));
+    vmesh(hd, g);
+    const ff = new THREE.Group(); ff.position.set(hx - 0.2, fy + 0.36, hz + 0.3); g.add(ff); makeFireFx(ff, 0.38, 5.5); addSmoke(g, 4, hx, fy + 2.0, hz + 0.3, 0.3, '#8a8478', 1.0);
+    const pot = new THREE.Group(); pot.position.set(hx - 0.6, fy + 0.95, hz + 0.3); g.add(pot);
+    mk(new THREE.SphereGeometry(0.32, 14, 10, 0, TAU, Math.PI/2.4, Math.PI/1.7), M('#2a2a2c', { tex:null, metalness:0.6, roughness:0.5, side:THREE.DoubleSide }), pot, 0, 0, 0);
+    mk(new THREE.CircleGeometry(0.28, 14).rotateX(-Math.PI/2), M('#b89a5a', { tex:null, roughness:0.4 }), pot, 0, 0.1, 0); addSmoke(pot, 3, 0, 0.3, 0, 0.12, '#e8e4dc', 0.7);
+    // Bratspiess mit einem Ferkel
+    const spit = new THREE.Group(); spit.position.set(hx, fy + 1.0, hz + 0.55); g.add(spit);
+    { const pig = makeAnimal('pig', 72, { col:{ back:'#a85a2a', flank:'#b8662e', belly:'#c07032', leg:'#9a5024', face:'#a85a2a', muzzle:'#b06a3a' } }); pig.scale.setScalar(0.35); pig.rotation.y = Math.PI/2; pig.position.set(0.5, -0.17, 0); spit.add(pig);
+      animalPose(pig.userData.rig, 0, { lie:1, graze:false }); const am = M('#8a4a1a', { tex:'skin', roughness:0.45 }); pig.traverse(m => { if (m.isMesh) m.material = am; }); }
+    // Arbeitstisch mit Gemüse, Brot und Messer; Regal mit Töpfen
+    const tb = []; tb.push(part(new THREE.BoxGeometry(2.2, 0.08, 0.9), '#8a6a44', 9.2, fy + 0.86, -11.4)); for (const [a, b] of [[-1, -0.38], [1, -0.38], [-1, 0.38], [1, 0.38]]) tb.push(part(new THREE.BoxGeometry(0.08, 0.86, 0.08), '#5a3e28', 9.2 + a, fy + 0.43, -11.4 + b));
+    for (let i=0;i<10;i++) tb.push(part(new THREE.SphereGeometry(0.06 + (i % 3)*0.015, 8, 6), ['#e88a2a', '#d8c060', '#6a9a3a', '#c8a080', '#8a3a6a'][i % 5], 8.4 + (i % 5)*0.2, fy + 0.95, -11.6 + Math.floor(i/5)*0.25));
+    tb.push(part(new THREE.SphereGeometry(0.15, 10, 8).scale(1, 0.6, 1.3), '#b8783a', 9.9, fy + 0.96, -11.3), part(new THREE.BoxGeometry(0.25, 0.01, 0.03), '#b8bcc4', 9.5, fy + 0.91, -11.15));
+    for (const y of [1.2, 1.8]) tb.push(part(new THREE.BoxGeometry(0.4, 0.05, 2.4), '#6a4a2e', ix0 + 0.22, fy + y, -10.0));
+    vmesh(tb, g);
+    for (let i=0;i<6;i++){ const p = makePot(i % 2 ? 'krug' : 'topf', 'fired', 60 + i); p.position.set(ix0 + 0.22, fy + (i < 3 ? 1.23 : 1.83), -10.8 + (i % 3)*0.75); p.scale.setScalar(0.75); g.add(p); }
+    for (let i=0;i<3;i++) makeSack(i % 2 ? '#c8b48a' : '#b8a47a', g).position.set(11.5, fy, -8.4 + i*0.0 - i*0.45);
+    makeBarrel(g, 6.9, fy, -9.6, 1);
+    const cook = mPerson(g, { skin:'#e0b898', hair:'#6a4a2a', beard:true, cloth:'#e8e0cc', sleeves:true, apron:'#f4f0e6', leggings:'#5a4a3a', beret:'#f4f0e6' }, hx - 0.6, hz + 1.25, Math.PI);
+    const spoon = new THREE.Group(); mk(new THREE.CylinderGeometry(0.015, 0.015, 1.1, 6).translate(0, 0.45, 0), M('#7a5636', { tex:'wood' }), spoon); fist(spoon, cook.arms[0].hand, 0.2);
+    const boy = mPerson(g, Object.assign(peasantO(141, false, true), { hood:null, strawhat:false, apron:'#e8e0cc' }), hx + 1.5, hz + 1.25, Math.PI); poseSit(boy, 0.32);
+    wbox(g, 0.35, 0.3, 0.35, M('#6a4a2e', { tex:'wood' }), hx + 1.5, fy, hz + 1.25, 0, 0.6);
+    const maid = mPerson(g, Object.assign(peasantO(142, true), { apron:'#e8e0cc', cloth:'#8a6a5a' }), 9.2, -10.6, Math.PI);
+    const knife = new THREE.Group(); mk(new THREE.BoxGeometry(0.02, 0.2, 0.01), METAL.iron(), knife, 0, 0.12, 0); fist(knife, maid.arms[0].hand, 0);
+    const H = new THREE.Vector3();
+    anims.push(t => { pot.updateWorldMatrix(true, false); const a = t*2.2; H.set(Math.cos(a)*0.14, 0.15, Math.sin(a)*0.14); pot.localToWorld(H); H.y += 0.6; ikWorld(cook, 0, H); cook.spine.rotation.x = 0.2; cook.head.rotation.x = 0.3;
+      cook.face.talk = Math.max(0, Math.sin(t*5))*0.4*(Math.sin(t*0.3) > 0.3 ? 1 : 0);
+      spit.rotation.x = t*0.8; H.set(hx + 1.75 + CASTLE.x, fy + 1.0 + Math.sin(t*0.8)*0.2, hz + 0.55 + Math.cos(t*0.8)*0.2 + CASTLE.z); ikWorld(boy, 1, H); boy.head.rotation.y = Math.sin(t*0.4)*0.3;
+      maid.spine.updateWorldMatrix(true, false); H.set(0.05, 0.38 + Math.abs(Math.sin(t*5))*0.08, 0.38); maid.spine.localToWorld(H); ikWorld(maid, 0, H); H.set(-0.12, 0.3, 0.38); maid.spine.localToWorld(H); ikWorld(maid, 1, H); maid.head.rotation.x = 0.4; });
+    cseg(hx - 2.1, hz + 0.95, hx + 2.1, hz + 0.95, 0.12, -50, CY + 2.6); cbox4(8.05, 10.35, -11.9, -10.9, 0.05, -50, CY + 2.6);
+    for (const p of [cook, maid]) ccirc(p.g.position.x, p.g.position.z, 0.35, -50, CY + 2.6); ccirc(hx + 1.5, hz + 1.25, 0.35, -50, CY + 2.6);
+    cseg(ix0 + 0.45, -11.3, ix0 + 0.45, -10.1, 0.1, -50, CY + 2.6); ccirc(6.9, -9.6, 0.45, -50, CY + 2.6); ccirc(11.5, -8.9, 0.5, -50, CY + 2.6);
+    const lamp = new THREE.PointLight(0xffc890, 4, 10, 2); lamp.position.set(9.5, fy + 3.0, -11.5); g.add(lamp);
+    addHotspot('kueche', [cook.root, boy.root, spit], P.kueche[0], CY + 2.5, P.kueche[1], 0); }
+  /* --- Vorratsraum: Weinfässer, Säcke mit Getreide, Schinken und Würste an der Decke, Käse und Äpfel; der Kellermeister zählt --- */
+  { const fy = CY + 0.04;
+    for (let i=0;i<4;i++){ const b = makeBarrel(g, 13.4 + i*0.0, fy + 0.45, -17.4 + i*0.95, 1.5); b.rotation.z = -Math.PI/2; b.position.x = 12.8; }
+    const rk = []; for (const z of [-17.5, -13.8]) rk.push(part(new THREE.BoxGeometry(1.2, 0.3, 0.12), '#5a3e28', 13.0, fy + 0.15, z));
+    for (const y of [1.0, 1.7]) rk.push(part(new THREE.BoxGeometry(0.5, 0.05, 3.0), '#6a4a2e', ix1 - 0.27, fy + y, -10.6));
+    for (let i=0;i<5;i++) rk.push(part(new THREE.CylinderGeometry(0.17, 0.17, 0.12, 14), '#e8c870', ix1 - 0.27, fy + 1.09, -11.8 + i*0.55));
+    for (let i=0;i<8;i++){ const x = 14.3 + i*0.45; rk.push(rodPart(x, P1 - 0.42, -13.5, x, P1 - 1.0, -13.5, 0.008, '#8a7450'), part(new THREE.SphereGeometry(0.12, 8, 6).scale(0.8, 1.6, 0.7), i % 2 ? '#8a3a20' : '#a8603a', x, P1 - 1.25, -13.5)); }
+    rk.push(part(new THREE.BoxGeometry(4.0, 0.08, 0.08), '#4e3424', 15.9, P1 - 0.44, -13.5)); vmesh(rk, g);
+    for (let i=0;i<6;i++){ const s = makeSack(i % 2 ? '#c8b48a' : '#b8a47a', g); s.position.set(15.0 + (i % 3)*0.5, fy + Math.floor(i/3)*0.42, -17.6); }
+    for (let i=0;i<3;i++){ const b = makeBasket(0.22, 0.25, g); b.position.set(ix1 - 0.4, fy + 1.75, -11.5 + i*0.7); for (let k=0;k<5;k++) mk(new THREE.SphereGeometry(0.045, 8, 6), M('#b8302a', { tex:null, roughness:0.5 }), b, (k % 3 - 1)*0.07, 0.22, (Math.floor(k/3) - 0.5)*0.07); }
+    const stw = mPerson(g, { skin:'#d8b090', hair:'#8a8278', beard:true, cloth:'#3a4a6a', sleeves:true, long:true, beret:'#2a2a2a', leggings:'#2a2a2a' }, 15.4, -11.0, Math.PI/2);
+    const tab = new THREE.Group(); mk(new THREE.BoxGeometry(0.25, 0.32, 0.02), M('#8a6a44', { tex:'wood' }), tab); mk(new THREE.BoxGeometry(0.21, 0.28, 0.005), M('#3a3a30', { tex:null }), tab, 0, 0, 0.012); fist(tab, stw.arms[1].hand, 0);
+    anims.push(t => { stw.arms[1].sh.rotation.set(-0.9, 0, 0.2); stw.arms[1].el.rotation.x = -1.0; stw.arms[0].sh.rotation.set(-0.7 + Math.sin(t*3)*0.1, 0, -0.1); stw.arms[0].el.rotation.x = -1.2; stw.head.rotation.x = 0.35; stw.head.rotation.y = Math.sin(t*0.4)*0.4; stw.face.talk = Math.max(0, Math.sin(t*4))*0.3; });
+    cseg(12.6, -18.0, 13.7, -18.0, 0.1, -50, CY + 2.6); cbox4(12.5, 13.6, -18.0, -13.6, 0.05, -50, CY + 2.6); cseg(ix1 - 0.6, -12.2, ix1 - 0.6, -9.0, 0.1, -50, CY + 2.6); cbox4(14.7, 16.4, -18.0, -17.2, 0.05, -50, CY + 2.6);
+    ccirc(15.4, -11.0, 0.35, -50, CY + 2.6);
+    wallTorch(g, 12.65, fy + 2.2, -9.5, Math.PI/2, 2.0); }
+
+  /* --- Rittersaal: Thron mit Baldachin, der König nimmt den Lehnseid entgegen; Festtafel mit Gästen --- */
+  const fy = P1;
+  { const lamp = new THREE.PointLight(0xffd6a0, 8, 14, 2); lamp.position.set(12.3, P1 + 3.0, -12.5); g.add(lamp);
+    wallTorch(g, ix0 + 0.15, P1 + 2.6, -15.5, Math.PI/2, 0); wallTorch(g, ix0 + 0.15, P1 + 2.6, -9.5, Math.PI/2, 0); wallTorch(g, ix1 - 0.15, P1 + 2.6, -15.5, -Math.PI/2, 0); }
   const banner = (x, z, ry, c1, c2) => { const bt = canvasTex(64, 128, (cx2, W2, H2) => { cx2.fillStyle = c1; cx2.fillRect(0, 0, W2, H2); cx2.fillStyle = c2; cx2.beginPath(); cx2.moveTo(10, 30); cx2.lineTo(54, 30); cx2.lineTo(54, 70); cx2.quadraticCurveTo(32, 100, 10, 70); cx2.closePath(); cx2.fill(); cx2.fillStyle = c1; cx2.fillRect(28, 34, 8, 52); cx2.fillRect(16, 50, 32, 8); for (let i=0;i<4;i++){ cx2.fillStyle = c2; cx2.beginPath(); cx2.moveTo(i*16, 118); cx2.lineTo(i*16 + 8, 128); cx2.lineTo(i*16 + 16, 118); cx2.fill(); } });
-    mk(new THREE.PlaneGeometry(1.0, 2.0), new THREE.MeshStandardMaterial({ map:bt, roughness:0.95, side:THREE.DoubleSide }), g, x, 3.2, z, 0, ry, 0); };
-  banner(-11.5, Pa.z0 + T + 0.03, 0, '#a8242a', '#e8c040'); banner(-7.5, Pa.z0 + T + 0.03, 0, '#2e4a8a', '#f2ece0'); banner(Pa.x0 + T + 0.03, -4, Math.PI/2, '#2e6a3a', '#e8c040');
-  // Thron auf einem Podest mit Baldachin; der König nimmt den Lehnseid eines knienden Ritters entgegen
-  const tx = -9.5, tz = Pa.z0 + T + 1.0;
+    mk(new THREE.PlaneGeometry(1.0, 2.0), new THREE.MeshStandardMaterial({ map:bt, roughness:0.95, side:THREE.DoubleSide }), g, x, P1 + 2.4, z, 0, ry, 0); };
+  banner(9.6, iz0 + 0.04, 0, '#a8242a', '#e8c040'); banner(15.0, iz0 + 0.04, 0, '#2e4a8a', '#f2ece0'); banner(ix0 + 0.04, -12.8, Math.PI/2, '#2e6a3a', '#e8c040');
+  const tx = 12.3, tz = iz0 + 1.0;
   wbox(g, 3.4, 0.3, 2.0, MT.floor, tx, fy, tz, 0, 1.4);
-  const th = []; th.push(part(new THREE.BoxGeometry(1.0, 0.5, 0.8), '#6a3a1e', tx, fy + 0.55, tz), part(new THREE.BoxGeometry(1.0, 1.6, 0.14), '#6a3a1e', tx, fy + 1.3, tz - 0.36));
-  for (const sd of [-1, 1]) th.push(part(new THREE.BoxGeometry(0.12, 0.35, 0.8), '#5a2e16', tx + sd*0.5, fy + 0.95, tz), part(new THREE.SphereGeometry(0.07, 8, 6), '#d8a83a', tx + sd*0.5, fy + 2.15, tz - 0.36));
-  th.push(part(new THREE.BoxGeometry(0.8, 0.12, 0.6), '#a8242a', tx, fy + 0.86, tz + 0.02)); vmesh(th, g);
-  mk(new THREE.PlaneGeometry(1.8, 2.6), M('#2e4a8a', { tex:'wool', rep:2, side:THREE.DoubleSide }), g, tx, fy + 1.9, Pa.z0 + T + 0.04);
+  { const th = []; th.push(part(new THREE.BoxGeometry(1.0, 0.5, 0.8), '#6a3a1e', tx, fy + 0.55, tz), part(new THREE.BoxGeometry(1.0, 1.6, 0.14), '#6a3a1e', tx, fy + 1.3, tz - 0.36));
+    for (const sd of [-1, 1]) th.push(part(new THREE.BoxGeometry(0.12, 0.35, 0.8), '#5a2e16', tx + sd*0.5, fy + 0.95, tz), part(new THREE.SphereGeometry(0.07, 8, 6), '#d8a83a', tx + sd*0.5, fy + 2.15, tz - 0.36));
+    th.push(part(new THREE.BoxGeometry(0.8, 0.12, 0.6), '#a8242a', tx, fy + 0.86, tz + 0.02)); vmesh(th, g); }
+  mk(new THREE.PlaneGeometry(1.8, 2.6), M('#2e4a8a', { tex:'wool', rep:2, side:THREE.DoubleSide }), g, tx, fy + 1.9, iz0 + 0.04);
   mk(new THREE.BoxGeometry(2.0, 0.08, 1.4), M('#a8242a', { tex:'wool', rep:2 }), g, tx, fy + 3.3, tz - 0.2);
   for (let i=0;i<8;i++) mk(new THREE.ConeGeometry(0.11, 0.2, 4).rotateX(Math.PI), M('#e8c040', { tex:'wool' }), g, tx - 0.9 + i*0.257, fy + 3.18, tz + 0.5);
   const king = mPerson(g, { skin:'#e0b898', hair:'#c8c0b0', beard:true, cloth:'#6a1e3a', sleeves:true, long:true, cloak:'#a8242a', fibula:'gold', crown:true, fur:'#f4f0e6', leggings:'#2a1a1a' }, tx, tz + 0.05, 0);
   poseSit(king, 0.62); king.g.position.y = fy + 0.32;
-  const scep = new THREE.Group(); mk(new THREE.CylinderGeometry(0.015, 0.015, 0.7, 8).translate(0, 0.35, 0), METAL.gold(), scep); mk(new THREE.SphereGeometry(0.045, 10, 8), METAL.gold(), scep, 0, 0.72, 0); fist(scep, king.arms[1].hand, 0.15);
+  { const scep = new THREE.Group(); mk(new THREE.CylinderGeometry(0.015, 0.015, 0.7, 8).translate(0, 0.35, 0), METAL.gold(), scep); mk(new THREE.SphereGeometry(0.045, 10, 8), METAL.gold(), scep, 0, 0.72, 0); fist(scep, king.arms[1].hand, 0.15); }
   const vas = mPerson(g, { skin:'#c89a78', hair:'#5a3a22', cloth:'#7a7a80', sleeves:true, mail:true, surcoat:['#2e6a3a', '#e8c040'], leggings:'#4a3a2a' }, tx, tz + 1.15, Math.PI);
-  // knien: ein Knie am Boden
   const kneel = p => { p.hips.position.y = 0.52; p.legs[0].hip.rotation.x = -1.45; p.legs[0].knee.rotation.x = 1.55; p.legs[1].hip.rotation.x = 0.2; p.legs[1].knee.rotation.x = 1.75; if (p.skirt) p.skirt.rotation.x = -0.35; };
   kneel(vas); vas.g.position.y = fy + 0.3;
   const herald = mPerson(g, { skin:'#d8b090', hair:'#3a2616', cloth:'#e8c040', sleeves:true, surcoat:['#a8242a', '#e8c040'], beret:'#a8242a', hose:['#a8242a', '#e8c040'] }, tx + 2.2, tz + 1.2, -Math.PI/2 - 0.4);
+  herald.g.position.y = fy;
   { const scroll = new THREE.Group(); mk(new THREE.CylinderGeometry(0.03, 0.03, 0.4, 10).rotateZ(Math.PI/2), M('#efe2c0', { tex:'weave' }), scroll, 0, 0, 0); fist(scroll, herald.arms[1].hand, 0); }
+  cbox4(tx - 1.7, tx + 1.7, iz0, tz + 1.6, 0.1, P1 - 0.5, P1 + 3); ccirc(tx + 2.2, tz + 1.2, 0.35, P1 - 0.5, P1 + 3);
   const H = new THREE.Vector3(), Hk = new THREE.Vector3();
   anims.push(t => {
-    // die Hände des Lehnsmanns liegen gefaltet in den Händen des Königs
     vas.spine.updateWorldMatrix(true, false); H.set(0, 0.45, 0.38); vas.spine.localToWorld(H);
     for (const i of [0, 1]){ Hk.copy(H); Hk.x += (i ? 0.05 : -0.05); ikWorld(vas, i, Hk); ikWorld(king, i, Hk.set(H.x + (i ? 0.09 : -0.09), H.y + 0.03, H.z)); }
     vas.spine.rotation.x = 0.18; vas.head.rotation.x = 0.25 + Math.sin(t*0.5)*0.03; king.head.rotation.x = 0.18; king.head.rotation.y = Math.sin(t*0.3)*0.1;
     herald.arms[1].el.rotation.x = -1.3; herald.arms[0].el.rotation.x = -0.4; herald.head.rotation.x = 0.3; herald.face.talk = Math.max(0, Math.sin(t*9))*0.6*(Math.sin(t*0.4) > 0 ? 1 : 0); });
-  addHotspot('koenig', [king.root, vas.root], P.koenig[0], g.position.y + 3.2, P.koenig[1], 0);
-  // Festtafel: Brei, Brot, Eier, ein Wildschwein von der Jagd, Krüge mit Wein und Bier
-  const tz0 = -6.6, tz1 = -0.4, tbx = -11.4, TH = 0.78, tl = tz1 - tz0;
-  const tb = []; tb.push(part(new THREE.BoxGeometry(1.0, 0.08, tl), '#7a5636', tbx, fy + TH, (tz0 + tz1)/2));
-  for (const z of [tz0 + 0.4, tz1 - 0.4]) tb.push(part(new THREE.BoxGeometry(0.8, TH, 0.1), '#5a3e28', tbx, fy + TH/2, z));
-  tb.push(part(new THREE.BoxGeometry(0.4, 0.06, tl), '#6a4a2e', tbx - 0.95, fy + 0.45, (tz0 + tz1)/2)); for (const z of [tz0 + 0.3, tz1 - 0.3]) tb.push(part(new THREE.BoxGeometry(0.3, 0.45, 0.08), '#5a3e28', tbx - 0.95, fy + 0.22, z));
-  tb.push(part(new THREE.BoxGeometry(1.06, 0.01, tl + 0.1), '#efe6d2', tbx, fy + TH + 0.045, (tz0 + tz1)/2));
-  vmesh(tb, g);
-  const food = [];
-  food.push(part(new THREE.CylinderGeometry(0.32, 0.26, 0.05, 20), '#c8c0b0', tbx, fy + TH + 0.08, -3.4));
-  { const boar = makeAnimal('pig', 71, { col:{ back:'#6a3a1a', flank:'#7a4a22', belly:'#8a5a2a', leg:'#5a3016', face:'#6a3a1a', muzzle:'#7a4a2a' } }); boar.scale.setScalar(0.42); boar.position.set(tbx, fy + TH + 0.12, -3.4); boar.rotation.y = 0.3; g.add(boar);
+  addHotspot('koenig', [king.root, vas.root], P.koenig[0], P1 + 3.2, P.koenig[1], 0);
+  // Festtafel an der Westwand: Brei, Brot, Eier, ein Wildschwein von der Jagd, Krüge mit Wein und Bier
+  const tz0 = -16.6, tz1 = -10.0, tbx = 8.6, TH = 0.78, tl = tz1 - tz0;
+  { const tb = []; tb.push(part(new THREE.BoxGeometry(1.0, 0.08, tl), '#7a5636', tbx, fy + TH, (tz0 + tz1)/2));
+    for (const z of [tz0 + 0.4, tz1 - 0.4]) tb.push(part(new THREE.BoxGeometry(0.8, TH, 0.1), '#5a3e28', tbx, fy + TH/2, z));
+    tb.push(part(new THREE.BoxGeometry(0.4, 0.06, tl), '#6a4a2e', tbx - 0.95, fy + 0.45, (tz0 + tz1)/2)); for (const z of [tz0 + 0.3, tz1 - 0.3]) tb.push(part(new THREE.BoxGeometry(0.3, 0.45, 0.08), '#5a3e28', tbx - 0.95, fy + 0.22, z));
+    tb.push(part(new THREE.BoxGeometry(1.06, 0.01, tl + 0.1), '#efe6d2', tbx, fy + TH + 0.045, (tz0 + tz1)/2)); vmesh(tb, g); }
+  { const food = []; food.push(part(new THREE.CylinderGeometry(0.32, 0.26, 0.05, 20), '#c8c0b0', tbx, fy + TH + 0.08, -13.3));
+    const boar = makeAnimal('pig', 71, { col:{ back:'#6a3a1a', flank:'#7a4a22', belly:'#8a5a2a', leg:'#5a3016', face:'#6a3a1a', muzzle:'#7a4a2a' } }); boar.scale.setScalar(0.42); boar.position.set(tbx, fy + TH + 0.12, -13.3); boar.rotation.y = 0.3; g.add(boar);
     animalPose(boar.userData.rig, 0, { lie:1, graze:false }); boar.userData.rig.lie = 1; animalPose(boar.userData.rig, 0, { lie:1, graze:false });
-    const am = M('#7a3a14', { tex:'skin', roughness:0.5 }); boar.traverse(m => { if (m.isMesh) m.material = am; }); }
-  for (let i=0;i<5;i++){ const z = tz0 + 0.6 + i*1.2; food.push(part(new THREE.CylinderGeometry(0.13, 0.13, 0.04, 14), '#b88a4a', tbx - 0.25, fy + TH + 0.07, z));
-    food.push(part(new THREE.SphereGeometry(0.11, 12, 8, 0, TAU, 0, Math.PI/2), '#8a6a4a', tbx + 0.25, fy + TH + 0.05, z + 0.3, 0, 0, Math.PI), part(new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12), '#e0c890', tbx + 0.25, fy + TH + 0.1, z + 0.3));
-    food.push(part(new THREE.CylinderGeometry(0.04, 0.035, 0.14, 10), '#b8a088', tbx - 0.1, fy + TH + 0.12, z - 0.4)); }
-  for (let i=0;i<6;i++) food.push(part(new THREE.SphereGeometry(0.03, 8, 6).scale(1, 1.3, 1), '#f2ead8', tbx + 0.1 + (i % 3)*0.07, fy + TH + 0.09, -1.2 + Math.floor(i/3)*0.07));
-  for (const z of [-5.4, -2.0]) food.push(part(new THREE.CylinderGeometry(0.07, 0.09, 0.3, 12), '#a8804a', tbx + 0.3, fy + TH + 0.2, z));
-  vmesh(food, g);
-  // Gäste auf der Bank, ein Diener bringt Wein
+    const am = M('#7a3a14', { tex:'skin', roughness:0.5 }); boar.traverse(m => { if (m.isMesh) m.material = am; });
+    for (let i=0;i<5;i++){ const z = tz0 + 0.6 + i*1.25; food.push(part(new THREE.CylinderGeometry(0.13, 0.13, 0.04, 14), '#b88a4a', tbx - 0.25, fy + TH + 0.07, z));
+      food.push(part(new THREE.SphereGeometry(0.11, 12, 8, 0, TAU, 0, Math.PI/2), '#8a6a4a', tbx + 0.25, fy + TH + 0.05, z + 0.3, 0, 0, Math.PI), part(new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12), '#e0c890', tbx + 0.25, fy + TH + 0.1, z + 0.3));
+      food.push(part(new THREE.CylinderGeometry(0.04, 0.035, 0.14, 10), '#b8a088', tbx - 0.1, fy + TH + 0.12, z - 0.4)); }
+    for (let i=0;i<6;i++) food.push(part(new THREE.SphereGeometry(0.03, 8, 6).scale(1, 1.3, 1), '#f2ead8', tbx + 0.1 + (i % 3)*0.07, fy + TH + 0.09, -11.0 + Math.floor(i/3)*0.07));
+    for (const z of [-15.4, -11.8]) food.push(part(new THREE.CylinderGeometry(0.07, 0.09, 0.3, 12), '#a8804a', tbx + 0.3, fy + TH + 0.2, z));
+    vmesh(food, g); }
+  cbox4(tbx - 1.2, tbx + 0.55, tz0, tz1, 0.1, P1 - 0.5, P1 + 3);
   const guests = [];
-  [[tz0 + 0.8, true], [tz0 + 2.2, false], [-2.0, true], [-0.9, false]].forEach(([z, fem], i) => {
+  [[tz0 + 0.8, true], [tz0 + 2.2, false], [-12.0, true], [-10.8, false]].forEach(([z, fem], i) => {
     const o = fem ? { skin:'#e0b898', hair:['#c8a060', '#5a3a22'][i % 2], female:true, long:true, cloth:NOBLE[i + 1], sleeves:true, veil:'#f4f0e6', wimple:'#f4f0e6' } : { skin:'#d8b090', hair:'#3a2616', beard:i % 2 === 1, cloth:NOBLE[i], sleeves:true, cloak:NOBLE[(i + 3) % 6], beret:'#2a2a2a' };
     const p = mPerson(g, o, tbx - 0.95, z, Math.PI/2); poseSit(p, 0.46); p.g.position.y = fy; guests.push(p); });
-  const serv = mPerson(g, { skin:'#c89a78', hair:'#6a4a2a', cloth:'#8a7a5a', sleeves:true, apron:'#e8e0cc', leggings:'#4a3a2a' }, -8.2, -1.5, 0);
-  const jugS = new THREE.Group(); mk(lathe([[0.001, 0], [0.08, 0], [0.1, 0.12], [0.06, 0.24], [0.07, 0.28], [0.001, 0.28]], 12), M('#a8804a', { tex:'grain' }), jugS); fist(jugS, serv.arms[0].hand, 0.1);
-  routine(serv, [{ to:[-8.2, -5.6] }, { d:2.5, yaw:-Math.PI/2, act:k => { serv.arms[0].el.rotation.x = -1.2 - Math.sin(k*Math.PI)*0.4; } }, { to:[-8.2, -1.5] }, { d:4, yaw:-Math.PI/2 }], { speed:0.8 });
-  anims.push(t => { guests.forEach((p, i) => { p.head.rotation.y = Math.sin(t*0.5 + i)*0.4; const eat = Math.max(0, Math.sin(t*0.9 + i*1.7)); H.set(tbx + 0.1, g.position.y + fy + TH + 0.15 + eat*0.35, CASTLE.z + p.g.position.z + 0.15); H.x += CASTLE.x; ikWorld(p, 1, H); p.face.talk = Math.max(0, Math.sin(t*7 + i))*0.4*(Math.sin(t*0.3 + i*2) > 0.2 ? 1 : 0); }); });
-  addHotspot('palas', [g], P.palas[0], g.position.y + 3.0, P.palas[1], 0);
-  // Kemenate: Kamin mit Feuer, Burgherrin am Spinnrocken, Kinder spielen, Himmelbett
-  const kz0 = Pa.zk + 0.2, kz1 = Pa.z1 - T, kcx = cx, fz = (kz0 + kz1)/2;
-  const fp = []; fp.push(part(new THREE.BoxGeometry(0.6, 1.6, 1.8), '#b8b0a0', Pa.x0 + T + 0.3, fy + 0.8, fz), part(new THREE.BoxGeometry(0.9, 0.3, 2.2), '#a8a090', Pa.x0 + T + 0.45, fy + 1.75, fz), part(new THREE.BoxGeometry(0.9, 1.9, 1.6), '#a8a090', Pa.x0 + T + 0.2, fy + 2.85, fz));
-  fp.push(part(new THREE.BoxGeometry(0.3, 1.1, 1.0), '#1a1410', Pa.x0 + T + 0.46, fy + 0.6, fz)); vmesh(fp, g);
-  { const ff = new THREE.Group(); ff.position.set(Pa.x0 + T + 0.5, fy + 0.08, fz); g.add(ff); makeFireFx(ff, 0.32, 6); }
-  { const lamp2 = new THREE.PointLight(0xffc890, 3, 8, 2); lamp2.position.set(kcx, 2.6, fz); g.add(lamp2); }
-  // Wandteppich
-  { const tt = canvasTex(256, 128, (x, W2, H2) => { x.fillStyle = '#2a3a5a'; x.fillRect(0, 0, W2, H2); x.fillStyle = '#c8a040'; x.fillRect(6, 6, W2 - 12, 4); x.fillRect(6, H2 - 10, W2 - 12, 4);
-      x.fillStyle = '#e8e0cc'; x.beginPath(); x.ellipse(70, 74, 30, 14, 0, 0, TAU); x.fill(); x.fillRect(90, 60, 8, 30); x.fillStyle = '#4a7a3a'; for (let i=0;i<5;i++){ x.beginPath(); x.arc(150 + i*20, 60 + (i % 2)*12, 14, 0, TAU); x.fill(); }
-      x.fillStyle = '#a8242a'; x.beginPath(); x.arc(200, 40, 10, 0, TAU); x.fill(); });
-    mk(new THREE.PlaneGeometry(3.2, 1.6), new THREE.MeshStandardMaterial({ map:tt, roughness:0.95, side:THREE.DoubleSide }), g, kcx + 0.5, 2.7, kz1 - 0.03, 0, Math.PI, 0); }
-  // Himmelbett
-  { const bx = Pa.x1 - T - 1.0, bz = kz1 - 1.2, bd = [];
-    bd.push(part(new THREE.BoxGeometry(1.6, 0.5, 2.0), '#6a4a2e', bx, fy + 0.25, bz), part(new THREE.BoxGeometry(1.5, 0.2, 1.9), '#e8e0cc', bx, fy + 0.6, bz), part(new THREE.BoxGeometry(1.5, 0.12, 1.4), '#2e6a3a', bx, fy + 0.72, bz + 0.25));
-    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) bd.push(part(new THREE.BoxGeometry(0.1, 2.2, 0.1), '#5a3e28', bx + sx*0.78, fy + 1.1, bz + sz*0.98));
-    bd.push(part(new THREE.BoxGeometry(1.7, 0.1, 2.1), '#a8242a', bx, fy + 2.2, bz)); vmesh(bd, g);
-    for (const sd of [-1, 1]) mk(new THREE.PlaneGeometry(2.0, 1.7), M('#a8242a', { tex:'wool', rep:2, side:THREE.DoubleSide }), g, bx + sd*0.8, fy + 1.3, bz, 0, Math.PI/2, 0);
-    wallSeg(g, bx, bz - 0.6, bx, bz + 0.6, 0.85); }
-  // Truhe
-  wbox(g, 1.0, 0.55, 0.5, M('#7a5232', { tex:'plank' }), kcx + 1.0, fy, kz0 + 0.45, 0, 0.8); wallSeg(g, kcx + 0.6, kz0 + 0.45, kcx + 1.4, kz0 + 0.45, 0.3);
-  wallSeg(g, Pa.x0 + T + 0.3, fz - 0.9, Pa.x0 + T + 0.3, fz + 0.9, 0.45);
-  const lady = mPerson(g, { skin:'#e8c4a0', hair:'#a8783a', female:true, long:true, cloth:'#6a2a6a', sleeves:true, veil:'#f4f0e6', veilLong:true, wimple:'#f4f0e6', fur:'#f4f0e6' }, kcx - 0.6, fz - 0.3, -Math.PI/2 - 0.5);
-  poseSit(lady, 0.45); lady.g.position.y = fy; wbox(g, 0.5, 0.42, 0.5, M('#6a4a2e', { tex:'wood' }), kcx - 0.6, fy, fz - 0.3, 0, 0.6);
-  const sp = makeSpindle(); fist(sp, lady.arms[0].hand, 0.05);
-  const kid1 = mPerson(g, Object.assign(peasantO(91, false, true), { cloth:'#a8242a', sleeves:true, hood:null, strawhat:false, hose:['#2e4a8a', '#2e4a8a'] }), kcx + 1.2, fz + 0.6, -2.4);
-  const kid2 = mPerson(g, { skin:'#e8c4a0', hair:'#c8a060', female:true, long:true, cloth:'#e0b0c0', sleeves:true, scale:0.6, bun:true }, kcx + 0.3, fz + 1.2, 2.6);
-  { const hrs = makeAnimal('horse', 88, { scale:0.16, col:{ back:'#a07848', flank:'#a07848', belly:'#a07848', leg:'#8a6a42', face:'#a07848', muzzle:'#8a6a42', mane:'#6a4a2a' } }); hrs.position.set(kcx + 0.75, fy, fz + 0.9); hrs.rotation.y = 1; g.add(hrs);
-    const wheels = []; for (const [a, b] of [[-0.06, -0.1], [0.06, -0.1], [-0.06, 0.1], [0.06, 0.1]]) wheels.push(part(new THREE.CylinderGeometry(0.025, 0.025, 0.012, 10).rotateZ(Math.PI/2), '#5a3e28', a, 0.025, b)); vmesh(wheels, hrs);
-    anims.push(t => { hrs.position.x = kcx + 0.75 + Math.sin(t*0.8)*0.25; }); }
-  anims.push(t => { kid1.hips.position.y = 0.4; for (const l of kid1.legs){ l.hip.rotation.x = -1.4; l.knee.rotation.x = 2.3; } H.set(kcx + 0.75 + Math.sin(t*0.8)*0.25 + CASTLE.x, g.position.y + fy + 0.2, fz + 0.9 + CASTLE.z); ikWorld(kid1, 0, H); kid1.spine.rotation.x = 0.35;
-    kid2.arms[0].el.rotation.x = -1.2 - Math.sin(t*3)*0.4; kid2.arms[1].el.rotation.x = -1.2 - Math.sin(t*3 + 1)*0.4; kid2.head.rotation.y = Math.sin(t*0.7)*0.4; kid2.face.talk = Math.max(0, Math.sin(t*6))*0.5;
-    lady.arms[1].el.rotation.x = -1.4 + Math.sin(t*2)*0.2; lady.arms[0].el.rotation.x = -1.1; sp.rotation.y = t*6; lady.head.rotation.y = 0.5 + Math.sin(t*0.4)*0.2; });
-  addHotspot('kemenate', [lady.root, kid1.root, kid2.root], P.kemenate[0], g.position.y + 2.7, P.kemenate[1], 0);
-  keep(g);
+  const serv = mPerson(g, { skin:'#c89a78', hair:'#6a4a2a', cloth:'#8a7a5a', sleeves:true, apron:'#e8e0cc', leggings:'#4a3a2a' }, 10.2, -10.5, 0);
+  serv.g.position.y = fy;
+  { const jugS = new THREE.Group(); mk(lathe([[0.001, 0], [0.08, 0], [0.1, 0.12], [0.06, 0.24], [0.07, 0.28], [0.001, 0.28]], 12), M('#a8804a', { tex:'grain' }), jugS); fist(jugS, serv.arms[0].hand, 0.1); }
+  routine(serv, [{ to:[9.8, -15.6] }, { d:2.5, yaw:-Math.PI/2, act:k => { serv.arms[0].el.rotation.x = -1.2 - Math.sin(k*Math.PI)*0.4; } }, { to:[10.2, -10.5] }, { d:4, yaw:-Math.PI/2 }], { speed:0.8 });
+  anims.push(() => { serv.g.position.y = fy; });
+  anims.push(t => { guests.forEach((p, i) => { p.head.rotation.y = Math.sin(t*0.5 + i)*0.4; const eat = Math.max(0, Math.sin(t*0.9 + i*1.7)); H.set(tbx + 0.1 + CASTLE.x, fy + TH + 0.15 + eat*0.35, CASTLE.z + p.g.position.z + 0.15); ikWorld(p, 1, H); p.face.talk = Math.max(0, Math.sin(t*7 + i))*0.4*(Math.sin(t*0.3 + i*2) > 0.2 ? 1 : 0); }); });
+  addHotspot('palas', [guests[0].root, guests[1].root, serv.root], P.palas[0], P1 + 2.8, P.palas[1], 0);
+
+  /* --- Kemenate: Kamin mit Feuer, Burgherrin am Spinnrocken, Kinder spielen, Himmelbett --- */
+  { const fy2 = P2, fz = -12.8, fp = [];
+    fp.push(part(new THREE.BoxGeometry(0.6, 1.6, 1.8), '#8a8274', ix0 + 0.3, fy2 + 0.8, fz), part(new THREE.BoxGeometry(0.9, 0.3, 2.2), '#7a7266', ix0 + 0.45, fy2 + 1.75, fz), part(new THREE.BoxGeometry(0.9, 1.9, 1.6), '#7a7266', ix0 + 0.2, fy2 + 2.85, fz));
+    fp.push(part(new THREE.BoxGeometry(0.3, 1.1, 1.0), '#1a1410', ix0 + 0.46, fy2 + 0.6, fz)); vmesh(fp, g);
+    { const ff = new THREE.Group(); ff.position.set(ix0 + 0.5, fy2 + 0.08, fz); g.add(ff); makeFireFx(ff, 0.32, 3.2); }
+    { const tt = canvasTex(256, 128, (x, W2, H2) => { x.fillStyle = '#2a3a5a'; x.fillRect(0, 0, W2, H2); x.fillStyle = '#c8a040'; x.fillRect(6, 6, W2 - 12, 4); x.fillRect(6, H2 - 10, W2 - 12, 4);
+        x.fillStyle = '#e8e0cc'; x.beginPath(); x.ellipse(70, 74, 30, 14, 0, 0, TAU); x.fill(); x.fillRect(90, 60, 8, 30); x.fillStyle = '#4a7a3a'; for (let i=0;i<5;i++){ x.beginPath(); x.arc(150 + i*20, 60 + (i % 2)*12, 14, 0, TAU); x.fill(); }
+        x.fillStyle = '#a8242a'; x.beginPath(); x.arc(200, 40, 10, 0, TAU); x.fill(); });
+      mk(new THREE.PlaneGeometry(3.2, 1.6), new THREE.MeshStandardMaterial({ map:tt, roughness:0.95, side:THREE.DoubleSide }), g, 8.6, fy2 + 2.3, iz0 + 0.03); }
+    const bx = 11.0, bz = iz0 + 1.15, bd = [];
+    bd.push(part(new THREE.BoxGeometry(1.6, 0.5, 2.0), '#6a4a2e', bx, fy2 + 0.25, bz), part(new THREE.BoxGeometry(1.5, 0.2, 1.9), '#e8e0cc', bx, fy2 + 0.6, bz), part(new THREE.BoxGeometry(1.5, 0.12, 1.4), '#2e6a3a', bx, fy2 + 0.72, bz + 0.25));
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) bd.push(part(new THREE.BoxGeometry(0.1, 2.2, 0.1), '#5a3e28', bx + sx*0.78, fy2 + 1.1, bz + sz*0.98));
+    bd.push(part(new THREE.BoxGeometry(1.7, 0.1, 2.1), '#a8242a', bx, fy2 + 2.2, bz)); vmesh(bd, g);
+    for (const sd of [-1, 1]) mk(new THREE.PlaneGeometry(2.0, 1.7), M('#a8242a', { tex:'wool', rep:2, side:THREE.DoubleSide }), g, bx + sd*0.8, fy2 + 1.3, bz, 0, Math.PI/2, 0);
+    cbox4(bx - 0.85, bx + 0.85, iz0, bz + 1.05, 0.1, P2 - 0.5, P2 + 3);
+    wbox(g, 1.0, 0.55, 0.5, M('#7a5232', { tex:'plank' }), 10.2, fy2, iz1 - 0.4, 0, 0.8); cbox4(9.7, 10.7, iz1 - 0.65, iz1, 0.05, P2 - 0.5, P2 + 2);
+    cseg(ix0 + 0.6, fz - 0.9, ix0 + 0.6, fz + 0.9, 0.3, P2 - 0.5, P2 + 3);
+    const kcx = 9.2;
+    const lady = mPerson(g, { skin:'#e8c4a0', hair:'#a8783a', female:true, long:true, cloth:'#6a2a6a', sleeves:true, veil:'#f4f0e6', veilLong:true, wimple:'#f4f0e6', fur:'#f4f0e6' }, kcx - 0.6, fz - 0.3, -Math.PI/2 - 0.5);
+    poseSit(lady, 0.45); lady.g.position.y = fy2; wbox(g, 0.5, 0.42, 0.5, M('#6a4a2e', { tex:'wood' }), kcx - 0.6, fy2, fz - 0.3, 0, 0.6);
+    const sp = makeSpindle(); fist(sp, lady.arms[0].hand, 0.05);
+    const kid1 = mPerson(g, Object.assign(peasantO(91, false, true), { cloth:'#a8242a', sleeves:true, hood:null, strawhat:false, hose:['#2e4a8a', '#2e4a8a'] }), kcx + 1.2, fz + 0.6, -2.4); kid1.g.position.y = fy2;
+    const kid2 = mPerson(g, { skin:'#e8c4a0', hair:'#c8a060', female:true, long:true, cloth:'#e0b0c0', sleeves:true, scale:0.6, bun:true }, kcx + 0.3, fz + 1.2, 2.6); kid2.g.position.y = fy2;
+    const hrs = makeAnimal('horse', 88, { scale:0.16, col:{ back:'#a07848', flank:'#a07848', belly:'#a07848', leg:'#8a6a42', face:'#a07848', muzzle:'#8a6a42', mane:'#6a4a2a' } }); hrs.position.set(kcx + 0.75, fy2, fz + 0.9); hrs.rotation.y = 1; g.add(hrs);
+    { const wheels = []; for (const [a, b] of [[-0.06, -0.1], [0.06, -0.1], [-0.06, 0.1], [0.06, 0.1]]) wheels.push(part(new THREE.CylinderGeometry(0.025, 0.025, 0.012, 10).rotateZ(Math.PI/2), '#5a3e28', a, 0.025, b)); vmesh(wheels, hrs); }
+    for (const p of [lady, kid1, kid2]) ccirc(p.g.position.x, p.g.position.z, 0.4, P2 - 0.5, P2 + 3);
+    anims.push(t => { hrs.position.x = kcx + 0.75 + Math.sin(t*0.8)*0.25; kid1.hips.position.y = 0.4; for (const l of kid1.legs){ l.hip.rotation.x = -1.4; l.knee.rotation.x = 2.3; } H.set(kcx + 0.75 + Math.sin(t*0.8)*0.25 + CASTLE.x, fy2 + 0.2, fz + 0.9 + CASTLE.z); ikWorld(kid1, 0, H); kid1.spine.rotation.x = 0.35;
+      kid2.arms[0].el.rotation.x = -1.2 - Math.sin(t*3)*0.4; kid2.arms[1].el.rotation.x = -1.2 - Math.sin(t*3 + 1)*0.4; kid2.head.rotation.y = Math.sin(t*0.7)*0.4; kid2.face.talk = Math.max(0, Math.sin(t*6))*0.5;
+      lady.arms[1].el.rotation.x = -1.4 + Math.sin(t*2)*0.2; lady.arms[0].el.rotation.x = -1.1; sp.rotation.y = t*6; lady.head.rotation.y = 0.5 + Math.sin(t*0.4)*0.2; });
+    addHotspot('kemenate', [lady.root, kid1.root, kid2.root], P.kemenate[0], P2 + 2.5, P.kemenate[1], 0);
+    // Schlafraum: zwei Betten, eine Truhe, eine Waschschüssel; eine Magd schüttelt die Decke aus
+    const sb = [];
+    for (const x of [13.6, 15.5]){ sb.push(part(new THREE.BoxGeometry(1.4, 0.45, 2.0), '#6a4a2e', x, fy2 + 0.22, iz0 + 1.05), part(new THREE.BoxGeometry(1.3, 0.16, 1.9), '#e8e0cc', x, fy2 + 0.52, iz0 + 1.05), part(new THREE.BoxGeometry(1.3, 0.1, 1.2), x < 14 ? '#6a2a6a' : '#2e4a8a', x, fy2 + 0.62, iz0 + 1.4), part(new THREE.BoxGeometry(1.4, 0.9, 0.1), '#5a3e28', x, fy2 + 0.6, iz0 + 0.06)); }
+    sb.push(part(new THREE.BoxGeometry(0.6, 0.7, 0.6), '#6a4a2e', 13.2, fy2 + 0.35, -12.4), part(new THREE.CylinderGeometry(0.25, 0.18, 0.12, 14), '#c8c0b0', 13.2, fy2 + 0.76, -12.4));
+    vmesh(sb, g); wbox(g, 1.0, 0.55, 0.5, M('#7a5232', { tex:'plank' }), 15.2, fy2, iz1 - 0.4, 0, 0.8);
+    cbox4(12.8, 16.3, iz0, iz0 + 2.1, 0.1, P2 - 0.5, P2 + 3); cbox4(12.85, 13.55, -12.75, -12.05, 0.05, P2 - 0.5, P2 + 2); cbox4(14.7, 15.7, iz1 - 0.65, iz1, 0.05, P2 - 0.5, P2 + 2);
+    const mg = mPerson(g, Object.assign(peasantO(143, true), { apron:'#e8e0cc', cloth:'#7a6a5a' }), 14.5, iz0 + 2.6, Math.PI); mg.g.position.y = fy2;
+    const blk = mk(new THREE.PlaneGeometry(1.2, 0.8, 6, 1), M('#2e4a8a', { tex:'wool', side:THREE.DoubleSide }), g, 14.5, fy2 + 1.2, iz0 + 2.15); const bp = blk.geometry.attributes.position, b0 = Float32Array.from(bp.array);
+    anims.push(t => { const k = Math.sin(t*3); for (let i=0;i<bp.count;i++){ const x = b0[i*3]; bp.setZ(i, k*0.15*Math.sin(x*3 + t*6)); } bp.needsUpdate = true; blk.position.y = fy2 + 1.15 + k*0.1;
+      mg.spine.updateWorldMatrix(true, false); for (const i of [0, 1]){ H.set((i ? -1 : 1)*0.55 + 14.5 + CASTLE.x, fy2 + 1.5 + k*0.1, iz0 + 2.2 + CASTLE.z); ikWorld(mg, i, H); } });
+    ccirc(14.5, iz0 + 2.6, 0.35, P2 - 0.5, P2 + 3);
+    const lamp2 = new THREE.PointLight(0xffc890, 3, 9, 2); lamp2.position.set(9.5, fy2 + 2.6, -12.5); g.add(lamp2); }
+  cbFlush(gs); keep(gs);
 }
-/* ---------- Burgkapelle: kleiner Kirchenraum mit Altar, Kaplan und betender Familie ---------- */
+/* ---------- Burgkapelle (12): kleiner Kirchenraum mit Altar, Kaplan und betender Familie ---------- */
 function buildChapel(){
-  const MT = mMats(), Ch = CHAPEL, g = castleGrp(), W = Ch.z1 - Ch.z0, L = Ch.x1 - Ch.x0, cx = (Ch.x0 + Ch.x1)/2, cz = (Ch.z0 + Ch.z1)/2, T = 0.55, H = 5, fy = 0.1;
-  g.position.y = groundH(...cLW(cx, cz)) - 0.05;
-  mk(holeWall(W, H, T, [[0, 0, 0.75, 2.6, true]]), MT.white, g, Ch.x0 + T/2, 0, cz, 0, Math.PI/2, 0);
-  for (const sd of [-1, 1]) mk(holeWall(L, H, T, [[-1.4, 2.0, 0.3, 1.6, true], [1.4, 2.0, 0.3, 1.6, true]]), MT.white, g, cx, 0, sd > 0 ? Ch.z1 - T/2 : Ch.z0 + T/2);
-  mk(holeWall(W, H, T, [[0, 0, 1.4, 4.2, true]]), MT.white, g, Ch.x1 - T/2, 0, cz, 0, Math.PI/2, 0);
-  const ap = new THREE.CylinderGeometry(1.7, 1.7, H, 20, 1, true, 0, Math.PI); scaleUV(ap, 3, 2); const apm = mk(ap, MT.white, g, Ch.x1 - T, H/2, cz); apm.material.side = THREE.DoubleSide;
-  mk(new THREE.SphereGeometry(1.75, 20, 8, Math.PI/2, Math.PI, 0, Math.PI/2).scale(1, 0.8, 1), MT.tiles, g, Ch.x1 - T, H, cz);
-  saddleRoof(g, { w:W, d:L, rise:W*0.6, y:H, x:cx, z:cz, ry:Math.PI/2, mat:MT.tiles, ov:0.35, ovG:0.25 });
-  for (const sd of [-1, 1]) mk(gableTri(W, W*0.6, 0.3), MT.white, g, sd > 0 ? Ch.x1 - 0.15 : Ch.x0 + 0.15, H, cz, 0, Math.PI/2, 0);
-  // Dachreiter mit Glocke
-  { const bt = []; bt.push(part(new THREE.BoxGeometry(0.9, 1.2, 0.9), '#e8e0d0', Ch.x0 + 1, H + W*0.6 - 0.2, cz)); bt.push(part(new THREE.ConeGeometry(0.75, 1.6, 4).rotateY(Math.PI/4), '#5a6270', Ch.x0 + 1, H + W*0.6 + 1.2, cz)); bt.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6), '#c8a040', Ch.x0 + 1, H + W*0.6 + 2.3, cz), part(new THREE.BoxGeometry(0.4, 0.05, 0.05), '#c8a040', Ch.x0 + 1, H + W*0.6 + 2.4, cz)); vmesh(bt, g); }
+  const MT = mMats(), Ch = CHAPEL, g = castleGrp(), gs = castleGrp(), W = Ch.z1 - Ch.z0, L = Ch.x1 - Ch.x0, cx = (Ch.x0 + Ch.x1)/2, cz = (Ch.z0 + Ch.z1)/2, T = 0.55, H = 5, fy = 0.1;
+  g.position.y = gs.position.y = HY.CY - 0.05; const MW = MT.stone;
+  mk(holeWall(W, H, T, [[0, 0, 0.75, 2.6, true]]), MW, gs, Ch.x0 + T/2, 0, cz, 0, Math.PI/2, 0);
+  for (const sd of [-1, 1]) mk(holeWall(L, H, T, [[-1.4, 2.0, 0.3, 1.6, true], [1.4, 2.0, 0.3, 1.6, true]]), MW, gs, cx, 0, sd > 0 ? Ch.z1 - T/2 : Ch.z0 + T/2);
+  mk(holeWall(W, H, T, [[0, 0, 1.4, 4.2, true]]), MW, gs, Ch.x1 - T/2, 0, cz, 0, Math.PI/2, 0);
+  const ap = new THREE.CylinderGeometry(1.5, 1.5, H, 20, 1, true, 0, Math.PI); scaleUV(ap, 3, 2); const apm = mk(ap, M('#cec6b6', { tex:'castle', side:THREE.DoubleSide }), gs, Ch.x1 - T, H/2, cz);
+  mk(new THREE.SphereGeometry(1.55, 20, 8, Math.PI/2, Math.PI, 0, Math.PI/2).scale(1, 0.8, 1), MT.slate, gs, Ch.x1 - T, H, cz);
+  saddleRoof(gs, { w:W, d:L, rise:W*0.75, y:H, x:cx, z:cz, ry:Math.PI/2, mat:MT.slate, ov:0.35, ovG:0.25 });
+  for (const sd of [-1, 1]) mk(gableTri(W, W*0.75, 0.3), MW, gs, sd > 0 ? Ch.x1 - 0.15 : Ch.x0 + 0.15, H, cz, 0, Math.PI/2, 0);
+  // Dachreiter mit Glocke und Kreuz
+  { const bt = []; bt.push(part(new THREE.BoxGeometry(0.9, 1.2, 0.9), '#c8c0b0', Ch.x0 + 1, H + W*0.75 - 0.2, cz)); bt.push(part(new THREE.ConeGeometry(0.75, 1.6, 4).rotateY(Math.PI/4), '#5a6270', Ch.x0 + 1, H + W*0.75 + 1.2, cz)); bt.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6), '#c8a040', Ch.x0 + 1, H + W*0.75 + 2.3, cz), part(new THREE.BoxGeometry(0.4, 0.05, 0.05), '#c8a040', Ch.x0 + 1, H + W*0.75 + 2.4, cz)); vmesh(bt, gs); }
   wbox(g, L - 2*T, 0.1, W - 2*T, MT.stone2, cx, fy - 0.05, cz, 0, 1.2);
-  { const [x0, z0] = cLW(Ch.x0 + T, Ch.z0 + T), [x1, z1] = cLW(Ch.x1, Ch.z1 - T); DECKS.push({ x0, x1, z0, z1, y:g.position.y + fy + 0.05 }); }
-  // Altar mit Kreuz und Kerzen, Bänke, Licht
+  cdeck(Ch.x0 + T, Ch.x1, Ch.z0 + T, Ch.z1 - T, HY.CY + 0.1);
   const al = []; al.push(part(new THREE.BoxGeometry(0.8, 1.0, 1.6), '#d8d0c0', Ch.x1 - T + 0.8, fy + 0.5, cz), part(new THREE.BoxGeometry(0.85, 0.04, 1.7), '#f4f0e8', Ch.x1 - T + 0.8, fy + 1.02, cz));
   al.push(part(new THREE.BoxGeometry(0.06, 0.7, 0.06), '#d8a83a', Ch.x1 - T + 0.8, fy + 1.4, cz), part(new THREE.BoxGeometry(0.06, 0.06, 0.36), '#d8a83a', Ch.x1 - T + 0.8, fy + 1.55, cz));
   for (const sd of [-1, 1]) al.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.3, 8), '#f2ece0', Ch.x1 - T + 0.8, fy + 1.2, cz + sd*0.55), part(new THREE.CylinderGeometry(0.06, 0.04, 0.06, 8), '#c8a040', Ch.x1 - T + 0.8, fy + 1.05, cz + sd*0.55));
@@ -4217,7 +4748,6 @@ function buildChapel(){
   vmesh(al, g);
   for (const sd of [-1, 1]){ const fl = new THREE.Group(); fl.position.set(Ch.x1 - T + 0.8, fy + 1.37, cz + sd*0.55); g.add(fl); makeFireFx(fl, 0.03, 0, false); }
   const lamp = new THREE.PointLight(0xffdcae, 5, 9, 2); lamp.position.set(cx, 3.4, cz); g.add(lamp);
-  // Bunte Glasfenster (leuchten)
   for (const [x, z, ry] of [[cx - 1.4, Ch.z0 + T*0.5, 0], [cx + 1.4, Ch.z0 + T*0.5, 0], [cx - 1.4, Ch.z1 - T*0.5, Math.PI], [cx + 1.4, Ch.z1 - T*0.5, Math.PI]]){
     const gt = canvasTex(32, 64, (x2, W2, H2) => { const cols = ['#c83a2a', '#2a5ab8', '#e8c040', '#3a8a4a']; for (let j=0;j<8;j++) for (let i=0;i<4;i++){ x2.fillStyle = cols[(i + j*3) % 4]; x2.fillRect(i*8, j*8, 8, 8); } x2.strokeStyle = '#222'; x2.lineWidth = 1.5; for (let i=0;i<=4;i++){ x2.beginPath(); x2.moveTo(i*8, 0); x2.lineTo(i*8, H2); x2.stroke(); } for (let j=0;j<=8;j++){ x2.beginPath(); x2.moveTo(0, j*8); x2.lineTo(W2, j*8); x2.stroke(); } });
     mk(archWindow(0.6, 1.6, false), new THREE.MeshBasicMaterial({ map:gt, side:THREE.DoubleSide, color:C('#d8d0c0') }), g, x, 2.0, z, 0, ry, 0).castShadow = false; }
@@ -4229,71 +4759,135 @@ function buildChapel(){
   const H2 = new THREE.Vector3();
   anims.push(t => { for (const p of fam){ p.spine.updateWorldMatrix(true, false); H2.set(0, 0.45, 0.3); p.spine.localToWorld(H2); for (const i of [0, 1]) ikWorld(p, i, H2); p.head.rotation.x = 0.35; p.spine.rotation.x = 0.1; p.face.talk = Math.max(0, Math.sin(t*4))*0.25; }
     const raise = Math.max(0, Math.sin(t*0.25)); chap.arms[0].sh.rotation.set(-0.4 - raise*1.6, 0, -0.3); chap.arms[1].sh.rotation.set(-0.4 - raise*1.6, 0, 0.3); chap.arms[0].el.rotation.x = -0.6; chap.arms[1].el.rotation.x = -0.6; chap.face.talk = Math.max(0, Math.sin(t*6))*0.4; });
-  // Hindernisse
   const ws = (ax, az, bx, bz) => wallSeg(g, ax, az, bx, bz, 0.15);
   wallSeg(g, Ch.x1 - T + 0.15, cz - 0.9, Ch.x1 - T + 0.15, cz + 0.9, 0.55);
   for (let i=0;i<2;i++) for (const sd of [-1, 1]) wallSeg(g, Ch.x0 + 1.6 + i*1.4, cz + sd*0.35, Ch.x0 + 1.6 + i*1.4, cz + sd*1.55, 0.2);
-  ws(Ch.x0, Ch.z0, Ch.x0, cz - 0.8); ws(Ch.x0, cz + 0.8, Ch.x0, Ch.z1); ws(Ch.x0, Ch.z0 + 0.05, Ch.x1, Ch.z0 + 0.05); ws(Ch.x0, Ch.z1 - 0.05, Ch.x1, Ch.z1 - 0.05); ws(Ch.x1 + 1.6, Ch.z0, Ch.x1 + 1.6, Ch.z1);
-  addHotspot('kapelle', [g], P.kapelle[0], g.position.y + 2.6, P.kapelle[1], 0);
-  keep(g);
+  ws(Ch.x0, Ch.z0, Ch.x0, cz - 0.8); ws(Ch.x0, cz + 0.8, Ch.x0, Ch.z1); ws(Ch.x0, Ch.z0 + 0.05, Ch.x1, Ch.z0 + 0.05); ws(Ch.x0, Ch.z1 - 0.05, Ch.x1, Ch.z1 - 0.05); ws(Ch.x1 + 1.5, Ch.z0, Ch.x1 + 1.5, Ch.z1);
+  addHotspot('kapelle', [gs], P.kapelle[0], g.position.y + 2.6, P.kapelle[1], 0);
+  keep(gs);
 }
-/* ---------- Burghof: Brunnen, Stall mit Pferden, Schmiede, Zimmermann, Mägde ---------- */
-function buildCourtyard(){
-  const MT = mMats(), g = castleGrp();
-  // Brunnenhaus: der Brunnen mit Seilwinde und eine Magd
-  buildWell(...cLW(-1, 2), 11);
-  // Stall: Pultdach an der Mauer, zwei Pferde, der Stallmeister striegelt eines
-  const lean = (x0, x1, z0, z1, hb, hf) => { const sh = []; for (const x of [x0, (x0 + x1)/2, x1]){ sh.push(part(new THREE.BoxGeometry(0.18, hf, 0.18), '#4e3424', x, hf/2, z0), part(new THREE.BoxGeometry(0.18, hb, 0.18), '#4e3424', x, hb/2, z1)); }
-    sh.push(part(new THREE.BoxGeometry(x1 - x0 + 0.3, 0.16, 0.2), '#4e3424', (x0 + x1)/2, hf, z0), part(new THREE.BoxGeometry(x1 - x0 + 0.3, 0.16, 0.2), '#4e3424', (x0 + x1)/2, hb, z1)); vmesh(sh, g);
-    const L = Math.hypot(z1 - z0 + 0.6, hb - hf), rf = mk(boxUV(x1 - x0 + 0.6, 0.1, L, 1.4), MT.shingle, g, (x0 + x1)/2, (hb + hf)/2 + 0.12, (z0 + z1)/2); rf.rotation.x = -Math.atan2(hb - hf, z1 - z0 + 0.6);
-    for (const x of [x0, x1]) wallSeg(g, x, z0, x, z1, 0.15); };
-  lean(3, 10, 9, 13.2, 3.4, 2.6);
-  wbox(g, 6.4, 0.55, 0.45, MT.plank, 6.5, 0, 9.4, 0, 1);   // Futterkrippe
+/* ---------- Stallungen (15): Pferde in ihren Boxen, der Stallknecht striegelt eines; daneben Kräutergarten und Schweinekoben ---------- */
+function buildStable(){
+  const MT = mMats(), S = STABLE, g = castleGrp(), gs = castleGrp(), CY = HY.CY, H = 3.0, W = S.x1 - S.x0, D = S.z1 - S.z0, cx = (S.x0 + S.x1)/2;
+  for (const x of [S.x0 + 0.2, S.x1 - 0.2]) cbox(CB.stone, x - 0.2, x + 0.2, CY - 0.1, CY + H, S.z0, S.z1, 1.6);
+  for (const x of [S.x0 + 0.2, S.x1 - 0.2]) mk(gableTri(D + 0.6, 2.4, 0.4), MT.stone, gs, x, CY + H, (S.z0 + S.z1)/2, 0, Math.PI/2, 0);
+  saddleRoof(gs, { w:D + 0.6, d:W + 0.4, rise:2.4, y:CY + H, x:cx, z:(S.z0 + S.z1)/2, ry:Math.PI/2, mat:MT.tiles, ov:0.5, ovG:0.25 });
+  const n = 4, bw = (W - 0.8)/n, sb = [];
+  for (let i=0;i<=n;i++){ const x = S.x0 + 0.4 + i*bw; sb.push(part(new THREE.BoxGeometry(0.2, H, 0.2), '#4e3424', x, CY + H/2, S.z1 - 0.1)); if (i > 0 && i < n) sb.push(part(new THREE.BoxGeometry(0.1, 1.4, 2.8), '#6a4a2e', x, CY + 0.75, S.z0 + 1.4)); }
+  sb.push(part(new THREE.BoxGeometry(W, 0.2, 0.25), '#4e3424', cx, CY + H - 0.1, S.z1 - 0.1));
+  for (let i=0;i<n;i++){ const x = S.x0 + 0.4 + (i + 0.5)*bw; sb.push(part(new THREE.BoxGeometry(bw - 0.4, 0.5, 0.5), '#6a4a2e', x, CY + 0.95, S.z0 + 0.3)); for (let k=0;k<6;k++) sb.push(part(new THREE.CylinderGeometry(0.008, 0.008, 0.5, 3), '#c8a860', x - 0.5 + k*0.2, CY + 1.25, S.z0 + 0.3, 0.4, 0, 0)); }
+  vmesh(sb, gs);
+  { const st = []; for (let i=0;i<160;i++) st.push(part(new THREE.CylinderGeometry(0.008, 0.008, 0.35, 3), i % 2 ? '#c8a860' : '#a88c4a', S.x0 + 0.5 + Math.random()*(W - 1), CY + 0.03, S.z0 + 0.3 + Math.random()*(D - 0.6), Math.PI/2, Math.random()*3, 0)); vmesh(st, g); }
   const hs = [];
-  [[4.8, 11.2, '#3a2416'], [8.0, 11.0, '#e8e0d4']].forEach(([x, z, c], i) => { const h = makeAnimal('horse', 120 + i, { col:{ back:c, flank:c, belly:c, face:c, leg:i ? '#c8c0b4' : '#2a1a10', mane:i ? '#d8d0c4' : '#1a120c' } }); h.position.set(x, 0, z); h.rotation.y = Math.PI + (i ? 0.1 : -0.1); g.add(h); hs.push(h); });
-  const sm = mPerson(g, Object.assign(peasantO(51, false), { cloth:'#6a5a3a', leggings:'#4a3a28', hood:null, strawhat:false }), 3.6, 11.6, Math.PI/2);
+  [[0, '#3a2416', '#2a1a10', '#1a120c'], [1, '#e8e0d4', '#c8c0b4', '#d8d0c4'], [2, '#8a5a32', '#6a4024', '#3a2416']].forEach(([i, c, leg, mane]) => { const x = S.x0 + 0.4 + (i + 0.5)*bw;
+    const h = makeAnimal('horse', 120 + i, { col:{ back:c, flank:c, belly:c, face:c, leg, mane } }); h.position.set(x, CY, S.z0 + 1.6); h.rotation.y = Math.PI + (i - 1)*0.08; g.add(h); hs.push(h); ccirc(x, S.z0 + 1.6, 0.9, -50, CY + 3); });
+  makeCart(g).g.position.set(S.x0 + 0.4 + 3.5*bw, CY, S.z0 + 2.0);
+  const sm = mPerson(g, Object.assign(peasantO(51, false), { cloth:'#6a5a3a', leggings:'#4a3a28', hood:null, strawhat:false }), S.x0 + 0.4 + 0.5*bw + 0.75, S.z0 + 2.2, -Math.PI/2 - 0.3);
   const brush = new THREE.Group(); mk(new THREE.BoxGeometry(0.16, 0.05, 0.08), M('#6a4a2e', { tex:'wood' }), brush); fist(brush, sm.arms[0].hand, 0);
   const Hb = new THREE.Vector3();
-  anims.push(t => { hs.forEach((h, i) => animalPose(h.userData.rig, t + i*3, { graze:false, look:Math.sin(t*0.2 + i)*0.3 }));
-    hs[0].updateWorldMatrix(true, false); Hb.set(-0.3, 1.0 + Math.sin(t*2.2)*0.12, Math.sin(t*1.1)*0.4); hs[0].localToWorld(Hb); ikWorld(sm, 0, Hb); sm.spine.rotation.x = 0.1; });
-  // Schmiede: Esse mit Feuer, Amboss, der Schmied hämmert ein Hufeisen
-  lean(-11, -5, 9, 13.2, 3.4, 2.6);
-  const fg = []; fg.push(part(new THREE.BoxGeometry(1.4, 0.9, 1.1), '#8a8070', -9.6, 0.45, 11.8), part(new THREE.BoxGeometry(0.9, 1.6, 0.7), '#7a7062', -9.6, 1.7, 12.3)); vmesh(fg, g);
-  { const ff = new THREE.Group(); ff.position.set(-9.6, 0.92, 11.7); g.add(ff); makeFireFx(ff, 0.22, 3.5); }
-  const anv = new THREE.Group(); anv.position.set(-7.4, 0, 11.2); g.add(anv); makeAnvil(anv);
-  const smith = mPerson(g, { skin:'#c48f6c', hair:'#3a2616', beard:true, cloth:'#5a4a3a', apron:'#4a3020', leggings:'#3a2a1c' }, -7.4, 10.4, 0);
+  anims.push(t => { hs.forEach((h, i) => animalPose(h.userData.rig, t + i*3, { graze:i === 2, look:Math.sin(t*0.2 + i)*0.3 }));
+    hs[0].updateWorldMatrix(true, false); Hb.set(0.25, 1.05 + Math.sin(t*2.2)*0.12, Math.sin(t*1.1)*0.35); hs[0].localToWorld(Hb); ikWorld(sm, 0, Hb); sm.spine.rotation.x = 0.1; });
+  ccirc(sm.g.position.x, sm.g.position.z, 0.35, -50, CY + 3);
+  for (let i=1;i<n;i++){ const x = S.x0 + 0.4 + i*bw; cseg(x, S.z0, x, S.z0 + 2.8, 0.1, -50, CY + 3); }
+  for (const x of [S.x0 + 0.2, S.x1 - 0.2]) cseg(x, S.z0, x, S.z1, 0.25, -50, CY + 4);
+  cbFlush(gs); keep(gs);
+  addHotspot('stall', [hs[0], hs[1], sm.root], P.stall[0], CY + 2.6, P.stall[1], 0);
+  // Kräutergarten mit Flechtzaun: Beete mit Kräutern und Kohl, eine Magd pflückt Kräuter
+  { const Gd = GARDEN, pts = [[Gd.x0, Gd.z0], [Gd.x1, Gd.z0], [Gd.x1, Gd.z1], [Gd.x0, Gd.z1]].map(([x, z]) => cLW(x, z));
+    makeFence(pts, true, [null, null, [2.0, 3.2], null]);
+    const bd = []; for (let j=0;j<2;j++) for (let i=0;i<3;i++){ const bx = Gd.x0 + 0.9 + i*1.75, bz = Gd.z0 + 1.2 + j*2.4; bd.push(part(new THREE.BoxGeometry(1.3, 0.25, 1.8), '#6a4a2e', bx, CY + 0.12, bz), part(new THREE.BoxGeometry(1.2, 0.04, 1.7), '#4a3a28', bx, CY + 0.25, bz));
+      for (let k=0;k<8;k++){ const hx = bx - 0.45 + (k % 4)*0.3, hz = bz - 0.5 + Math.floor(k/4)*0.9, col = ['#5a8a3a', '#7aa04a', '#4a7a5a', '#8ab04a', '#6a9a6a', '#a0b858'][(i + j*3) % 6];
+        if ((i + j) % 3 === 1) bd.push(part(new THREE.SphereGeometry(0.15, 8, 6).scale(1, 0.75, 1), '#6a9a5a', hx, CY + 0.35, hz)); else for (let q=0;q<4;q++) bd.push(part(new THREE.ConeGeometry(0.035, 0.32, 4), col, hx + (q % 2 - 0.5)*0.08, CY + 0.42, hz + (q < 2 ? -0.05 : 0.05), (q - 1.5)*0.2, 0, (q % 2 - 0.5)*0.4)); } }
+    vmesh(bd, g);
+    const hm = mPerson(g, Object.assign(peasantO(144, true), { apron:'#e8e0cc', cloth:'#6a7a5a' }), Gd.x0 + 2.65, Gd.z0 + 2.4, 0); const bk = makeBasket(0.16, 0.18); hm.spine.add(bk); bk.position.set(-0.24, 0.12, 0.16);
+    anims.push(t => { hm.spine.rotation.x = 0.5 + Math.sin(t*0.6)*0.15; hm.arms[0].sh.rotation.set(-0.8 - Math.max(0, Math.sin(t*1.5))*0.4, 0, -0.1); hm.arms[0].el.rotation.x = -0.4; hm.head.rotation.x = 0.4; });
+    ccirc(Gd.x0 + 2.65, Gd.z0 + 2.4, 0.35, -50, CY + 3);
+    addHotspot('garten', [hm.root], P.garten[0], CY + 2.4, P.garten[1], 0); }
+  // Schweinekoben: Holzschuppen mit Ziegeldach an der Westmauer, davor ein Gehege mit Flechtzaun
+  { const Pp = PIGPEN, sx1 = -16.4;
+    const sh = []; for (const z of [Pp.z0 + 0.5, (Pp.z0 + Pp.z1)/2, Pp.z1 - 0.5]) sh.push(part(new THREE.BoxGeometry(0.18, 2.1, 0.18), '#4e3424', sx1, CY + 1.05, z));
+    sh.push(part(new THREE.BoxGeometry(0.2, 0.16, Pp.z1 - Pp.z0 - 0.6), '#4e3424', sx1, CY + 2.1, (Pp.z0 + Pp.z1)/2)); vmesh(sh, g);
+    for (const z of [Pp.z0 + 0.4, Pp.z1 - 0.4]) cbox(CB.plank, Pp.x0, sx1, CY, CY + 2.1, z - 0.06, z + 0.06, 1);
+    const rl = Math.hypot(sx1 - Pp.x0 + 0.6, 0.8), ang = Math.atan2(0.8, sx1 - Pp.x0 + 0.6); mk(boxUV(rl, 0.1, Pp.z1 - Pp.z0 - 0.4, 1.4), MT.tiles, gs, (Pp.x0 + sx1)/2 + 0.3, CY + 2.55, (Pp.z0 + Pp.z1)/2, 0, 0, -ang);
+    for (let i=0;i<60;i++) CB.parts.push(part(new THREE.CylinderGeometry(0.008, 0.008, 0.35, 3), '#b8a060', Pp.x0 + 0.3 + Math.random()*2.0, CY + 0.03, Pp.z0 + 0.6 + Math.random()*(Pp.z1 - Pp.z0 - 1.2), Math.PI/2, Math.random()*3, 0));
+    cbFlush(gs);
+    const pen = [[sx1, Pp.z0 + 0.4], [Pp.x1, Pp.z0 + 0.4], [Pp.x1, Pp.z1 - 0.4], [sx1, Pp.z1 - 0.4]].map(([x, z]) => cLW(x, z));
+    makeFence(pen, false, null);
+    cseg(Pp.x0, Pp.z0 + 0.4, sx1, Pp.z0 + 0.4, 0.1, -50, CY + 3); cseg(Pp.x0, Pp.z1 - 0.4, sx1, Pp.z1 - 0.4, 0.1, -50, CY + 3);
+    const trough = []; trough.push(part(new THREE.BoxGeometry(1.4, 0.3, 0.4), '#6a4a2e', -13.5, CY + 0.15, Pp.z0 + 1.2)); vmesh(trough, g);
+    const pigs = [0, 1, 2].map(i => { const p = makeAnimal('pig', 340 + i, { col:{ back:'#c8a090', flank:'#d8b0a0', belly:'#e0c0b0', leg:'#c09080', face:'#d0a898', muzzle:'#e0b0a8', nose:'#b88078' } });
+      const [x, z] = cLW(-14.5 + i*1.2, 10 + i*1.5); p.position.set(x, groundH(x, z), z); p.scale.setScalar(i === 2 ? 0.6 : 0.9); scene.add(p); return p; });
+    pigs.forEach((p, i) => wander(p, rr => cLW(-15.5 + rr()*4.0, Pp.z0 + 1.2 + rr()*(Pp.z1 - Pp.z0 - 2.4)), { seed:350 + i, speed:0.35 }));
+    // Ein Knecht führt zwei Hunde über den Hof
+    const kn = mPerson(scene, Object.assign(peasantO(145, false), { cloth:'#7a6a4a', hood:'#6a5a3a' }), ...cLW(-9.5, 4.5), Math.PI*0.75);
+    const dogs = [0, 1].map(i => { const d = makeAnimal('dog', 360 + i, { col:i ? { back:'#5a5a5e', flank:'#6a6a6e', belly:'#8a8a8a', leg:'#4a4a4e', face:'#5a5a5e' } : {} }); scene.add(d); return d; });
+    const leash = [0, 1].map(() => { const m = mk(new THREE.CylinderGeometry(0.008, 0.008, 1, 4), M('#5a3a24', { tex:'leather' }), scene); m.castShadow = false; return m; });
+    const path = [[-9.5, 4.5], [-6, 9], [0, 11], [4, 6], [-1, 4], [-9.5, 4.5]].map(([x, z]) => cLW(x, z)), segs = [], A = new THREE.Vector3(), B = new THREE.Vector3(), U = new THREE.Vector3(0, 1, 0);
+    let tot = 0; for (let i=0;i<path.length - 1;i++){ const l = Math.hypot(path[i + 1][0] - path[i][0], path[i + 1][1] - path[i][1]); segs.push({ a:path[i], b:path[i + 1], l, s:tot }); tot += l; }
+    const at = s => { s = ((s % tot) + tot) % tot; for (const q of segs) if (s <= q.s + q.l){ const k = (s - q.s)/q.l; return [q.a[0] + (q.b[0] - q.a[0])*k, q.a[1] + (q.b[1] - q.a[1])*k, Math.atan2(q.b[0] - q.a[0], q.b[1] - q.a[1])]; } return [path[0][0], path[0][1], 0]; };
+    const col = { x:0, z:0, r:0.35 }; colliders.push(col);
+    anims.push((t, dt) => { const s = t*0.75, [x, z, a] = at(s); kn.g.position.set(x, groundH(x, z), z); kn.g.rotation.y = angLerp(kn.g.rotation.y, a, Math.min(1, dt*4)); walkPose(kn, s*TAU/1.3, 1, 0.4, true); col.x = x; col.z = z;
+      kn.arms[0].sh.rotation.set(-0.7, 0, -0.25); kn.arms[0].el.rotation.x = -0.5; kn.g.updateWorldMatrix(true, false); kn.arms[0].hand.getWorldPosition(A);
+      dogs.forEach((d, i) => { const [dx, dz, da] = at(s + 1.6 + i*0.2), off = (i ? 1 : -1)*0.45; const px = dx + Math.cos(da)*off, pz = dz - Math.sin(da)*off; d.position.set(px, groundH(px, pz), pz); d.rotation.y = da; animalPose(d.userData.rig, t, { walk:1, gait:s*4.4 + i });
+        d.updateWorldMatrix(true, false); B.set(0, 0.42, 0.35); d.localToWorld(B); const m = leash[i]; m.position.copy(A).add(B).multiplyScalar(0.5); m.scale.y = A.distanceTo(B); m.quaternion.setFromUnitVectors(U, B.clone().sub(A).normalize()); }); }); }
+}
+/* ---------- Ziehbrunnen (14): tief in den Boden gegraben; eine Magd zieht den Eimer herauf ---------- */
+function buildCastleWell(){
+  const MT = mMats(), [wx, wz] = WELL, g = castleGrp(), CY = HY.CY; keep(g);
+  buildWell(...cLW(wx, wz), 11);
+  // Steinerne Brunnenmauer und ein Ziegeldach auf zwei Pfosten
+  const ring = new THREE.CylinderGeometry(0.82, 0.86, 0.9, 24, 1, true); scaleUV(ring, 2.2, 0.8); mk(ring, M('#aaa294', { tex:'castle', side:THREE.DoubleSide }), g, wx, CY + 0.45, wz);
+  mk(new THREE.TorusGeometry(0.84, 0.09, 6, 24).rotateX(Math.PI/2), MT.stone2, g, wx, CY + 0.9, wz);
+  saddleRoof(g, { w:2.0, d:2.0, rise:0.9, y:CY + 2.45, x:wx, z:wz, mat:MT.tiles, ov:0.15, ovG:0.15 });
+  addHotspot('brunnen', [g], P.brunnen[0], CY + 2.9, P.brunnen[1], 0);
+  keep(g);
+}
+/* ---------- Schmiede und Zimmermann an der Ostmauer, Mägde und Knechte auf dem Hof ---------- */
+function buildCourtyard(){
+  const MT = mMats(), g = castleGrp(), CY = HY.CY, S = SMITHY;
+  // Schmiede unter einem Pultdach an der Mauer
+  { const sh = []; for (const z of [S.z0 + 0.2, (S.z0 + S.z1)/2, S.z1 - 0.2]) sh.push(part(new THREE.BoxGeometry(0.18, 2.6, 0.18), '#4e3424', S.x0, CY + 1.3, z));
+    sh.push(part(new THREE.BoxGeometry(0.2, 0.16, S.z1 - S.z0), '#4e3424', S.x0, CY + 2.6, (S.z0 + S.z1)/2)); vmesh(sh, g);
+    const rl = Math.hypot(S.x1 - S.x0 + 0.6, 0.9), ang = Math.atan2(0.9, S.x1 - S.x0 + 0.6); mk(boxUV(rl, 0.1, S.z1 - S.z0 + 0.4, 1.4), MT.shingle, g, (S.x0 + S.x1)/2 - 0.3, CY + 3.1, (S.z0 + S.z1)/2, 0, 0, ang); }
+  const fx = 16.6, fz = 0.6, fg = []; fg.push(part(new THREE.BoxGeometry(1.1, 0.9, 1.4), '#8a8070', fx, CY + 0.45, fz), part(new THREE.BoxGeometry(0.7, 1.6, 0.9), '#7a7062', fx + 0.3, CY + 1.7, fz)); vmesh(fg, g);
+  { const ff = new THREE.Group(); ff.position.set(fx - 0.1, CY + 0.92, fz); g.add(ff); makeFireFx(ff, 0.22, 3.5); }
+  const anv = new THREE.Group(); anv.position.set(15.0, CY, fz + 1.4); g.add(anv); makeAnvil(anv);
+  const smith = mPerson(g, { skin:'#c48f6c', hair:'#3a2616', beard:true, cloth:'#5a4a3a', apron:'#4a3020', leggings:'#3a2a1c' }, 15.0, fz + 2.2, Math.PI);
   const ham = makeHammer(); fist(ham, smith.arms[0].hand, 0.1); const tong = makeTongs(); fist(tong, smith.arms[1].hand, 0.1);
-  const shoe = mk(new THREE.TorusGeometry(0.06, 0.012, 6, 14, Math.PI*1.4).rotateX(Math.PI/2), M('#ff8a3a', { tex:null, emissive:'#c84a10', emissiveIntensity:1.2 }), g, -7.4, 0.86, 11.2);
+  const shoe = mk(new THREE.TorusGeometry(0.06, 0.012, 6, 14, Math.PI*1.4).rotateX(Math.PI/2), M('#ff8a3a', { tex:null, emissive:'#c84a10', emissiveIntensity:1.2 }), g, 15.0, CY + 0.86, fz + 1.4);
   const sparks = []; for (let i=0;i<8;i++){ const s = mk(new THREE.SphereGeometry(0.012, 4, 4), new THREE.MeshBasicMaterial({ color:C('#ffd27a') }), g); s.castShadow = false; sparks.push({ s, vx:R(-1, 1), vz:R(-1, 1) }); }
+  for (let i=0;i<4;i++){ const hs2 = mk(new THREE.TorusGeometry(0.06, 0.012, 6, 14, Math.PI*1.4), METAL.iron(), g, 17.7, CY + 1.4 + i*0.0, -1.2 + i*0.25, 0, Math.PI/2, 0); hs2.castShadow = false; }
   const Hh = new THREE.Vector3();
-  anims.push(t => { const c = (t*1.6) % 1, hit = c < 0.18 ? 1 - c/0.18 : 0; anv.updateWorldMatrix(true, false);
+  anims.push(t => { const c = (t*1.6) % 1; anv.updateWorldMatrix(true, false);
     Hh.set(0.06, 0.95 + sstep(0.18, 0.7, c)*0.45 - (c > 0.7 ? sstep(0.7, 1, c)*0.45 : 0), 0); anv.localToWorld(Hh); ikWorld(smith, 0, Hh);
     Hh.set(-0.2, 0.9, 0); anv.localToWorld(Hh); ikWorld(smith, 1, Hh); smith.spine.rotation.x = 0.2;
-    sparks.forEach((sp, i) => { const k = c*1.8; sp.s.visible = c < 0.5; sp.s.position.set(-7.4 + sp.vx*k*0.6, 0.9 + k*0.5 - k*k*0.9, 11.2 + sp.vz*k*0.4); }); });
+    sparks.forEach(sp => { const k = c*1.8; sp.s.visible = c < 0.5; sp.s.position.set(15.0 + sp.vx*k*0.6, CY + 0.9 + k*0.5 - k*k*0.9, fz + 1.4 + sp.vz*k*0.4); }); });
+  cbox4(fx - 0.6, 17.8, fz - 0.75, fz + 0.75, 0.1, -50, CY + 3); ccirc(15.0, fz + 1.4, 0.45, -50, CY + 3); ccirc(15.0, fz + 2.2, 0.35, -50, CY + 3);
   // Zimmermann sägt einen Balken auf Böcken
-  const tw = []; for (const x of [-3.2, -1.2]) tw.push(part(new THREE.BoxGeometry(0.1, 0.7, 0.7), '#6a4a2e', x, 0.35, 13.0)); tw.push(part(new THREE.BoxGeometry(3.0, 0.22, 0.22), '#b08a5a', -2.2, 0.82, 13.0)); vmesh(tw, g);
-  const carp = mPerson(g, Object.assign(peasantO(53, false), { cloth:'#7a6a4a', hood:'#8a6a3a', strawhat:false }), -1.0, 12.3, -Math.PI/2 + 0.3);
+  const tw = []; for (const z of [7.4, 9.4]) tw.push(part(new THREE.BoxGeometry(0.7, 0.7, 0.1), '#6a4a2e', 16.2, CY + 0.35, z)); tw.push(part(new THREE.BoxGeometry(0.22, 0.22, 3.0), '#b08a5a', 16.2, CY + 0.82, 8.4)); vmesh(tw, g);
+  const carp = mPerson(g, Object.assign(peasantO(53, false), { cloth:'#7a6a4a', hood:'#8a6a3a', strawhat:false }), 15.4, 9.7, Math.PI*0.85);
   const saw = new THREE.Group(); mk(new THREE.BoxGeometry(0.6, 0.12, 0.01), METAL.iron(), saw, 0, 0.32, 0); mk(new THREE.BoxGeometry(0.06, 0.14, 0.04), M('#6a4a2e', { tex:'wood' }), saw); fist(saw, carp.arms[0].hand, 0);
-  anims.push(t => { const k = Math.sin(t*4); Hh.set(-1.55 + k*0.18 + CASTLE.x, castleY + 0.95, 13.0 + CASTLE.z); ikWorld(carp, 0, Hh); carp.spine.rotation.x = 0.35; });
+  anims.push(t => { const k = Math.sin(t*4); Hh.set(16.2 + CASTLE.x, CY + 0.95, 9.9 + k*0.18 + CASTLE.z); ikWorld(carp, 0, Hh); carp.spine.rotation.x = 0.35; });
+  cbox4(15.8, 16.6, 7.0, 9.9, 0.1, -50, CY + 3); ccirc(15.4, 9.7, 0.35, -50, CY + 3);
+  addHotspot('burghof', [smith.root, carp.root], P.burghof[0], CY + 2.6, P.burghof[1], 0);
   // Mägde und Knechte gehen über den Hof
-  const spots = [[-3, 4], [4, 4], [-2, -3], [5, -2], [0, 10], [-3, 9], [4, 8]];
+  const spots = [[-6, 3], [4, 3], [-8, 5], [6, 11], [0, 9], [-10, 1], [9, -3], [2, -4], [-4, 12], [10, 12], [-12, -3], [6, -2]];
   for (let i=0;i<3;i++){ const w = makeWalker(i % 2 ? Object.assign(peasantO(60 + i, true), { apron:'#e8e0cc' }) : peasantO(60 + i, false), 300 + i, null, rr => { const s = spots[Math.floor(rr()*spots.length)]; return cLW(s[0] + (rr() - 0.5)*2, s[1] + (rr() - 0.5)*2); });
     dressUp(w.p, i % 2 ? peasantO(60 + i, true) : peasantO(60 + i, false)); }
-  addHotspot('burghof', [hs[0], smith.root], P.burghof[0], g.position.y + 2.6, P.burghof[1], 0);
+  // Hühner picken im Hof
+  for (let i=0;i<4;i++){ const ch = makeChicken(410 + i, i !== 0); const [x, z] = cLW(-6 + i*1.2, 1 + (i % 2)); ch.g.position.set(x, groundH(x, z), z); scene.add(ch.g); chickenLife(ch, rr => cLW(-9 + rr()*8, -2 + rr()*6), 420 + i); }
 }
 /* ---------- Gaukler und Spielleute im Burghof ---------- */
 function buildJugglers(){
-  const g = castleGrp(), cx = 4.2, cz = 4.6;
+  const g = castleGrp(), cx = 4.2, cz = 6.6;
   const jug = mPerson(g, { skin:'#e0b898', hair:'#a8783a', cloth:'#3a8a3a', sleeves:true, surcoat:['#3a8a3a', '#e8c040'], jester:['#a8242a', '#e8c040'], hose:['#a8242a', '#3a8a3a'] }, cx, cz, -0.6);
   const balls = [0, 1, 2].map(i => mk(new THREE.SphereGeometry(0.06, 12, 8), M(['#c83a2a', '#2a5ab8', '#e8c040'][i], { tex:null, roughness:0.4 }), g));
   const mus = mPerson(g, { skin:'#c89a78', hair:'#3a2616', beard:true, cloth:'#6a2a6a', sleeves:true, beret:'#2a2a2a', feather:'#e8e0cc', hose:['#6a2a6a', '#e8c040'] }, cx + 1.6, cz - 0.6, -0.9);
-  // Laute: bauchiger Körper mit Hals
   const lute = new THREE.Group(); mk(new THREE.SphereGeometry(0.16, 16, 10).scale(1, 1.25, 0.5), M('#b07a3a', { tex:'wood' }), lute, 0, 0, 0); mk(new THREE.BoxGeometry(0.05, 0.36, 0.03), M('#5a3a1e', { tex:'wood' }), lute, 0, 0.32, 0);
   mk(new THREE.CircleGeometry(0.04, 12), M('#2a1a10', { tex:null }), lute, 0, 0.02, 0.081); mus.spine.add(lute); lute.position.set(0.02, 0.38, 0.2); lute.rotation.set(0.2, 0, 1.0);
   const kids = [0, 1, 2].map(i => mPerson(g, peasantO(80 + i, i === 1, true), cx - 1.6 + i*1.2, cz + 2.2 + (i % 2)*0.4, Math.PI + 0.3 - i*0.3));
   const H = new THREE.Vector3(), L = new THREE.Vector3();
   anims.push(t => {
-    // drei Bälle in einer Kaskade: jeder Ball fliegt von einer Hand in die andere
     jug.spine.updateWorldMatrix(true, false);
     const T = 0.9; balls.forEach((b, i) => { const ph = ((t + i*T/3) % T)/T, side = Math.floor((t + i*T/3)/T) % 2 ? 1 : -1, x = side*(0.18 - ph*0.36), y = 0.55 + Math.sin(ph*Math.PI)*0.75;
       L.set(x, y, 0.32); jug.spine.localToWorld(L); g.worldToLocal(L); b.position.copy(L); });
@@ -4302,16 +4896,42 @@ function buildJugglers(){
     mus.arms[0].el.rotation.x = -1.4; mus.arms[0].sh.rotation.set(-0.5 + Math.sin(t*12)*0.08, 0, -0.5); mus.arms[1].sh.rotation.set(-0.9, 0, 0.9); mus.arms[1].el.rotation.x = -1.3; mus.head.rotation.z = Math.sin(t*2)*0.1; mus.face.talk = Math.max(0, Math.sin(t*5))*0.6;
     kids.forEach((k, i) => { const clap = Math.sin(t*7 + i) > 0.3 ? 0.08 : 0.16; k.spine.updateWorldMatrix(true, false); H.set(clap, 0.48, 0.25); k.spine.localToWorld(H); ikWorld(k, 0, H); H.set(-clap, 0.48, 0.25); k.spine.localToWorld(H); ikWorld(k, 1, H); k.face.talk = 0.4; k.hips.position.y = 0.88 + Math.max(0, Math.sin(t*5 + i*2))*0.05; }); });
   for (const p of [jug, mus]){ const v = new THREE.Vector3(); p.g.getWorldPosition(v); colliders.push({ x:v.x, z:v.z, r:0.35 }); }
-  addHotspot('gaukler', [jug.root, mus.root], P.gaukler[0], g.position.y + 2.6, P.gaukler[1], 0);
+  addHotspot('gaukler', [jug.root, mus.root], P.gaukler[0], HY.CY + 2.6, P.gaukler[1], 0);
+}
+/* ---------- Auf dem Wehrgang: ein Bogenschütze zielt durch die Zinnen, ein Wächter macht seine Runde ---------- */
+function buildWallGuards(){
+  const g = castleGrp(), WY = HY.WY, bx = -20.25, bz = 7.6;
+  const arch = mPerson(g, { skin:'#c89a78', hair:'#6a4a2a', cloth:'#5a6a3a', sleeves:true, hood:'#4a5a2a', leggings:'#4a3a28' }, bx, bz, -Math.PI/2); arch.g.position.y = WY;
+  // Langbogen und Köcher
+  const bow = new THREE.Group(); const V = (x, y) => new THREE.Vector3(x, y, 0);
+  mk(taperTube(new THREE.QuadraticBezierCurve3(V(0, -0.8, 0), V(0.32, 0, 0), V(0, 0.8, 0)), 16, 6, u => 0.018 - Math.abs(u - 0.5)*0.016), M('#7a5634', { tex:'wood' }), bow);
+  const string = mk(new THREE.CylinderGeometry(0.003, 0.003, 1.6, 3), M('#e8e0cc', { tex:null }), bow); bow.rotation.set(0, Math.PI, 0); g.add(bow);
+  const quiver = new THREE.Group(); mk(new THREE.CylinderGeometry(0.07, 0.06, 0.6, 10), M('#6a4a2e', { tex:'leather' }), quiver); for (let i=0;i<5;i++) mk(new THREE.BoxGeometry(0.04, 0.12, 0.005), M('#e8e0cc', { tex:null }), quiver, (i - 2)*0.025, 0.36, 0);
+  arch.spine.add(quiver); quiver.position.set(0.12, 0.3, -0.18); quiver.rotation.set(0.3, 0, -0.3);
+  const arrow = mk(new THREE.CylinderGeometry(0.006, 0.006, 0.8, 4).rotateZ(Math.PI/2), M('#8a6a44', { tex:'wood' }), g); arrow.castShadow = false;
+  const Hb = new THREE.Vector3(), Ha = new THREE.Vector3();
+  anims.push(t => { const c = (t/5) % 1, draw = c < 0.6 ? sstep(0.1, 0.55, c) : 0, fly = c >= 0.6 ? (c - 0.6)/0.4 : -1;
+    const bp = new THREE.Vector3(bx - 0.45, WY + 1.45, bz); bow.position.copy(bp); string.position.x = -draw*0.3;
+    Hb.set(bp.x + CASTLE.x, bp.y, bp.z + CASTLE.z); ikWorld(arch, 1, Hb); Ha.set(bp.x + 0.25 + draw*0.35 + CASTLE.x, bp.y + 0.02, bp.z + 0.04 + CASTLE.z); ikWorld(arch, 0, Ha);
+    arch.head.rotation.y = -0.1; arch.spine.rotation.x = -0.05;
+    if (fly >= 0){ arrow.visible = fly < 0.98; arrow.position.set(bx - 0.6 - fly*38, WY + 1.45 + Math.sin(fly*Math.PI)*3 - fly*4, bz); arrow.rotation.z = Math.cos(fly*Math.PI)*0.3; }
+    else { arrow.visible = draw > 0.1; arrow.position.set(bx - 0.2 + draw*0.3 - 0.35, WY + 1.45, bz); arrow.rotation.z = 0; } });
+  ccirc(bx + 0.05, bz, 0.3, WY - 0.5, WY + 3);
+  addHotspot('wehrgang', [arch.root, bow], P.wehrgang[0], WY + 2.1, P.wehrgang[1], 0);
+  // Wächter auf dem Westgang
+  const gd = mPerson(g, { skin:'#d8b090', hair:'#5a3a22', beard:true, cloth:'#6a6a70', sleeves:true, mail:true, surcoat:['#a8242a', '#e8c040'], kettle:true, leggings:'#4a3a28' }, -19.6, -8, 0); gd.g.position.y = WY;
+  const sp = makeSpear('iron', 2.2); fist(sp, gd.arms[0].hand, 0.9);
+  routine(gd, [{ to:[-19.6, 4.6] }, { d:3, yaw:-Math.PI/2 }, { to:[-19.6, -9.5] }, { d:3, yaw:-Math.PI/2 }], { speed:0.6 });
+  anims.push(() => { gd.g.position.y = WY; gd.arms[0].el.rotation.x = -0.9; });
 }
 /* ---------- Blick auf die Burg: Bauern bringen Abgaben an Nahrung und bekommen dafür Schutz ---------- */
 function buildCastleView(){
-  const g = grp(P.burg[0], P.burg[1]); g.rotation.y = Math.atan2(CASTLE.x - P.burg[0], CASTLE.z - P.burg[1]);
+  const g = grp(P.burg[0], P.burg[1]); g.rotation.y = Math.atan2(CASTLE.x + 9 - P.burg[0], CASTLE.z + 26 - P.burg[1]);
   const cart = makeCart(g).g; cart.position.set(0.8, 0, 0.6); cart.rotation.y = 0.1;
   for (let i=0;i<4;i++) makeSack('#c8b48a', cart).position.set((i % 2 - 0.5)*0.4, 0.75, (Math.floor(i/2) - 0.5)*0.5);
   const far = mPerson(g, peasantO(21, false), 0.8, 2.0, 0), wife = mPerson(g, peasantO(22, true), -0.6, 0.8, 0.2);
   const bk = makeBasket(0.2, 0.25); wife.spine.add(bk); bk.position.set(0.22, 0.25, 0.25);
-  for (let i=0;i<4;i++){ const egg = mk(new THREE.SphereGeometry(0.03, 8, 6).scale(1, 1.3, 1), M('#f2ead8', { tex:null }), bk, (i - 1.5)*0.06, 0.24, 0); }
+  for (let i=0;i<4;i++) mk(new THREE.SphereGeometry(0.03, 8, 6).scale(1, 1.3, 1), M('#f2ead8', { tex:null }), bk, (i - 1.5)*0.06, 0.24, 0);
   const H = new THREE.Vector3();
   anims.push(t => { far.spine.updateWorldMatrix(true, false); for (const i of [0, 1]){ H.set(i ? -0.35 : 0.35, 0.95, 1.25); cart.localToWorld(H); ikWorld(far, i, H); } far.spine.rotation.x = 0.15; far.head.rotation.y = Math.sin(t*0.3)*0.3;
     wife.arms[0].el.rotation.x = -1.4; wife.face.talk = Math.max(0, Math.sin(t*6))*0.5*(Math.sin(t*0.5) > 0 ? 1 : 0); });
@@ -5274,6 +5894,22 @@ function buildTownsfolk(){
   const road = [[4, 36], [10, 42], [6, 52], [-2, 44], [2, 60], [-2, 70]], rpick = rr => { const s = road[Math.floor(rr()*road.length)]; return [s[0] + (rr() - 0.5)*2, s[1] + (rr() - 0.5)*2]; };
   for (let i=0;i<2;i++){ const o = peasantO(970 + i, i === 1); const w = makeWalker(o, 975 + i, null, rpick); dressUp(w.p, o); }
 }
+/* ===================== LICHTER: nur die nächsten Lampen leuchten wirklich ===================== */
+/* Jede Lampe kostet beim Zeichnen Rechenzeit, auch wenn sie weit weg ist. Darum gibt es nur wenige feste «Lichtplätze»:
+   Sie übernehmen Farbe, Stärke und Ort der Lampen und Feuer, die gerade am nächsten sind. Die übrigen Lampen bleiben dunkel. */
+function setupLightSlots(){
+  const src = []; scene.traverse(o => { if (o.isPointLight && !o.userData.slot) src.push(o); });
+  const K = Math.min(src.length, 6), slots = [];
+  for (let i=0;i<K;i++){ const l = new THREE.PointLight(0xffffff, 0, 10, 2); l.userData.slot = true; l.userData.keep = true; scene.add(l); slots.push(l); }
+  for (const l of src) l.visible = false;
+  const wp = src.map(() => new THREE.Vector3()), order = src.map((_, i) => i), dist = new Float32Array(src.length);
+  let tick = 0;
+  anims.push((t, dt) => {
+    tick -= dt;
+    if (tick <= 0){ tick = 0.25; const cp = camera.position; for (let i=0;i<src.length;i++){ src[i].getWorldPosition(wp[i]); dist[i] = wp[i].distanceToSquared(cp); } order.sort((a, b) => dist[a] - dist[b]); }
+    for (let k=0;k<K;k++){ const s = src[order[k]], l = slots[k]; l.position.copy(wp[order[k]]); l.color.copy(s.color); l.intensity = s.intensity; l.distance = s.distance; l.decay = s.decay; }
+  });
+}
 /* ===================== ZUSTAND & SPEICHER ===================== */
 const STORE = 'mittelalter-burg-v1';
 function loadVisited(){ try { const a = JSON.parse(localStorage.getItem(STORE) || '[]'); return Array.isArray(a) ? a.filter(id => BY_ID[id]) : []; } catch(e){ return []; } }
@@ -5783,8 +6419,9 @@ function handleClick(cx, cy){
 }
 
 /* Hindernisse: Kreise {x,z,r} und Wände als Linien {ax,az,bx,bz,r}. skip = eigenes Hindernis einer Figur */
-function pushOut(x, z, rad, skip){
+function pushOut(x, z, rad, skip, py){
   for (let it=0; it<2; it++) for (const c of colliders){ if (c === skip) continue; const m = c.r + rad;
+    if (c.y0 !== undefined){ const q = py !== undefined && py !== null ? py : groundH(x, z); if (q < c.y0 || q > c.y1) continue; }
     if (c.ax !== undefined){ const ex = c.bx - c.ax, ez = c.bz - c.az, L2 = ex*ex + ez*ez; let t = L2 > 1e-9 ? ((x - c.ax)*ex + (z - c.az)*ez)/L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t;
       const px = c.ax + ex*t, pz = c.az + ez*t, dx = x - px, dz = z - pz; if (dx > m || dx < -m || dz > m || dz < -m) continue;
       const d = Math.hypot(dx, dz); if (d < m && d > 1e-5){ x = px + dx/d*m; z = pz + dz/d*m; } }
@@ -5794,7 +6431,7 @@ function pushOut(x, z, rad, skip){
 function collide(nx, nz, ox, oz){
   /* in kleinen Schritten, damit man auch beim Rennen nicht durch eine Wand springt */
   { const mx = nx - ox, mz = nz - oz, n = Math.max(1, Math.ceil(Math.hypot(mx, mz)/0.15)); let x = ox, z = oz;
-    for (let i=0;i<n;i++){ const r = pushOut(x + mx/n, z + mz/n, 0.45); x = r[0]; z = r[1]; } nx = x; nz = z; }
+    for (let i=0;i<n;i++){ const r = pushOut(x + mx/n, z + mz/n, 0.45, undefined, typeof LV !== 'undefined' ? LV.y : undefined); x = r[0]; z = r[1]; } nx = x; nz = z; }
   const r = Math.hypot(nx,nz); let edge = false; const RW = typeof WORLD_R !== 'undefined' ? WORLD_R : 54; if (r > RW){ nx *= RW/r; nz *= RW/r; edge = true; }
   let wet = false;
   const deep = (x, z) => onDeck(x, z) === null && Math.abs(x - riverX(z)) < 24 && RIVER_Y - groundH(x, z) > 0.5;
@@ -5820,7 +6457,7 @@ function updatePlayer(dt, t){
   if ((edge || wet) && mag > 0.3 && t - edgeToastT > 6){ edgeToastT = t; toast(wet ? 'Hier wird das Wasser zu tief. Bleib im flachen Wasser!' : 'Hier endet das Land des Burgherrn. Kehr um und entdecke mehr!'); }
   player.x = nx; player.z = nz;
   const v = Math.hypot(player.vx, player.vz); player.bob += v*dt*1.9;
-  let feet = groundH(player.x, player.z); const dk = onDeck(player.x, player.z); if (dk !== null) feet = Math.max(feet, dk);
+  let feet = groundH(player.x, player.z); const dk = onDeck(player.x, player.z); if (dk !== null) feet = Math.max(feet, dk); if (typeof LV !== 'undefined') LV.y = feet;
   feet = Math.max(feet, RIVER_Y - 0.6);
   const target = feet + 1.5 + Math.sin(player.bob)*0.045*Math.min(1, v/5);
   player.camY = player.camY ? player.camY + (target - player.camY)*(1 - Math.exp(-dt*12)) : target;
@@ -5842,6 +6479,7 @@ function updateHover(t){
 function updatePrompt(){
   let best = null, bd = 6.5; const fx = -Math.sin(player.yaw), fz = -Math.cos(player.yaw);
   for (const id in hotspots){ const h = hotspots[id]; const dx = h.x - player.x, dz = h.z - player.z, d = Math.hypot(dx,dz);
+    if (h.baseY !== undefined && Math.abs(h.baseY - player.camY) > 3.6) continue;
     if (d < bd && (d < 2.5 || (dx*fx + dz*fz)/d > 0.3)){ bd = d; best = id; } }
   if (best !== promptId){ promptId = best;
     if (best){ promptBtn.textContent = '🔍 ' + (visited.has(best) ? BY_ID[best].title : 'Was ist das?') + (isTouch ? ' – antippen' : ' – Taste E'); promptBtn.classList.remove('hidden'); }
@@ -5937,7 +6575,7 @@ function travelTo(id){
   if (traveling) return; const h = hotspots[id]; if (!h) return; traveling = true;
   closeModal(); const fd = $('#fade'); fd.classList.add('on'); keys = {};
   setTimeout(() => {
-    const [x, z] = standSpot(h); player.x = x; player.z = z; player.vx = player.vz = 0; player.yaw = Math.atan2(x - h.x, z - h.z); player.pitch = -0.08; player.camY = 0;
+    const sp = standSpot(h), [x, z] = sp; player.x = x; player.z = z; if (typeof LV !== 'undefined') LV.y = sp[2] !== undefined ? sp[2] : null; player.vx = player.vz = 0; player.yaw = Math.atan2(x - h.x, z - h.z); player.pitch = -0.08; player.camY = 0;
     if (typeof trans !== 'undefined') trans = null;
     setTimeout(() => { fd.classList.remove('on'); traveling = false; toast('📍 ' + (visited.has(id) ? BY_ID[id].title : 'Hier gibt es etwas zu entdecken!')); }, 260);
   }, 400);
@@ -6032,7 +6670,8 @@ function zoned(fn, R, center){
     ZONES.push(z); return res;
   };
 }
-buildDrawbridge = zoned(buildDrawbridge, 60, [CASTLE.x, CASTLE.z + 24]); buildKeep = zoned(buildKeep, 60); buildPalas = zoned(buildPalas, 50); buildChapel = zoned(buildChapel, 50); buildCourtyard = zoned(buildCourtyard, 50); buildJugglers = zoned(buildJugglers, 45);
+buildDrawbridge = zoned(buildDrawbridge, 60, [CASTLE.x + 9, CASTLE.z + 26]); buildGateTower = zoned(buildGateTower, 50, [CASTLE.x + 9, CASTLE.z + 19]); buildWatchTower = zoned(buildWatchTower, 50, [CASTLE.x - 4, CASTLE.z + 20]); buildKeep = zoned(buildKeep, 60, [CASTLE.x - 18, CASTLE.z - 17]);
+buildPalas = zoned(buildPalas, 50, [CASTLE.x + 12, CASTLE.z - 13]); buildChapel = zoned(buildChapel, 50, [CASTLE.x, CASTLE.z - 10]); buildStable = zoned(buildStable, 50, [CASTLE.x - 8, CASTLE.z - 10]); buildCastleWell = zoned(buildCastleWell, 45, [CASTLE.x - 2, CASTLE.z - 1]); buildCourtyard = zoned(buildCourtyard, 50, [CASTLE.x + 8, CASTLE.z + 4]); buildJugglers = zoned(buildJugglers, 45); buildWallGuards = zoned(buildWallGuards, 50, [CASTLE.x - 19, CASTLE.z]);
 buildMarket = zoned(buildMarket, 55); buildRathaus = zoned(buildRathaus, 55); buildTownChurch = zoned(buildTownChurch, 55); buildCraftsman = zoned(buildCraftsman, 45); buildWeaver = zoned(buildWeaver, 45); buildAlley = zoned(buildAlley, 45); buildQuay = zoned(buildQuay, 60); buildPlagueDoctor = zoned(buildPlagueDoctor, 45); buildTownGate = zoned(buildTownGate, 55);
 buildFarmhouse = zoned(buildFarmhouse, 45); buildMeal = zoned(buildMeal, 45); buildTaxes = zoned(buildTaxes, 50); buildPlough = zoned(buildPlough, 60); buildCorvee = zoned(buildCorvee, 55); buildVillageLife = zoned(buildVillageLife, 60, VILLAGE);
 buildJoust = zoned(buildJoust, 70, [42, 46]); buildTourney = zoned(buildTourney, 75, [42, 46]); buildSquire = zoned(buildSquire, 50); buildPage = zoned(buildPage, 50); buildDubbing = zoned(buildDubbing, 50); buildKnightTent = zoned(buildKnightTent, 50); buildMotte = zoned(buildMotte, 70, [MOTTE.x, MOTTE.z]);
@@ -6045,13 +6684,14 @@ async function buildWorld(){
     ['Farben und Oberflächen werden gemischt …', [buildTextures, buildJungTextures, buildMedievalTextures, initRocks], true],
     ['Himmel und Sonnenlicht …', [buildSky, buildEnvironment, buildLights], true],
     ['Wiesen, Wege und der Fluss entstehen …', [() => makeTerrain(300, HQ ? 300 : 220, 0, 0), () => makeTerrain(1400, 180, -0.15, 144, true), buildWater, buildRoads]],
-    ['Die Burg wird gebaut …', [buildCastle, buildDrawbridge, buildKeep, buildPalas, buildChapel, buildCourtyard, buildJugglers, buildCastleView]],
+    ['Die Burg wird gebaut …', [buildCastle, buildGateTower, buildDrawbridge, buildWatchTower, buildKeep]],
+    ['Palas, Kapelle und Burghof …', [buildPalas, buildChapel, buildStable, buildCastleWell, buildCourtyard, buildJugglers, buildWallGuards, buildCastleView]],
     ['Die Stadt mit Mauer und Marktplatz …', [buildTownWall, buildTownHouses, buildMarket, buildRathaus, buildTownChurch, buildCraftsman, buildWeaver, buildAlley, buildQuay, buildPlagueDoctor, buildTownGate]],
     ['Das Dorf, die Felder und die Tiere …', [buildVillage, buildFarmhouse, buildMeal, buildTaxes, buildPlough, buildCorvee, buildVillageLife]],
     ['Ritter, Turnier und Motte …', [buildTourney, buildJoust, buildSquire, buildPage, buildDubbing, buildKnightTent, buildMotte]],
     ['Die Ständepyramide und die Leute …', [buildPyramid, buildTownsfolk]],
     ['Wälder, Obstbäume und Wiesen …', [buildVegetation, buildBirds]],
-    ['Gleich geht es los …', [drawMinimapBase]]
+    ['Gleich geht es los …', [setupLightSlots, drawMinimapBase]]
   ];
   for (let i=0;i<steps.length;i++){
     const [msg, fns, essential] = steps[i];
