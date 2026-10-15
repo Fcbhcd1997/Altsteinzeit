@@ -113,8 +113,15 @@ body.zs-zu .zs-open{display:flex}
 }
 @media (max-width:640px){
   .zs:not(.atstart),.zs-open:not(.atstart){top:calc(env(safe-area-inset-top,0px) + 128px)}
-  .zs.atstart{max-width:calc(100vw - 16px)}
+  .zs.atstart{max-width:calc(100vw - 16px);gap:4px;padding:4px 4px 4px 8px}
+  /* Alle Zeiten passen nebeneinander; reicht der Platz nicht, lässt sich die Leiste seitlich schieben */
+  .zs.atstart .zs-track{min-width:0;overflow-x:auto;scrollbar-width:none}
+  .zs.atstart .zs-track::-webkit-scrollbar{display:none}
+  .zs.atstart .zs-era{flex:none;padding:4px 8px 4px 5px}
+  .zs.atstart .zs-era:not([aria-current="true"]){padding:3px 4px}
+  .zs.atstart .zs-line{width:6px}
 }
+@media (max-width:430px){ .zs.atstart .zs-head{display:none} }
 @media (prefers-reduced-motion: reduce){
   .world.go{transition:opacity .5s ease}
   .world.leaving,.world.pre{filter:none;transform:none}
@@ -175,6 +182,14 @@ ERAS.forEach(function(e, i){
 });
 function markEra(id){
   [].forEach.call(document.querySelectorAll('.zs-era'), function(b){ b.setAttribute('aria-current', b.dataset.era === id ? 'true' : 'false'); });
+  showCurEra();
+}
+/* Auf schmalen Bildschirmen die aktuelle Zeit in der Leiste sichtbar halten */
+function showCurEra(){
+  var b = track.querySelector('.zs-era[aria-current="true"]');
+  if (!b || track.scrollWidth <= track.clientWidth) return;
+  var l = b.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft, r = l + b.offsetWidth;
+  if (l < track.scrollLeft) track.scrollLeft = l - 6; else if (r > track.scrollLeft + track.clientWidth) track.scrollLeft = r - track.clientWidth + 6;
 }
 /* Ein- und ausblenden; die Wahl bleibt gespeichert */
 var ZKEY = 'zeitstrahl-eingeklappt';
@@ -210,7 +225,7 @@ function setFound(id, n, total){ var el = document.getElementById('found-' + id)
 /* Während eine Infokarte, das Quiz oder das Forscherheft offen ist, tritt der Zeitstrahl zurück */
 function updateZs(){ var m = cur && state[cur].modal, away = busy || (!!m && m !== 'start');
   zs.classList.toggle('away', away); zsOpen.classList.toggle('away', away);
-  zs.classList.toggle('atstart', m === 'start'); zsOpen.classList.toggle('atstart', m === 'start'); }
+  zs.classList.toggle('atstart', m === 'start'); zsOpen.classList.toggle('atstart', m === 'start'); showCurEra(); }
 
 /* ---------- Zeitreise-Bildschirm ---------- */
 (function(){ var s = $('#streaks'); for (var i=0;i<22;i++){ var e = document.createElement('i'); e.style.top = (4 + Math.random()*92) + '%'; e.style.width = (18 + Math.random()*30) + 'vw'; e.style.animationDelay = (-Math.random()*1.1) + 's'; e.style.animationDuration = (0.7 + Math.random()*0.8) + 's'; s.appendChild(e); } })();
