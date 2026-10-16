@@ -451,6 +451,12 @@ const STATIONS = [
         "Bürger hatten aber auch <b>Pflichten</b>: Sie zahlten Steuern, halfen beim Aufbau der Stadt und verteidigten sie im Krieg. Wer kein Bürgerrecht hatte, war nur ein <b>Einwohner</b>."],
   fact:"Zu Beginn des Mittelalters hatte nur die Oberschicht das Bürgerrecht. Erst später konnten es auch gewöhnliche Menschen erwerben.",
   hint:"Ein schönes Haus mit Bögen am Marktplatz." },
+{ id:"muenster", cat:"stadt", icon:"⛪", title:"Das Münster",
+  text:["Die grösste und schönste Kirche einer Stadt war oft das <b>Münster</b> oder der <b>Dom</b>. Die Bürger waren stolz darauf und bauten den Turm so hoch wie möglich.",
+        "An einer solchen Kirche arbeiteten Steinmetze, Zimmerleute und Glaser oft <b>mehr als hundert Jahre</b> lang. Wer mit dem Bau begann, erlebte das Ende meistens nicht mehr.",
+        "Die bunten <b>Glasfenster</b> erzählten Geschichten aus der Bibel. So konnten auch die Menschen sie verstehen, die nicht lesen konnten."],
+  fact:"Am Berner Münster wurde ab 1421 gebaut. Der Turm wurde erst 1893 fertig, also fast 500 Jahre später!",
+  hint:"Die grosse Kirche mit dem hohen Turm. Geh durch das Tor im Turm hinein!" },
 { id:"pranger", cat:"stadt", icon:"🪵", title:"Der Pranger",
   text:["Auf dem Marktplatz stand ein <b>Pranger</b>. Das war eine Säule oder ein Pfosten, an den Verurteilte festgebunden wurden.",
         "Es gab auch Pranger aus einem Holzbrett mit <b>Löchern für den Kopf und die Hände</b>. Wer betrogen oder gestohlen hatte, musste dort stehen.",
@@ -683,6 +689,10 @@ function caStable(x, y, s){ return caT(x, y, s, caR(-140, -110, 280, 110, 1, '#6
 function caBeds(x, y, s){ let z = ''; for (let i=0;i<3;i++){ const bx = -100 + i*80; z += caR(bx - 30, -16, 60, 16, 2, CA.wood) + caR(bx - 26, -20, 52, 6, 2, '#4a3a28');
     for (let k=0;k<5;k++) z += caP('M' + (bx - 20 + k*10) + ' -20Q' + (bx - 24 + k*10) + ' -' + (34 + (k % 2)*8) + ' ' + (bx - 16 + k*10) + ' -' + (44 + (k % 2)*6) + 'Q' + (bx - 14 + k*10) + ' -30 ' + (bx - 16 + k*10) + ' -20Z', ['#5a8a3a', '#7aa04a', '#4a7a5a'][(i + k) % 3]); }
   return caT(x, y, s, z + '<path d="M-150 -30H150M-150 -10H150" stroke="#8a6a3a" stroke-width="3"/>' + [-150, -110, -70, -30, 10, 50, 90, 130].map(px => caL(px, 0, px, -38, '#6a4a2a', 3)).join('')); }
+function caCathedral(x, y, s){ let w = ''; for (let i=0;i<4;i++) w += caP('M' + (-36 + i*26) + ' -30V-74Q' + (-29 + i*26) + ' -92 ' + (-22 + i*26) + ' -74V-30Z', ['#c83a2a', '#2a5ab8', '#e8c040', '#3a8a4a'][i]);
+  return caShadow(x, y, 120*s) + caT(x, y, s, caR(-50, -100, 110, 100, 1, '#d8a878') + caP('M-54 -100L5 -150L64 -100Z', MC.roof) + w + caR(-110, -170, 60, 170, 1, '#d8a878') + caP('M-112 -170L-80 -260L-48 -170Z', '#c89868') +
+    caP('M-96 0V-30Q-96 -50 -80 -50Q-64 -50 -64 -30V0Z', '#3a2416') + caC(-80, -110, 14, '#2a5ab8') + caC(-80, -110, 6, '#e8c040') + caL(-80, -260, -80, -278, MC.gold, 3) + caL(-88, -270, -72, -270, MC.gold, 3) +
+    [60, 0, -50].map(px => caP('M' + (px - 4) + ' -100L' + px + ' -118L' + (px + 4) + ' -100Z', '#c89868')).join('')); }
 const CLIPART = {
   staende: () => caArt('day', caPyramid(160, 192, 1) + caWho(160, 72, 0.5, { tunic:'#7a2a6a', hair:CA.hair[4], beard:true, arms:[30, 20], over:caCrown() }) +
     caWho(22, 192, 0.5, { tunic:'#6a6458', hair:CA.hair[0], beard:true, sit:true, arms:[70, 10] }) + caWho(300, 192, 0.5, { tunic:'#3a8a3a', hair:CA.hair[2], arms:[150, 150] }, true)),
@@ -726,6 +736,7 @@ const CLIPART = {
   kemenate: () => caArt('inside', caFireplace(90, 186, 1) + caWho(190, 188, 0.95, { sit:true, tunic:'#6a3a8a', dress:true, long:true, hair:CA.hair[3], arms:[70, 60], bend:[30, 30], hold:[{ svg:caItem.needle(), rot:20 }], over:caHood('#f2ece0') }) +
     caWho(270, 190, 0.6, { kid:true, tunic:'#c8402a', hair:CA.hair[2], arms:[140, 20] }, true) + caWho(240, 190, 0.6, { kid:true, tunic:'#e0c0c8', dress:true, long:true, hair:CA.hair[3], arms:[60, 30] })),
   kapelle: () => caArt('day', caChurch(160, 186, 1.1) + caWho(50, 190, 0.85, { tunic:'#2a2420', dress:true, long:true, hair:CA.hair[4], arms:[90, 90], bend:[60, 60] }) + caWho(270, 190, 0.85, { tunic:MC.crimson, hair:CA.hair[0], beard:true, arms:[90, 90], bend:[70, 70] }, true)),
+  muenster: () => caArt('day', caCathedral(190, 192, 0.66) + caWho(60, 192, 0.7, { tunic:'#6a2a6a', dress:true, long:true, hair:CA.hair[3], arms:[120, 30], over:caHood('#e8e0cc') })),
   torturm: () => caArt('day', caR(0, 176, 320, 24, 1, CA.water) + caGateTower(160, 178, 0.92) + caWho(160, 12, 0.32, { tunic:MC.crimson, helmet:true, arms:[150, 20] }) +
     caLabel(188, 66, 262, 52, 'Pechnase') + caLabel(178, 128, 262, 140, 'Fallgatter') + caLabel(120, 30, 56, 30, 'Torturm')),
   wehrgang: () => caArt('day', caWallWalk(160, 196, 1) + caWho(80, 86, 0.62, { tunic:'#5a6a3a', hair:CA.hair[1], arms:[80, 100], bend:[0, 40], hold:[{ svg:caItem.stick(36), rot:0 }] }) +
@@ -1395,12 +1406,19 @@ const castleD = (x, z) => castleSD(x, z) + 19;
 function castlePt(a, d){ const C = CASTLE, cx = C.x + (C.X0 + C.X1)/2, cz = C.z + (C.Z0 + C.Z1)/2, ux = Math.sin(a), uz = Math.cos(a); let lo = 0, hi = 80;
   for (let i=0;i<30;i++){ const m = (lo + hi)/2; if (castleSD(cx + ux*m, cz + uz*m) < d) lo = m; else hi = m; } return [cx + ux*lo, cz + uz*lo]; }
 function cW(lx, lz){ return [CASTLE.x + lx, CASTLE.z + lz]; }
-/* Die Stadt mit Mauer, Marktplatz, Rathaus und Kirche; Tor im Süden und Wassertor im Osten zum Hafen */
-const TOWN = rect(50, -46, 24, 21);
-const MARKET = rect(50, -44, 11, 8);
-const RATHAUS = rect(52, -57, 6.5, 4);
-const CHURCH = { x0:31, x1:42.5, z0:-63, z1:-55, tx0:27, tx1:31 };   // Kirchenschiff und Turm im Westen
-const QUAY = { x0:74, x1:93.5, z0:-56, z1:-32 };                   // Hafen zwischen Stadtmauer und Fluss
+/* Die Stadt wie auf dem Bild im Arbeitsblatt: eine ovale Stadtmauer mit vielen Türmen und drei Toren (Süden, Westen, Osten zum Hafen),
+   in der Mitte der grosse Marktplatz mit dem Brunnen, nördlich davon das Rathaus, im Nordosten das Münster mit hohem Turm,
+   ganz im Norden eine Klosterkirche mit zwei Türmen, im Südosten Gärten. Ringsum dicht an dicht die Häuser der Bürger. */
+const TOWN = { cx:46, cz:-48, rx:40, rz:39, hw:40, hl:39 };
+/* Abstand zur Stadtmauer (innen negativ, ungefähr in Metern) */
+function townD(x, z){ const u = (x - TOWN.cx)/TOWN.rx, v = (z - TOWN.cz)/TOWN.rz; return (Math.hypot(u, v) - 1)*Math.min(TOWN.rx, TOWN.rz); }
+const TGATES = { s:[48, -9.05, 0], w:[6.05, -46, Math.PI/2], e:[85.8, -44, Math.PI/2] };
+const MARKET = rect(49, -43, 11, 7);
+const RATHAUS = rect(40.5, -55.5, 6.5, 4.5);
+const MUENSTER = { x0:64, x1:74.5, z0:-60, z1:-50, tx0:58.5, tx1:64 };       // Schiff, Chor im Osten, Turm im Westen
+const KLOSTER = { x0:46.5, x1:55.5, z0:-75, z1:-66.5 };                     // Klosterkirche mit zwei Türmen im Süden
+const GARDENS = rect(62.0, -28.0, 4.5, 4.5);
+const QUAY = { x0:87, x1:93.5, z0:-56, z1:-32 };                            // Hafen zwischen Stadtmauer und Fluss
 /* Das Dorf mit Dorfplatz, Kirche, Herrenhaus und Bauernhäusern */
 const VILLAGE = [-48, 48];
 const MANOR = rect(-33, 33, 5.5, 4, 0.15);
@@ -1416,18 +1434,20 @@ const PYRAMID = [13, 74];
 const PATHS = [
   [[0,140],[0,30]],                                         // Landstrasse vom Start her
   [[0,30],[-20,10],[-33,-4],[-37,-11.5]],                   // zur Burg
-  [[0,30],[30,4],[50,-16],[50,-22]],                        // zur Stadt
+  [[0,30],[30,4],[48,-3],[48,-7]],                          // zur Stadt
+  [[5,-46],[-4,-30],[-12,-8],[-20,10]],                     // vom Westtor der Stadt zur Burgstrasse
   [[0,40],[-26,44],[-40,46]],                               // ins Dorf
   [[0,40],[12,44]],                                         // zum Turnierplatz
   [[-56,48],[-72,28],[-76.5,13]],                           // vom Dorf zur Motte
   [[-50,56],[-60,70]],                                      // zu den Feldern
   [[-33,-4],[-58,-2],[-70,-1],[-76.4,10]],                   // von der Burg zur Motte
-  [[74,-44],[92,-44]],                                      // vom Wassertor zum Hafen
+  [[87,-44],[92,-44]],                                      // vom Wassertor zum Hafen
   [[1.5,77],[7,80]]                                         // zur Ständepyramide
 ];
 /* Gepflasterte Gassen in der Stadt: [a, b, Breite] */
 const STREETS = [
-  [[50,-25.5],[50,-36], 5], [[61,-44],[74.5,-44], 4], [[39,-44],[26.6,-44], 3], [[60.2,-52],[60.2,-66], 3], [[60.2,-58],[64.8,-58], 3]
+  [[48,-7],[48,-36], 5], [[6,-46],[38,-45], 4.5], [[60,-44],[88,-44], 4.5], [[51,-50],[51,-61.5], 4], [[57,-63.3],[78,-63.3], 2.6], [[56,-55],[56,-63.3], 3],
+  [[45.5,-28],[11,-28], 3], [[26,-47.3],[26,-77], 2.6], [[26,-61.5],[49,-61.5], 2.4], [[26,-77],[64,-77], 2.6], [[64,-77],[64,-64.6], 2.6], [[50.5,-17.5],[66,-17.5], 2.6]
 ];
 function segDist(px,pz,ax,az,bx,bz){ const dx=bx-ax, dz=bz-az; const t=Math.max(0,Math.min(1,((px-ax)*dx+(pz-az)*dz)/(dx*dx+dz*dz))); return Math.hypot(px-ax-dx*t, pz-az-dz*t); }
 function pathDist(x,z){ let d=1e9; for (const p of PATHS) for (let i=0;i<p.length-1;i++) d = Math.min(d, segDist(x,z,p[i][0],p[i][1],p[i+1][0],p[i+1][1])); return d; }
@@ -1442,7 +1462,7 @@ function motteH(x, z){ const d = Math.hypot(x - MOTTE.x, z - MOTTE.z), M = MOTTE
 /* Wie stark das Gelände an einer Stelle eingeebnet ist (1 = ganz flach) */
 function flatK(x, z){ let k = 0;
   k = Math.max(k, 1 - sstep(30, 40, castleD(x, z)));
-  k = Math.max(k, 1 - sstep(2, 14, rectD(TOWN, x, z)));
+  k = Math.max(k, 1 - sstep(2, 14, townD(x, z)));
   k = Math.max(k, 1 - sstep(24, 36, Math.hypot(x - VILLAGE[0], z - VILLAGE[1])));
   k = Math.max(k, 1 - sstep(2, 12, rectD(TOURNEY, x, z)));
   k = Math.max(k, 1 - sstep(16, 26, Math.hypot(x - MOTTE.x, z - MOTTE.z)));
@@ -1478,16 +1498,16 @@ function groundH(x,z){
   return h;
 }
 const P = {
-  staende:[7.0, 80.0], koenig:[-33.7, -57.4], klerus:[37.8, -51.4], adel:[42, 38.6],
+  staende:[7.0, 80.0], koenig:[-33.7, -57.4], klerus:[54.2, -57.0], muenster:[69.0, -55.0], adel:[42, 38.6],
   dorf:[-45.6, 46.2], abgaben:[-36.4, 39.4], frondienst:[-25.5, 13.5], feld:[-64, 72.5], essen:[-35.2, 55.6], bauernhaus:[-62.4, 51.8],
-  stadt:[52.0, -19.0], markt:[45.2, -38.6], rathaus:[52, -51.4], pranger:[55.0, -40.4], handwerk:[48.5, -33.4], weberin:[60.2, -38.8], hygiene:[37.6, -43.6], pest:[90.4, -40.6], pestarzt:[62.6, -59.6],
+  stadt:[50.5, -3.0], markt:[44.2, -38.4], rathaus:[41.0, -49.4], pranger:[55.2, -38.6], handwerk:[46.2, -24.6], weberin:[49.5, -29.6], hygiene:[26.6, -50.0], pest:[90.4, -40.6], pestarzt:[64.0, -63.4],
   burg:[-52, -8], zugbruecke:[-34.2, -13.4], torturm:[-37, -22.8], wehrgang:[-65.7, -34.4], wachtturm:[-49, -23], bergfried:[-63.5, -59], palas:[-36.4, -54.6], kueche:[-36.5, -55.6], kemenate:[-37.2, -53.6], abort:[-25, -58.1],
   kapelle:[-47.5, -52], stall:[-54.6, -56.4], garten:[-55.2, -50.6], brunnen:[-48, -43], burghof:[-30.6, -39.4], gaukler:[-41.8, -35.4],
   ritter:[47.2, 54.0], page:[69.4, 52.6], knappe:[31.0, 54.0], schwertleite:[19.6, 53.6], turnier:[15.4, 42.6], tjost:[36.0, 50.2], motte:[-75.4, 12.8]
 };
 const START = { x:0, z:98, yaw:0 };
 /* Feste Standplätze beim Sprung von der Karte, wo der Blick sonst verdeckt wäre */
-const STANDS = { handwerk:[51.6, -32.6], ritter:[43.6, 54.4], pest:[84.0, -37.5], abgaben:[-39.0, 43.2], turnier:[19.6, 42.4],
+const STANDS = { handwerk:[49.3, -23.8], muenster:[65.8, -55.0], markt:[47.6, -36.2], ritter:[43.6, 54.4], pest:[92.0, -37.0], abgaben:[-39.0, 43.2], turnier:[19.6, 42.4],
   // in der Burg, teils in oberen Stockwerken: [x, z, Fusshöhe]
   torturm:[-35.4, -24.6, 6.0], wehrgang:[-65.7, -38, 8.0], wachtturm:[-50.8, -24.4, 1.04], bergfried:[-63.5, -56.6, 8.0], palas:[-34.6, -50.6, 5.4], koenig:[-33.7, -54, 5.4],
   kemenate:[-35.4, -51.2, 9.8], abort:[-29.1, -58.1, 9.8], zugbruecke:[-30.5, -9], kueche:[-35.2, -50.4, 1.0], kapelle:[-49, -52, 1.05], stall:[-54.6, -53.6], garten:[-55.1, -46.8], brunnen:[-48, -39.4], burghof:[-33.8, -39] };
@@ -1549,13 +1569,13 @@ function terrainSample(x, z, y, ny, out, w){
   const n = fbm(x*0.08, z*0.08, 3), n2 = fbm(x*0.02+50, z*0.02+20, 3), r = Math.hypot(x,z);
   out.copy(TC.grass).lerp(TC.grass2, n*0.8).lerp(TC.dry, sstep(0.55, 0.85, n2)*0.5);
   // Weiter draussen: Felder in Streifen, Weiden und Wald
-  const near = Math.min(castleD(x, z) - 30, rectD(TOWN, x, z) - 6, Math.hypot(x - VILLAGE[0], z - VILLAGE[1]) - 28, rectD(TOURNEY, x, z) - 6);
+  const near = Math.min(castleD(x, z) - 30, townD(x, z) - 6, Math.hypot(x - VILLAGE[0], z - VILLAGE[1]) - 28, rectD(TOURNEY, x, z) - 6);
   if (r > 125 && near > 0){ const fx = Math.floor(x/34 + 0.5*Math.sin(z*0.02)), fz = Math.floor(z/9 + 0.6*Math.sin(x*0.025)), hsh = hash2(fx + 17, fz - 41), k = sstep(125, 160, r)*(1 - sstep(260, 380, r));
     _tg.copy(hsh < 0.25 ? TC.wheat : hsh < 0.4 ? TC.wheat2 : hsh < 0.62 ? TC.green : hsh < 0.74 ? TC.plough : TC.grass2); _tg.lerp(TC.dry, (n - 0.5)*0.3); out.lerp(_tg, k*0.65); }
   if (r > 190) out.lerp(TC.forest, sstep(190, 300, r)*0.7*(0.6 + 0.6*n2));
   const pd = pathDist(x,z); const pathK = 1 - sstep(0.8, 2.0 + n*0.9, pd);
   // Festgetretener Boden in der Stadt, im Burghof, auf dem Dorfplatz und dem Turnierplatz
-  const townK = (1 - sstep(-1, 2 + n*2, rectD(TOWN, x, z)))*(0.75 + 0.2*n);
+  const townK = (1 - sstep(-1, 2 + n*2, townD(x, z)))*(0.75 + 0.2*n);
   const castK = (1 - sstep(-1.0, 1.2, castleSD(x, z)))*0.85;
   const villK = (1 - sstep(8, 12 + n*3, Math.hypot(x - VILLAGE[0], z - VILLAGE[1])))*0.7;
   const tourK = (1 - sstep(-1, 1.5, rectD(TOURNEY, x, z)))*(0.35 + 0.35*sstep(4, 0, Math.abs(z - TILT.z)));
@@ -1594,9 +1614,12 @@ function drawMinimapBase(){
   c.strokeStyle = '#c4a57a'; c.lineWidth = 2.2; c.lineCap = 'round';
   for (const p of PATHS){ c.beginPath(); p.forEach(([x,z],i) => { const [mx,my] = w2m(x,z); i ? c.lineTo(mx,my) : c.moveTo(mx,my); }); c.stroke(); }
   // Stadt mit Mauer, Marktplatz, Rathaus, Kirche und Häusern
-  box(TOWN, '#d8c8a4', '#6a6458'); box(MARKET, '#f2ecdc');
-  c.fillStyle = '#b04a30'; for (const h of (typeof TOWN_HOUSES !== 'undefined' ? TOWN_HOUSES : [])){ const [a, b] = w2m(h.x - 2.2, h.z - 2.2); c.fillRect(a, b, 4.4*MSC, 4.4*MSC); }
-  box(RATHAUS, '#8a3a2a'); { const [a, b] = w2m(CHURCH.tx0, CHURCH.z0); c.fillStyle = '#6a6a74'; c.fillRect(a, b, (CHURCH.x1 - CHURCH.tx0)*MSC, (CHURCH.z1 - CHURCH.z0)*MSC); }
+  { c.beginPath(); c.ellipse(...w2m(TOWN.cx, TOWN.cz), TOWN.rx*MSC, TOWN.rz*MSC, 0, 0, TAU); c.fillStyle = '#d8c8a4'; c.fill(); c.strokeStyle = '#6a6458'; c.lineWidth = 2.5; c.stroke(); }
+  c.strokeStyle = '#efe4cc'; c.lineCap = 'round'; for (const [a, b, w] of STREETS){ c.lineWidth = w*MSC; c.beginPath(); c.moveTo(...w2m(a[0], a[1])); c.lineTo(...w2m(b[0], b[1])); c.stroke(); }
+  box(MARKET, '#f2ecdc');
+  c.fillStyle = '#b04a30'; for (const h of (typeof TOWN_HOUSES !== 'undefined' ? TOWN_HOUSES : [])){ const [a, b] = w2m(h.x, h.z); c.save(); c.translate(a, b); c.rotate(-h.ry); c.fillRect(-h.w/2*MSC, -h.d/2*MSC, h.w*MSC, h.d*MSC); c.restore(); }
+  box(RATHAUS, '#c8a040'); { const Mu = MUENSTER, [a, b] = w2m(Mu.tx0, Mu.z0); c.fillStyle = '#a8704a'; c.fillRect(a, b, (Mu.x1 + 4.8 - Mu.tx0)*MSC, (Mu.z1 - Mu.z0)*MSC); }
+  { const K = KLOSTER, [a, b] = w2m(K.x0, K.z0); c.fillStyle = '#6a6a74'; c.fillRect(a, b, (K.x1 - K.x0)*MSC, (K.z1 + 3.4 - K.z0)*MSC); }
   { const [a, b] = w2m(QUAY.x0, QUAY.z0); c.fillStyle = '#c8b89a'; c.fillRect(a, b, (QUAY.x1 - QUAY.x0)*MSC, (QUAY.z1 - QUAY.z0)*MSC); }
   // Burg: Graben, Mauerring, Bergfried
   { const C = CASTLE, d = (C.M0 + C.M1)/2, rr = (x0, z0, x1, z1, r) => { c.beginPath(); c.moveTo(...w2m(x0 + r, z0)); c.arcTo(...w2m(x1, z0), ...w2m(x1, z1), r*MSC); c.arcTo(...w2m(x1, z1), ...w2m(x0, z1), r*MSC); c.arcTo(...w2m(x0, z1), ...w2m(x0, z0), r*MSC); c.arcTo(...w2m(x0, z0), ...w2m(x1, z0), r*MSC); c.closePath(); };
@@ -3389,7 +3412,7 @@ function treeCollider(x, z, r){ if (Math.hypot(x, z) < (typeof WORLD_R !== 'unde
 /* Laubwald auf den Hügeln, Tannen weiter oben, Obstbäume beim Dorf, Weiden am Fluss, Wiesen mit Blumen */
 function inBuilt(x, z, m){
   if (castleSD(x, z) < CASTLE.M1 + m + 2) return true;
-  if (rectD(TOWN, x, z) < m + 3) return true;
+  if (townD(x, z) < m + 3) return true;
   if (x > QUAY.x0 - 1 - m && x < QUAY.x1 + m && z > QUAY.z0 - m - 2 && z < QUAY.z1 + m + 2) return true;
   if (Math.hypot(x - VILLAGE[0], z - VILLAGE[1]) < 21 + m) return true;
   if (rectD(MANOR, x, z) < m + 6) return true;
@@ -4939,45 +4962,135 @@ function buildCastleView(){
   addHotspot('burg', [g], P.burg[0], gy(P.burg[0], P.burg[1]) + 2.8, P.burg[1], 0);
 }
 /* ===================== DIE STADT ===================== */
-/* Stadtmauer mit Türmen und zwei Toren, Fachwerkhäuser mit Läden, Marktplatz mit Brunnen und Pranger, Rathaus, Kirche, Hafen am Fluss */
-const TOWN_HOUSES = [
-  // an der Hauptgasse vom Tor zum Markt (Front zur Gasse)
-  { x:45, z:-28.6, ry:Math.PI/2, w:4.6, d:5, f:2 }, { x:45, z:-33.6, ry:Math.PI/2, w:4.6, d:5, f:2, shop:true, hand:true },
-  { x:55, z:-28.6, ry:-Math.PI/2, w:4.6, d:5, f:2, sign:'boot' }, { x:55, z:-33.6, ry:-Math.PI/2, w:4.6, d:5, f:2, sign:'pretzel', shop:true },
-  // südlich des Marktes (Front nach Norden)
-  { x:40, z:-31.5, ry:Math.PI, w:4.4, d:5, f:2 }, { x:35.4, z:-31.5, ry:Math.PI, w:4.6, d:5, f:2, sign:'scissors' }, { x:30.6, z:-31.5, ry:Math.PI, w:4.6, d:5, f:1 },
-  { x:60, z:-31.5, ry:Math.PI, w:4.4, d:5, f:2, sign:'horseshoe' }, { x:64.6, z:-31.5, ry:Math.PI, w:4.6, d:5, f:2 }, { x:69.4, z:-31.5, ry:Math.PI, w:4.6, d:5, f:1 },
-  // östlich des Marktes (Front nach Westen), dahinter an der Gasse zum Wassertor
-  { x:64, z:-38.6, ry:-Math.PI/2, w:4.6, d:5, f:2, weaver:true }, { x:64, z:-49.8, ry:-Math.PI/2, w:4.6, d:5, f:2, stone:true },
-  { x:69.2, z:-39.4, ry:Math.PI, w:4.6, d:5, f:2 }, { x:69.2, z:-48.6, ry:0, w:4.6, d:5, f:2, sign:'jug' },
-  // westlich des Marktes und an der engen Gasse
-  { x:36, z:-38.6, ry:Math.PI/2, w:4.6, d:5, f:2, stone:true },
-  { x:30.6, z:-39.9, ry:Math.PI, w:4.6, d:5, f:2, potWin:true, upWin:[0.2, 0.9, 1.0] }, { x:30.6, z:-48.1, ry:0, w:4.6, d:5, f:2 },
-  // Nordostviertel am kleinen Platz
-  { x:67.4, z:-57.6, ry:-Math.PI/2, w:4.6, d:5, f:2, plague:true }, { x:67.4, z:-63.2, ry:-Math.PI/2, w:4.6, d:5, f:1 }
+/* Ovale Stadtmauer mit vielen Türmen, dicht stehende Bürgerhäuser, Marktplatz mit Brunnen und Pranger, Rathaus, Münster, Klosterkirche, Gärten, Hafen am Fluss */
+/* Häuser mit Läden und Werkstätten (begehbar), dazu das Haus an der engen Gasse und das Haus bei der Pest. Die Vorderseite zeigt zur Gasse. */
+const TOWN_DETAIL = [
+  { x:42.7, z:-20.2, ry:Math.PI/2, w:4.4, d:5, f:2, sign:'boot' }, { x:42.7, z:-24.8, ry:Math.PI/2, w:4.4, d:5, f:2, shop:true, hand:true },
+  { x:42.7, z:-29.4, ry:Math.PI/2, w:4.4, d:5, f:3 }, { x:42.7, z:-34.0, ry:Math.PI/2, w:4.4, d:5, f:2, sign:'pretzel', shop:true },
+  { x:53.3, z:-20.2, ry:-Math.PI/2, w:4.4, d:5, f:2, sign:'scissors' }, { x:53.3, z:-24.8, ry:-Math.PI/2, w:4.4, d:5, f:3, sign:'horseshoe', stone:true },
+  { x:53.3, z:-29.4, ry:-Math.PI/2, w:4.4, d:5, f:2, weaver:true }, { x:53.3, z:-34.0, ry:-Math.PI/2, w:4.4, d:5, f:2, sign:'jug' },
+  { x:22.0, z:-52.0, ry:Math.PI/2, w:4.6, d:5, f:2, potWin:true, upWin:[0.2, 0.9, 1.0] },
+  { x:63.0, z:-67.3, ry:0, w:4.6, d:5, f:2, plague:true }
 ];
+let TOWN_HOUSES = [];
+/* ---------- Gemalte Fassaden: Fachwerk mit Fenstern (ein Bild ist 9.6 m breit und ein Stockwerk hoch) ---------- */
+function texFacade(kind){ const W = 1024, H = 288, c = cnv(W, H), x = c.getContext('2d'), r = mulberry32(700 + kind*13);
+  const stone = kind >= 4, ground = kind === 3 || kind === 4;
+  const pl = [['#f2ece0', '#4a3020'], ['#ece0c8', '#3a2418'], ['#efd8c8', '#5a3a26'], ['#f4ead6', '#4a3020'], ['#b8b0a2', '#3a3a38'], ['#aaa294', '#3a3a38']][kind];
+  if (stone){ x.fillStyle = pl[0]; x.fillRect(0, 0, W, H); const rows = 6, rh = H/rows;
+    for (let row=0; row<rows; row++){ let px = -r()*40; while (px < W){ const w = 40 + r()*50, v = 0.8 + r()*0.3; x.fillStyle = 'rgb(' + (184*v|0) + ',' + (176*v|0) + ',' + (162*v|0) + ')'; x.fillRect(px + 2, row*rh + 2, w - 4, rh - 4); px += w; } } }
+  else { const f = field(256, 8, 8, 4, 710 + kind); const pc = cnv(256), px2 = pc.getContext('2d'); grayField(pc, f, 214, 250); x.drawImage(pc, 0, 0, W, H);
+    x.globalCompositeOperation = 'multiply'; x.fillStyle = pl[0]; x.fillRect(0, 0, W, H); x.globalCompositeOperation = 'source-over'; }
+  const beam = pl[1], B = 13;
+  const win = (cx, top, w, h, shut) => { x.fillStyle = beam; x.fillRect(cx - w/2 - 6, top - 6, w + 12, h + 12); x.fillStyle = '#1a1612'; x.fillRect(cx - w/2, top, w, h);
+    x.strokeStyle = 'rgba(120,140,150,0.6)'; x.lineWidth = 3; x.beginPath(); x.moveTo(cx, top); x.lineTo(cx, top + h); x.moveTo(cx - w/2, top + h*0.45); x.lineTo(cx + w/2, top + h*0.45); x.stroke();
+    if (shut){ x.fillStyle = shut; x.fillRect(cx - w/2 - 6 - w*0.42, top - 2, w*0.42, h + 4); x.fillRect(cx + w/2 + 6, top - 2, w*0.42, h + 4); x.strokeStyle = 'rgba(0,0,0,0.3)'; x.lineWidth = 2; x.strokeRect(cx - w/2 - 6 - w*0.42, top - 2, w*0.42, h + 4); x.strokeRect(cx + w/2 + 6, top - 2, w*0.42, h + 4); } };
+  const door = (cx, w, h, arch) => { x.fillStyle = stone ? '#6a6458' : beam; x.fillRect(cx - w/2 - 8, H - h - 8, w + 16, h + 8); x.fillStyle = '#5a3a24'; if (arch){ x.beginPath(); x.moveTo(cx - w/2, H); x.lineTo(cx - w/2, H - h + w/2); x.arc(cx, H - h + w/2, w/2, Math.PI, 0); x.lineTo(cx + w/2, H); x.fill(); } else x.fillRect(cx - w/2, H - h, w, h);
+    x.strokeStyle = 'rgba(30,18,8,0.5)'; x.lineWidth = 2; for (let i=1;i<4;i++){ x.beginPath(); x.moveTo(cx - w/2 + i*w/4, H - h + (arch ? w/3 : 0)); x.lineTo(cx - w/2 + i*w/4, H); x.stroke(); } x.fillStyle = '#2a2a2c'; x.fillRect(cx + w*0.28, H - h*0.5, 6, 6); };
+  const shutC = ['#3a6a4a', '#8a3a2a', '#5a4a3a', '#2e4a7a'];
+  if (!stone){
+    // Fachwerk: Schwelle, Rähm, Ständer alle 1.2 m, Riegel und Streben
+    x.fillStyle = beam; x.fillRect(0, H - B, W, B); x.fillRect(0, 0, W, B);
+    for (let i=0;i<8;i++){ const bx = i*128; x.fillRect(bx - B/2, 0, B, H); if (i === 0) x.fillRect(W - B/2, 0, B, H); }
+    for (let i=0;i<8;i++){ const bx = i*128, hasWin = ground ? (i % 4 === 1 || i % 4 === 2) : (i % 2 === 1 || (kind === 1 && i % 4 === 2)), hasDoor = ground && i % 4 === 0;
+      if (!hasWin && !hasDoor){ x.fillRect(bx, H*0.48, 128, B*0.9); x.save(); x.lineWidth = B*0.85; x.strokeStyle = beam; x.beginPath(); if (i % 2){ x.moveTo(bx + 6, H - B); x.lineTo(bx + 122, H*0.5); } else { x.moveTo(bx + 122, H - B); x.lineTo(bx + 6, H*0.5); } x.stroke(); x.beginPath(); x.moveTo(bx + 64, H*0.48); x.lineTo(bx + 6, B); x.moveTo(bx + 64, H*0.48); x.lineTo(bx + 122, B); x.stroke(); x.restore(); }
+      else if (hasWin) win(bx + 64, ground ? 70 : 62, 62, 92, shutC[(i + kind) % 4]);
+      else door(bx + 64, 70, 196, false); } }
+  else {
+    for (let i=0;i<8;i++){ const bx = i*128 + 64;
+      if (ground && i % 4 === 0) door(bx, 76, 200, true);
+      else if (ground && i % 4 === 2){ x.fillStyle = '#6a6458'; x.fillRect(bx - 50, 70, 100, 140); x.fillStyle = '#1a1612'; x.beginPath(); x.moveTo(bx - 44, 206); x.lineTo(bx - 44, 112); x.arc(bx, 112, 44, Math.PI, 0); x.lineTo(bx + 44, 206); x.fill(); x.fillStyle = '#7a5636'; x.fillRect(bx - 48, 196, 96, 14); }
+      else if (i % 2 === 1 || !ground) win(bx, 70, 54, 90, i % 3 === 0 ? shutC[i % 4] : null); } }
+  for (let i=0;i<W*H/60;i++){ x.fillStyle = r() < 0.5 ? 'rgba(80,60,40,0.06)' : 'rgba(255,255,255,0.06)'; x.fillRect(r()*W, r()*H, 2 + r()*3, 2 + r()*3); }
+  const g = x.createLinearGradient(0, H - 40, 0, H); g.addColorStop(0, 'rgba(60,50,30,0)'); g.addColorStop(1, 'rgba(60,50,30,0.18)'); x.fillStyle = g; x.fillRect(0, H - 40, W, 40);
+  return c; }
+function buildTownTextures(){ for (let k=0;k<6;k++) setTex('fac' + k, texFacade(k), true, 3, 0.7, 0.92); }
+/* Quader mit Fassaden-Koordinaten: u läuft 1 pro 9.6 m, v 1 pro Stockwerk */
+function hbox(w, h, d, u0, floors){ const g = new THREE.BoxGeometry(w, h, d), uv = g.attributes.uv, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+  for (let f=0; f<6; f++) for (let k=0;k<4;k++){ const i = f*4 + k; uv.setXY(i, u0 + uv.getX(i)*dims[f][0]/9.6 + f*0.37, f === 2 || f === 3 ? 0.98 : uv.getY(i)*floors); } return g; }
+/* Giebeldreieck (eine Fläche) mit Fassaden-Koordinaten */
+function hgable(w, rise, u0, v0, sgn){ const g = new THREE.BufferGeometry(), a = [-w/2, 0], b = [w/2, 0], c2 = [0, rise];
+  const P = sgn > 0 ? [a, b, c2] : [b, a, c2], pos = [], uv = []; for (const [px, py] of P){ pos.push(px, py, 0); uv.push(u0 + (px + w/2)/9.6, v0 + py/2.7); }
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.computeVertexNormals(); return g; }
+/* Satteldach als Geometrie (First entlang der lokalen z-Achse) */
+function hroof(w, len, rise, ov, ovG){ const half = w/2 + ov, ang = Math.atan2(rise, w/2), L = half/Math.cos(ang), ylow = -(half - w/2)*Math.tan(ang), parts = [];
+  for (const sd of [-1, 1]) parts.push(xf(boxUV(L, 0.16, len + 2*ovG, 1.6), sd*(half/2), ylow + (rise - ylow)/2 + 0.08, 0, 0, 0, -sd*ang));
+  return parts; }
+/* Rechteck eines Hauses (Ecken) und Überlappungstest (SAT) */
+function hcorners(h, m){ const c = Math.cos(h.ry), s = Math.sin(h.ry), w = h.w/2 + (m || 0), d = h.d/2 + (m || 0); return [[-w, -d], [w, -d], [w, d], [-w, d]].map(([a, b]) => [h.x + a*c + b*s, h.z - a*s + b*c]); }
+function polyOverlap(A, B){ for (const P of [A, B]) for (let i=0;i<P.length;i++){ const [x1, z1] = P[i], [x2, z2] = P[(i + 1) % P.length], nx = z2 - z1, nz = x1 - x2;
+    let a0 = 1e9, a1 = -1e9, b0 = 1e9, b1 = -1e9; for (const [x, z] of A){ const v = x*nx + z*nz; a0 = Math.min(a0, v); a1 = Math.max(a1, v); } for (const [x, z] of B){ const v = x*nx + z*nz; b0 = Math.min(b0, v); b1 = Math.max(b1, v); }
+    if (a1 < b0 || b1 < a0) return false; } return true; }
+const rectPoly = (x0, x1, z0, z1) => [[x0, z0], [x1, z0], [x1, z1], [x0, z1]];
+/* Freie Plätze und grosse Bauten, auf denen keine Bürgerhäuser stehen dürfen */
+function townKeepOut(){ const M = MARKET, R = RATHAUS, Mu = MUENSTER, K = KLOSTER, G = GARDENS, list = [
+  rectPoly(M.cx - M.hw, M.cx + M.hw, M.cz - M.hl, M.cz + M.hl), rectPoly(R.cx - R.hw - 0.3, R.cx + R.hw + 0.3, R.cz - R.hl - 0.2, R.cz + R.hl + 0.3),
+  rectPoly(Mu.tx0 - 5.5, Mu.x1 + 5.0, Mu.z0 - 1.6, Mu.z1 + 1.6), rectPoly(K.x0 - 7.3, K.x1 + 0.4, K.z0 - 0.4, K.z1 + 3.6), rectPoly(G.cx - G.hw - 0.6, G.cx + G.hw + 0.6, G.cz - G.hl - 0.6, G.cz + G.hl + 0.6),
+  rectPoly(43, 53, -14.5, -5), rectPoly(2, 13, -50, -42), rectPoly(80, 92, -48, -40) ];
+  for (const h of TOWN_DETAIL) list.push(hcorners(h, 0.4));
+  return list; }
+/* Bürgerhäuser verteilen: Gasse für Gasse eine dichte Häuserzeile (Vorderseite zur Gasse), dahinter Hinterhäuser, zuletzt die Lücken */
+function planTownHouses(){
+  const rr = mulberry32(4242), out = [], keep = townKeepOut();
+  const ok = h => { const P = hcorners(h, 0.06); for (const [x, z] of P) if (townD(x, z) > -1.25 || streetDist(x, z) < 0.1) return false;
+    for (let i=0;i<4;i++){ const A = P[i], B = P[(i + 1) % 4]; if (streetDist((A[0] + B[0])/2, (A[1] + B[1])/2) < 0.1) return false; } if (streetDist(h.x, h.z) < 0.1) return false;
+    for (const K of keep) if (polyOverlap(P, K)) return false; for (const o of out) if (Math.abs(o.x - h.x) < 10 && Math.abs(o.z - h.z) < 10 && polyOverlap(P, hcorners(o, 0.06))) return false; return true; };
+  const mk1 = (x, z, ry, w, d) => ({ x, z, ry, w, d, f:rr() < 0.25 ? 3 : rr() < 0.88 ? 2 : 1, roof:rr() < 0.72 ? 'tiles' : 'slate', fac:Math.floor(rr()*3), gf:rr() < 0.35 ? 4 : 3, stone:rr() < 0.12, ridgeX:rr() < 0.3, u:rr()*4, chim:rr() < 0.45 });
+  const fronts = [];
+  for (const [a, b, wd] of STREETS){ const L = Math.hypot(b[0] - a[0], b[1] - a[1]), ux = (b[0] - a[0])/L, uz = (b[1] - a[1])/L;
+    for (const sd of [-1, 1]){ const nx = -uz*sd, nz = ux*sd; let t = -1.0;
+      while (t < L + 1.0){ let placed = null;
+        for (let k=0;k<4 && !placed;k++){ const w = 4.0 + rr()*1.8, d = 5.8 + rr()*2.6, s = t + w/2, off = wd/2 + 0.45 + d/2;
+          const h = mk1(a[0] + ux*s + nx*off, a[1] + uz*s + nz*off, Math.atan2(-nx, -nz), w, d); if (ok(h)){ out.push(h); placed = h; fronts.push([h, nx, nz]); } }
+        t += placed ? placed.w + 0.2 : 0.6; } } }
+  for (const [h, nx, nz] of fronts){ for (let k=0;k<3;k++){ const d2 = 4.8 + rr()*2.4, off = h.d/2 + 0.3 + d2/2, h2 = mk1(h.x - nx*off, h.z - nz*off, h.ry, h.w*(0.8 + rr()*0.25), d2); if (ok(h2)){ out.push(h2); break; } } }
+  // Lücken füllen: ein Raster über die ganze Stadt, kleinere Häuser, ausgerichtet nach der nächsten Gasse
+  for (let gx = TOWN.cx - TOWN.rx + 2; gx < TOWN.cx + TOWN.rx - 2; gx += 0.9) for (let gz = TOWN.cz - TOWN.rz + 2; gz < TOWN.cz + TOWN.rz - 2; gz += 0.9){
+    const x = gx + (rr() - 0.5)*0.4, z = gz + (rr() - 0.5)*0.4; if (townD(x, z) > -3 || streetDist(x, z) < 1.4) continue;
+    let best = null, bd = 1e9; for (const S of STREETS){ const d = segDist(x, z, S[0][0], S[0][1], S[1][0], S[1][1]); if (d < bd){ bd = d; best = S; } }
+    const ux = best[1][0] - best[0][0], uz = best[1][1] - best[0][1], L = Math.hypot(ux, uz), base = Math.atan2(ux/L, uz/L);
+    for (let k=0;k<6;k++){ const ry = base + (k % 2 ? Math.PI/2 : -Math.PI/2) + (k % 4 > 1 ? Math.PI/2 : 0), h = mk1(x, z, ry, 3.6 + rr()*1.4, 4.2 + rr()*2.0 - (k > 3 ? 0.8 : 0)); if (ok(h)){ out.push(h); break; } } }
+  return out; }
+/* ---------- Stadtmauer mit Türmen und Toren ---------- */
 function buildTownWall(){
-  const T = TOWN, x0 = T.cx - T.hw, x1 = T.cx + T.hw, z0 = T.cz - T.hl, z1 = T.cz + T.hl, H = 7, WT = 1.4, MT = mMats();
-  const run = (ax, az, bx, bz, n, gaps, outN) => { const L = Math.hypot(bx - ax, bz - az), ux = (bx - ax)/L, uz = (bz - az)/L;
-    let s0 = 0; const cuts = (gaps || []).slice().sort((a, b) => a[0] - b[0]); cuts.push([L + 1, 0]);
-    for (const [c, w] of cuts){ const s1 = Math.min(L, c - w/2); if (s1 > s0 + 0.5){ const k = Math.max(1, Math.round((s1 - s0)/6)); for (let i=0;i<k;i++){ const a = s0 + (s1 - s0)*i/k, b = s0 + (s1 - s0)*(i + 1)/k;
-          battlement(ax + ux*a, az + uz*a, ax + ux*b, az + uz*b, WT, H, { outN, ext:0.2, inner:true }); colliders.push({ ax:ax + ux*a, az:az + uz*a, bx:ax + ux*b, bz:az + uz*b, r:WT/2 + 0.05 }); } }
-      s0 = c + w/2; } };
-  run(x0, z1, x1, z1, 0, [[T.hw, 6.6]], [0, 1]);                 // Süden mit Haupttor
-  run(x1, z1, x1, z0, 0, [[z1 - (-44), 6.6]], [1, 0]);           // Osten mit Wassertor
-  run(x1, z0, x0, z0, 0, [], [0, -1]); run(x0, z0, x0, z1, 0, [], [-1, 0]);
-  for (const [x, z] of [[x0, z0], [x1, z0], [x0, z1], [x1, z1]]) roundTower(x, z, 2.6, 10, { roof:MT.tiles, steep:2.0 });
-  for (const [x, z] of [[x0, -46], [38, z0], [62, z0]]) squareTower(x, z, 4.2, 10, 0, { roof:MT.tiles, steep:1.2 });
-  squareTower(T.cx, z1, 6.6, 13, 0, { gate:3.4, roof:MT.slate, steep:1.6 });
-  squareTower(x1, -44, 6.6, 11, Math.PI/2, { gate:3.4, roof:MT.tiles, steep:1.4 });
-  // Wappenschild über dem Tor
+  const MT = mMats(), T = TOWN, H = 8, WT = 1.6, stone = [], tiles = [], dark = [], g = new THREE.Group(); scene.add(g);
+  const ang = { s:Math.PI/2, w:Math.PI, e:Math.atan2((TGATES.e[1] - T.cz)/T.rz, (TGATES.e[0] - T.cx)/T.rx) }, gap = 0.105;
+  const P = a => [T.cx + Math.cos(a)*T.rx, T.cz + Math.sin(a)*T.rz];
+  const arcs = [[ang.e + gap, ang.s - gap], [ang.s + gap, ang.w - gap], [ang.w + gap, ang.e - gap + TAU]], towerPts = [];
+  for (const [a0, a1] of arcs){ const n = Math.max(2, Math.round((a1 - a0)*34/5.5));
+    for (let i=0;i<n;i++){ const b0 = a0 + (a1 - a0)*i/n, b1 = a0 + (a1 - a0)*(i + 1)/n, [ax, az] = P(b0), [bx, bz] = P(b1), L = Math.hypot(bx - ax, bz - az), th = Math.atan2(-(bz - az), bx - ax);
+      const y0 = Math.min(groundH(ax, az), groundH(bx, bz)) - 0.8, mx = (ax + bx)/2, mz = (az + bz)/2, nx = (mx - T.cx)/T.rx, nz = (mz - T.cz)/T.rz, nl = Math.hypot(nx, nz), ox = nx/nl, oz = nz/nl;
+      stone.push(xf(boxUV(L + 0.3, H + 0.8, WT, 2), mx, y0 + (H + 0.8)/2, mz, 0, th, 0));
+      const m = Math.max(1, Math.round(L/1.5)); for (let k=0;k<m;k++){ const s = (k + 0.5)/m, x = ax + (bx - ax)*s + ox*(WT/2 - 0.25), z = az + (bz - az)*s + oz*(WT/2 - 0.25); stone.push(xf(boxUV(Math.min(0.9, L/m - 0.5), 0.9, 0.5, 1.2), x, y0 + H + 1.25, z, 0, th, 0)); }
+      stone.push(xf(boxUV(L + 0.3, 0.8, 0.5, 1.6), mx + ox*(WT/2 - 0.25), y0 + H + 0.8 + 0.0, mz + oz*(WT/2 - 0.25), 0, th, 0));
+      if (i % 2) dark.push(part(new THREE.BoxGeometry(0.12, 1.0, 0.04), '#14110e', mx + ox*(WT/2 + 0.01), y0 + 4.6, mz + oz*(WT/2 + 0.01), 0, th, 0));
+      colliders.push({ ax, az, bx, bz, r:WT/2 + 0.05 });
+      if (i > 0 && i % 3 === 0) towerPts.push([ax, az, ox, oz, towerPts.length]); } }
+  // Türme: runde mit Kegeldach und viereckige mit Zeltdach, alle mit roten Ziegeln (wie auf dem Bild)
+  const TR = M('#d8806a', { tex:'tiles', side:THREE.DoubleSide });
+  for (const [x0, z0, ox, oz, k] of towerPts){ const round = k % 2 === 0, x = x0 + ox*0.9, z = z0 + oz*0.9, gy = groundH(x, z) - 0.8, TH = 11 + (k % 3)*1.2;
+    if (round){ const r = 2.7, cg = new THREE.CylinderGeometry(r, r*1.05, TH, 24, 1, true); scaleUV(cg, TAU*r/2.2, TH/2.2); stone.push(xf(cg, x, gy + TH/2, z));
+      const cone = new THREE.ConeGeometry(r + 0.45, r*2.6, 24, 1, true); scaleUV(cone, TAU*r/1.6, r*2.6/1.6); tiles.push(xf(cone, x, gy + TH + r*1.3, z));
+      for (let i=0;i<4;i++){ const a = i/4*TAU + k; dark.push(part(new THREE.BoxGeometry(0.12, 0.9, 0.06), '#14110e', x + Math.sin(a)*(r + 0.02), gy + 5 + (i % 2)*3, z + Math.cos(a)*(r + 0.02), 0, a, 0)); }
+      colliders.push({ x, z, r:r + 0.05 }); }
+    else { const w = 4.4, th = Math.atan2(oz, ox); stone.push(xf(boxUV(w, TH, w, 2), x, gy + TH/2, z, 0, -th, 0));
+      const cone = new THREE.ConeGeometry(w*0.76, w*1.5, 4, 1, true).rotateY(Math.PI/4 - th); scaleUV(cone, w*2/1.6, w*1.5/1.6); tiles.push(xf(cone, x, gy + TH + w*0.75, z));
+      for (let i=0;i<4;i++){ const a = i*Math.PI/2 - th + Math.PI/2; dark.push(part(new THREE.BoxGeometry(0.14, 0.9, 0.06), '#14110e', x + Math.sin(a)*(w/2 + 0.02), gy + 6, z + Math.cos(a)*(w/2 + 0.02), 0, a, 0)); }
+      const c = hcorners({ x, z, ry:-th, w, d:w }, 0.05); for (let i=0;i<4;i++) colliders.push({ ax:c[i][0], az:c[i][1], bx:c[(i + 1) % 4][0], bz:c[(i + 1) % 4][1], r:0.1 }); }
+    dark.push(part(new THREE.SphereGeometry(0.14, 8, 6), '#c8a040', x, gy + TH + (round ? 2.7*2.6 : 4.4*1.5) + 0.05, z)); }
+  mk(mergeGeo(stone), MT.stone, g); mk(mergeGeo(tiles), TR, g); vmesh(dark, g); keep(g);
+  // Tore: das Haupttor im Süden (gross, mit Schieferdach), das Westtor und das Wassertor zum Hafen
+  squareTower(TGATES.s[0], TGATES.s[1], 7.0, 13, 0, { gate:3.6, roof:MT.slate, steep:1.6 });
+  squareTower(TGATES.w[0], TGATES.w[1], 6.4, 12, Math.PI/2, { gate:3.4, roof:MT.tiles, steep:1.5 });
+  squareTower(TGATES.e[0], TGATES.e[1], 6.4, 11, Math.PI/2, { gate:3.4, roof:MT.tiles, steep:1.4 });
+  // Wappenschild über dem Haupttor
   const sh = canvasTex(64, 80, (x, W, H2) => { x.fillStyle = '#e8c040'; x.beginPath(); x.moveTo(4, 4); x.lineTo(60, 4); x.lineTo(60, 44); x.quadraticCurveTo(32, 80, 4, 44); x.closePath(); x.fill(); x.fillStyle = '#2a2a2a'; x.beginPath(); x.arc(32, 32, 12, 0, TAU); x.fill(); x.fillRect(28, 12, 8, 40); });
-  mk(new THREE.PlaneGeometry(1.2, 1.5), new THREE.MeshStandardMaterial({ map:sh, transparent:true, alphaTest:0.5, roughness:0.7 }), scene, T.cx, groundH(T.cx, z1) + 6.0, z1 + 3.32);
+  mk(new THREE.PlaneGeometry(1.2, 1.5), new THREE.MeshStandardMaterial({ map:sh, transparent:true, alphaTest:0.5, roughness:0.7 }), scene, TGATES.s[0], groundH(TGATES.s[0], TGATES.s[1]) + 6.0, TGATES.s[1] + 3.52);
 }
 /* Hängendes Zunftzeichen an einem Eisenarm über der Tür */
 function guildSign(g, kind, lx, ly, lz){ const MT = mMats(), s = new THREE.Group(); s.position.set(lx, ly, lz); g.add(s);
   mk(new THREE.BoxGeometry(0.04, 0.04, 0.8), METAL.iron(), s, 0, 0, 0.4); mk(new THREE.BoxGeometry(0.03, 0.4, 0.03), METAL.iron(), s, 0, -0.18, 0.12, 0.8, 0, 0);
-  const hang = new THREE.Group(); hang.position.set(0, -0.02, 0.62); s.add(hang); const gm = METAL.gold(), ir = METAL.iron();
+  const hang = new THREE.Group(); hang.position.set(0, -0.02, 0.62); s.add(hang); const ir = METAL.iron();
   if (kind === 'pretzel'){ mk(new THREE.TorusGeometry(0.16, 0.035, 8, 20), M('#b8783a', { tex:'grain' }), hang, 0, -0.25, 0, 0, Math.PI/2, 0); mk(new THREE.TorusGeometry(0.08, 0.03, 8, 16), M('#b8783a', { tex:'grain' }), hang, 0, -0.22, 0.05, 0, Math.PI/2, 0); }
   else if (kind === 'boot'){ mk(new THREE.BoxGeometry(0.06, 0.28, 0.12), M('#5a3a24', { tex:'leather' }), hang, 0, -0.2, 0); mk(new THREE.BoxGeometry(0.06, 0.1, 0.24), M('#5a3a24', { tex:'leather' }), hang, 0, -0.32, 0.06); }
   else if (kind === 'scissors'){ for (const a of [-0.4, 0.4]) mk(new THREE.BoxGeometry(0.02, 0.36, 0.04), ir, hang, 0, -0.22, 0, a, 0, 0); for (const sd of [-1, 1]) mk(new THREE.TorusGeometry(0.05, 0.012, 6, 12), ir, hang, 0, -0.06, sd*0.06, 0, Math.PI/2, 0); }
@@ -4986,30 +5099,64 @@ function guildSign(g, kind, lx, ly, lz){ const MT = mMats(), s = new THREE.Group
   else if (kind === 'loom'){ mk(new THREE.BoxGeometry(0.04, 0.3, 0.3), M('#3a5a8a', { tex:'wool' }), hang, 0, -0.22, 0); }
   anims.push(t => { hang.rotation.z = 0; hang.rotation.x = Math.sin(t*1.3 + lx)*0.06; });
   return s; }
+/* ---------- Die Bürgerhäuser: viele Häuser, zu wenigen Objekten verschmolzen ---------- */
 function buildTownHouses(){
   const MT = mMats(), cols = ['#efe4cc', '#f2e8d8', '#ece0c8', '#f4ead6', '#e8dcc0', '#ecd8c8'];
-  TOWN_HOUSES.forEach((h, i) => {
-    const o = { x:h.x, z:h.z, ry:h.ry, w:h.w, d:h.d, floors:h.f, fh:2.7, roof:i % 5 === 3 ? 'slate' : 'tiles', ridge:'z', jetty:0.35, door:[h.shop || h.weaver ? -1.3 : (i % 2 ? 1.1 : -1.1), 1.05], seed:i + 10,
-      plaster:cols[i % cols.length], stone:h.stone, chimney:i % 3 === 0, pitch:1.25 };
+  // Begehbare Häuser mit Läden und Werkstätten
+  TOWN_DETAIL.forEach((h, i) => {
+    const o = { x:h.x, z:h.z, ry:h.ry, w:h.w, d:h.d, floors:h.f, fh:2.7, roof:i % 4 === 3 ? 'slate' : 'tiles', ridge:'z', jetty:0.35, door:[h.shop || h.weaver ? -1.3 : (i % 2 ? 1.1 : -1.1), 1.05], seed:i + 10,
+      plaster:cols[i % cols.length], stone:h.stone, chimney:i % 3 === 0, pitch:1.25, enter:!!(h.hand || h.weaver) };
     if (h.shop) o.shop = [0.75, 2.2, 1.35];
     if (h.weaver){ o.shop = [0.6, 2.6, 1.8]; }
     if (h.upWin) o.upWin = h.upWin;
     const g = fwHouse(o);
     if (h.sign) guildSign(g, h.sign, (o.door[0] < 0 ? 1.2 : -1.2), 2.9, h.d/2 + (h.f > 1 ? 0.42 : 0.05));
     h.g = g; });
-  // Pflaster in den Gassen und auf dem Marktplatz
+  // Alle übrigen Häuser
+  const plan = planTownHouses(); TOWN_HOUSES = plan.concat(TOWN_DETAIL);
+  const L = { fac0:[], fac1:[], fac2:[], fac3:[], fac4:[], fac5:[], tiles:[], slate:[], stone2:[] }, parts = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), one = new THREE.Vector3(1, 1, 1), pv = new THREE.Vector3();
+  const tint = ['#ffffff', '#f6efe4', '#fff4ec', '#f2eadc'];
+  for (const h of plan){
+    const gy = Math.min(groundH(h.x, h.z), ...hcorners(h).map(([x, z]) => groundH(x, z))) - 0.04, FH = 2.7, J = h.f > 1 ? 0.3 : 0, F = h.f, H = FH*F;
+    q.setFromAxisAngle(up, h.ry); m4.compose(pv.set(h.x, gy, h.z), q, one);
+    const put = (list, geo) => { geo.applyMatrix4(m4); list.push(geo); };
+    put(L.stone2, xf(boxUV(h.w + 0.1, 0.8, h.d + 0.1, 1.4), 0, -0.4, 0));
+    const gfac = h.stone ? 'fac4' : 'fac' + h.gf, ufac = h.stone ? 'fac5' : 'fac' + h.fac;
+    put(L[gfac], xf(hbox(h.w, FH, h.d, h.u, 1), 0, FH/2, 0));
+    if (F > 1) put(L[ufac], xf(hbox(h.w, FH*(F - 1), h.d + 2*J, h.u + 0.31, F - 1), 0, FH + FH*(F - 1)/2, 0));
+    for (let f=1; f<F; f++) for (let x = -h.w/2 + 0.25; x < h.w/2; x += 0.55) for (const sd of [-1, 1]) parts.push(xf(part(new THREE.BoxGeometry(0.13, 0.15, J + 0.1), '#4a3020', x, f*FH - 0.1, sd*(h.d/2 + J/2 - 0.02)).applyMatrix4(m4)));
+    // Dach: Giebel zur Gasse (First entlang z) oder traufständig (First entlang x)
+    const rz = !h.ridgeX, span = rz ? h.w : h.d + 2*J, len = rz ? h.d + 2*J : h.w, rise = span/2*(1.15 + (h.f === 3 ? 0.1 : 0)), rl = h.roof === 'slate' ? L.slate : L.tiles;
+    for (const r of hroof(span, len, rise, 0.35, 0.25)){ if (!rz) r.rotateY(Math.PI/2); r.translate(0, H, 0); put(rl, r); }
+    for (const sd of [-1, 1]){ const gg = hgable(span, rise, h.u, F - 1, sd); if (rz) gg.translate(0, H, sd*(len/2 - 0.01)); else { gg.rotateY(Math.PI/2); gg.translate(sd*(h.w/2 - 0.01), H, 0); }
+      put(L[ufac !== gfac && F > 1 ? ufac : gfac], gg); }
+    if (h.chim) parts.push(xf(part(new THREE.BoxGeometry(0.55, rise + 0.9, 0.55), '#8a8274', rz ? -h.w*0.18 : 0.6, H + (rise + 0.9)/2, rz ? -h.d*0.15 : -h.d*0.18).applyMatrix4(m4)));
+    const c = hcorners(h, 0.05); for (let i=0;i<4;i++) colliders.push({ ax:c[i][0], az:c[i][1], bx:c[(i + 1) % 4][0], bz:c[(i + 1) % 4][1], r:0.12 });
+  }
+  const g = new THREE.Group(); scene.add(g); keep(g);
+  for (let k=0;k<6;k++){ const list = L['fac' + k]; if (list.length) mk(mergeGeo(list), M('#ffffff', { tex:'fac' + k }), g); }
+  mk(mergeGeo(L.tiles), MT.tiles, g); mk(mergeGeo(L.slate), MT.slate, g); mk(mergeGeo(L.stone2), MT.stone2, g); vmesh(parts, g);
+  // Pflaster in den Gassen, auf dem Marktplatz und vor dem Münster
   for (const [a, b, w] of STREETS) pavedStrip(a[0], a[1], b[0], b[1], w, MT.cobble, 0.05);
-  pavedRect(MARKET, MT.cobble, 0.05);
-  { const [a, b] = [[50, -24], [50, -16]]; pavedStrip(a[0], a[1], b[0], b[1], 4, MT.cobble, 0.05); }
-  pavedStrip(QUAY.x0, -44, QUAY.x1 - 0.5, -44, 6, MT.cobble, 0.06);
+  pavedRect(MARKET, MT.cobble, 0.05); pavedRect(rect(55.5, -55, 3.2, 5), MT.cobble, 0.05); pavedRect(rect(48, -16.5, 4, 2.5), MT.cobble, 0.05);
+  pavedStrip(QUAY.x0 + 1, -44, QUAY.x1 - 0.5, -44, 6, MT.cobble, 0.06);
+  // Gärten im Südosten der Stadt: Gemüsebeete mit Flechtzaun
+  { const Gd = GARDENS, x0 = Gd.cx - Gd.hw, x1 = Gd.cx + Gd.hw, z0 = Gd.cz - Gd.hl, z1 = Gd.cz + Gd.hl;
+    makeFence([[x0, z0], [x1, z0], [x1, z1], [x0, z1]], true, [null, null, null, [3.0, 4.6]]);
+    const bd = []; for (let j=0;j<4;j++) for (let i=0;i<3;i++){ const bx = x0 + 1.9 + i*3.6, bz = z0 + 1.3 + j*2.7, gy = groundH(bx, bz); bd.push(part(new THREE.BoxGeometry(3.0, 0.18, 1.8), '#5a4632', bx, gy + 0.09, bz));
+      for (let k=0;k<10;k++){ const hx = bx - 1.2 + (k % 5)*0.6, hz = bz - 0.45 + Math.floor(k/5)*0.9, col = ['#5a8a3a', '#7aa04a', '#4a7a5a', '#8ab04a'][(i + j) % 4];
+        if ((i + j) % 2) bd.push(part(new THREE.SphereGeometry(0.2, 8, 6).scale(1, 0.7, 1), '#6a9a5a', hx, gy + 0.3, hz)); else for (let qq=0;qq<3;qq++) bd.push(part(new THREE.ConeGeometry(0.04, 0.4, 4), col, hx + (qq - 1)*0.07, gy + 0.36, hz, 0, 0, (qq - 1)*0.3)); } }
+    vmesh(bd, scene);
+    const gw = mPerson(scene, Object.assign(burgherO(320, true), { apron:'#e8e0cc' }), x0 + 5.4, z0 + 4.0, 0.4); const bk = makeBasket(0.16, 0.18); gw.spine.add(bk); bk.position.set(-0.24, 0.12, 0.16);
+    anims.push(t => { gw.spine.rotation.x = 0.55 + Math.sin(t*0.5)*0.15; gw.arms[0].sh.rotation.set(-0.9 - Math.max(0, Math.sin(t*1.3))*0.4, 0, -0.1); gw.head.rotation.x = 0.4; }); }
 }
 /* ---------- Marktplatz: Stände, Brunnen, Pranger ---------- */
-function stall(x, z, ry, cloth, goods){ const g = grp(x, z); g.rotation.y = ry; const MT = mMats(), w = [];
+function stall(x, z, ry, cloth, goods){ const g = grp(x, z); g.rotation.y = ry; const w = [];
   w.push(part(new THREE.BoxGeometry(2.4, 0.08, 1.0), '#8a6a44', 0, 0.85, 0)); for (const sx of [-1.1, 1.1]) for (const sz of [-0.42, 0.42]) w.push(part(new THREE.BoxGeometry(0.08, 0.85, 0.08), '#5a3e28', sx, 0.42, sz));
   for (const sx of [-1.15, 1.15]) w.push(part(new THREE.BoxGeometry(0.08, 2.3, 0.08), '#5a3e28', sx, 1.15, -0.5), part(new THREE.BoxGeometry(0.08, 2.0, 0.08), '#5a3e28', sx, 1.0, 0.7));
   vmesh(w, g);
   const ct = canvasTex(128, 32, (x2, W2, H2) => { for (let i=0;i<8;i++){ x2.fillStyle = i % 2 ? '#f4ecd8' : cloth; x2.fillRect(i*16, 0, 16, H2); } });
-  const aw = mk(new THREE.PlaneGeometry(2.6, 1.5, 1, 4), new THREE.MeshStandardMaterial({ map:ct, roughness:0.9, side:THREE.DoubleSide }), g, 0, 2.15, 0.1, -Math.PI/2 + 0.25, 0, 0);
+  mk(new THREE.PlaneGeometry(2.6, 1.5, 1, 4), new THREE.MeshStandardMaterial({ map:ct, roughness:0.9, side:THREE.DoubleSide }), g, 0, 2.15, 0.1, -Math.PI/2 + 0.25, 0, 0);
   const vl = new THREE.PlaneGeometry(2.6, 0.25); vl.translate(0, -0.12, 0); mk(vl, new THREE.MeshStandardMaterial({ map:ct, roughness:0.9, side:THREE.DoubleSide }), g, 0, 1.97, 0.82);
   const it = []; const rr = mulberry32(Math.round(x*7 + z*3));
   if (goods === 'veg'){ for (let i=0;i<14;i++) it.push(part(new THREE.SphereGeometry(0.07 + rr()*0.03, 8, 6), ['#6a9a3a', '#e88a2a', '#c83a2a', '#d8c060'][i % 4], -0.9 + (i % 7)*0.3, 0.95, -0.2 + Math.floor(i/7)*0.3)); for (let i=0;i<3;i++) it.push(part(new THREE.CylinderGeometry(0.2, 0.16, 0.18, 12), '#a8824c', -0.7 + i*0.7, 0.98, 0.25)); }
@@ -5019,24 +5166,24 @@ function stall(x, z, ry, cloth, goods){ const g = grp(x, z); g.rotation.y = ry; 
   else if (goods === 'eggs'){ const bk = makeBasket(0.2, 0.18, g); bk.position.set(-0.6, 0.89, 0); for (let i=0;i<7;i++) it.push(part(new THREE.SphereGeometry(0.03, 8, 6).scale(1, 1.3, 1), '#f2ead8', -0.6 + (i % 3 - 1)*0.07, 1.04, (Math.floor(i/3) - 1)*0.07));
     const cage = []; for (let i=0;i<8;i++) cage.push(part(new THREE.BoxGeometry(0.02, 0.4, 0.02), '#8a6a44', 0.3 + (i % 4)*0.17, 1.1, -0.2 + Math.floor(i/4)*0.4)); cage.push(part(new THREE.BoxGeometry(0.6, 0.03, 0.45), '#8a6a44', 0.55, 1.3, 0)); vmesh(cage, g);
     const ch = makeChicken(5, true); ch.g.position.set(0.55, 0.9, 0); ch.g.scale.setScalar(0.8); g.add(ch.g); anims.push(t => { ch.hd.rotation.x = Math.max(0, Math.sin(t*3))*0.5; }); }
+  else if (goods === 'fish'){ for (let i=0;i<6;i++) it.push(part(new THREE.SphereGeometry(0.06, 8, 6).scale(1, 0.6, 3.2), '#9ab0b8', -0.8 + i*0.32, 0.93, (i % 2 - 0.5)*0.3, 0, 0.3*(i % 3), 0)); }
   if (it.length) vmesh(it, g);
   g.updateWorldMatrix(true, false); wallSeg(g, -1.25, 0, 1.25, 0, 0.6);
   return g; }
 function buildMarket(){
   const MT = mMats(), M0 = MARKET;
-  // Marktbrunnen: achteckiges Becken mit Säule
-  { const g = grp(M0.cx + 0.5, M0.cz - 1), b = [];
-    for (let i=0;i<8;i++){ const a = i/8*TAU + Math.PI/8; b.push(xf(boxUV(1.25, 0.8, 0.25, 1), Math.sin(a)*1.5, 0.4, Math.cos(a)*1.5, 0, a, 0)); }
-    mk(mergeGeo(b), MT.stone, g); mk(new THREE.CylinderGeometry(0.22, 0.28, 2.6, 12), MT.stone, g, 0, 1.3, 0); mk(new THREE.SphereGeometry(0.3, 12, 8), MT.stone, g, 0, 2.7, 0);
-    const wtr = mk(new THREE.CircleGeometry(1.45, 24).rotateX(-Math.PI/2), waterMat(0.6, 0.6, '#4a7a80', 0.85), g, 0, 0.62, 0); wtr.castShadow = false;
-    for (let i=0;i<4;i++){ const a = i*Math.PI/2; const sp = mk(new THREE.CylinderGeometry(0.012, 0.02, 1, 6, 1, true), M('#8ab8d0', { tex:null, roughness:0.05, transparent:true, opacity:0.5, depthWrite:false }), g, Math.sin(a)*0.55, 1.3, Math.cos(a)*0.55, Math.cos(a)*0.9, 0, -Math.sin(a)*0.9); sp.castShadow = false; }
-    colliders.push({ x:g.position.x, z:g.position.z, r:1.75 }); keep(g); }
+  // Marktbrunnen: achteckiges Becken mit Säule und einer Figur
+  { const g = grp(M0.cx + 0.5, M0.cz - 0.5), b = [];
+    for (let i=0;i<8;i++){ const a = i/8*TAU + Math.PI/8; b.push(xf(boxUV(1.6, 0.8, 0.3, 1), Math.sin(a)*1.95, 0.4, Math.cos(a)*1.95, 0, a, 0)); }
+    mk(mergeGeo(b), MT.stone, g); mk(new THREE.CylinderGeometry(0.25, 0.32, 3.0, 12), MT.stone, g, 0, 1.5, 0); mk(new THREE.SphereGeometry(0.34, 12, 8), MT.stone, g, 0, 3.1, 0);
+    const wtr = mk(new THREE.CircleGeometry(1.85, 24).rotateX(-Math.PI/2), waterMat(0.6, 0.6, '#4a7a80', 0.85), g, 0, 0.62, 0); wtr.castShadow = false;
+    for (let i=0;i<4;i++){ const a = i*Math.PI/2; const sp = mk(new THREE.CylinderGeometry(0.012, 0.02, 1, 6, 1, true), M('#8ab8d0', { tex:null, roughness:0.05, transparent:true, opacity:0.5, depthWrite:false }), g, Math.sin(a)*0.6, 1.4, Math.cos(a)*0.6, Math.cos(a)*0.9, 0, -Math.sin(a)*0.9); sp.castShadow = false; }
+    colliders.push({ x:g.position.x, z:g.position.z, r:2.2 }); keep(g); }
   // Marktstände mit Händlerinnen und Händlern
-  const stalls = [[43.5, -40.5, 0.2, '#a8242a', 'veg'], [43, -47.5, -0.15 + Math.PI, '#2e4a8a', 'pots'], [56.5, -47.6, Math.PI + 0.1, '#2e6a3a', 'cloth'], [52.5, -38.4, 0.05, '#c88a1a', 'bread'], [48, -50.2, Math.PI, '#6a2a6a', 'eggs']];
+  const stalls = [[41.5, -39.0, 0.15, '#a8242a', 'veg'], [41.0, -46.8, Math.PI - 0.15, '#2e4a8a', 'pots'], [57.0, -47.0, Math.PI + 0.1, '#2e6a3a', 'cloth'], [52.0, -37.8, 0.05, '#c88a1a', 'bread'], [47.0, -48.6, Math.PI, '#6a2a6a', 'eggs'], [44.5, -42.0, Math.PI/2, '#1a5a6a', 'fish']];
   const sellers = [];
   stalls.forEach(([x, z, ry, c, goods], i) => { const g = stall(x, z, ry, c, goods); const fem = i % 2 === 0;
     const s = mPerson(g, fem ? Object.assign(burgherO(200 + i, true), { apron:'#e8e0cc' }) : Object.assign(burgherO(200 + i, false), { apron:'#e8e0cc' }), 0, -1.1, 0); sellers.push(s); });
-  // Käuferinnen und Käufer vor den Ständen
   const buyers = [];
   stalls.forEach(([x, z, ry], i) => { if (i === 4) return; const c = Math.cos(ry), sn = Math.sin(ry), lx = (i % 2 ? 0.5 : -0.5), lz = 1.4, wx = x + lx*c + lz*sn, wz = z - lx*sn + lz*c;
     const b = mPerson(scene, i % 2 ? burgherO(210 + i, true) : peasantO(210 + i, i === 2), wx, wz, ry + Math.PI); buyers.push(b); colliders.push({ x:wx, z:wz, r:0.35 });
@@ -5045,14 +5192,14 @@ function buildMarket(){
     buyers.forEach((b, i) => { b.face.talk = Math.max(0, Math.sin(t*6 + i + 2))*0.5*(Math.sin(t*0.4 + i) < 0 ? 1 : 0); b.head.rotation.x = 0.25; b.arms[0].sh.rotation.x = -0.3 - Math.max(0, Math.sin(t*0.6 + i*2))*0.6; }); });
   addHotspot('markt', [sellers[0].root], P.markt[0], gy(P.markt[0], P.markt[1]) + 2.6, P.markt[1], 0);
   // Pranger: Holzbrett mit Löchern für Kopf und Hände auf einem Podest; Kinder werfen faules Gemüse
-  { const [px, pz] = [57.2, -42.6], g = grp(px, pz); g.rotation.y = -Math.PI/2;
+  { const [px, pz] = [57.4, -40.6], g = grp(px, pz); g.rotation.y = -Math.PI/2;
     wbox(g, 2.2, 0.5, 2.2, MT.stone2, 0, 0, 0, 0, 1.2); const pw = [];
     for (const sx of [-0.65, 0.65]) pw.push(part(new THREE.BoxGeometry(0.16, 2.1, 0.16), '#5a3e28', sx, 1.55, 0));
     pw.push(part(new THREE.BoxGeometry(1.5, 0.2, 0.1), '#7a5636', 0, 2.08, 0.02), part(new THREE.BoxGeometry(1.5, 0.2, 0.1), '#7a5636', 0, 1.88, 0.02)); vmesh(pw, g);
     const cul = mPerson(g, { skin:'#c49a78', hair:'#6a4a2a', beard:true, cloth:'#8a7a5a', leggings:'#4a3a28' }, 0, -0.3, 0); cul.g.position.y = 0.5;
     const pc = canvasTex(32, 32, (x2) => { x2.fillStyle = '#e8dcc0'; x2.fillRect(0, 0, 32, 32); x2.fillStyle = '#2a1a10'; x2.font = 'bold 22px Georgia'; x2.textAlign = 'center'; x2.fillText('✗', 16, 24); });
     mk(new THREE.PlaneGeometry(0.4, 0.4), new THREE.MeshStandardMaterial({ map:pc, roughness:0.9 }), g, 0, 2.45, 0.08);
-    const kids = [[53.4, -41.6], [52.8, -43.6]].map(([x, z], i) => mPerson(scene, peasantO(230 + i, i === 1, true), x, z, Math.PI/2 + (i ? 0.2 : -0.1)));
+    const kids = [[53.6, -39.6], [53.0, -41.6]].map(([x, z], i) => mPerson(scene, peasantO(230 + i, i === 1, true), x, z, Math.PI/2 + (i ? 0.2 : -0.1)));
     const tom = kids.map(() => mk(new THREE.SphereGeometry(0.06, 8, 6), M('#b8402a', { tex:null, roughness:0.6 }), scene));
     const H = new THREE.Vector3(), A = new THREE.Vector3(), B = new THREE.Vector3();
     anims.push(t => { cul.spine.rotation.x = 0.55; cul.head.rotation.x = -0.4; cul.hips.position.y = 0.88;
@@ -5069,36 +5216,37 @@ function buildMarket(){
 }
 /* ---------- Rathaus mit Laubengang: ein neuer Bürger leistet den Eid und bezahlt die Gebühr ---------- */
 function buildRathaus(){
-  const MT = mMats(), Rh = RATHAUS, g = grp(Rh.cx, Rh.cz), W = Rh.hw*2, D = Rh.hl*2, H1 = 4.2, H2 = 3.2;
-  // Erdgeschoss aus Stein mit offenen Bögen zum Markt (Süden, +z), Obergeschoss in Fachwerk
+  const MT = mMats(), Rh = RATHAUS, g = grp(Rh.cx, Rh.cz), W = Rh.hw*2, D = Rh.hl*2, H1 = 4.2, H2 = 3.2, ochre = M('#e8c878', { tex:'plaster' });
+  // Erdgeschoss aus Stein mit offenen Bögen zum Markt (Süden, +z), Obergeschoss gelb verputzt wie auf dem Bild
   mk(holeWall(W, H1, 0.6, [-4.5, -1.5, 1.5, 4.5].map(cx => [cx, 0, 1.1, 3.2, true])), MT.stone, g, 0, 0, D/2 - 0.3);
   wbox(g, W, H1, 0.6, MT.stone, 0, 0, -D/2 + 0.3, 0, 2); for (const sd of [-1, 1]) wbox(g, 0.6, H1, D, MT.stone, sd*(W/2 - 0.3), 0, 0, 0, 2);
   mk(holeWall(W - 1.2, H1, 0.4, [[2.5, 0, 0.6, 2.3, true]]), MT.stone, g, 0, 0, D/2 - 2.6);
   wbox(g, W, 0.3, D, MT.floor, 0, H1, 0, 0, 2);
-  const up = fwHouse({ x:Rh.cx, z:Rh.cz, ry:0, w:W, d:D - 0.2, floors:1, fh:H2, roof:'tiles', ridge:'x', jetty:0, seed:77, plaster:'#f4ead6', pitch:1.2, noBase:true });
-  up.position.y = g.position.y + H1 + 0.2; colliders.splice(colliders.length - 4, 4);   // das Obergeschoss braucht keine eigenen Hindernisse
-  // Dachreiter mit Glocke und Uhr
-  { const tw = []; tw.push(part(new THREE.BoxGeometry(1.4, 1.6, 1.4), '#f4ead6', 0, H1 + H2 + W*0.0 + 4.2, 0)); vmesh(tw, g);
-    mk(new THREE.ConeGeometry(1.15, 2.4, 4).rotateY(Math.PI/4), MT.slate, g, 0, H1 + H2 + 6.2, 0);
+  wbox(g, W, H2*1.4, D - 0.2, ochre, 0, H1 + 0.3, 0, 0, 2);
+  { const wn = []; for (const sd of [-1, 1]) for (let k=0;k<5;k++){ const x = -W/2 + 1.4 + k*(W - 2.8)/4; wn.push(xfC(archWindow(0.8, 1.6, true), '#1e2a3a', x, H1 + 1.0, sd*(D/2 - 0.08), sd > 0 ? 0 : Math.PI)); } vmesh(wn, g, true); }
+  saddleRoof(g, { w:D - 0.2, d:W, rise:3.2, y:H1 + 0.3 + H2*1.4, ry:Math.PI/2, mat:MT.tiles, ov:0.45, ovG:0.3 });
+  for (const sd of [-1, 1]) mk(gableTri(D - 0.2, 3.2, 0.25), ochre, g, sd*(W/2 - 0.12), H1 + 0.3 + H2*1.4, 0, 0, Math.PI/2, 0);
+  // Dachreiter mit Glocke und Uhr, grünes Kupferdach wie auf dem Bild
+  { const top = H1 + 0.3 + H2*1.4 + 2.2; const tw = []; tw.push(part(new THREE.BoxGeometry(1.6, 2.2, 1.6), '#e8c878', 0, top + 1.1, 0)); vmesh(tw, g);
+    mk(new THREE.ConeGeometry(1.3, 3.0, 8), M('#5a9a7a', { tex:'slate' }), g, 0, top + 3.7, 0); mk(new THREE.SphereGeometry(0.12, 8, 6), METAL.gold(), g, 0, top + 5.3, 0);
     const ck = canvasTex(64, 64, (x2) => { x2.fillStyle = '#2e4a8a'; x2.beginPath(); x2.arc(32, 32, 30, 0, TAU); x2.fill(); x2.strokeStyle = '#e8c040'; x2.lineWidth = 3; x2.stroke(); x2.fillStyle = '#e8c040'; for (let i=0;i<12;i++){ const a = i/12*TAU; x2.fillRect(32 + Math.sin(a)*24 - 2, 32 - Math.cos(a)*24 - 2, 4, 4); } x2.strokeStyle = '#e8c040'; x2.lineWidth = 4; x2.beginPath(); x2.moveTo(32, 32); x2.lineTo(32, 12); x2.stroke(); });
-    mk(new THREE.CircleGeometry(0.55, 24), new THREE.MeshStandardMaterial({ map:ck, roughness:0.6 }), g, 0, H1 + H2 + 4.3, 0.71); }
+    mk(new THREE.CircleGeometry(0.6, 24), new THREE.MeshStandardMaterial({ map:ck, roughness:0.6 }), g, 0, top + 1.2, 0.81); }
   // Hindernisse: Rückwand, Seiten, Pfeiler der Bögen
   wallSeg(g, -W/2, -D/2 + 0.3, W/2, -D/2 + 0.3, 0.35); for (const sd of [-1, 1]) wallSeg(g, sd*(W/2 - 0.3), -D/2, sd*(W/2 - 0.3), D/2, 0.35);
   wallSeg(g, -W/2, D/2 - 2.6, 1.9, D/2 - 2.6, 0.25); wallSeg(g, 3.1, D/2 - 2.6, W/2, D/2 - 2.6, 0.25);
   for (const x of [-6, -3, 0, 3, 6]) { g.updateWorldMatrix(true, false); const v = new THREE.Vector3(x, 0, D/2 - 0.3); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.45 }); }
   // Im Laubengang: ein Schreiber am Tisch, zwei Ratsherren, ein Handwerker schwört mit erhobener Hand den Bürgereid
-  const tb = []; tb.push(part(new THREE.BoxGeometry(1.6, 0.06, 0.7), '#7a5636', -2.6, 0.78, 2.45)); for (const sx of [-0.7, 0.7]) tb.push(part(new THREE.BoxGeometry(0.08, 0.78, 0.6), '#5a3e28', -2.6 + sx, 0.39, 2.45));
-  tb.push(part(new THREE.BoxGeometry(0.5, 0.01, 0.35), '#efe6cc', -2.8, 0.82, 2.4), part(new THREE.BoxGeometry(0.3, 0.06, 0.22), '#6a3a1e', -2.1, 0.84, 2.35)); vmesh(tb, g);
-  wbox(g, 0.9, 0.45, 0.36, MT.plank, -2.6, 0, 1.8, 0, 0.8);
-  const scribe = mPerson(g, { skin:'#d8b090', hair:'#3a2616', cloth:'#2a2a3a', sleeves:true, long:true, beret:'#2a2a2a' }, -2.6, 1.8, 0); poseSit(scribe, 0.45);
+  const tb = []; tb.push(part(new THREE.BoxGeometry(1.6, 0.06, 0.7), '#7a5636', -2.6, 0.78, D/2 - 2.05)); for (const sx of [-0.7, 0.7]) tb.push(part(new THREE.BoxGeometry(0.08, 0.78, 0.6), '#5a3e28', -2.6 + sx, 0.39, D/2 - 2.05));
+  tb.push(part(new THREE.BoxGeometry(0.5, 0.01, 0.35), '#efe6cc', -2.8, 0.82, D/2 - 2.1), part(new THREE.BoxGeometry(0.3, 0.06, 0.22), '#6a3a1e', -2.1, 0.84, D/2 - 2.15)); vmesh(tb, g);
+  wbox(g, 0.9, 0.45, 0.36, MT.plank, -2.6, 0, D/2 - 2.7, 0, 0.8);
+  const scribe = mPerson(g, { skin:'#d8b090', hair:'#3a2616', cloth:'#2a2a3a', sleeves:true, long:true, beret:'#2a2a2a' }, -2.6, D/2 - 2.7, 0); poseSit(scribe, 0.45);
   const quill = new THREE.Group(); mk(new THREE.ConeGeometry(0.012, 0.22, 6).translate(0, 0.11, 0), M('#f4f0e6', { tex:null }), quill); fist(quill, scribe.arms[0].hand, 0);
-  const mayor = mPerson(g, { skin:'#e0b898', hair:'#a8a29a', beard:true, cloth:'#6a1e3a', sleeves:true, long:true, cloak:'#2a2a3a', fur:'#3a2a1a', beret:'#2a1a1a' }, -0.9, 2.5, -0.9);
-  const coun = mPerson(g, { skin:'#d8b090', hair:'#5a3a22', cloth:'#2e4a3a', sleeves:true, long:true, hood:'#6a2a2a', liripipe:true }, -4.4, 2.5, 0.9);
-  const cit = mPerson(g, Object.assign(burgherO(250, false), { apron:'#7a5a3a' }), -2.4, 3.25, Math.PI);
-  const coin = mk(new THREE.CylinderGeometry(0.05, 0.05, 0.12, 12), METAL.silver(), g, -2.3, 0.86, 2.62);
+  const mayor = mPerson(g, { skin:'#e0b898', hair:'#a8a29a', beard:true, cloth:'#6a1e3a', sleeves:true, long:true, cloak:'#2a2a3a', fur:'#3a2a1a', beret:'#2a1a1a' }, -0.9, D/2 - 2.0, -0.9);
+  const coun = mPerson(g, { skin:'#d8b090', hair:'#5a3a22', cloth:'#2e4a3a', sleeves:true, long:true, hood:'#6a2a2a', liripipe:true }, -4.4, D/2 - 2.0, 0.9);
+  const cit = mPerson(g, Object.assign(burgherO(250, false), { apron:'#7a5a3a' }), -2.4, D/2 - 1.25, Math.PI);
+  const coin = mk(new THREE.CylinderGeometry(0.05, 0.05, 0.12, 12), METAL.silver(), g, -2.3, 0.86, D/2 - 1.88);
   anims.push(t => { const c = (t/12) % 1;
     scribe.arms[0].el.rotation.x = -1.4 + Math.sin(t*5)*0.08; scribe.arms[0].sh.rotation.x = -0.4; scribe.spine.rotation.x = 0.3; scribe.head.rotation.x = 0.4 - (c > 0.5 && c < 0.7 ? 0.5 : 0);
-    // Eid: rechte Hand erhoben, zwei Finger hoch
     const oath = c > 0.35 && c < 0.75; cit.arms[0].sh.rotation.set(oath ? -2.6 : -0.1, 0, oath ? -0.2 : -0.1); cit.arms[0].el.rotation.x = oath ? -0.3 : -0.2;
     cit.arms[1].sh.rotation.set(c < 0.3 ? -0.9 : -0.05, 0, 0.1); cit.arms[1].el.rotation.x = c < 0.3 ? -0.6 : -0.1; coin.visible = c > 0.2;
     cit.face.talk = oath ? Math.max(0, Math.sin(t*7))*0.6 : 0; mayor.face.talk = !oath && c > 0.75 ? Math.max(0, Math.sin(t*6))*0.5 : 0;
@@ -5106,43 +5254,128 @@ function buildRathaus(){
   keep(g);
   addHotspot('rathaus', [g], P.rathaus[0], gy(P.rathaus[0], P.rathaus[1]) + 3.0, P.rathaus[1], 0);
 }
-/* ---------- Stadtkirche: der Bischof segnet die Leute, ein Mönch liest im Buch ---------- */
-function buildTownChurch(){
-  const Cc = CHURCH, L = Cc.x1 - Cc.x0, W = Cc.z1 - Cc.z0, cx = (Cc.x0 + Cc.x1)/2, cz = (Cc.z0 + Cc.z1)/2;
-  buildChurchAt({ x:cx, z:cz, L, W, H:9, TW:4.2, TH:19, gothic:true, door:[-1.2, 1], wall:mMats().stone });
-  const g = grp(35.6, -53.6); g.rotation.y = 0;
-  const bish = mPerson(g, { skin:'#e0b898', hair:'#c8c0b0', cloth:'#f4ecd8', sleeves:true, long:true, cloak:'#a8242a', fibula:'gold', mitre:'#f4ecd8', fur:'#e8c040' }, -0.4, -0.3, 0.2);
-  const staff = new THREE.Group(); mk(new THREE.CylinderGeometry(0.02, 0.02, 1.9, 8).translate(0, 0.5, 0), METAL.gold(), staff);
-  const V = (x, y, z) => new THREE.Vector3(x, y, z); mk(taperTube(new THREE.CatmullRomCurve3([V(0, 1.45, 0), V(0, 1.6, 0), V(0.1, 1.7, 0), V(0.15, 1.6, 0), V(0.08, 1.55, 0)]), 12, 6, () => 0.02), METAL.gold(), staff);
-  fist(staff, bish.arms[1].hand, 0.2);
-  const monk = mPerson(g, { skin:'#d8b090', hair:'#6a4a2a', cloth:'#5a4030', long:true, sleeves:true, hood:'#5a4030' }, 1.2, -0.6, -0.3);
-  const book = new THREE.Group(); mk(new THREE.BoxGeometry(0.28, 0.04, 0.2), M('#6a2a1a', { tex:'leather' }), book); mk(new THREE.BoxGeometry(0.26, 0.03, 0.19), M('#f2ead6', { tex:null }), book, 0, 0.025, 0); monk.spine.add(book); book.position.set(0, 0.42, 0.3); book.rotation.x = -0.4;
-  const fol = [0, 1, 2].map(i => mPerson(scene, i === 1 ? peasantO(260 + i, true) : burgherO(260 + i, i === 2), 34.4 + i*1.3, -50.4 + (i % 2)*0.5, Math.PI + (i - 1)*0.3));
-  fol.forEach(p => { const v = new THREE.Vector3(); p.g.getWorldPosition(v); colliders.push({ x:v.x, z:v.z, r:0.35 }); });
-  anims.push(t => { const bless = Math.max(0, Math.sin(t*0.5)); bish.arms[0].sh.rotation.set(-1.0 - bless*0.6, 0, -0.2); bish.arms[0].el.rotation.x = -0.4 - Math.sin(t*2)*0.15*bless; bish.face.talk = bless > 0.3 ? Math.max(0, Math.sin(t*6))*0.5 : 0;
-    bish.arms[1].sh.rotation.set(-0.35, 0, 0.1); bish.arms[1].el.rotation.x = -0.9;
-    for (const i of [0, 1]){ monk.arms[i].sh.rotation.set(-0.7, 0, i ? 0.25 : -0.25); monk.arms[i].el.rotation.x = -1.0; } monk.head.rotation.x = 0.45;
-    fol.forEach((p, i) => { p.head.rotation.x = 0.2 + bless*0.15; p.spine.rotation.x = bless*0.12; }); });
-  colliders.push({ x:35.8, z:-53.8, r:1.3 });
-  addHotspot('klerus', [bish.root, monk.root], P.klerus[0], gy(P.klerus[0], P.klerus[1]) + 2.8, P.klerus[1], 0);
+/* ---------- Das Münster: gotische Kirche mit hohem Turm, Strebepfeilern und bunten Glasfenstern; man kann hineingehen ---------- */
+function buildMuenster(){
+  const MT = mMats(), Mu = MUENSTER, sand = M('#d8a878', { tex:'castle' }), sandDS = M('#d8a878', { tex:'castle', side:THREE.DoubleSide }), g = new THREE.Group(), gs = new THREE.Group(); scene.add(g); scene.add(gs);
+  const cz = (Mu.z0 + Mu.z1)/2, W = Mu.z1 - Mu.z0, Lx = Mu.x1 - Mu.x0, H = 14, T = 0.9, gy0 = Math.min(groundH(Mu.tx0, cz), groundH(Mu.x1, cz), groundH((Mu.x0 + Mu.x1)/2, Mu.z0), groundH((Mu.x0 + Mu.x1)/2, Mu.z1)) - 0.05;
+  // Boden innen über das höchste Gelände im Schiff legen, damit keine Erde durchschaut
+  let fy = 0; for (let x = Mu.tx0; x <= Mu.x1 + W/2; x += 0.75) for (let z = Mu.z0 + T; z <= Mu.z1 - T; z += 0.75) fy = Math.max(fy, groundH(x, z) - gy0);
+  fy += 0.03;
+  g.position.set(0, gy0 + fy, 0); gs.position.set(0, gy0, 0);
+  const stone = [], dark = [], glassP = [];
+  // Seitenwände des Schiffs mit hohen Spitzbogenfenstern, Strebepfeiler aussen
+  const nW = 4, bay = Lx/nW;
+  for (const sd of [-1, 1]){ const z = sd > 0 ? Mu.z1 - T/2 : Mu.z0 + T/2, holes = []; for (let i=0;i<nW;i++) holes.push([(i + 0.5)*bay, 3.2, 0.85, 7.6, true]);
+    stone.push(xf(holeWall(Lx, H, T, holes.map(([s, b, hw, hh, a]) => [s - Lx/2, b, hw, hh, a])), (Mu.x0 + Mu.x1)/2, 0, z));
+    for (let i=0;i<=nW;i++){ const x = Mu.x0 + i*bay; stone.push(xf(boxUV(0.6, H - 4, 1.1, 2), x, (H - 4)/2, z + sd*0.95), xf(boxUV(0.5, 2.6, 0.7, 2), x, H - 2.7, z + sd*0.7)); stone.push(xf(new THREE.ConeGeometry(0.3, 1.6, 4).rotateY(Math.PI/4), x, H - 3.2, z + sd*1.2), xf(new THREE.ConeGeometry(0.28, 1.4, 4).rotateY(Math.PI/4), x, H + 0.6, z + sd*0.7)); } }
+  // Chor im Osten: fünf Seiten eines Achtecks mit Fenstern
+  const cr = W/2 - 0.2, ccx = Mu.x1; for (let k=0;k<5;k++){ const a0 = -Math.PI/2 + k*Math.PI/4, a1 = a0 + Math.PI/4, ax = ccx + Math.cos(a0)*cr, az = cz + Math.sin(a0)*cr, bx = ccx + Math.cos(a1)*cr, bz = cz + Math.sin(a1)*cr, L = Math.hypot(bx - ax, bz - az);
+    stone.push(xf(holeWall(L, H, T, [[0, 3.2, 0.7, 7.0, true]]), (ax + bx)/2, 0, (az + bz)/2, 0, Math.atan2(-(bz - az), bx - ax) + Math.PI, 0));
+    glassP.push([(ax + bx)/2, (az + bz)/2, Math.atan2(-(bz - az), bx - ax) + Math.PI, 1.4, 7.0]); }
+  // Westwand mit dem Durchgang zum Turm
+  stone.push(xf(holeWall(W, H, T, [[0, 0, 1.2, 4.4, true]]), Mu.x0 + T/2, 0, cz, 0, Math.PI/2, 0));
+  // Turm im Westen: vier Geschosse, oben ein achteckiger, durchbrochener Helm (wie beim Bild)
+  const tW = Mu.tx1 - Mu.tx0, tcx = (Mu.tx0 + Mu.tx1)/2, TH = 28;
+  stone.push(xf(holeWall(tW, TH, 1.0, [[0, 0, 1.2, 4.4, true], [0, 18, 0.6, 3.4, true]]), Mu.tx0 + 0.5, 0, cz, 0, Math.PI/2, 0));
+  stone.push(xf(holeWall(tW, TH - H, 1.0, [[0, 18 - H, 0.6, 3.4, true]]), Mu.tx1 - 0.5, H, cz, 0, Math.PI/2, 0));
+  for (const sd of [-1, 1]) stone.push(xf(holeWall(tW, TH, 1.0, [[0, 18, 0.6, 3.4, true], [0, 9, 0.4, 2.0, true]]), tcx, 0, cz + sd*(tW/2 - 0.5)));
+  stone.push(xf(boxUV(tW - 2, 0.4, tW - 2, 2), tcx, 4.6, cz));
+  for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]){ stone.push(xf(boxUV(0.9, TH + 1, 0.9, 2), tcx + sx*(tW/2 + 0.2), (TH + 1)/2, cz + sz*(tW/2 + 0.2))); stone.push(xf(new THREE.ConeGeometry(0.5, 3.0, 4).rotateY(Math.PI/4), tcx + sx*(tW/2 + 0.2), TH + 2.5, cz + sz*(tW/2 + 0.2))); }
+  { const oct = new THREE.CylinderGeometry(tW*0.38, tW*0.45, 5, 8, 1, true); scaleUV(oct, 6, 2); stone.push(xf(oct, tcx, TH + 2.5, cz)); const sp = new THREE.ConeGeometry(tW*0.4, 15, 8, 1, true); scaleUV(sp, 6, 6); stone.push(xf(sp, tcx, TH + 5 + 7.5, cz));
+    dark.push(part(new THREE.CylinderGeometry(0.06, 0.06, 2.4, 6), '#c8a040', tcx, TH + 21, cz), part(new THREE.BoxGeometry(1.0, 0.1, 0.1), '#c8a040', tcx, TH + 21.6, cz)); }
+  for (let i=0;i<8;i++){ const a = i/8*TAU; dark.push(part(new THREE.BoxGeometry(0.16, 1.8, 0.05), '#2a2220', tcx + Math.sin(a)*tW*0.415, TH + 2.6, cz + Math.cos(a)*tW*0.415, 0, a, 0)); }
+  // Dach: steil mit roten Ziegeln; Decke innen als Spitztonne
+  saddleRoof(gs, { w:W + 0.4, d:Lx, rise:W*0.85, y:H, x:(Mu.x0 + Mu.x1)/2, z:cz, ry:Math.PI/2, mat:MT.tiles, ov:0.4, ovG:0.0 });
+  { const rg = new THREE.ConeGeometry(cr + 0.5, W*0.85, 8, 1, true, -Math.PI/2, Math.PI); scaleUV(rg, 6, 3); rg.rotateY(Math.PI/2); const m = mk(rg, M('#d8806a', { tex:'tiles', side:THREE.DoubleSide }), gs, ccx, H + W*0.425, cz); }
+  stone.push(xf(gableTri(W, W*0.85, 0.6), Mu.x0 + 0.3, H, cz, 0, Math.PI/2, 0));
+  { const v = []; for (const sd of [-1, 1]){ const s = new THREE.CylinderGeometry(W/2 - T, W/2 - T, Lx, 16, 1, true, sd > 0 ? 0 : Math.PI, Math.PI/2); s.rotateZ(Math.PI/2); s.scale(1, 0.75, 1); v.push(s); } const vg = mergeGeo(v); scaleUV(vg, 4, 4); mk(vg, M('#e8dcc4', { tex:'plaster', side:THREE.DoubleSide }), gs, (Mu.x0 + Mu.x1)/2, H - 0.2, cz); }
+  mk(mergeGeo(stone), sandDS, gs); vmesh(dark, gs);
+  // Boden mit Steinplatten, Pfeiler im Innern, Altar, Kerzen
+  wbox(gs, Lx + cr, fy + 0.12, W - 2*T, MT.stone2, (Mu.x0 + Mu.x1 + cr)/2, (fy - 0.12)/2, cz, 0, 1.2); wbox(gs, tW - 1.6, fy + 0.12, tW - 1.6, MT.stone2, tcx, (fy - 0.12)/2, cz, 0, 1.2);
+  const col = []; for (let i=1;i<nW;i++) for (const sd of [-1, 1]){ const x = Mu.x0 + i*bay, z = cz + sd*2.4; col.push(xf(new THREE.CylinderGeometry(0.42, 0.5, H - 1.2, 12), x, (H - 1.2)/2, z)); colliders.push({ x, z, r:0.55 }); }
+  mk(mergeGeo(col), M('#d8c8aa', { tex:'plaster' }), gs);
+  const al = []; al.push(part(new THREE.BoxGeometry(1.0, 1.05, 2.4), '#e8dcc8', ccx - 0.4, 0.52, cz), part(new THREE.BoxGeometry(1.1, 0.05, 2.5), '#f4f0e8', ccx - 0.4, 1.07, cz), part(new THREE.BoxGeometry(0.1, 1.6, 0.1), '#d8a83a', ccx + 0.1, 1.9, cz), part(new THREE.BoxGeometry(0.1, 0.1, 0.8), '#d8a83a', ccx + 0.1, 2.3, cz));
+  for (const sd of [-1, 1]) al.push(part(new THREE.CylinderGeometry(0.04, 0.04, 0.5, 8), '#f2ece0', ccx - 0.4, 1.35, cz + sd*0.9), part(new THREE.CylinderGeometry(0.08, 0.05, 0.08, 8), '#c8a040', ccx - 0.4, 1.12, cz + sd*0.9));
+  for (let i=0;i<8;i++) al.push(part(new THREE.BoxGeometry(0.4, 0.06, 0.4), '#5a2a2a', Mu.x0 + 2.5 + i*1.1, 0.03, cz));
+  vmesh(al, g);
+  for (const sd of [-1, 1]){ const fl = new THREE.Group(); fl.position.set(ccx - 0.4, gy0 + fy + 1.62, cz + sd*0.9); scene.add(fl); makeFireFx(fl, 0.035, 0, false); }
+  colliders.push({ ax:ccx - 0.9, az:cz - 1.3, bx:ccx - 0.9, bz:cz + 1.3, r:0.15 });
+  { const lamp = new THREE.PointLight(0xffe0b8, 9, 18, 2); lamp.position.set((Mu.x0 + Mu.x1)/2, gy0 + 6, cz); scene.add(lamp); const l2 = new THREE.PointLight(0xffd8a8, 4, 9, 2); l2.position.set(ccx - 1.5, gy0 + 3, cz); scene.add(l2); }
+  // Bunte Glasfenster: leuchten von innen und von aussen
+  const gt = canvasTex(64, 256, (x2, W2, H2) => { const cl = ['#c83a2a', '#2a5ab8', '#e8c040', '#3a8a4a', '#8a3ab8']; for (let j=0;j<32;j++) for (let i=0;i<8;i++){ x2.fillStyle = cl[(i*3 + j*5 + (i*j) % 3) % 5]; x2.fillRect(i*8, j*8, 8, 8); }
+    x2.strokeStyle = '#1a1a1a'; x2.lineWidth = 2; for (let i=0;i<=8;i++){ x2.beginPath(); x2.moveTo(i*8, 0); x2.lineTo(i*8, H2); x2.stroke(); } for (let j=0;j<=32;j++){ x2.beginPath(); x2.moveTo(0, j*8); x2.lineTo(W2, j*8); x2.stroke(); }
+    x2.fillStyle = '#f2e8c8'; x2.beginPath(); x2.arc(32, 48, 18, 0, TAU); x2.fill(); x2.fillStyle = '#c83a2a'; x2.beginPath(); x2.arc(32, 48, 10, 0, TAU); x2.fill(); });
+  const glass = new THREE.MeshBasicMaterial({ map:gt, side:THREE.DoubleSide, color:C('#e8dcc8') });
+  const gw = []; for (const sd of [-1, 1]) for (let i=0;i<nW;i++) gw.push(xf(archWindow(1.7, 7.6, true), Mu.x0 + (i + 0.5)*bay, 3.2, (sd > 0 ? Mu.z1 - T/2 : Mu.z0 + T/2), 0, 0, 0));
+  for (const [x, z, a, w, h2] of glassP) gw.push(xf(archWindow(w, h2, true), x, 3.2, z, 0, a, 0));
+  { const gg = mergeGeo(gw), uv = gg.attributes.uv, p = gg.attributes.position; for (let i=0;i<uv.count;i++) uv.setXY(i, uv.getX(i), uv.getY(i)); const m = mk(gg, glass, gs); m.castShadow = false; }
+  // Rosette über dem Westportal des Turms
+  { const ro = canvasTex(128, 128, (x2) => { x2.fillStyle = '#2a2420'; x2.fillRect(0, 0, 128, 128); for (let i=0;i<12;i++){ const a = i/12*TAU; x2.fillStyle = ['#c83a2a', '#2a5ab8', '#e8c040'][i % 3]; x2.beginPath(); x2.moveTo(64, 64); x2.arc(64, 64, 58, a, a + TAU/12); x2.fill(); } x2.fillStyle = '#e8c040'; x2.beginPath(); x2.arc(64, 64, 14, 0, TAU); x2.fill(); });
+    mk(new THREE.CircleGeometry(1.4, 24), new THREE.MeshBasicMaterial({ map:ro, color:C('#d8d0c0') }), gs, Mu.tx0 - 0.02, 8.0, cz, 0, -Math.PI/2, 0).castShadow = false; }
+  // Hindernisse: Wände des Schiffs, Chor, Turm mit Durchgang
+  const X = v => v, seg = (ax, az, bx, bz, r) => colliders.push({ ax:X(ax), az, bx:X(bx), bz, r:r || 0.2 });
+  seg(Mu.tx0, Mu.z0 + 0.3, Mu.x1, Mu.z0 + 0.3); seg(Mu.tx0, Mu.z1 - 0.3, Mu.x1, Mu.z1 - 0.3);
+  seg(Mu.tx0, cz - tW/2, Mu.tx0, cz - 1.3); seg(Mu.tx0, cz + 1.3, Mu.tx0, cz + tW/2); seg(Mu.tx0, cz - 1.3, Mu.x0 + 0.9, cz - 1.3, 0.1); seg(Mu.tx0, cz + 1.3, Mu.x0 + 0.9, cz + 1.3, 0.1);
+  seg(Mu.tx0, cz - tW/2, Mu.tx0 - 0.5, Mu.z0 + 0.3); seg(Mu.tx0, cz + tW/2, Mu.tx0 - 0.5, Mu.z1 - 0.3);
+  for (let k=0;k<5;k++){ const a0 = -Math.PI/2 + k*Math.PI/4, a1 = a0 + Math.PI/4; seg(ccx + Math.cos(a0)*(cr - 0.4), cz + Math.sin(a0)*(cr - 0.4), ccx + Math.cos(a1)*(cr - 0.4), cz + Math.sin(a1)*(cr - 0.4)); }
+  for (const sd of [-1, 1]) for (let i=0;i<=nW;i++) colliders.push({ x:Mu.x0 + i*bay, z:(sd > 0 ? Mu.z1 : Mu.z0) + sd*0.6, r:0.65 });
+  // Menschen beten im Münster, ein Priester am Altar
+  const pr = mPerson(g, { skin:'#d8b090', hair:'#a8a29a', cloth:'#f2ece0', long:true, sleeves:true, cloak:'#6a2a6a', leggings:'#2a2a2a' }, ccx - 1.2, cz, -Math.PI/2);
+  const fol = [[69, -54.0], [70.2, -56.2], [68.0, -56.6]].map(([x, z], i) => { const p = mPerson(g, i === 1 ? peasantO(265, true) : burgherO(266 + i, i === 2), x, z, Math.PI/2); if (i !== 1){ p.hips.position.y = 0.38; for (const l of p.legs){ l.hip.rotation.x = -0.1; l.knee.rotation.x = 1.6; } } return p; });
+  for (const p of [pr, ...fol]) p.g.position.y = 0;
+  fol.forEach(p => colliders.push({ x:p.g.position.x, z:p.g.position.z, r:0.35 }));
+  const H2 = new THREE.Vector3();
+  anims.push(t => { const raise = Math.max(0, Math.sin(t*0.25)); pr.arms[0].sh.rotation.set(-0.4 - raise*1.6, 0, -0.3); pr.arms[1].sh.rotation.set(-0.4 - raise*1.6, 0, 0.3); pr.arms[0].el.rotation.x = pr.arms[1].el.rotation.x = -0.6; pr.face.talk = Math.max(0, Math.sin(t*6))*0.4;
+    for (const p of fol){ p.spine.updateWorldMatrix(true, false); H2.set(0, 0.45, 0.3); p.spine.localToWorld(H2); for (const i of [0, 1]) ikWorld(p, i, H2); p.head.rotation.x = 0.3; } });
+  keep(gs);
+  addHotspot('muenster', [pr.root, fol[0].root], P.muenster[0], gy0 + 2.8, P.muenster[1], 0);
+  // Vor dem Münster: der Bischof segnet die Leute, ein Mönch liest im Buch
+  { const bg = grp(54.0, -58.6); bg.rotation.y = 0;
+    const bish = mPerson(bg, { skin:'#e0b898', hair:'#c8c0b0', cloth:'#f4ecd8', sleeves:true, long:true, cloak:'#a8242a', fibula:'gold', mitre:'#f4ecd8', fur:'#e8c040' }, -0.4, -0.3, 0.2);
+    const staff = new THREE.Group(); mk(new THREE.CylinderGeometry(0.02, 0.02, 1.9, 8).translate(0, 0.5, 0), METAL.gold(), staff);
+    const V = (x, y, z) => new THREE.Vector3(x, y, z); mk(taperTube(new THREE.CatmullRomCurve3([V(0, 1.45, 0), V(0, 1.6, 0), V(0.1, 1.7, 0), V(0.15, 1.6, 0), V(0.08, 1.55, 0)]), 12, 6, () => 0.02), METAL.gold(), staff);
+    fist(staff, bish.arms[1].hand, 0.2);
+    const monk = mPerson(bg, { skin:'#d8b090', hair:'#6a4a2a', cloth:'#5a4030', long:true, sleeves:true, hood:'#5a4030' }, 1.2, -0.6, -0.3);
+    const book = new THREE.Group(); mk(new THREE.BoxGeometry(0.28, 0.04, 0.2), M('#6a2a1a', { tex:'leather' }), book); mk(new THREE.BoxGeometry(0.26, 0.03, 0.19), M('#f2ead6', { tex:null }), book, 0, 0.025, 0); monk.spine.add(book); book.position.set(0, 0.42, 0.3); book.rotation.x = -0.4;
+    const fl2 = [0, 1, 2].map(i => mPerson(scene, i === 1 ? peasantO(260 + i, true) : burgherO(260 + i, i === 2), 53.0 + i*1.3, -55.6 + (i % 2)*0.4, Math.PI + (i - 1)*0.3));
+    fl2.forEach(p => { const v = new THREE.Vector3(); p.g.getWorldPosition(v); colliders.push({ x:v.x, z:v.z, r:0.35 }); });
+    anims.push(t => { const bless = Math.max(0, Math.sin(t*0.5)); bish.arms[0].sh.rotation.set(-1.0 - bless*0.6, 0, -0.2); bish.arms[0].el.rotation.x = -0.4 - Math.sin(t*2)*0.15*bless; bish.face.talk = bless > 0.3 ? Math.max(0, Math.sin(t*6))*0.5 : 0;
+      bish.arms[1].sh.rotation.set(-0.35, 0, 0.1); bish.arms[1].el.rotation.x = -0.9;
+      for (const i of [0, 1]){ monk.arms[i].sh.rotation.set(-0.7, 0, i ? 0.25 : -0.25); monk.arms[i].el.rotation.x = -1.0; } monk.head.rotation.x = 0.45;
+      fl2.forEach(p => { p.head.rotation.x = 0.2 + bless*0.15; p.spine.rotation.x = bless*0.12; }); });
+    colliders.push({ x:54.0, z:-58.8, r:1.3 });
+    addHotspot('klerus', [bish.root, monk.root], P.klerus[0], gy(P.klerus[0], P.klerus[1]) + 2.8, P.klerus[1], 0); }
+}
+/* ---------- Klosterkirche im Norden mit zwei Türmen und einem Klosterflügel ---------- */
+function buildKloster(){
+  const MT = mMats(), K = KLOSTER, cx = (K.x0 + K.x1)/2, cz = (K.z0 + K.z1)/2, L = K.z1 - K.z0, W = K.x1 - K.x0, H = 9, g = grp(cx, cz); g.position.y -= 0.3;
+  wbox(g, W, H + 0.3, L, MT.white, 0, 0, 0, 0, 2);
+  saddleRoof(g, { w:W, d:L, rise:W*0.8, y:H + 0.3, mat:MT.tiles, ov:0.4, ovG:0.2 });
+  for (const sd of [-1, 1]) mk(gableTri(W, W*0.8, 0.3), MT.white, g, 0, H + 0.3, sd*(L/2 - 0.15));
+  const dc = []; for (let k=0;k<3;k++) for (const sd of [-1, 1]) dc.push(xfC(archWindow(0.9, 3.0, true), '#1e2a3a', sd*(W/2 + 0.02), 3.0, -L/2 + 1.6 + k*2.6, sd*Math.PI/2));
+  dc.push(xfC(archWindow(1.8, 3.2, true), '#3a2416', 0, 0.3, L/2 + 0.02, 0)); vmesh(dc, g, true);
+  { const ro = canvasTex(64, 64, (x2) => { x2.fillStyle = '#2a2420'; x2.fillRect(0, 0, 64, 64); for (let i=0;i<8;i++){ const a = i/8*TAU; x2.fillStyle = ['#c83a2a', '#2a5ab8'][i % 2]; x2.beginPath(); x2.moveTo(32, 32); x2.arc(32, 32, 28, a, a + TAU/8); x2.fill(); } });
+    mk(new THREE.CircleGeometry(1.0, 20), new THREE.MeshBasicMaterial({ map:ro, color:C('#d8d0c0') }), g, 0, 6.2, L/2 + 0.03).castShadow = false; }
+  keep(g); g.updateWorldMatrix(true, false); for (const [a, b, c2, d2] of [[-W/2, -L/2, W/2, -L/2], [W/2, -L/2, W/2, L/2], [W/2, L/2, -W/2, L/2], [-W/2, L/2, -W/2, -L/2]]) wallSeg(g, a, b, c2, d2, 0.15);
+  for (const sx of [-1, 1]) squareTower(cx + sx*(W/2 - 1.7), K.z1 + 1.7, 3.4, 16, 0, { roof:MT.tiles, steep:2.4 });
+  // Klosterflügel im Westen
+  { const wg = grp(K.x0 - 3.8, cz); const w = 6, d = L - 1; wbox(wg, w, 4.5, d, MT.white, 0, 0, 0, 0, 2); saddleRoof(wg, { w, d, rise:2.6, y:4.5, mat:MT.tiles, ov:0.4, ovG:0.3 }); for (const sd of [-1, 1]) mk(gableTri(w, 2.6, 0.2), MT.white, wg, 0, 4.5, sd*(d/2 - 0.1));
+    const wn = []; for (let k=0;k<3;k++) wn.push(xfC(archWindow(0.6, 1.2, false), '#1e2a3a', -w/2 - 0.02, 1.8, -d/2 + 1.4 + k*2.0, -Math.PI/2), xfC(archWindow(0.6, 1.2, false), '#1e2a3a', w/2 + 0.02, 1.8, -d/2 + 1.4 + k*2.0, Math.PI/2)); vmesh(wn, wg); keep(wg);
+    wg.updateWorldMatrix(true, false); for (const [a, b, c2, d2] of [[-w/2, -d/2, w/2, -d/2], [w/2, -d/2, w/2, d/2], [w/2, d/2, -w/2, d/2], [-w/2, d/2, -w/2, -d/2]]) wallSeg(wg, a, b, c2, d2, 0.15); }
 }
 /* ---------- Handwerker: Schuhmacher in der offenen Werkstatt, Laden und Wohnung in einem Haus ---------- */
 function buildCraftsman(){
-  const h = TOWN_HOUSES.find(q => q.hand), g = h.g; const MT = mMats();
-  // Klappladen: unten als Verkaufstisch, oben als Vordach
+  const h = TOWN_DETAIL.find(q => q.hand), g = h.g; const MT = mMats();
   const sx = 0.75, D = h.d; wbox(g, 2.2, 0.08, 0.7, MT.plank, sx, 0.82, D/2 + 0.32, 0, 1);
   for (const x of [-0.3, 1.8]) wbox(g, 0.06, 0.82, 0.06, M('#4a3020', { tex:'wood' }), sx + x - 0.75, 0, D/2 + 0.6, 0, 1);
-  const awn = mk(boxUV(2.2, 0.06, 0.8, 1), MT.plank, g, sx, 2.32, D/2 + 0.36, 0.5, 0, 0);
-  // Schuhe und Stiefel auf dem Ladentisch
+  mk(boxUV(2.2, 0.06, 0.8, 1), MT.plank, g, sx, 2.32, D/2 + 0.36, 0.5, 0, 0);
   const sh = []; for (let i=0;i<5;i++){ const x = sx - 0.85 + i*0.42; sh.push(part(new THREE.BoxGeometry(0.1, 0.08, 0.24), '#5a3a24', x, 0.9, D/2 + 0.36), part(new THREE.BoxGeometry(0.1, i % 2 ? 0.22 : 0.1, 0.1), '#4a3020', x, i % 2 ? 1.0 : 0.94, D/2 + 0.28)); }
   vmesh(sh, g);
-  // Werkbank drinnen; der Meister nagelt eine Sohle, der Lehrling schneidet Leder
   wbox(g, 1.4, 0.7, 0.6, MT.plank, sx, 0, 1.5, 0, 1);
   const master = mPerson(g, { skin:'#c89a78', hair:'#5a3a22', beard:true, cloth:'#6a5a3a', apron:'#4a3020', leggings:'#3a2a1c' }, sx - 0.3, 0.75, 0);
   poseSit(master, 0.45); wbox(g, 0.4, 0.42, 0.4, M('#6a4a2e', { tex:'wood' }), sx - 0.3, 0, 0.75, 0, 0.6);
   const ham = makeHammer(); fist(ham, master.arms[0].hand, 0.1);
   const app = mPerson(g, { skin:'#e0b898', hair:'#c8a060', cloth:'#8a7a5a', apron:'#5a4030', scale:0.82, leggings:'#4a3a28' }, sx + 0.8, 0.8, 0.3);
-  // Die Familie wohnt oben: eine Frau schaut aus dem Fenster
   const H = new THREE.Vector3();
   anims.push(t => { const c = (t*1.8) % 1; g.updateWorldMatrix(true, false); H.set(sx - 0.3, 0.75 + (c < 0.3 ? (0.3 - c)*0.8 : sstep(0.3, 1, c)*0.24), 1.35); g.localToWorld(H); ikWorld(master, 0, H);
     H.set(sx - 0.15, 0.74, 1.3); g.localToWorld(H); ikWorld(master, 1, H); master.spine.rotation.x = 0.35;
@@ -5151,11 +5384,10 @@ function buildCraftsman(){
 }
 /* ---------- Weberin am Webstuhl und Hutmacherin mit ihren Hüten ---------- */
 function buildWeaver(){
-  const h = TOWN_HOUSES.find(q => q.weaver), g = h.g, MT = mMats(), sx = 0.6, D = h.d;
+  const h = TOWN_DETAIL.find(q => q.weaver), g = h.g, MT = mMats(), sx = 0.6, D = h.d;
   const loom = makeLoom(g).g; loom.position.set(sx - 0.4, 0, 0.6); loom.scale.setScalar(1.25);
   const wv = mPerson(g, Object.assign(burgherO(270, true), { cloth:'#3a5a8a', apron:'#e8e0cc' }), sx - 0.4, 1.35, Math.PI); poseSit(wv, 0.45); wbox(g, 0.5, 0.42, 0.4, M('#6a4a2e', { tex:'wood' }), sx - 0.4, 0, 1.35, 0, 0.6);
   const lamp = new THREE.PointLight(0xffe0b0, 2.5, 6, 2); lamp.position.set(sx, 2.0, 1.2); g.add(lamp);
-  // Hüte und Hauben auf Ständern vor dem Haus, die Hutmacherin näht
   const hats = []; for (let i=0;i<4;i++){ const x = sx + 0.5 + i*0.42; hats.push(part(new THREE.CylinderGeometry(0.02, 0.02, 1.1, 6), '#5a3e28', x, 0.55, D/2 + 0.9));
     const c = ['#a8242a', '#2e4a3a', '#2a2a2a', '#c8a050'][i]; hats.push(part(new THREE.CylinderGeometry(0.2, 0.2, 0.02, 16), c, x, 1.12, D/2 + 0.9), part(new THREE.SphereGeometry(0.11, 12, 8, 0, TAU, 0, Math.PI/2), c, x, 1.12, D/2 + 0.9)); }
   vmesh(hats, g);
@@ -5165,11 +5397,11 @@ function buildWeaver(){
   guildSign(g, 'loom', -1.25, 2.9, D/2 + 0.42);
   const H = new THREE.Vector3(), Sh = new THREE.Vector3();
   anims.push(t => { g.updateWorldMatrix(true, false); const sw = Math.sin(t*1.6);
-    // Schiffchen hin und her, Lade anschlagen
     H.set(sx - 0.4 + sw*0.4, 1.0, 0.95); g.localToWorld(H); ikWorld(wv, sw > 0 ? 0 : 1, H); H.set(sx - 0.4 - sw*0.2, 0.95, 1.0); g.localToWorld(H); ikWorld(wv, sw > 0 ? 1 : 0, H);
     wv.spine.rotation.x = 0.15; for (const l of wv.legs) l.knee.rotation.x = 1.5 + (l === wv.legs[0] ? Math.max(0, sw) : Math.max(0, -sw))*0.3;
     hm.spine.updateWorldMatrix(true, false); Sh.set(0, 0.38, 0.32); hm.spine.localToWorld(Sh); hat.position.copy(Sh); hat.rotation.x = Math.PI;
     H.copy(Sh).add(new THREE.Vector3(0, 0.06, 0)); ikWorld(hm, 1, H); H.set(0.12 + Math.sin(t*4)*0.08, 0.5 + Math.abs(Math.sin(t*4))*0.12, 0.3); hm.spine.localToWorld(H); ikWorld(hm, 0, H); hm.head.rotation.x = 0.4; });
+  { g.updateWorldMatrix(true, false); const v = new THREE.Vector3(sx + 2.5, 0, D/2 + 1.2); g.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.45 }); const v2 = new THREE.Vector3(sx + 1.1, 0, D/2 + 0.9); g.localToWorld(v2); colliders.push({ x:v2.x, z:v2.z, r:0.7 }); }
   addHotspot('weberin', [wv.root, hm.root], P.weberin[0], gy(P.weberin[0], P.weberin[1]) + 2.6, P.weberin[1], 0);
 }
 /* ---------- Enge Gasse: Nachttopf aus dem Fenster, Abfall, ein Schwein und Ratten ---------- */
@@ -5178,41 +5410,36 @@ function makeRat(){ const g = new THREE.Group(), m = M('#4a4648', { tex:'fur', r
   for (const sd of [-1, 1]) mk(new THREE.SphereGeometry(0.018, 6, 6), M('#c89090', { tex:'skin' }), g, sd*0.025, 0.09, 0.08);
   const tail = mk(new THREE.CylinderGeometry(0.004, 0.009, 0.2, 5).rotateX(Math.PI/2).translate(0, 0, -0.1), M('#c8a0a0', { tex:'skin' }), g, 0, 0.04, -0.09); g.userData.tail = tail; return g; }
 function buildAlley(){
-  const MT = mMats(), ax = 33.5, az = -44;
-  // Abfallhaufen und eine schmutzige Pfütze
+  // Die Gasse läuft von Süden (z = −46) nach Norden; lokale x-Achse = Länge der Gasse (nach Norden), z quer
+  const ax = 26.0, az = -51.0, al = grp(ax, az); al.rotation.y = Math.PI/2;
   const tr = []; const rr = mulberry32(17);
-  for (let i=0;i<26;i++) tr.push(part(ROCK_GEOS[i % 8], ['#5a4a32', '#6a5a3a', '#3a3226', '#7a6a4a'][i % 4], ax - 2.5 + rr()*2.4, gy(ax, az) + 0.04, az - 1.0 + rr()*0.6, rr()*3, rr()*3, rr()*3, 0.12 + rr()*0.15, 0.05 + rr()*0.06, 0.12 + rr()*0.1));
-  for (let i=0;i<5;i++) tr.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.4, 5), '#d8c8a0', ax - 2 + i*0.4, gy(ax, az) + 0.06, az - 0.8 + (i % 2)*0.2, 0, i, Math.PI/2));
-  vmesh(tr, scene);
-  const pd = mk(new THREE.CircleGeometry(0.8, 16).rotateX(-Math.PI/2), M('#3a3424', { tex:null, roughness:0.08, transparent:true, opacity:0.85 }), scene, ax + 1.6, gy(ax + 1.6, az + 0.4) + 0.07, az + 0.4); pd.scale.set(1.4, 1, 0.7); pd.castShadow = false;
-  // Eine Frau leert den Nachttopf aus dem Fenster im ersten Stock
-  const h = TOWN_HOUSES.find(q => q.potWin), hg = h.g;
-  const wom = mPerson(hg, Object.assign(burgherO(280, true), { cloth:'#7a6a5a' }), 0.2, h.d/2 - 0.2, 0); wom.g.position.y = 2.7 + 0.05; anims.push(() => { wom.g.position.y = 2.75; });
+  for (let i=0;i<26;i++) tr.push(part(ROCK_GEOS[i % 8], ['#5a4a32', '#6a5a3a', '#3a3226', '#7a6a4a'][i % 4], -2.5 + rr()*2.4, 0.04, 0.5 + rr()*0.5, rr()*3, rr()*3, rr()*3, 0.12 + rr()*0.15, 0.05 + rr()*0.06, 0.12 + rr()*0.1));
+  for (let i=0;i<5;i++) tr.push(part(new THREE.CylinderGeometry(0.03, 0.03, 0.4, 5), '#d8c8a0', -2 + i*0.4, 0.06, 0.6 + (i % 2)*0.2, 0, i, Math.PI/2));
+  vmesh(tr, al);
+  const pd = mk(new THREE.CircleGeometry(0.8, 16).rotateX(-Math.PI/2), M('#3a3424', { tex:null, roughness:0.08, transparent:true, opacity:0.85 }), al, 1.6, 0.07, -0.2); pd.scale.set(1.4, 1, 0.7); pd.castShadow = false;
+  const h = TOWN_DETAIL.find(q => q.potWin), hg = h.g;
+  const wom = mPerson(hg, Object.assign(burgherO(280, true), { cloth:'#7a6a5a' }), 0.2, h.d/2 - 0.2, 0); wom.g.position.y = 2.75; anims.push(() => { wom.g.position.y = 2.75; });
   const pot = new THREE.Group(); mk(lathe([[0.001, 0], [0.1, 0], [0.13, 0.12], [0.12, 0.2], [0.001, 0.2]], 12).translate(0, -0.1, 0), M('#b07a4a', { tex:'grain' }), pot); hg.add(pot);
   const stream = mk(new THREE.CylinderGeometry(0.03, 0.06, 1, 8, 1, true), M('#8a7a3a', { tex:null, transparent:true, opacity:0.7, depthWrite:false }), scene); stream.castShadow = false;
-  // Schwein wühlt im Abfall, Ratten flitzen hin und her
-  const pig = makeAnimal('pig', 333, { col:{ back:'#c8a090', flank:'#d8b0a0', belly:'#e0c0b0', leg:'#c09080', face:'#d0a898', muzzle:'#e0b0a8', nose:'#b88078' } }); pig.position.set(ax - 1.4, gy(ax - 1.4, az), az - 0.2); pig.rotation.y = -0.6; scene.add(pig); pig.scale.setScalar(0.85);
-  const rats = [0, 1, 2].map(i => { const r = makeRat(); scene.add(r); return r; });
-  const passer = mPerson(scene, burgherO(281, false), ax + 3, az + 0.3, -Math.PI/2);
+  const pig = makeAnimal('pig', 333, { col:{ back:'#c8a090', flank:'#d8b0a0', belly:'#e0c0b0', leg:'#c09080', face:'#d0a898', muzzle:'#e0b0a8', nose:'#b88078' } }); pig.position.set(-1.4, 0, 0.6); pig.rotation.y = -0.6; al.add(pig); pig.scale.setScalar(0.85);
+  const rats = [0, 1, 2].map(() => { const r = makeRat(); al.add(r); return r; });
+  const passer = mPerson(al, burgherO(281, false), 3, -0.1, -Math.PI/2);
   const H = new THREE.Vector3(), A = new THREE.Vector3(), B = new THREE.Vector3();
-  let gait = 0;
-  anims.push((t, dt) => { animalPose(pig.userData.rig, t, { graze:true, root:true });
+  anims.push(t => { animalPose(pig.userData.rig, t, { graze:true, root:true });
     const c = (t/9) % 1, tilt = c > 0.4 && c < 0.6 ? sstep(0.4, 0.46, c)*(1 - sstep(0.55, 0.6, c)) : 0;
     hg.updateWorldMatrix(true, false); wom.spine.rotation.x = 0.25 + tilt*0.3;
     H.set(0.2, 3.85 - tilt*0.1, h.d/2 + 0.55 + tilt*0.2); pot.position.copy(H); pot.rotation.x = tilt*2.0; hg.localToWorld(H);
     for (const i of [0, 1]){ A.copy(H); A.x += (i ? -0.12 : 0.12); ikWorld(wom, i, A); }
     stream.visible = tilt > 0.6; if (stream.visible){ A.set(0.2, 3.7, h.d/2 + 0.85); hg.localToWorld(A); B.set(A.x, gy(A.x, A.z) + 0.05, A.z); stream.position.copy(A).add(B).multiplyScalar(0.5); stream.scale.y = A.y - B.y; }
-    wom.face.talk = c > 0.35 && c < 0.42 ? 0.9 : 0;   // «Achtung, Wasser!»
-    rats.forEach((r, i) => { const u = (t*0.25 + i*0.33) % 1, x = ax - 3.5 + u*5.5, z = az - 0.6 + Math.sin(u*TAU*2 + i)*0.5; r.position.set(x, gy(x, z), z); r.rotation.y = Math.PI/2 + Math.cos(u*TAU*2 + i)*0.5; r.userData.tail.rotation.y = Math.sin(t*12 + i)*0.4; });
-    // Ein Passant springt zur Seite, als der Topf geleert wird
-    const jump = c > 0.38 && c < 0.62 ? Math.sin((c - 0.38)/0.24*Math.PI) : 0; passer.g.position.z = az + 0.3 + jump*0.9; passer.g.position.y = gy(ax + 3, az) + Math.max(0, Math.sin((c - 0.4)/0.1*Math.PI))*0.15*(c > 0.4 && c < 0.5 ? 1 : 0);
+    wom.face.talk = c > 0.35 && c < 0.42 ? 0.9 : 0;
+    rats.forEach((r, i) => { const u = (t*0.25 + i*0.33) % 1, x = -3.5 + u*5.5, z = 0.4 + Math.sin(u*TAU*2 + i)*0.4; r.position.set(x, localGround(al, x, z), z); r.rotation.y = Math.PI/2 + Math.cos(u*TAU*2 + i)*0.5; r.userData.tail.rotation.y = Math.sin(t*12 + i)*0.4; });
+    const jump = c > 0.38 && c < 0.62 ? Math.sin((c - 0.38)/0.24*Math.PI) : 0; passer.g.position.z = -0.1 - jump*0.7; passer.g.position.y = localGround(al, 3, -0.1) + Math.max(0, Math.sin((c - 0.4)/0.1*Math.PI))*0.15*(c > 0.4 && c < 0.5 ? 1 : 0);
     passer.arms[0].sh.rotation.x = -jump*2.2; passer.arms[1].sh.rotation.x = -jump*2.0; passer.face.talk = jump*0.9; passer.head.rotation.x = -jump*0.5; });
-  colliders.push({ x:ax - 1.2, z:az - 0.6, r:1.1 });
+  { al.updateWorldMatrix(true, false); const v = new THREE.Vector3(-1.2, 0, 0.8); al.localToWorld(v); colliders.push({ x:v.x, z:v.z, r:0.6 }); }
   addHotspot('hygiene', [pig, wom.root], P.hygiene[0], gy(P.hygiene[0], P.hygiene[1]) + 2.6, P.hygiene[1], 0);
 }
 /* ---------- Hafen: eine Kogge legt an, Seeleute tragen Säcke, Ratten klettern am Tau an Land ---------- */
 function makeCog(){ const g = new THREE.Group(), L = 17, W = 5.6, Dp = 2.4, N = 26, K = 14, pos = [], idx = [], uv = [];
-  // Rumpf: bauchig, Bug und Heck hochgezogen. Querschnitt: unten rund, oben senkrechte Bordwand bis zur Reling
   const half = u => W/2*Math.pow(Math.max(0, Math.sin(Math.PI*u)), 0.5), dep = u => Dp*(0.35 + 0.65*Math.sin(Math.PI*u)), top = u => 1.3 + 1.7*Math.pow(Math.abs(2*u - 1), 3);
   for (let i=0;i<=N;i++){ const u = i/N, z = (u - 0.5)*L, w = half(u);
     for (let j=0;j<=K;j++){ const sv = j/K*2 - 1, as = Math.abs(sv); let x, y;
@@ -5221,7 +5448,6 @@ function makeCog(){ const g = new THREE.Group(), L = 17, W = 5.6, Dp = 2.4, N = 
   for (let i=0;i<N;i++) for (let j=0;j<K;j++){ const a = i*(K + 1) + j, b = a + K + 1; idx.push(a, b, a + 1, a + 1, b, b + 1); }
   const hg = new THREE.BufferGeometry(); hg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); hg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); hg.setIndex(idx); hg.computeVertexNormals();
   mk(hg, M('#7a5638', { tex:'plank', side:THREE.DoubleSide }), g);
-  // Deck, Kastelle hinten und vorne, Mast mit gerefftem Segel, Takelage
   wbox(g, W*0.9, 0.1, L*0.84, M('#9a7a56', { tex:'plank' }), 0, 0.25, 0, 0, 1.4);
   wbox(g, W*0.84, 2.3, 3.8, M('#8a6a48', { tex:'plank' }), 0, 0.3, -L/2 + 2.8, 0, 1.2); wbox(g, W*0.6, 1.6, 2.4, M('#8a6a48', { tex:'plank' }), 0, 0.6, L/2 - 2.4, 0, 1.2);
   for (const [zc, w, y] of [[-L/2 + 2.8, W*0.84, 2.6], [L/2 - 2.4, W*0.6, 2.2]]) for (let i=0;i<5;i++) wbox(g, w/5*0.55, 0.45, 0.12, M('#7a5a3a', { tex:'plank' }), -w/2 + (i + 0.5)*w/5, y, zc + 1.2*(zc < 0 ? 1.55 : 1), 0, 1);
@@ -5234,49 +5460,42 @@ function makeCog(){ const g = new THREE.Group(), L = 17, W = 5.6, Dp = 2.4, N = 
   return g; }
 function buildQuay(){
   const MT = mMats(), sx = QUAY.x1 + 3.6, sz = -44, SY = RIVER_Y + 0.45;
-  // Kaimauer und Poller
   const qw = new THREE.Group(); qw.position.set(QUAY.x1 + 0.3, RIVER_Y - 2, (QUAY.z0 + QUAY.z1)/2); scene.add(qw); wbox(qw, 0.8, groundH(QUAY.x1 - 1, -44) - RIVER_Y + 2.15, QUAY.z1 - QUAY.z0, MT.stone2, 0, 0, 0, 0, 2); keep(qw);
   colliders.push({ ax:QUAY.x1 - 0.3, az:QUAY.z0, bx:QUAY.x1 - 0.3, bz:QUAY.z1, r:0.3 });
-  for (const z of [-50, -38]) { const b = mk(new THREE.CylinderGeometry(0.18, 0.22, 0.7, 10), M('#6a4a2e', { tex:'wood' }), scene, QUAY.x1 - 0.8, groundH(QUAY.x1 - 0.8, z) + 0.35, z); colliders.push({ x:QUAY.x1 - 0.8, z, r:0.3 }); }
+  for (const z of [-50, -38]) { mk(new THREE.CylinderGeometry(0.18, 0.22, 0.7, 10), M('#6a4a2e', { tex:'wood' }), scene, QUAY.x1 - 0.8, groundH(QUAY.x1 - 0.8, z) + 0.35, z); colliders.push({ x:QUAY.x1 - 0.8, z, r:0.3 }); }
   const cog = makeCog(); cog.position.set(sx, SY, sz); scene.add(cog); keep(cog);
   anims.push(t => { cog.position.y = SY + Math.sin(t*0.8)*0.05; cog.rotation.z = Math.sin(t*0.6)*0.012; });
-  // Laufplanke und Tau
   { const y0 = groundH(QUAY.x1 - 0.4, -42.2) + 0.05, y1 = SY + 1.35; mk(boxUV(2.4, 0.08, 0.7, 1), MT.plank, scene, QUAY.x1 + 0.6, (y0 + y1)/2, -42.2, 0, 0, Math.atan2(y1 - y0, 2.2)); }
   const rope = mk(new THREE.CylinderGeometry(0.02, 0.02, 1, 5), M('#8a7450', { tex:'leather' }), scene); rope.castShadow = false;
   const RA = new THREE.Vector3(QUAY.x1 - 0.8, groundH(QUAY.x1 - 0.8, -50) + 0.6, -50), RB = new THREE.Vector3(sx - 2.4, SY + 1.3, -49.5);
   rope.position.copy(RA).add(RB).multiplyScalar(0.5); rope.scale.y = RA.distanceTo(RB); rope.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), RB.clone().sub(RA).normalize());
-  // Fässer, Kisten und Säcke auf dem Kai
-  for (let i=0;i<5;i++) makeBarrel(scene, 80 + (i % 3)*0.75, groundH(80, -36) + 0.02, -35 - Math.floor(i/3)*0.8, 1);
-  for (let i=0;i<4;i++) makeCrate(scene, 86 + (i % 2)*0.7, groundH(86, -52) + 0.02 + Math.floor(i/2)*0.5, -52.5, 1.2, i*0.2);
-  colliders.push({ x:80.8, z:-35.4, r:1.4 }, { x:86.4, z:-52.5, r:1.0 });
-  const pile = new THREE.Group(); pile.position.set(78.5, groundH(78.5, -48), -48); scene.add(pile); const sacks = [];
-  for (let i=0;i<9;i++){ const s = makeSack('#c8b48a', pile); s.position.set((i % 3)*0.42, Math.floor(i/6)*0.45, (Math.floor(i/3) % 2)*0.4); s.visible = false; sacks.push(s); } colliders.push({ x:79, z:-47.8, r:1.0 });
-  // Zwei Seeleute tragen Säcke vom Schiff zum Stapel
+  for (let i=0;i<5;i++) makeBarrel(scene, 89 + (i % 3)*0.75, groundH(89, -36) + 0.02, -35 - Math.floor(i/3)*0.8, 1);
+  for (let i=0;i<4;i++) makeCrate(scene, 89.2 + (i % 2)*0.7, groundH(89.2, -52) + 0.02 + Math.floor(i/2)*0.5, -52.5, 1.2, i*0.2);
+  colliders.push({ x:89.8, z:-35.4, r:1.4 }, { x:89.6, z:-52.5, r:1.0 });
+  const pile = new THREE.Group(); pile.position.set(88.4, groundH(88.4, -48), -48); scene.add(pile); const sacks = [];
+  for (let i=0;i<9;i++){ const s = makeSack('#c8b48a', pile); s.position.set((i % 3)*0.42, Math.floor(i/6)*0.45, (Math.floor(i/3) % 2)*0.4); s.visible = false; sacks.push(s); } colliders.push({ x:88.8, z:-47.8, r:1.0 });
   const sailors = [0, 1].map(i => { const p = mPerson(scene, Object.assign(peasantO(300 + i, false), { cloth:['#5a6a7a', '#7a5a4a'][i], hood:null, strawhat:false, beret:'#3a3a4a' }), 90, -42.2, -Math.PI/2);
     const sk = makeSack('#c8b48a', p.spine); sk.position.set(0, 0.62, -0.1); sk.rotation.z = 1.4; return { p, sk }; });
-  sailors.forEach(({ p, sk }, i) => { const r = routine(p, [{ to:[92.5, -42.2], carry:false }, { d:1.2 }, { to:[80, -46.5], carry:true }, { d:1.0 }, { to:[92.5, -42.2] }], { speed:1.0, ph:i*9 });
+  sailors.forEach(({ p, sk }, i) => { const r = routine(p, [{ to:[92.5, -42.2], carry:false }, { d:1.2 }, { to:[89.6, -46.5], carry:true }, { d:1.0 }, { to:[92.5, -42.2] }], { speed:1.0, ph:i*9 });
     anims.push(t => { const carrying = r.i === 1 && r.k > 0.5 || r.i === 2; sk.visible = carrying; if (carrying){ p.arms[0].sh.rotation.set(-2.6, 0, -0.3); p.arms[0].el.rotation.x = -0.9; p.arms[1].sh.rotation.set(-2.4, 0, 0.4); p.arms[1].el.rotation.x = -1.1; }
       const n = Math.floor((t + i*9)/20) % 10; sacks.forEach((s, k) => s.visible = k < 3 + n % 7); }); });
-  // Ratten huschen das Tau entlang an Land
   const rats = [0, 1, 2, 3].map(() => { const r = makeRat(); scene.add(r); return r; });
   anims.push(t => { rats.forEach((r, i) => { const u = (t*0.12 + i*0.25) % 1;
     if (u < 0.6){ const k = 1 - u/0.6; r.position.lerpVectors(RA, RB, k); r.position.y += 0.06; r.lookAt(RA); }
-    else { const k = (u - 0.6)/0.4, x = RA.x - k*7, z = RA.z + Math.sin(k*9 + i)*1.2 + i*0.3; r.position.set(x, groundH(x, z), z); r.rotation.set(0, -Math.PI/2 + Math.cos(k*9 + i)*0.4, 0); }
+    else { const k = (u - 0.6)/0.4, x = RA.x - k*5, z = RA.z + Math.sin(k*9 + i)*1.2 + i*0.3; r.position.set(x, groundH(x, z), z); r.rotation.set(0, -Math.PI/2 + Math.cos(k*9 + i)*0.4, 0); }
     r.userData.tail.rotation.y = Math.sin(t*14 + i)*0.4; }); });
   addHotspot('pest', [cog], P.pest[0], gy(P.pest[0], P.pest[1]) + 2.8, P.pest[1], 0);
 }
 /* ---------- Pestarzt mit Schnabelmaske vor einem Haus; man räuchert mit Kräutern ---------- */
 function buildPlagueDoctor(){
-  const h = TOWN_HOUSES.find(q => q.plague), g = h.g;
-  const doc = mPerson(scene, { skin:'#d8b090', hair:'#3a2616', cloth:'#1e1c1a', sleeves:true, long:true, cloak:'#1e1c1a', leggings:'#1a1a1a', beak:true, shoes:'#1a1a1a' }, P.pestarzt[0] + 0.9, P.pestarzt[1] - 1.2, Math.PI/2 + 0.4);
+  const h = TOWN_DETAIL.find(q => q.plague), g = h.g;
+  const doc = mPerson(scene, { skin:'#d8b090', hair:'#3a2616', cloth:'#1e1c1a', sleeves:true, long:true, cloak:'#1e1c1a', leggings:'#1a1a1a', beak:true, shoes:'#1a1a1a' }, P.pestarzt[0] + 0.9, P.pestarzt[1] - 1.0, Math.PI*0.85);
   for (const a of doc.arms) for (const ch of a.hand.children) if (ch.isMesh) ch.material = M('#2a2420', { tex:'leather' });
   const stick = new THREE.Group(); mk(new THREE.CylinderGeometry(0.015, 0.015, 1.3, 6).translate(0, 0.3, 0), M('#3a2a1a', { tex:'wood' }), stick); fist(stick, doc.arms[0].hand, 0.1);
-  // Räucherpfanne mit glimmenden Kräutern vor der Tür
-  const br = new THREE.Group(); br.position.set(P.pestarzt[0] + 2.0, gy(P.pestarzt[0] + 2.0, P.pestarzt[1] + 0.2), P.pestarzt[1] + 0.2); scene.add(br);
+  const br = new THREE.Group(); br.position.set(P.pestarzt[0] - 1.6, gy(P.pestarzt[0] - 1.6, P.pestarzt[1] - 1.4), P.pestarzt[1] - 1.4); scene.add(br);
   for (let i=0;i<3;i++){ const a = i/3*TAU; mk(new THREE.CylinderGeometry(0.015, 0.015, 0.7, 5), METAL.iron(), br, Math.sin(a)*0.18, 0.33, Math.cos(a)*0.18, Math.cos(a)*0.3, 0, -Math.sin(a)*0.3); }
   mk(new THREE.CylinderGeometry(0.26, 0.16, 0.12, 14, 1, true), METAL.iron(), br, 0, 0.68, 0).material.side = THREE.DoubleSide; const ff = new THREE.Group(); ff.position.y = 0.66; br.add(ff); makeFireFx(ff, 0.08, 1.2, false);
   addSmoke(br, 6, 0, 0.9, 0, 0.5, '#a8a49a', 2.2); colliders.push({ x:br.position.x, z:br.position.z, r:0.4 });
-  // Eine Frau hält ein Bündel brennender Kräuter ins Fenster
   const wom = mPerson(g, Object.assign(burgherO(290, true), { cloth:'#5a5a4a', apron:'#e8e0cc' }), -0.6, h.d/2 + 0.6, 0);
   const bund = new THREE.Group(); mk(new THREE.CylinderGeometry(0.04, 0.03, 0.3, 8), M('#6a7a3a', { tex:'grain' }), bund, 0, 0.1, 0); fist(bund, wom.arms[0].hand, 0); addSmoke(bund, 3, 0, 0.3, 0, 0.15, '#c8c4b8', 0.8);
   const H = new THREE.Vector3();
@@ -5287,24 +5506,21 @@ function buildPlagueDoctor(){
 }
 /* ---------- Am Stadttor: Wache, Zöllner und ein entflohener Höriger mit seinem Bündel ---------- */
 function buildTownGate(){
-  const z1 = TOWN.cz + TOWN.hl, gx = TOWN.cx;
-  const guard = mPerson(scene, { skin:'#c89a78', hair:'#4a3020', beard:true, cloth:'#7a7a80', sleeves:true, mail:true, surcoat:['#e8c040', '#2a2a2a'], kettle:true, leggings:'#3a2a1c' }, gx - 2.6, z1 + 4.4, Math.PI/2 + 0.2);
+  const z1 = TGATES.s[1] + 3.5, gx = TGATES.s[0];
+  const guard = mPerson(scene, { skin:'#c89a78', hair:'#4a3020', beard:true, cloth:'#7a7a80', sleeves:true, mail:true, surcoat:['#e8c040', '#2a2a2a'], kettle:true, leggings:'#3a2a1c' }, gx - 2.6, z1 + 1.4, Math.PI/2 + 0.2);
   const hal = new THREE.Group(); mk(new THREE.CylinderGeometry(0.02, 0.022, 2.3, 8).translate(0, 0.7, 0), M('#5a3e28', { tex:'wood' }), hal); mk(new THREE.BoxGeometry(0.02, 0.32, 0.22), METAL.iron(), hal, 0, 1.8, 0.08); mk(new THREE.ConeGeometry(0.03, 0.3, 6), METAL.iron(), hal, 0, 2.0, 0); fist(hal, guard.arms[1].hand, 0.2);
-  // Zöllner am Tisch mit Münzkasten
-  const tg = grp(gx + 3.6, z1 + 3.6); tg.rotation.y = -Math.PI/2; const tb = [];
+  const tg = grp(gx + 3.6, z1 + 1.6); tg.rotation.y = -Math.PI/2; const tb = [];
   tb.push(part(new THREE.BoxGeometry(1.3, 0.06, 0.7), '#7a5636', 0, 0.78, 0)); for (const sx of [-0.55, 0.55]) tb.push(part(new THREE.BoxGeometry(0.08, 0.78, 0.6), '#5a3e28', sx, 0.39, 0)); tb.push(part(new THREE.BoxGeometry(0.34, 0.18, 0.24), '#4a3020', 0.3, 0.9, 0)); vmesh(tb, tg);
   const toll = mPerson(tg, { skin:'#d8b090', hair:'#6a4a2a', cloth:'#3a4a6a', sleeves:true, beret:'#2a2a2a' }, 0, -0.75, 0); poseSit(toll, 0.45); wbox(tg, 0.5, 0.42, 0.4, M('#6a4a2e', { tex:'wood' }), 0, 0, -0.75, 0, 0.6);
-  colliders.push({ x:gx + 3.6, z:z1 + 3.6, r:0.9 });
-  // Ein Händler mit Karren zahlt Zoll
-  const mg = grp(gx + 4.4, z1 + 9.0); mg.rotation.y = Math.PI; const cart = makeCart(mg).g; cart.position.set(0.4, 0, -1.6); cart.rotation.y = 0;
+  colliders.push({ x:gx + 3.6, z:z1 + 1.6, r:0.9 });
+  const mg = grp(gx + 4.4, z1 + 7.0); mg.rotation.y = Math.PI; const cart = makeCart(mg).g; cart.position.set(0.4, 0, -1.6); cart.rotation.y = 0;
   for (let i=0;i<3;i++) makeBarrel(cart, -0.3 + i*0.3, 0.72, (i - 1)*0.6, 0.65);
-  const mer = mPerson(mg, burgherO(310, false), -0.3, 0.6, Math.PI - 0.8); colliders.push({ x:gx + 4.4, z:z1 + 10.4, r:1.7 });
-  // Der Hörige mit Bündel schleicht durchs Tor in die Stadt (und kommt wieder von vorne)
-  const run = mPerson(scene, Object.assign(peasantO(311, false), { cloth:'#7a6a4a', hood:'#5a4a34' }), gx - 0.6, z1 + 14, Math.PI);
-  const stick = new THREE.Group(); mk(new THREE.CylinderGeometry(0.018, 0.018, 1.2, 6).translate(0, 0.55, 0), M('#5a3e28', { tex:'wood' }), stick); const bundle = mk(new THREE.SphereGeometry(0.2, 10, 8).scale(1, 0.9, 1), M('#c8b48a', { tex:'weave' }), stick, 0, 1.2, 0); fist(stick, run.arms[0].hand, 0.05);
+  const mer = mPerson(mg, burgherO(310, false), -0.3, 0.6, Math.PI - 0.8); colliders.push({ x:gx + 4.4, z:z1 + 8.4, r:1.7 });
+  const run = mPerson(scene, Object.assign(peasantO(311, false), { cloth:'#7a6a4a', hood:'#5a4a34' }), gx - 0.6, z1 + 12, Math.PI);
+  const stick = new THREE.Group(); mk(new THREE.CylinderGeometry(0.018, 0.018, 1.2, 6).translate(0, 0.55, 0), M('#5a3e28', { tex:'wood' }), stick); mk(new THREE.SphereGeometry(0.2, 10, 8).scale(1, 0.9, 1), M('#c8b48a', { tex:'weave' }), stick, 0, 1.2, 0); fist(stick, run.arms[0].hand, 0.05);
   const T = 22;
-  anims.push((t, dt) => { const c = (t % T)/T, z = z1 + 14 - c*22, inGate = z < z1 + 3.5;
-    run.g.position.set(gx - 0.6, groundH(gx - 0.6, z), z); run.g.visible = z > z1 - 6; walkPose(run, (14 - z + z1)*TAU/1.3, 1, 0.35, false);
+  anims.push((t, dt) => { const c = (t % T)/T, z = z1 + 12 - c*22, inGate = z < z1 + 1.5;
+    run.g.position.set(gx - 0.6, groundH(gx - 0.6, z), z); run.g.visible = z > z1 - 8; walkPose(run, (12 - z + z1)*TAU/1.3, 1, 0.35, false);
     run.arms[0].sh.rotation.set(-2.5, 0, -0.4); run.arms[0].el.rotation.x = -0.6; run.head.rotation.y = Math.sin(t*1.5)*0.5*(inGate ? 0 : 1); run.spine.rotation.x = 0.15;
     guard.head.rotation.y = -0.4 + Math.sin(t*0.3)*0.5; toll.arms[0].el.rotation.x = -1.2 + Math.sin(t*2)*0.15; toll.face.talk = Math.max(0, Math.sin(t*5))*0.5*(Math.sin(t*0.3) > 0 ? 1 : 0);
     mer.arms[0].sh.rotation.x = -1.0; mer.arms[0].el.rotation.x = -0.4; });
@@ -5886,9 +6102,9 @@ function buildRoads(){
 /* ---------- Leute in der Stadt: sie gehen über den Markt und die Gassen ---------- */
 function buildTownsfolk(){
   for (const id in STANDS) if (hotspots[id]) hotspots[id].stand = STANDS[id];
-  const marketSpots = [[42, -38], [47, -37.5], [53, -37.6], [58, -38], [59, -43], [58, -49], [52, -49], [45, -50], [41, -45], [46, -44], [54, -44], [50, -30], [50, -27], [64, -44], [70, -44]];
+  const marketSpots = [[41, -42], [45, -37.5], [52, -40], [56, -44], [53, -48.5], [44, -48.5], [48, -30], [48, -22], [48, -16], [64, -44], [72, -44], [80, -44], [26, -50], [26, -58], [20, -46], [30, -28], [38, -61.5], [51, -56], [51, -60], [62, -63.3], [36, -32], [60, -35], [56, -52]];
   const pick = rr => { const s = marketSpots[Math.floor(rr()*marketSpots.length)]; return [s[0] + (rr() - 0.5)*1.5, s[1] + (rr() - 0.5)*1.5]; };
-  for (let i=0;i<7;i++){ const fem = i % 2 === 1, o = i % 3 === 2 ? peasantO(950 + i, fem) : burgherO(950 + i, fem); const w = makeWalker(o, 960 + i, null, pick); dressUp(w.p, o);
+  for (let i=0;i<12;i++){ const fem = i % 2 === 1, o = i % 3 === 2 ? peasantO(950 + i, fem) : burgherO(950 + i, fem); const w = makeWalker(o, 960 + i, null, pick); dressUp(w.p, o);
     if (fem && i % 4 === 1){ const b = makeBasket(0.16, 0.2); w.p.spine.add(b); b.position.set(-0.24, 0.12, 0.18); } }
   // Zwei Leute auf dem Weg vom Turnierplatz zur Kreuzung
   const road = [[4, 36], [10, 42], [6, 52], [-2, 44], [2, 60], [-2, 70]], rpick = rr => { const s = road[Math.floor(rr()*road.length)]; return [s[0] + (rr() - 0.5)*2, s[1] + (rr() - 0.5)*2]; };
@@ -6672,7 +6888,7 @@ function zoned(fn, R, center){
 }
 buildDrawbridge = zoned(buildDrawbridge, 60, [CASTLE.x + 9, CASTLE.z + 26]); buildGateTower = zoned(buildGateTower, 50, [CASTLE.x + 9, CASTLE.z + 19]); buildWatchTower = zoned(buildWatchTower, 50, [CASTLE.x - 4, CASTLE.z + 20]); buildKeep = zoned(buildKeep, 60, [CASTLE.x - 18, CASTLE.z - 17]);
 buildPalas = zoned(buildPalas, 50, [CASTLE.x + 12, CASTLE.z - 13]); buildChapel = zoned(buildChapel, 50, [CASTLE.x, CASTLE.z - 10]); buildStable = zoned(buildStable, 50, [CASTLE.x - 8, CASTLE.z - 10]); buildCastleWell = zoned(buildCastleWell, 45, [CASTLE.x - 2, CASTLE.z - 1]); buildCourtyard = zoned(buildCourtyard, 50, [CASTLE.x + 8, CASTLE.z + 4]); buildJugglers = zoned(buildJugglers, 45); buildWallGuards = zoned(buildWallGuards, 50, [CASTLE.x - 19, CASTLE.z]);
-buildMarket = zoned(buildMarket, 55); buildRathaus = zoned(buildRathaus, 55); buildTownChurch = zoned(buildTownChurch, 55); buildCraftsman = zoned(buildCraftsman, 45); buildWeaver = zoned(buildWeaver, 45); buildAlley = zoned(buildAlley, 45); buildQuay = zoned(buildQuay, 60); buildPlagueDoctor = zoned(buildPlagueDoctor, 45); buildTownGate = zoned(buildTownGate, 55);
+buildMarket = zoned(buildMarket, 55); buildRathaus = zoned(buildRathaus, 55); buildMuenster = zoned(buildMuenster, 60, [66, -55]); buildCraftsman = zoned(buildCraftsman, 45); buildWeaver = zoned(buildWeaver, 45); buildAlley = zoned(buildAlley, 45); buildQuay = zoned(buildQuay, 60); buildPlagueDoctor = zoned(buildPlagueDoctor, 45); buildTownGate = zoned(buildTownGate, 55);
 buildFarmhouse = zoned(buildFarmhouse, 45); buildMeal = zoned(buildMeal, 45); buildTaxes = zoned(buildTaxes, 50); buildPlough = zoned(buildPlough, 60); buildCorvee = zoned(buildCorvee, 55); buildVillageLife = zoned(buildVillageLife, 60, VILLAGE);
 buildJoust = zoned(buildJoust, 70, [42, 46]); buildTourney = zoned(buildTourney, 75, [42, 46]); buildSquire = zoned(buildSquire, 50); buildPage = zoned(buildPage, 50); buildDubbing = zoned(buildDubbing, 50); buildKnightTent = zoned(buildKnightTent, 50); buildMotte = zoned(buildMotte, 70, [MOTTE.x, MOTTE.z]);
 buildPyramid = zoned(buildPyramid, 60, PYRAMID); buildTownsfolk = zoned(buildTownsfolk, 130, [0, 0]);
@@ -6681,12 +6897,12 @@ const nextFrame = () => new Promise(res => requestAnimationFrame(() => setTimeou
 const buildErrors = [];
 async function buildWorld(){
   const steps = [
-    ['Farben und Oberflächen werden gemischt …', [buildTextures, buildJungTextures, buildMedievalTextures, initRocks], true],
+    ['Farben und Oberflächen werden gemischt …', [buildTextures, buildJungTextures, buildMedievalTextures, buildTownTextures, initRocks], true],
     ['Himmel und Sonnenlicht …', [buildSky, buildEnvironment, buildLights], true],
     ['Wiesen, Wege und der Fluss entstehen …', [() => makeTerrain(300, HQ ? 300 : 220, 0, 0), () => makeTerrain(1400, 180, -0.15, 144, true), buildWater, buildRoads]],
     ['Die Burg wird gebaut …', [buildCastle, buildGateTower, buildDrawbridge, buildWatchTower, buildKeep]],
     ['Palas, Kapelle und Burghof …', [buildPalas, buildChapel, buildStable, buildCastleWell, buildCourtyard, buildJugglers, buildWallGuards, buildCastleView]],
-    ['Die Stadt mit Mauer und Marktplatz …', [buildTownWall, buildTownHouses, buildMarket, buildRathaus, buildTownChurch, buildCraftsman, buildWeaver, buildAlley, buildQuay, buildPlagueDoctor, buildTownGate]],
+    ['Die Stadt mit Mauer und Marktplatz …', [buildTownWall, buildTownHouses, buildMarket, buildRathaus, buildMuenster, buildKloster, buildCraftsman, buildWeaver, buildAlley, buildQuay, buildPlagueDoctor, buildTownGate]],
     ['Das Dorf, die Felder und die Tiere …', [buildVillage, buildFarmhouse, buildMeal, buildTaxes, buildPlough, buildCorvee, buildVillageLife]],
     ['Ritter, Turnier und Motte …', [buildTourney, buildJoust, buildSquire, buildPage, buildDubbing, buildKnightTent, buildMotte]],
     ['Die Ständepyramide und die Leute …', [buildPyramid, buildTownsfolk]],
