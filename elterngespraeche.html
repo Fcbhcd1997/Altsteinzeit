@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Elterngespräche verteilen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#fffdf7; --paper-2:#f3ecdd; --paper-3:#ebe1cd; --ink:#2b2118; --ink-soft:#6b5a48; --line:#d9cdb8; --line-2:#b9ab95;
+  --edge:#2b2118; --ochre:#e4a428; --ochre-2:#b47d12; --focus:#3c7fd6;
+  --yes:#3f6b2d; --yes-bg:#d6e8c9; --maybe:#8a5e00; --maybe-bg:#f7e2a8; --warn:#9c3622; --warn-bg:#f8e0d8; --good-bg:#e2efd6;
+  --font-body:'Andika','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --font-head:'Fredoka','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#2a231c; --paper-2:#1e1914; --paper-3:#382e24; --ink:#f6eddd; --ink-soft:#cdbb9f; --line:#4a3d31; --line-2:#6c5a46;
+    --edge:#0d0a07; --yes:#a9d993; --yes-bg:#2e4526; --maybe:#f1cc74; --maybe-bg:#4d3c12; --warn:#ffab96; --warn-bg:#4b2620; --good-bg:#2b3d24; }
+}
+:root[data-theme="dark"]{ --paper:#2a231c; --paper-2:#1e1914; --paper-3:#382e24; --ink:#f6eddd; --ink-soft:#cdbb9f; --line:#4a3d31; --line-2:#6c5a46;
+  --edge:#0d0a07; --yes:#a9d993; --yes-bg:#2e4526; --maybe:#f1cc74; --maybe-bg:#4d3c12; --warn:#ffab96; --warn-bg:#4b2620; --good-bg:#2b3d24; }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper-2);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.45}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.top,main{max-width:1120px;margin:0 auto;padding:0 16px}
+.top{padding-top:28px;padding-bottom:6px}
+h1,h2,h3{font-family:var(--font-head);font-weight:600;line-height:1.15;margin:0}
+h1{font-size:clamp(1.7rem,4.5vw,2.3rem)}
+.lead{margin:.45em 0 0;color:var(--ink-soft);max-width:46em}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:20px;margin:18px 0}
+.card h2{font-size:1.3rem;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.num{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ochre);color:#2b2118;border:2px solid var(--edge);font-size:1rem}
+.hint{color:var(--ink-soft);font-size:.92rem;margin:.6em 0 0}
+
+/* ---------- Knöpfe ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:.45em 1em;border:2px solid var(--edge);border-radius:12px;
+  background:var(--paper-3);color:var(--ink);box-shadow:0 3px 0 var(--edge);cursor:pointer;font-family:var(--font-head);font-weight:600;white-space:nowrap;text-decoration:none}
+.btn:hover{filter:brightness(1.04)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--edge)}
+.btn.primary{background:var(--ochre);color:#2b2118}
+.btn.small{min-height:36px;padding:.25em .8em}
+.btn[disabled]{opacity:.55;cursor:progress}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink-soft);text-decoration:underline;cursor:pointer}
+
+/* ---------- Schritt 1: Laden ---------- */
+.linkrow{display:flex;gap:10px;flex-wrap:wrap}
+.linkrow input{flex:1 1 320px;min-width:0;min-height:46px;padding:.5em .8em;border:2px solid var(--line-2);border-radius:12px;background:var(--paper)}
+.linkrow input:focus{border-color:var(--focus)}
+.status{margin-top:12px;padding:10px 14px;border-radius:12px;border:2px solid var(--line)}
+.status.busy{background:var(--paper-2)}
+.status.ok{background:var(--good-bg);border-color:transparent}
+.status.err{background:var(--warn-bg);border-color:transparent}
+.status p{margin:.3em 0}
+.status details{margin-top:.4em;font-size:.85rem;color:var(--ink-soft)}
+.status code{word-break:break-all}
+.spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--ochre-2);border-radius:50%;vertical-align:-2px;margin-right:6px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.other{margin-top:14px;border-top:2px dashed var(--line);padding-top:10px}
+.other summary{cursor:pointer;font-family:var(--font-head);font-weight:600;color:var(--ink-soft);padding:4px 0}
+.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:10px}
+.way{border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.way h3{font-size:1.05rem}
+.way p{margin:0;font-size:.92rem;color:var(--ink-soft)}
+.way textarea{width:100%;min-height:96px;padding:.5em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper);font-size:.9rem;resize:vertical}
+.way .row2{display:flex;gap:8px;flex-wrap:wrap}
+.privacy{margin:14px 0 0;font-size:.85rem;color:var(--ink-soft)}
+
+/* ---------- Schritt 2: Verteilung ---------- */
+.summary{font-size:1.08rem;padding:12px 16px;border-radius:14px;background:var(--good-bg);margin-bottom:12px}
+.summary.part{background:var(--paper-2)}
+.summary b{font-family:var(--font-head);font-weight:600}
+.missing{border:2px solid var(--warn);background:var(--warn-bg);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.missing h3{font-size:1.1rem;color:var(--warn);margin-bottom:6px}
+.missing ul{margin:0;padding-left:1.2em}
+.missing li{margin:.35em 0}
+.missing .why{color:var(--ink-soft)}
+.missing .tip{font-size:.88rem;color:var(--ink-soft);margin:.6em 0 0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
+.seg button{border:0;background:var(--paper);padding:.45em .9em;cursor:pointer;font-family:var(--font-head);font-weight:600;min-height:38px}
+.seg button[aria-pressed="true"]{background:var(--ochre);color:#2b2118}
+.check{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--ochre-2)}
+.spacer{flex:1}
+.plan .day{font-size:1.05rem;margin:16px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--line)}
+.plan .day:first-child{margin-top:4px}
+.rows{list-style:none;margin:0;padding:0}
+.rows .row{display:flex;gap:14px;align-items:baseline;padding:6px 4px;border-bottom:1px solid var(--line)}
+.rows .row:last-child{border-bottom:0}
+.rows .t{flex:none;min-width:6.5em;font-variant-numeric:tabular-nums;font-weight:700}
+.rows.byname .n{flex:none;min-width:12em;font-weight:700}
+.rows .ws{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;min-width:0}
+.rows .w{display:inline-flex;align-items:center;gap:6px}
+.rows .free .t,.frei{color:var(--ink-soft);font-weight:400;font-style:italic}
+.rows .none .n{color:var(--warn)}
+.tag{display:inline-block;font-size:.78rem;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.tag.maybe{background:var(--maybe-bg);color:var(--maybe)}
+.pin{border:0;background:none;cursor:pointer;font-size:.95rem;line-height:1;padding:4px;border-radius:8px;opacity:.28;filter:grayscale(1)}
+.pin:hover{opacity:.7}
+.pin.on{opacity:1;filter:none;background:var(--paper-3)}
+.empty{color:var(--ink-soft)}
+
+/* ---------- Schritt 3: Antworten ---------- */
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;color:var(--ink-soft);font-size:.92rem;margin-bottom:10px}
+.meta b{color:var(--ink)}
+.warnline{color:var(--warn);font-size:.92rem;margin:0 0 10px}
+.opts{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-bottom:6px}
+.opts input[type=number]{width:4.2em;min-height:38px;padding:.2em .4em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper);margin-left:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.88rem;color:var(--ink-soft);margin:10px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-flex;align-items:center;justify-content:center;gap:2px;min-width:26px;padding:0 4px;height:22px;border-radius:6px;font-style:normal;font-size:.8rem}
+.gridwrap{overflow:auto;max-height:72vh;border:2px solid var(--line);border-radius:14px;background:var(--paper);-webkit-overflow-scrolling:touch}
+.grid{border-collapse:separate;border-spacing:0;font-size:.88rem}
+.grid th,.grid td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;background:var(--paper)}
+.grid thead th{position:sticky;top:0;z-index:2;background:var(--paper-2);font-weight:700}
+.grid thead tr:nth-child(2) th{top:var(--dayh,0px)}
+.grid .corner{left:0;z-index:4;text-align:left;padding:8px 10px;vertical-align:bottom;min-width:13em}
+.grid .dayh{text-align:left;padding:6px 10px;white-space:nowrap;font-family:var(--font-head);font-weight:600;border-bottom:1px solid var(--line-2)}
+.grid .sh{padding:4px 2px 6px;vertical-align:bottom;min-width:58px}
+.grid .sh label{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;white-space:nowrap;padding:0 4px}
+.grid .sh .tl{font-variant-numeric:tabular-nums}
+.grid .sh.off .tl{text-decoration:line-through;color:var(--ink-soft)}
+.grid .sh input,.grid .who input[type=checkbox]{width:17px;height:17px;margin:0;accent-color:var(--ochre-2)}
+.grid .who{position:sticky;left:0;z-index:1;text-align:left;font-weight:400;padding:3px 6px;white-space:nowrap}
+.grid tbody .who{background:var(--paper)}
+.grid .whoin{display:flex;align-items:center;gap:6px}
+.grid .nm{width:11.5em;border:1px solid transparent;border-radius:6px;background:transparent;padding:3px 5px}
+.grid .nm:hover{border-color:var(--line)}
+.grid .nm:focus{border-color:var(--focus);background:var(--paper)}
+.grid tr.off .nm{text-decoration:line-through;color:var(--ink-soft)}
+.grid tr.miss .who{box-shadow:inset 4px 0 0 var(--warn)}
+.grid td{text-align:center}
+.grid .c{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;min-width:58px;height:34px;border:0;border-radius:0;background:transparent;cursor:pointer;font-size:.9rem;padding:0}
+.grid .c.y{background:var(--yes-bg);color:var(--yes);font-weight:700}
+.grid .c.m{background:var(--maybe-bg);color:var(--maybe)}
+.grid .c.n{color:var(--line-2)}
+.grid .c.pick{box-shadow:inset 0 0 0 3px var(--edge);font-weight:700}
+.grid .c.pick::after{content:'★';font-size:.75em}
+.grid td.off .c,.grid tr.off .c{opacity:.35}
+.grid tfoot th,.grid tfoot td{background:var(--paper-2);color:var(--ink-soft);font-size:.8rem;padding:5px 4px;position:sticky;bottom:0}
+.grid tfoot .who{z-index:3}
+.del{border:0;background:none;color:var(--ink-soft);cursor:pointer;font-size:1rem;line-height:1;padding:2px 5px;border-radius:6px}
+.del:hover{color:var(--warn);background:var(--warn-bg)}
+.legend i.y{background:var(--yes-bg);color:var(--yes);font-weight:700}
+.legend i.m{background:var(--maybe-bg);color:var(--maybe)}
+.legend i.p{box-shadow:inset 0 0 0 3px var(--edge);background:var(--yes-bg);color:var(--yes)}
+.add{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:12px}
+.add form{display:flex;gap:6px;flex:1 1 280px;min-width:0}
+.add input{flex:1;min-width:0;min-height:38px;padding:.3em .6em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper)}
+
+.foot{max-width:1120px;margin:0 auto;padding:4px 16px 40px;color:var(--ink-soft);font-size:.88rem;display:flex;flex-wrap:wrap;gap:8px 18px}
+
+@media (max-width:640px){
+  .card{padding:16px;border-radius:16px}
+  .rows .t{min-width:5em}
+  .rows.byname .row{flex-direction:column;gap:2px}
+  .rows.byname .n{min-width:0}
+  .grid .corner{min-width:10em}
+  .grid .nm{width:8.5em}
+}
+@media (prefers-reduced-motion: reduce){ .spin{animation:none} }
+@media print{
+  body{background:#fff;color:#000;font-size:12pt}
+  .top .lead,#stepLoad,#stepGrid,.tools,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
+  .card{border:0;padding:0;margin:10px 0;background:none}
+  .summary,.missing{background:none !important;border:1px solid #999}
+  .tag.maybe{border:1px solid #999;background:none;color:#000}
+  .rows .row{break-inside:avoid}
+  .plan .day{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Elterngespräche verteilen</h1>
+  <p class="lead">Link der Terminumfrage einfügen. Das Tool liest die Antworten und verteilt die Termine so, dass möglichst alle Familien einen Termin bekommen. Wo das nicht geht, steht, für wen und warum.</p>
+</header>
+
+<main>
+<section class="card" id="stepLoad" aria-labelledby="hLoad">
+  <h2 id="hLoad"><span class="num" aria-hidden="true">1</span>Umfrage laden</h2>
+  <form class="linkrow" id="linkForm">
+    <label class="sr" for="link">Link der Terminumfrage</label>
+    <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Link einfügen, z. B. https://nuudel.digitalcourage.de/… oder https://doodle.com/…">
+    <button class="btn primary" type="submit" id="loadBtn">Laden</button>
+  </form>
+  <p class="hint">Geht mit Doodle, Nuudel und Framadate (auch mit dem Admin-Link). Bei verborgenen Ergebnissen den Admin-Link nehmen.</p>
+  <div class="status" id="status" role="status" aria-live="polite" hidden></div>
+
+  <details class="other" id="other">
+    <summary>Andere Wege: Datei, Tabelle einfügen oder selbst erfassen</summary>
+    <div class="ways">
+      <div class="way">
+        <h3>Exportierte Datei</h3>
+        <p>CSV- oder Excel-Datei aus der Umfrage, z. B. der CSV-Export von Nuudel/Framadate oder der Excel-Export von Doodle.</p>
+        <button class="btn small" type="button" id="fileBtn">Datei wählen</button>
+        <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
+      </div>
+      <div class="way">
+        <h3>Tabelle einfügen</h3>
+        <p>Aus Excel oder einer Webseite kopieren: links die Namen, oben die Termine, in den Feldern Ja / Nein / Wenn nötig (auch ✓, x oder OK).</p>
+        <label class="sr" for="paste">Tabelle</label>
+        <textarea id="paste" placeholder="Name&#9;Mo 16:00&#9;Mo 16:20&#10;Fam. Muster&#9;Ja&#9;Nein"></textarea>
+        <button class="btn small" type="button" id="pasteBtn">Übernehmen</button>
+      </div>
+      <div class="way">
+        <h3>Selbst erfassen</h3>
+        <p>Mit einer leeren Tabelle beginnen und Termine und Familien von Hand eintragen. Oder zuerst ein Beispiel ansehen.</p>
+        <div class="row2">
+          <button class="btn small" type="button" id="manualBtn">Leere Tabelle</button>
+          <button class="btn small" type="button" id="demoBtn">Beispiel ansehen</button>
+        </div>
+      </div>
+    </div>
+  </details>
+  <p class="privacy">🔒 Die Antworten werden nur hier im Browser verarbeitet und bis «Alles löschen» in diesem Browser aufbewahrt. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</p>
+</section>
+
+<section class="card" id="stepPlan" aria-labelledby="hPlan" hidden>
+  <h2 id="hPlan"><span class="num" aria-hidden="true">2</span>Verteilung</h2>
+  <div class="summary" id="summary"></div>
+  <div class="missing" id="missing" hidden></div>
+  <div class="tools">
+    <div class="seg" role="group" aria-label="Sortierung">
+      <button type="button" data-view="zeit" aria-pressed="true">nach Termin</button>
+      <button type="button" data-view="name" aria-pressed="false">nach Familie</button>
+    </div>
+    <label class="check"><input type="checkbox" id="showFree"> freie Termine zeigen</label>
+    <span class="spacer"></span>
+    <button class="btn small" type="button" id="copyBtn">Liste kopieren</button>
+    <button class="btn small" type="button" id="csvBtn">Für Excel speichern</button>
+    <button class="btn small" type="button" id="printBtn">Drucken</button>
+  </div>
+  <div class="plan" id="plan"></div>
+  <p class="hint">📌 hält eine Familie an ihrem Termin fest. So bleibt der Termin auch dann, wenn später neue Antworten dazukommen.</p>
+</section>
+
+<section class="card" id="stepGrid" aria-labelledby="hGrid" hidden>
+  <h2 id="hGrid"><span class="num" aria-hidden="true">3</span>Antworten prüfen und anpassen</h2>
+  <div class="meta" id="meta"></div>
+  <p class="warnline" id="dupes" hidden></p>
+  <div class="opts">
+    <label>Gespräche pro Termin<input type="number" id="cap" min="1" max="20" step="1" value="1"></label>
+    <label class="check"><input type="checkbox" id="useMaybe" checked> «Wenn nötig» verwenden, wenn es sonst nicht aufgeht</label>
+  </div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="y">✓</i> Ja</span><span><i class="m">(✓)</i> Wenn nötig</span><span><i>·</i> Nein</span><span><i class="p">✓ ★</i> zugeteilt</span>
+  </div>
+  <p class="hint" style="margin:0 0 10px">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant. Bei mehreren gleich guten Lösungen kommen frühere Termine zuerst dran.</p>
+  <div class="gridwrap"><table class="grid" id="grid"></table></div>
+  <div class="add">
+    <form id="addPerson"><label class="sr" for="newPerson">Familie hinzufügen</label><input id="newPerson" placeholder="Familie hinzufügen (z. B. Antwort per Telefon)"><button class="btn small" type="submit">+ Familie</button></form>
+    <form id="addSlot"><label class="sr" for="newSlot">Termin hinzufügen</label><input id="newSlot" placeholder="Termin hinzufügen, z. B. Do 29.10. 18:20"><button class="btn small" type="submit">+ Termin</button></form>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <span>Alles wird hier im Browser berechnet.</span>
+  <button class="linkbtn" type="button" id="resetBtn" hidden>Alles löschen</button>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var KEY = 'elterngespraeche-v1';
+var Y = 2, M = 1, N = 0;   // Antworten: Ja, Wenn nötig, Nein
+/* Umfrage-Seiten erlauben fremden Seiten das Auslesen meist nicht (CORS). Darum zuerst direkt, dann über Weiterleitungsdienste. */
+var ROUTES = [
+  { name: 'direkt', url: function(u){ return u; } },
+  { name: 'allorigins.win', url: function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); } },
+  { name: 'codetabs.com', url: function(u){ return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); } },
+  { name: 'corsproxy.io', url: function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); } }
+];
+var XLSX_URL = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+var XLSX_SRI = 'sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';
+
+var $ = function(s){ return document.querySelector(s); };
+var state = null, view = 'zeit', last = null, busy = false;
+
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
+function clean(c){ return String(c == null ? '' : c).replace(/\s+/g, ' ').trim(); }
+function plural(n, one, many){ return n + ' ' + (n === 1 ? one : many); }
+
+/* ---------- Antworten in Tabellen erkennen ---------- */
+var RX_YES = /^(ja|j|yes|y|ok|okay|x|1|oui|si|sì|true|wahr|passt|geht|✓|✔|✔️|✅|☑|☑️|☒|👍)$/i;
+var RX_MAYBE = /^(\((ja|ok|okay|yes|x|✓|✔)\)|wenn nötig|wenn notwendig|falls nötig|notfalls|unter vorbehalt|vorbehalt|evtl\.?|eventuell|vielleicht|ifneedbe|if need be|if-need-be|maybe|si nécessaire|peut-être|~|\?)$/i;
+var RX_NO = /^(nein|n|no|non|0|-|–|—|✗|✘|❌|✕|×|☐|false|falsch|unkown|unknown|geht nicht)$/i;
+var RX_HEAD = /^(name|namen|vorname|nachname|familie|familien|teilnehmer|teilnehmende|teilnehmerin|teilnehmerinnen|participant|participants|eltern|kind|kinder|schüler|schülerin|wer|person|personen)\s*:?$/i;
+var RX_FOOT = /^(anzahl|summe|total|gesamt|count|nombre|zusagen|stimmen)\b/i;
+var RX_TIME_END = /^(.*\S)\s+((?:von\s+)?\d{1,2}[:.]\d{2}(?:\s*(?:-|–|—|bis)\s*\d{1,2}[:.]\d{2})?(?:\s*uhr)?)$/i;
+
+function kindOf(s){
+  s = clean(s);
+  if (!s) return N;
+  if (RX_YES.test(s)) return Y;
+  if (RX_MAYBE.test(s)) return M;
+  if (RX_NO.test(s)) return N;
+  return -1;
+}
+/* «Mo 26.10. 16:00» → Tag «Mo 26.10.», Zeit «16:00» */
+function splitLabel(s){
+  s = clean(s);
+  var m = RX_TIME_END.exec(s);
+  return m ? { day: m[1].replace(/[,;·–-]+$/, '').trim(), time: m[2] } : { day: '', time: s };
+}
+function emptyError(msg){ var e = new Error(msg); e.code = 'empty'; return e; }
+
+/* Liest eine Tabelle: Namen in der ersten Spalte, darüber eine oder mehrere Kopfzeilen mit den Terminen. Passt für
+   den CSV-Export von Framadate/Nuudel, den Excel-Export von Doodle und selbst gemachte Tabellen. */
+function fromRows(raw){
+  var rows = raw.map(function(r){ return (r || []).map(clean); });
+  var width = rows.reduce(function(w, r){ return Math.max(w, r.length); }, 0);
+  rows.forEach(function(r){ while (r.length < width) r.push(''); });
+  var nc = 0;
+  while (nc < width && rows.every(function(r){ return !r[nc]; })) nc++;
+  if (nc >= width - 1) throw new Error('In der Tabelle wurden keine Termine gefunden.');
+  function right(r){ return r.slice(nc + 1); }
+  function isBody(r){ var n = r[nc]; return !!n && !RX_FOOT.test(n) && !RX_HEAD.test(n) && right(r).every(function(c){ return !c || kindOf(c) >= 0; }); }
+  function hasMark(r){ return right(r).some(function(c){ return c && kindOf(c) >= 0; }); }
+  var first = -1;
+  for (var i = 0; i < rows.length; i++) if (isBody(rows[i]) && hasMark(rows[i])){ first = i; break; }
+  if (first < 0) throw emptyError('In der Tabelle wurden keine Antworten gefunden.');
+  var lastHead = -1;
+  for (i = 0; i < first; i++) if (right(rows[i]).some(Boolean)) lastHead = i;
+  var head = rows.slice(0, lastHead + 1).filter(function(r){ return right(r).some(Boolean); });
+  var body = rows.slice(lastHead + 1).filter(isBody);
+  var cols = [];
+  for (var c = nc + 1; c < width; c++){
+    var label = head.some(function(r){ return r[c]; }), marks = body.some(function(r){ return r[c] && kindOf(r[c]) >= 0; });
+    if (label || marks) cols.push(c);
+  }
+  if (!cols.length) throw new Error('In der Tabelle wurden keine Termine gefunden.');
+  /* Zusammengeführte Zellen (z. B. ein Datum über mehreren Zeiten) nach rechts auffüllen; die unterste Kopfzeile ist die Zeit */
+  var filled = head.map(function(r, k){
+    var carry = '';
+    return cols.map(function(c){ if (r[c]) carry = r[c]; return k < head.length - 1 ? carry : r[c]; });
+  });
+  var slots = cols.map(function(c, x){
+    var parts = filled.map(function(r){ return r[x]; }).filter(Boolean);
+    if (!parts.length) return { day: '', time: 'Termin ' + (x + 1) };
+    if (parts.length === 1) return splitLabel(parts[0]);
+    var time = filled[filled.length - 1][x];
+    var dayParts = time ? parts.slice(0, -1) : parts;
+    /* «Oktober 2026», «Mo 26» → «Mo 26 Oktober 2026» */
+    if (dayParts.length > 1 && /^\D+\s\d{4}$/.test(dayParts[0])) dayParts = dayParts.slice(1).concat(dayParts[0]);
+    return { day: dayParts.join(' '), time: time || '' };
+  }).map(function(s){ return s.time ? s : { day: '', time: s.day }; });
+  var people = body.map(function(r){
+    return { name: r[nc].replace(/^'(?=[=+\-@])/, ''), ans: cols.map(function(c){ return Math.max(N, kindOf(r[c])); }) };
+  });
+  return { title: '', slots: slots, people: people };
+}
+
+/* CSV oder aus Excel kopierter Text (Tabulator) */
+function parseDelimited(text){
+  text = String(text).replace(/^﻿/, '');
+  var d = guessDelim(text), rows = [], row = [], cell = '', q = false;
+  for (var i = 0; i < text.length; i++){
+    var ch = text[i];
+    if (q){
+      if (ch === '"'){ if (text[i + 1] === '"'){ cell += '"'; i++; } else q = false; }
+      else cell += ch;
+    } else if (ch === '"' && cell === '') q = true;
+    else if (ch === d){ row.push(cell); cell = ''; }
+    else if (ch === '\n' || ch === '\r'){
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    } else cell += ch;
+  }
+  if (cell !== '' || row.length){ row.push(cell); rows.push(row); }
+  return rows;
+}
+function guessDelim(text){
+  var sample = text.slice(0, 6000), n = { '\t': 0, ';': 0, ',': 0 }, q = false;
+  for (var i = 0; i < sample.length; i++){
+    var ch = sample[i];
+    if (ch === '"') q = !q;
+    else if (!q && n.hasOwnProperty(ch)) n[ch]++;
+  }
+  if (n['\t']) return '\t';
+  return n[';'] > n[','] ? ';' : ',';
+}
+
+/* ---------- Doodle ---------- */
+function fmt(d, opts, tz){
+  try { return new Intl.DateTimeFormat('de-CH', tz ? Object.assign({ timeZone: tz }, opts) : opts).format(d); }
+  catch (e){ return new Intl.DateTimeFormat('de-CH', opts).format(d); }
+}
+function fromDoodle(j){
+  if (!j || !Array.isArray(j.options) || !Array.isArray(j.participants)) throw new Error('Keine Doodle-Daten erhalten.');
+  if (!j.options.length) throw new Error('Die Doodle-Umfrage enthält keine Termine.');
+  if (!j.participants.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
+  var tz = j.initiator && j.initiator.timeZone || undefined;
+  var DAY = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, TIME = { hour: '2-digit', minute: '2-digit' };
+  var slots = j.options.map(function(o, i){
+    if (o.text) return splitLabel(o.text);
+    var a = o.start != null ? o.start : o.startDateTime, b = o.end != null ? o.end : o.endDateTime;
+    var ds = a != null ? new Date(a) : null, de = b != null ? new Date(b) : null;
+    if (!ds || isNaN(ds)) return { day: '', time: 'Termin ' + (i + 1) };
+    var day = fmt(ds, DAY, tz);
+    if (o.allday || o.allDay) return { day: day, time: 'ganzer Tag' };
+    return { day: day, time: fmt(ds, TIME, tz) + (de && !isNaN(de) && de > ds ? '–' + fmt(de, TIME, tz) : '') };
+  });
+  /* Doodle: 0 = nein, 1 = ja, 2 = wenn nötig */
+  var people = j.participants.map(function(p){
+    var pref = p.preferences || [];
+    return { name: clean(p.name) || 'Ohne Namen', ans: slots.map(function(_, i){ var v = pref[i]; return v === 1 || v === true ? Y : v === 2 ? M : N; }) };
+  });
+  return { title: clean(j.title), slots: slots, people: people };
+}
+
+/* ---------- Link erkennen ---------- */
+function detect(raw){
+  raw = clean(raw);
+  if (!raw) return null;
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)) raw = 'https://' + raw;
+  var u;
+  try { u = new URL(raw); } catch (e){ return null; }
+  if (!/^https?:$/.test(u.protocol) || u.hostname.indexOf('.') < 0) return null;
+  var host = u.hostname.toLowerCase(), path = u.pathname, m;
+  if (/(^|\.)doodle\.com$/.test(host)){
+    m = /\/poll\/([A-Za-z0-9]+)/.exec(path) || /\/id\/([A-Za-z0-9]+)/.exec(path) || /\/group-poll\/[a-z-]+\/([A-Za-z0-9-]+)/.exec(path) || /\/([A-Za-z0-9]{8,})\/?$/.exec(path);
+    if (!m) return { error: 'Im Doodle-Link steht keine Umfrage. Bitte den Link zur Umfrage selbst einfügen.' };
+    return { kind: 'doodle', name: 'Doodle', link: raw, url: 'https://doodle.com/api/v2.0/polls/' + m[1] + '?adminKey=&participantKey=' };
+  }
+  /* Framadate und Nuudel, auch auf eigenen Servern: …/ID, …/ID/admin, …/studs.php?poll=ID, …/adminstuds.php?poll=ID */
+  var segs = path.split('/').filter(Boolean), id = '', admin = false;
+  var file = segs.length && /\.php$/i.test(segs[segs.length - 1]) ? segs.pop() : '';
+  if (file){
+    admin = /^admin/i.test(file) || !!u.searchParams.get('admin');
+    id = u.searchParams.get('poll') || u.searchParams.get('admin') || '';
+  } else {
+    var k = segs.indexOf('vote'); if (k < 0) k = segs.indexOf('action');
+    if (k > 0) segs = segs.slice(0, k);
+    if (segs[segs.length - 1] === 'admin'){ admin = true; segs.pop(); }
+    id = segs.pop() || '';
+  }
+  if (!/^[A-Za-z0-9-]{4,}$/.test(id)) return { error: 'In diesem Link wurde keine Umfrage gefunden. Bitte den ganzen Link der Umfrage einfügen.' };
+  var name = /nuudel/.test(host) ? 'Nuudel' : /framadate/.test(host) ? 'Framadate' : host.replace(/^www\./, '');
+  var base = u.origin + (segs.length ? '/' + segs.join('/') : '');
+  return { kind: 'csv', name: name, link: raw, admin: admin, url: base + '/exportcsv.php?' + (admin ? 'admin=' : 'poll=') + encodeURIComponent(id) };
+}
+
+function fetchText(url, ms){
+  var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  var timer = setTimeout(function(){ if (ctl) ctl.abort(); }, ms);
+  return fetch(url, { signal: ctl ? ctl.signal : undefined, credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' })
+    .then(function(r){ if (!r.ok) throw new Error('Antwort ' + r.status); return r.text(); })
+    .then(function(t){ clearTimeout(timer); return t; }, function(e){ clearTimeout(timer); throw e && e.name === 'AbortError' ? new Error('keine Antwort (Zeit abgelaufen)') : e; });
+}
+function parseLoaded(src, text){
+  text = String(text || '').replace(/^﻿/, '');
+  if (src.kind === 'doodle'){
+    var j;
+    try { j = JSON.parse(text); } catch (e){ throw new Error('keine Umfragedaten erhalten'); }
+    return fromDoodle(j);
+  }
+  if (/^\s*</.test(text)) throw new Error('eine Webseite statt der Tabelle erhalten');
+  return fromRows(parseDelimited(text));
+}
+async function fetchPoll(src){
+  var notes = [], empty = null;
+  for (var k = 0; k < ROUTES.length; k++){
+    setStatus('busy', '<span class="spin" aria-hidden="true"></span>Umfrage wird geladen …' + (k ? ' (Weg ' + (k + 1) + ' von ' + ROUTES.length + ')' : ''));
+    try { return parseLoaded(src, await fetchText(ROUTES[k].url(src.url), 15000)); }
+    catch (e){
+      if (e && e.code === 'empty') empty = e;
+      notes.push(ROUTES[k].name + ': ' + (e && e.message ? e.message : String(e)));
+    }
+  }
+  var err = empty || new Error('nicht geladen');
+  err.notes = notes;
+  throw err;
+}
+
+async function loadLink(raw){
+  if (busy) return;
+  var src = detect(raw);
+  if (!src || src.error){
+    setStatus('err', '<p>' + esc(src && src.error || 'Das sieht nicht nach einem Link aus. Bitte den ganzen Link der Umfrage einfügen (er beginnt mit https://).') + '</p>');
+    return;
+  }
+  busy = true; $('#loadBtn').disabled = true;
+  try {
+    var data = await fetchPoll(src);
+    setData(data, { source: src.name, link: src.link });
+    setStatus('ok', '<p>✓ Umfrage geladen: ' + plural(data.people.length, 'Antwort', 'Antworten') + ', ' + plural(data.slots.length, 'Termin', 'Termine') + '.</p>');
+    $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e){
+    var h;
+    if (e.code === 'empty') h = '<p><b>Die Umfrage wurde gefunden, enthält aber noch keine Antworten.</b></p>';
+    else {
+      h = '<p><b>Die Umfrage konnte nicht geladen werden.</b></p>';
+      if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann geht es so: in Doodle die Antworten als Excel-Datei exportieren und hier unter «Andere Wege» hochladen. Oder die Antworten unten in die leere Tabelle eintragen.</p>';
+      else h += '<p>Dann geht es so: auf der Umfrage-Seite den CSV-Export herunterladen und hier unter «Andere Wege» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
+      $('#other').open = true;
+    }
+    if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary><code>' + esc(src.url) + '</code><br>' + e.notes.map(esc).join('<br>') + '</details>';
+    setStatus('err', h);
+  } finally {
+    busy = false; $('#loadBtn').disabled = false;
+  }
+}
+function setStatus(kind, html){ var s = $('#status'); s.hidden = !html; s.className = 'status ' + kind; s.innerHTML = html || ''; }
+
+/* ---------- Dateien ---------- */
+function loadXLSX(){
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise(function(res, rej){
+    var s = document.createElement('script');
+    s.src = XLSX_URL; s.integrity = XLSX_SRI; s.crossOrigin = 'anonymous';
+    s.onload = function(){ window.XLSX ? res(window.XLSX) : rej(new Error('Excel-Leser fehlt')); };
+    s.onerror = function(){ rej(new Error('Der Excel-Leser konnte nicht geladen werden. Die Datei in Excel als CSV speichern und diese hochladen.')); };
+    document.head.appendChild(s);
+  });
+}
+function decodeText(buf){
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+  catch (e){ return new TextDecoder('windows-1252').decode(buf); }   // CSV aus Excel unter Windows
+}
+async function readFile(f){
+  var buf = await f.arrayBuffer(), name = f.name || 'Datei';
+  if (/\.(xlsx|xlsm|xls|ods)$/i.test(name)){
+    var X = await loadXLSX(), wb = X.read(new Uint8Array(buf), { type: 'array' }), firstErr = null;
+    for (var k = 0; k < wb.SheetNames.length; k++){
+      var rows = X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[k]], { header: 1, raw: false, defval: '' });
+      try { return fromRows(rows); } catch (e){ firstErr = firstErr || e; }
+    }
+    throw firstErr || new Error('Die Datei ist leer.');
+  }
+  return fromRows(parseDelimited(decodeText(buf)));
+}
+function useLocal(fn, source){
+  try {
+    var data = fn();
+    setData(data, { source: source });
+    setStatus('ok', '<p>✓ Übernommen: ' + plural(data.people.length, 'Familie', 'Familien') + ', ' + plural(data.slots.length, 'Termin', 'Termine') + '.</p>');
+    $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e){ setStatus('err', '<p>' + esc(e.message || String(e)) + '</p><p>Erwartet wird: links die Namen, oben die Termine, in den Feldern Ja / Nein / Wenn nötig.</p>'); }
+}
+
+/* ---------- Zustand ---------- */
+function okey(x){ return (x.day + '|' + x.time).toLowerCase(); }
+function pkey(p){ return clean(p.orig || p.name).toLowerCase(); }
+function setData(d, info){
+  var old = state;
+  var s = { title: d.title || '', source: info.source || '', link: info.link || '', loaded: Date.now(),
+    cap: old ? old.cap : 1, useMaybe: old ? old.useMaybe : true, showFree: old ? old.showFree : false, nextId: 1, slots: [], people: [], pins: {} };
+  d.slots.forEach(function(x){ s.slots.push({ id: s.nextId++, day: x.day || '', time: x.time || '', on: true }); });
+  d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
+  if (old && s.link && old.link === s.link) carryOver(old, s);
+  state = s;
+  changed();
+}
+/* Beim Neuladen derselben Umfrage bleibt, was von Hand gemacht wurde: ausgeschaltete Termine und Familien, ergänzte Einträge, Namen, 📌 */
+function carryOver(old, s){
+  var at = {};
+  s.slots.forEach(function(x, j){ at[okey(x)] = j; });
+  old.slots.forEach(function(x){
+    var j = at[okey(x)];
+    if (j != null) s.slots[j].on = x.on;
+    else if (x.manual){
+      s.slots.push({ id: s.nextId++, day: x.day, time: x.time, on: x.on, manual: true });
+      at[okey(x)] = s.slots.length - 1;
+      s.people.forEach(function(p){ p.ans.push(N); });
+    }
+  });
+  var map = old.slots.map(function(x){ var j = at[okey(x)]; return j == null ? -1 : j; });
+  var who = {};
+  s.people.forEach(function(p, i){ who[pkey(p)] = i; });
+  old.people.forEach(function(op){
+    var i = who[pkey(op)], np = i != null ? s.people[i] : null;
+    if (np){
+      np.on = op.on; np.name = op.name;
+      old.slots.forEach(function(x, j){ if (x.manual && map[j] >= 0) np.ans[map[j]] = op.ans[j]; });
+    } else if (op.manual){
+      np = { id: s.nextId++, name: op.name, orig: op.orig, on: op.on, manual: true, ans: s.slots.map(function(){ return N; }) };
+      old.slots.forEach(function(x, j){ if (map[j] >= 0) np.ans[map[j]] = op.ans[j]; });
+      s.people.push(np);
+    }
+    var pj = old.pins[op.id] != null ? old.slots.map(function(x){ return x.id; }).indexOf(old.pins[op.id]) : -1;
+    if (np && pj >= 0 && map[pj] >= 0) s.pins[np.id] = s.slots[map[pj]].id;
+  });
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify({ state: state, view: view })); } catch (e){} }
+function restore(){
+  try {
+    var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (d && d.state && Array.isArray(d.state.slots) && Array.isArray(d.state.people)){ state = d.state; view = d.view === 'name' ? 'name' : 'zeit'; }
+  } catch (e){}
+}
+
+/* ---------- Verteilen ----------
+   Familien und Termine bilden ein Netz; gesucht ist eine Zuteilung mit möglichst vielen Familien (grösster Fluss).
+   Unter allen solchen Zuteilungen wird «Wenn nötig» so selten wie möglich gebraucht, danach kommen frühere Termine zuerst.
+   Kann eine Familie nicht eingeplant werden, geht es wirklich nicht: jede andere Verteilung liesse dann eine andere Familie ohne Termin. */
+function solve(s){
+  var T = s.slots.length, P = s.people.length, cap = Math.max(1, Math.min(20, s.cap | 0));
+  var slotOf = [], pinned = [], used = [], idx = {}, i, j;
+  for (i = 0; i < P; i++){ slotOf.push(-1); pinned.push(false); }
+  for (j = 0; j < T; j++){ used.push(0); idx[s.slots[j].id] = j; }
+  function usable(i, j){ var v = s.people[i].ans[j]; return s.slots[j].on && (v === Y || (v === M && s.useMaybe)); }
+  s.people.forEach(function(p, i){
+    var j = idx[s.pins[p.id]];
+    if (!p.on || j == null || !s.slots[j].on || !(p.ans[j] > N) || used[j] >= cap) return;
+    slotOf[i] = j; pinned[i] = true; used[j]++;
+  });
+  var order = slotOrder(s), rank = [];
+  order.forEach(function(j, r){ rank[j] = r; });
+  var S = 0, Z = 1 + P + T, G = [], BIG = (T + 1) * (P + 1) + 1;
+  for (i = 0; i <= Z; i++) G.push([]);
+  function edge(a, b, c, w){ G[a].push({ to: b, cap: c, cost: w, rev: G[b].length }); G[b].push({ to: a, cap: 0, cost: -w, rev: G[a].length - 1 }); }
+  for (i = 0; i < P; i++){
+    if (!s.people[i].on || pinned[i]) continue;
+    edge(S, 1 + i, 1, 0);
+    for (j = 0; j < T; j++) if (usable(i, j)) edge(1 + i, 1 + P + j, 1, (s.people[i].ans[j] === M ? BIG : 0) + rank[j]);
+  }
+  for (j = 0; j < T; j++) if (s.slots[j].on && cap > used[j]) edge(1 + P + j, Z, cap - used[j], 0);
+  /* kürzeste Wege nacheinander (Bellman-Ford), je ein Gespräch mehr */
+  for (;;){
+    var dist = [], pv = [], pe = [], inq = [], q = [S], u, v, k;
+    for (v = 0; v <= Z; v++){ dist.push(Infinity); pv.push(-1); pe.push(-1); inq.push(false); }
+    dist[S] = 0;
+    while (q.length){
+      u = q.shift(); inq[u] = false;
+      for (k = 0; k < G[u].length; k++){
+        var e = G[u][k];
+        if (e.cap > 0 && dist[u] + e.cost < dist[e.to]){
+          dist[e.to] = dist[u] + e.cost; pv[e.to] = u; pe[e.to] = k;
+          if (!inq[e.to]){ inq[e.to] = true; q.push(e.to); }
+        }
+      }
+    }
+    if (dist[Z] === Infinity) break;
+    for (v = Z; v !== S; v = pv[v]){ var f = G[pv[v]][pe[v]]; f.cap--; G[v][f.rev].cap++; }
+  }
+  for (i = 0; i < P; i++){
+    if (pinned[i]) continue;
+    G[1 + i].forEach(function(e){ if (e.to > P && e.to <= P + T && e.cap === 0) slotOf[i] = e.to - 1 - P; });
+  }
+  var holders = s.slots.map(function(){ return []; }), missing = [], nOn = 0, nMaybe = 0, nOpen = 0;
+  slotOf.forEach(function(j, i){ if (j >= 0){ holders[j].push(i); if (s.people[i].ans[j] === M) nMaybe++; } });
+  s.slots.forEach(function(x, j){ if (x.on) nOpen += cap; });
+  s.people.forEach(function(p, i){
+    if (!p.on) return;
+    nOn++;
+    if (slotOf[i] >= 0) return;
+    var all = p.ans.some(function(v){ return v > N; });
+    var on = s.slots.map(function(x, j){ return j; }).filter(function(j){ return s.slots[j].on && p.ans[j] > N; });
+    var ok = on.filter(function(j){ return usable(i, j); });
+    missing.push({ i: i, why: !all ? 'none' : !on.length ? 'off' : !ok.length ? 'maybe' : 'full', opts: ok });
+  });
+  return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap };
+}
+/* Termine nach Tag (in der Reihenfolge der Umfrage) und darin nach Uhrzeit */
+function minutes(t){ var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : 1e4; }
+function slotOrder(s){
+  var dayRank = {}, n = 0;
+  s.slots.forEach(function(x){ if (!(x.day in dayRank)) dayRank[x.day] = n++; });
+  return s.slots.map(function(x, j){ return j; }).sort(function(a, b){
+    var A = s.slots[a], B = s.slots[b];
+    return dayRank[A.day] - dayRank[B.day] || minutes(A.time) - minutes(B.time) || a - b;
+  });
+}
+function dayGroups(s, order){
+  var out = [];
+  order.forEach(function(j){
+    var d = s.slots[j].day, g = out[out.length - 1];
+    if (!g || g.day !== d) out.push(g = { day: d, idx: [] });
+    g.idx.push(j);
+  });
+  return out;
+}
+function slotLabel(x){ return x.day && x.time ? x.day + ', ' + x.time : x.day || x.time; }
+
+/* ---------- Anzeigen ---------- */
+function renderAll(){
+  var on = !!state;
+  $('#stepPlan').hidden = !on; $('#stepGrid').hidden = !on; $('#resetBtn').hidden = !on;
+  if (!on) return;
+  last = solve(state);
+  $('#cap').value = last.cap;
+  $('#useMaybe').checked = !!state.useMaybe;
+  $('#showFree').checked = !!state.showFree;
+  [].forEach.call(document.querySelectorAll('.seg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); });
+  renderSummary(last); renderMissing(last); renderPlan(last); renderMeta(); renderGrid(last);
+}
+function renderSummary(r){
+  var el = $('#summary'), got = r.nOn - r.missing.length, h;
+  if (!r.nOn) h = 'Noch keine Familien eingetragen.';
+  else if (!r.missing.length) h = '🎉 <b>' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.</b>';
+  else h = '<b>' + got + ' von ' + r.nOn + ' Familien</b> haben einen Termin.';
+  if (got && r.nMaybe) h += ' ' + (r.nMaybe === 1 ? 'Eine davon' : r.nMaybe + ' davon') + ' mit «wenn nötig».';
+  if (r.nOpen) h += ' Belegt: ' + got + ' von ' + r.nOpen + ' Plätzen.';
+  if (r.nOn > r.nOpen) h += ' <br>Es gibt weniger Plätze als Familien.';
+  el.innerHTML = h;
+  el.className = 'summary' + (r.missing.length || !r.nOn ? ' part' : '');
+}
+function renderMissing(r){
+  var el = $('#missing'), s = state;
+  if (!r.missing.length){ el.hidden = true; el.innerHTML = ''; return; }
+  var n = r.missing.length;
+  var h = '<h3>Kein Termin möglich für ' + (n === 1 ? '1 Familie' : n + ' Familien') + '</h3><ul>';
+  r.missing.forEach(function(m){
+    var why;
+    if (m.why === 'none') why = 'hat keinen Termin angekreuzt.';
+    else if (m.why === 'off') why = 'hat nur Termine angekreuzt, die ausgeschaltet sind.';
+    else if (m.why === 'maybe') why = 'hat nur «wenn nötig» angekreuzt, und das ist ausgeschaltet.';
+    else why = 'alle passenden Termine sind besetzt, und jede andere Verteilung liesse eine andere Familie ohne Termin: ' + m.opts.map(function(j){
+      var hs = r.holders[j].map(function(i){ return esc(s.people[i].name) + (r.pinned[i] ? ' 📌' : ''); }).join(', ');
+      return esc(slotLabel(s.slots[j])) + (hs ? ' (' + hs + ')' : '');
+    }).join('; ') + '.';
+    h += '<li><b>' + esc(s.people[m.i].name) + '</b> <span class="why">– ' + why + '</span></li>';
+  });
+  h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen, einen zusätzlichen Termin hinzufügen oder mehr Gespräche pro Termin erlauben. Wer lieber eine andere Familie verschieben möchte: die gewünschte Familie mit 📌 festhalten.</p>';
+  el.innerHTML = h; el.hidden = false;
+}
+function tagFor(i, j){ return state.people[i].ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : ''; }
+function pinFor(i, r){
+  var on = r.pinned[i], n = esc(state.people[i].name);
+  return '<button type="button" class="pin' + (on ? ' on' : '') + '" data-act="pin" data-p="' + i + '" aria-pressed="' + on + '" aria-label="' + n + ' festhalten" title="' + (on ? 'Festgehalten – antippen zum Lösen' : 'An diesem Termin festhalten') + '">📌</button>';
+}
+function renderPlan(r){
+  var s = state, h = '';
+  if (view === 'zeit'){
+    dayGroups(s, slotOrder(s)).forEach(function(g){
+      var rows = '';
+      g.idx.forEach(function(j){
+        var x = s.slots[j], hs = r.holders[j];
+        if (!hs.length && !(s.showFree && x.on)) return;
+        rows += '<li class="row' + (hs.length ? '' : ' free') + '"><span class="t">' + esc(x.time || x.day) + '</span><span class="ws">' +
+          (hs.length ? hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, j) + pinFor(i, r) + '</span>'; }).join('') : '<span class="frei">frei</span>') + '</span></li>';
+      });
+      if (rows) h += (g.day ? '<h3 class="day">' + esc(g.day) + '</h3>' : '') + '<ol class="rows">' + rows + '</ol>';
+    });
+  } else {
+    var list = s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on; })
+      .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); });
+    if (list.length) h = '<ol class="rows byname">' + list.map(function(i){
+      var j = r.slotOf[i];
+      return '<li class="row' + (j < 0 ? ' none' : '') + '"><span class="n">' + esc(s.people[i].name) + '</span><span class="ws">' +
+        (j < 0 ? '<span class="frei">kein Termin</span>' : '<span class="w">' + esc(slotLabel(s.slots[j])) + tagFor(i, j) + pinFor(i, r) + '</span>') + '</span></li>';
+    }).join('') + '</ol>';
+  }
+  $('#plan').innerHTML = h || '<p class="empty">Noch keine Termine verteilt.</p>';
+}
+function renderMeta(){
+  var s = state, bits = [];
+  if (s.title) bits.push('<b>' + esc(s.title) + '</b>');
+  if (s.source) bits.push(esc(s.source));
+  bits.push(plural(s.people.length, 'Familie', 'Familien'));
+  bits.push(plural(s.slots.length, 'Termin', 'Termine'));
+  if (s.loaded) bits.push('geladen ' + fmt(new Date(s.loaded), { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }));
+  var h = bits.map(function(b){ return '<span>' + b + '</span>'; }).join('');
+  if (s.link) h += '<button type="button" class="btn small" id="reloadBtn" title="Neue Antworten holen; was hier von Hand angepasst wurde, bleibt">↻ Neu laden</button>';
+  $('#meta').innerHTML = h;
+  var seen = {}, d = [];
+  s.people.forEach(function(p){ var k = pkey({ name: p.name }); seen[k] = (seen[k] || 0) + 1; if (seen[k] === 2) d.push(p.name); });
+  var w = $('#dupes');
+  w.hidden = !d.length;
+  w.textContent = d.length ? '⚠️ Doppelt eingetragen: ' + d.join(', ') + '. Falls es dieselbe Familie ist, einen Eintrag ausschalten.' : '';
+}
+function renderGrid(r){
+  var s = state, order = slotOrder(s), groups = dayGroups(s, order), anyDay = groups.some(function(g){ return g.day; });
+  var counts = s.slots.map(function(x, j){
+    var y = 0, m = 0;
+    s.people.forEach(function(p){ if (p.on){ if (p.ans[j] === Y) y++; else if (p.ans[j] === M) m++; } });
+    return y + (m ? ' (+' + m + ')' : '');
+  });
+  var h = '<thead>';
+  var corner = '<th class="corner" scope="col"' + (anyDay ? ' rowspan="2"' : '') + '>Familie</th>';
+  if (anyDay) h += '<tr>' + corner + groups.map(function(g){ return '<th class="dayh" scope="colgroup" colspan="' + g.idx.length + '">' + esc(g.day || '–') + '</th>'; }).join('') + '</tr>';
+  h += '<tr>' + (anyDay ? '' : corner) + order.map(function(j){
+    var x = s.slots[j];
+    return '<th class="sh' + (x.on ? '' : ' off') + '" scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
+      (x.manual ? '<button type="button" class="del" data-act="dels" data-s="' + j + '" aria-label="Termin ' + esc(slotLabel(x)) + ' entfernen" title="Termin entfernen">×</button>' : '') + '</th>';
+  }).join('') + '</tr></thead><tbody>';
+  s.people.forEach(function(p, i){
+    var miss = p.on && r.slotOf[i] < 0;
+    h += '<tr class="' + (p.on ? '' : 'off') + (miss ? ' miss' : '') + '"><th class="who" scope="row"><div class="whoin">' +
+      '<input type="checkbox" data-act="person" data-p="' + i + '"' + (p.on ? ' checked' : '') + ' aria-label="' + esc(p.name) + ' einplanen" title="einplanen">' +
+      '<input class="nm" type="text" data-act="name" data-p="' + i + '" value="' + esc(p.name) + '" aria-label="Name">' +
+      (p.manual ? '<button type="button" class="del" data-act="delp" data-p="' + i + '" aria-label="' + esc(p.name) + ' entfernen" title="Familie entfernen">×</button>' : '') +
+      '</div></th>' + order.map(function(j){
+        var v = p.ans[j], cls = v === Y ? 'y' : v === M ? 'm' : 'n', pick = r.slotOf[i] === j;
+        var word = v === Y ? 'Ja' : v === M ? 'Wenn nötig' : 'Nein';
+        return '<td' + (s.slots[j].on ? '' : ' class="off"') + '><button type="button" class="c ' + cls + (pick ? ' pick' : '') + '" data-act="cell" data-p="' + i + '" data-s="' + j + '" aria-label="' +
+          esc(p.name + ', ' + slotLabel(s.slots[j]) + ': ' + word + (pick ? ', zugeteilt' : '')) + '">' + (v === Y ? '✓' : v === M ? '(✓)' : '·') + '</button></td>';
+      }).join('') + '</tr>';
+  });
+  if (!s.people.length) h += '<tr><th class="who" scope="row" style="padding:10px;color:var(--ink-soft)">Noch keine Familien</th>' + order.map(function(){ return '<td></td>'; }).join('') + '</tr>';
+  h += '</tbody><tfoot><tr><th class="who" scope="row">Zusagen</th>' + order.map(function(j){ return '<td>' + counts[j] + '</td>'; }).join('') + '</tr></tfoot>';
+  var g = $('#grid');
+  g.innerHTML = h;
+  var dh = g.querySelector('.dayh');
+  g.style.setProperty('--dayh', dh ? dh.offsetHeight + 'px' : '0px');
+}
+
+function changed(focusSel, keepGrid){
+  save();
+  if (keepGrid && state){
+    last = solve(state);
+    renderSummary(last); renderMissing(last); renderPlan(last); renderMeta();
+    [].forEach.call(document.querySelectorAll('#grid .c'), function(b){ b.classList.toggle('pick', last.slotOf[+b.dataset.p] === +b.dataset.s); });
+  } else renderAll();
+  if (focusSel){ var el = document.querySelector(focusSel); if (el) try { el.focus({ preventScroll: true }); } catch (e){ el.focus(); } }
+}
+
+/* ---------- Text, CSV, Drucken ---------- */
+function planText(){
+  var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
+  if (view === 'zeit'){
+    dayGroups(s, slotOrder(s)).forEach(function(g){
+      var lines = [];
+      g.idx.forEach(function(j){
+        var hs = r.holders[j];
+        if (!hs.length && !(s.showFree && s.slots[j].on)) return;
+        lines.push('  ' + (s.slots[j].time || s.slots[j].day) + '  ' + (hs.length ? hs.map(function(i){ return s.people[i].name + (s.people[i].ans[j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei'));
+      });
+      if (lines.length){ out.push(''); if (g.day) out.push(g.day); out = out.concat(lines); }
+    });
+  } else {
+    out.push('');
+    s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on && r.slotOf[i] >= 0; })
+      .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); })
+      .forEach(function(i){ out.push(s.people[i].name + ': ' + slotLabel(s.slots[r.slotOf[i]])); });
+  }
+  if (r.missing.length){ out.push(''); out.push('Ohne Termin: ' + r.missing.map(function(m){ return s.people[m.i].name; }).join(', ')); }
+  return out.join('\n');
+}
+function csvCell(v){ v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[;"\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+function planCSV(){
+  var s = state, r = last, rows = [['Tag', 'Zeit', 'Familie', 'Hinweis']];
+  slotOrder(s).forEach(function(j){
+    var x = s.slots[j], hs = r.holders[j];
+    if (hs.length) hs.forEach(function(i){ rows.push([x.day, x.time, s.people[i].name, s.people[i].ans[j] === M ? 'wenn nötig' : '']); });
+    else if (s.showFree && x.on) rows.push([x.day, x.time, '', 'frei']);
+  });
+  r.missing.forEach(function(m){ rows.push(['', '', s.people[m.i].name, 'kein Termin']); });
+  return '﻿' + rows.map(function(row){ return row.map(csvCell).join(';'); }).join('\r\n') + '\r\n';
+}
+function copyText(t){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+  return new Promise(function(res, rej){
+    var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e){}
+    document.body.removeChild(ta); ok ? res() : rej(new Error('Kopieren nicht möglich'));
+  });
+}
+function flash(btn, text){ var t = btn.textContent; btn.textContent = text; setTimeout(function(){ btn.textContent = t; }, 1600); }
+
+/* ---------- Beispiel ---------- */
+function demoData(){
+  var days = [['Montag, 26. Oktober 2026', ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40']],
+              ['Mittwoch, 28. Oktober 2026', ['13:30', '13:50', '14:10', '14:30', '14:50']],
+              ['Donnerstag, 29. Oktober 2026', ['17:00', '17:20', '17:40', '18:00']]];
+  var slots = [];
+  days.forEach(function(d){ d[1].forEach(function(t){ slots.push({ day: d[0], time: t }); }); });
+  /* j = ja, v = wenn nötig, . = nein; | trennt die Tage */
+  var fam = [['Fam. Ammann', 'j.....|.....|....'], ['Fam. Baumann', 'j.....|.....|....'], ['Fam. Brunner', 'jjj...|.....|jj..'],
+    ['Fam. Egli', '......|jjjjj|....'], ['Fam. Frei', '..jj..|.....|....'], ['Fam. Gerber', '......|..v..|....'],
+    ['Fam. Graf', '....jj|.....|jjjj'], ['Fam. Huber', '......|jj...|....'], ['Fam. Keller', 'jjjjjj|.....|....'],
+    ['Fam. Lüthi', '......|.....|..jj'], ['Fam. Meier', '.j.j..|.j...|....'], ['Fam. Moser', '......|.....|....'],
+    ['Fam. Schmid', '...jjv|.....|vv..'], ['Fam. Steiner', '......|j.jj.|....'], ['Fam. Wyss', 'jj....|.....|j...'],
+    ['Fam. Zürcher', '......|...jj|...j']];
+  return { title: 'Beispiel 4b', slots: slots, people: fam.map(function(f){
+    return { name: f[0], ans: f[1].replace(/\|/g, '').split('').map(function(c){ return c === 'j' ? Y : c === 'v' ? M : N; }) };
+  }) };
+}
+
+/* ---------- Bedienung ---------- */
+$('#linkForm').addEventListener('submit', function(e){ e.preventDefault(); loadLink($('#link').value); });
+$('#link').addEventListener('paste', function(){ var el = this; setTimeout(function(){ if (/^\s*\S+\.\S+\/\S+\s*$/.test(el.value)) loadLink(el.value); }, 0); });
+$('#fileBtn').addEventListener('click', function(){ $('#file').click(); });
+$('#file').addEventListener('change', async function(){
+  var f = this.files && this.files[0];
+  if (!f) return;
+  setStatus('busy', '<span class="spin" aria-hidden="true"></span>Datei wird gelesen …');
+  try { var data = await readFile(f); useLocal(function(){ return data; }, f.name); }
+  catch (e){ setStatus('err', '<p>' + esc(e.message || String(e)) + '</p>'); }
+  this.value = '';
+});
+$('#pasteBtn').addEventListener('click', function(){
+  var t = $('#paste').value;
+  if (!t.trim()){ $('#paste').focus(); return; }
+  useLocal(function(){ return fromRows(parseDelimited(t)); }, 'Eingefügte Tabelle');
+});
+$('#manualBtn').addEventListener('click', function(){
+  setData({ slots: [], people: [] }, { source: 'Von Hand' });
+  setStatus('', '');
+  $('#stepGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('#newSlot').focus({ preventScroll: true });
+});
+$('#demoBtn').addEventListener('click', function(){ useLocal(demoData, 'Beispiel'); });
+
+$('#meta').addEventListener('click', function(e){ if (e.target.closest('#reloadBtn') && state && state.link){ $('#link').value = state.link; loadLink(state.link); } });
+$('#cap').addEventListener('input', function(){ var v = parseInt(this.value, 10); if (v >= 1 && v <= 20){ state.cap = v; changed(); } });
+$('#useMaybe').addEventListener('change', function(){ state.useMaybe = this.checked; changed(); });
+$('#showFree').addEventListener('change', function(){ state.showFree = this.checked; changed(); });
+document.querySelector('.seg').addEventListener('click', function(e){ var b = e.target.closest('button[data-view]'); if (b){ view = b.dataset.view; changed(); } });
+
+$('#grid').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act]');
+  if (!b) return;
+  var i = +b.dataset.p, j = +b.dataset.s, act = b.dataset.act;
+  if (act === 'cell'){
+    var p = state.people[i];
+    p.ans[j] = p.ans[j] === N ? Y : p.ans[j] === Y ? M : N;
+    changed('#grid .c[data-p="' + i + '"][data-s="' + j + '"]');
+  } else if (act === 'dels'){
+    var id = state.slots[j].id;
+    state.slots.splice(j, 1);
+    state.people.forEach(function(p){ p.ans.splice(j, 1); });
+    Object.keys(state.pins).forEach(function(k){ if (state.pins[k] === id) delete state.pins[k]; });
+    changed();
+  } else if (act === 'delp'){
+    delete state.pins[state.people[i].id];
+    state.people.splice(i, 1);
+    changed();
+  }
+});
+$('#grid').addEventListener('change', function(e){
+  var t = e.target, act = t.dataset.act;
+  if (act === 'slot'){ state.slots[+t.dataset.s].on = t.checked; changed('#grid input[data-act="slot"][data-s="' + t.dataset.s + '"]'); }
+  else if (act === 'person'){ state.people[+t.dataset.p].on = t.checked; changed('#grid input[data-act="person"][data-p="' + t.dataset.p + '"]'); }
+  else if (act === 'name'){
+    var v = clean(t.value), p = state.people[+t.dataset.p];
+    if (v){ p.name = v; changed(null, true); } else t.value = p.name;
+  }
+});
+$('#grid').addEventListener('keydown', function(e){ if (e.key === 'Enter' && e.target.dataset.act === 'name') e.target.blur(); });
+$('#plan').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act="pin"]');
+  if (!b) return;
+  var i = +b.dataset.p, p = state.people[i];
+  if (state.pins[p.id] != null) delete state.pins[p.id];
+  else if (last.slotOf[i] >= 0) state.pins[p.id] = state.slots[last.slotOf[i]].id;
+  changed('#plan button[data-act="pin"][data-p="' + i + '"]');
+});
+
+$('#addPerson').addEventListener('submit', function(e){
+  e.preventDefault();
+  var v = clean($('#newPerson').value);
+  if (!v) return;
+  state.people.push({ id: state.nextId++, name: v, orig: v, on: true, manual: true, ans: state.slots.map(function(){ return N; }) });
+  $('#newPerson').value = '';
+  changed('#newPerson');
+});
+$('#addSlot').addEventListener('submit', function(e){
+  e.preventDefault();
+  var v = clean($('#newSlot').value);
+  if (!v) return;
+  var x = splitLabel(v);
+  state.slots.push({ id: state.nextId++, day: x.day, time: x.time, on: true, manual: true });
+  state.people.forEach(function(p){ p.ans.push(N); });
+  $('#newSlot').value = '';
+  changed('#newSlot');
+});
+
+$('#copyBtn').addEventListener('click', function(){ var b = this; copyText(planText()).then(function(){ flash(b, '✓ Kopiert'); }, function(){ flash(b, 'Ging nicht'); }); });
+$('#csvBtn').addEventListener('click', function(){
+  var url = URL.createObjectURL(new Blob([planCSV()], { type: 'text/csv;charset=utf-8' })), a = document.createElement('a');
+  a.href = url; a.download = 'elterngespraeche.csv'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+});
+$('#printBtn').addEventListener('click', function(){ window.print(); });
+$('#resetBtn').addEventListener('click', function(){
+  if (!confirm('Alle Antworten und Zuteilungen auf dieser Seite löschen?')) return;
+  try { localStorage.removeItem(KEY); } catch (e){}
+  state = null; last = null; $('#link').value = ''; $('#paste').value = ''; setStatus('', '');
+  renderAll();
+  window.scrollTo(0, 0);
+});
+
+restore();
+if (state && state.link) $('#link').value = state.link;
+renderAll();
+
+/* Für Tests */
+window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, fromDoodle: fromDoodle, detect: detect, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
+})();
+</script>
+</body>
+</html>
