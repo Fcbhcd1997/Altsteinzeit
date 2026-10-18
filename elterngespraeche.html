@@ -95,6 +95,15 @@ input[type=checkbox]{accent-color:var(--accent)}
 .status details{margin-top:.4em;font-size:.82rem;color:var(--ink-2)}
 .spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;margin-right:8px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.bmbox{margin-top:16px;padding:16px 18px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:14px;font-size:.92rem;transition:box-shadow .2s}
+.bmbox.flash{box-shadow:0 0 0 3px var(--accent)}
+.bm-head{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.bm-head svg{color:var(--accent)}
+.bmbox ol{margin:8px 0 0;padding-left:1.3em;color:var(--ink-2)}
+.bmbox li{margin:.45em 0}
+.bmbox code{font-size:.86em;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+.bm{display:inline-flex;align-items:center;gap:6px;margin:4px 0 0 4px;padding:.35em .9em;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:600;text-decoration:none;cursor:grab;box-shadow:var(--shadow-sm)}
+.bm::before{content:'';width:8px;height:8px;border-radius:2px;background:currentColor;opacity:.7}
 .alt{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:16px;padding:14px 16px;border:1px dashed var(--line-2);border-radius:14px;transition:background .15s, border-color .15s}
 .alt.flash{background:var(--accent-soft);border-color:var(--accent)}
 .alt > svg{color:var(--accent)}
@@ -265,6 +274,16 @@ input[type=checkbox]{accent-color:var(--accent)}
   <p class="hint">Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
   <div class="status" id="status" role="status" aria-live="polite" hidden></div>
 
+  <div class="bmbox" id="bmBox">
+    <div class="bm-head"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4-6 4z"/></svg><b>Klappt der Link nicht? Dann mit dem Auslese-Knopf</b></div>
+    <ol>
+      <li>Diesen Knopf mit der Maus in die Lesezeichenleiste des Browsers ziehen (nur einmal nötig):
+        <a class="bm" id="bmLink" href="#" title="In die Lesezeichenleiste ziehen">Elterngespräche übernehmen</a></li>
+      <li>Die Umfrage im Browser öffnen, z. B. <code>termin.cevi.tools/invite/…</code>. Sind die Namen verborgen: als Ersteller:in angemeldet die Verwaltungs-Seite der Umfrage öffnen.</li>
+      <li>Oben in der Lesezeichenleiste auf «Elterngespräche übernehmen» klicken. Dieses Tool öffnet sich in einem neuen Tab und teilt die Termine zu.</li>
+    </ol>
+    <p class="hint">Der Knopf liest nur, was du auf der Umfrage-Seite selbst sehen kannst, und gibt es direkt an dieses Tool weiter. Geht am Computer mit Chrome, Edge, Firefox und Safari. Lesezeichenleiste nicht sichtbar? Ctrl+Shift+B (Mac: ⌘+Shift+B).</p>
+  </div>
   <div class="alt" id="other">
     <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
     <div class="alt-txt"><b>Oder: exportierte Datei hochladen</b><span>CSV- oder Excel-Datei mit den Antworten, z. B. aus Nuudel, Framadate, Doodle, Microsoft Forms oder Google Forms.</span></div>
@@ -710,12 +729,16 @@ function doodleParse(text){
    Version 3 holt sie über die tRPC-Schnittstelle. Optionen: { id, startTime | start, duration in Minuten (0 = ganzer Tag) },
    Antworten: { optionId, type: "yes" | "ifNeedBe" | "no" }. */
 function fromFlight(html){
-  var doc = new DOMParser().parseFromString(html, 'text/html'), chunks = [], rows = {};
+  var doc = new DOMParser().parseFromString(html, 'text/html'), chunks = [];
   [].forEach.call(doc.querySelectorAll('script'), function(s){
     var re = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g, m;
     while ((m = re.exec(s.textContent))) try { chunks.push(JSON.parse(m[1])); } catch (e){}
   });
-  chunks.join('').split('\n').forEach(function(line){
+  return fromFlightText(chunks.join(''));
+}
+function fromFlightText(text){
+  var rows = {};
+  text.split('\n').forEach(function(line){
     var m = /^([0-9a-f]+):([\[{].*)$/.exec(line);
     if (m) try { rows[m[1]] = JSON.parse(m[2]); } catch (e){}
   });
@@ -901,12 +924,12 @@ async function loadLink(raw){
     else if (e.code === 'hidden') h = '<p><b>Die Umfrage wurde gefunden, aber die Namen der Teilnehmenden sind verborgen.</b></p><p>Ohne Namen lassen sich die Termine nicht zuteilen. In den Einstellungen der Umfrage das Verbergen der Teilnehmenden kurz ausschalten, hier «Laden» drücken und danach wieder einschalten.</p>';
     else {
       h = '<p><b>Die Umfrage konnte nicht geladen werden.</b></p>';
-      if (src.kind === 'rallly') h += '<p>Die Rallly-Seite liess sich nicht auslesen. Bitte noch einmal «Laden» drücken. Klappt es weiterhin nicht, die «Technischen Angaben» unten mitschicken.</p>';
+      if (src.kind === 'rallly') h += '<p>Die Seite sperrt das Auslesen von aussen. So geht es trotzdem: mit dem Auslese-Knopf direkt auf der Umfrage-Seite (siehe unten).</p>';
       else if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und unten bei «Datei wählen» hochladen.</p>';
       else if (src.kind === 'sheet') h += '<p>Ist die Tabelle für «Alle mit dem Link» freigegeben? Sonst in Google Tabellen «Datei → Herunterladen → CSV» wählen und die Datei unten bei «Datei wählen» hochladen.</p>';
       else if (src.kind === 'framadate') h += '<p>Dann auf der Umfrage-Seite den CSV-Export herunterladen und unten bei «Datei wählen» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
-      else h += '<p>Diese Seite zeigt die Antworten nicht in einer lesbaren Tabelle, oder sie lässt sich nicht abrufen. ' + esc(HINT_FILE) + '</p>';
-      flashFile();
+      else h += '<p>Diese Seite zeigt die Antworten nicht in einer lesbaren Tabelle, oder sie lässt sich nicht abrufen. Dann den Auslese-Knopf direkt auf der Umfrage-Seite verwenden (siehe unten). ' + esc(HINT_FILE) + '</p>';
+      if (src.kind === 'rallly' || src.kind === 'page' || src.kind === 'doodle') flashBm(); else flashFile();
     }
     if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary>' + e.notes.map(esc).join('<br>') + '</details>';
     setStatus('err', h);
@@ -916,6 +939,87 @@ async function loadLink(raw){
 }
 function flashFile(){ var a = $('#other'); a.classList.add('flash'); setTimeout(function(){ a.classList.remove('flash'); }, 2400); }
 function setStatus(kind, html){ var s = $('#status'); s.hidden = !html; s.className = 'status ' + kind; s.innerHTML = html || ''; }
+
+/* ---------- Auslese-Knopf ----------
+   Ein Lesezeichen, das auf der Umfrage-Seite selbst läuft. Es nimmt, was der Browser dort sieht: die Seite, die Daten,
+   die Next.js mitschickt (Rallly), und die Schnittstelle der Seite mit der eigenen Anmeldung (Rallly, Doodle, CSV-Export).
+   Dann öffnet es dieses Tool in einem neuen Tab und gibt ihm die Daten per postMessage. Kein Weiterleitungsdienst nötig. */
+var BM_BODY = [
+  "if(location.href.indexOf(T)===0){alert('Diesen Knopf in die Lesezeichenleiste ziehen. Dann die Umfrage öffnen und dort auf den Knopf klicken.');return;}",
+  "var w=window.open(T+'#empfang','_blank');",
+  "if(!w){alert('Bitte Pop-ups für diese Seite erlauben und den Knopf nochmals anklicken.');return;}",
+  "var d={v:1,url:location.href,title:document.title,html:document.documentElement.outerHTML.slice(0,6e6),flight:''},jobs=[],ready=false,done=false,sent=false;",
+  "try{d.flight=(self.__next_f||[]).map(function(x){return x&&typeof x[1]==='string'?x[1]:''}).join('')}catch(e){}",
+  "function get(u,k){jobs.push(fetch(u,{credentials:'include'}).then(function(r){return r.ok?r.text():''}).then(function(t){if(t)d[k]=t}).catch(function(){}))}",
+  "var m=location.pathname.match(/\\/(?:invite|poll)\\/([A-Za-z0-9_-]{6,})/);",
+  "if(m)get('/api/trpc/polls.get,polls.participants.list?batch=1&input='+encodeURIComponent(JSON.stringify({0:{json:{urlId:m[1]}},1:{json:{pollId:m[1]}}})),'trpc');",
+  "var dm=/doodle\\.com$/.test(location.hostname)&&location.pathname.match(/\\/(?:poll|id)\\/([A-Za-z0-9-]{6,})/);",
+  "if(dm)get('/api/v2.0/polls/'+dm[1]+'?adminKey=&participantKey=','doodle');",
+  "var a=document.querySelector('a[href*=\"exportcsv\"],a[href$=\".csv\"]');",
+  "if(a)get(a.href,'csv');",
+  "function go(){if(ready&&done&&!sent){sent=true;w.postMessage({eg:d},O)}}",
+  "addEventListener('message',function(e){if(e.source===w&&e.data==='eg-bereit'){ready=true;go()}});",
+  "Promise.all(jobs).then(function(){done=true;go()});"
+].join('');
+function bookmarklet(){
+  var tool = location.origin + location.pathname, origin = location.origin && location.origin !== 'null' ? location.origin : '*';
+  return 'javascript:' + encodeURIComponent('(function(){var T=' + JSON.stringify(tool) + ',O=' + JSON.stringify(origin) + ';' + BM_BODY + '})()');
+}
+function fromObserved(d){
+  var tries = [], notes = [], hidden = null, empty = null;
+  if (d.trpc) tries.push(['Schnittstelle', function(){ return trpcParse(d.trpc); }]);
+  if (d.flight) tries.push(['Seitendaten', function(){ return fromFlightText(d.flight); }]);
+  if (d.html && /self\.__next_f/.test(d.html)) tries.push(['Seite', function(){ return fromFlight(d.html); }]);
+  if (d.doodle) tries.push(['Doodle', function(){ return doodleParse(d.doodle); }]);
+  if (d.csv) tries.push(['CSV-Export', function(){ return csvParse(d.csv); }]);
+  if (d.html) tries.push(['Tabelle', function(){ return fromDoc(new DOMParser().parseFromString(d.html, 'text/html')); }]);
+  for (var k = 0; k < tries.length; k++){
+    try { return tries[k][1](); }
+    catch (e){
+      if (e.code === 'hidden') hidden = hidden || e; else if (e.code === 'empty') empty = empty || e;
+      notes.push(tries[k][0] + ': ' + msg(e));
+    }
+  }
+  var err = hidden || empty || new Error('keine Antworten gefunden');
+  err.notes = notes;
+  throw err;
+}
+function useObserved(d){
+  var host = '';
+  try { host = new URL(d.url).hostname.replace(/^www\./, ''); } catch (e){}
+  try {
+    var data = fromObserved(d);
+    setData(data, { source: (host === 'termin.cevi.tools' ? 'Cevi Termin' : host || 'Umfrage') + ' · Auslese-Knopf' });
+    setStatus('ok', '<p>✓ Von der Umfrage-Seite übernommen: ' + plural(data.people.length, 'Antwort', 'Antworten') + ', ' + plural(data.slots.length, 'Termin', 'Termine') + '.</p>');
+    $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e){
+    var h = e.code === 'hidden'
+      ? '<p><b>Auf dieser Seite sind die Namen der Teilnehmenden verborgen.</b></p><p>Als Ersteller:in angemeldet die Verwaltungs-Seite der Umfrage öffnen (der Link enthält /poll/) und dort den Auslese-Knopf anklicken. Oder das Verbergen der Teilnehmenden in den Einstellungen kurz ausschalten.</p>'
+      : e.code === 'empty' ? '<p><b>Die Umfrage enthält noch keine Antworten.</b></p>'
+      : '<p><b>Auf dieser Seite wurden keine Antworten gefunden.</b></p><p>Den Knopf auf der Seite der Umfrage selbst anklicken, dort wo die Antworten zu sehen sind.</p>';
+    if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary>' + esc(d.url || '') + '<br>' + e.notes.map(esc).join('<br>') + '</details>';
+    setStatus('err', h);
+  }
+}
+/* Dieses Tool wurde vom Auslese-Knopf geöffnet: bereit melden, Daten annehmen */
+function receiveObserved(){
+  if (location.hash !== '#empfang' || !window.opener) return;
+  history.replaceState(null, '', location.pathname + location.search);
+  var got = false, tries = 0;
+  setStatus('busy', '<span class="spin" aria-hidden="true"></span>Antworten werden von der Umfrage-Seite übernommen …');
+  window.addEventListener('message', function(e){
+    if (got || e.source !== window.opener || !e.data || !e.data.eg) return;
+    got = true;
+    useObserved(e.data.eg);
+  });
+  (function ping(){
+    if (got) return;
+    try { window.opener.postMessage('eg-bereit', '*'); } catch (err){}
+    if (++tries < 60) setTimeout(ping, 250);
+    else setStatus('err', '<p>Von der Umfrage-Seite kam nichts an. Bitte dort den Auslese-Knopf nochmals anklicken.</p>');
+  })();
+}
+function flashBm(){ var a = $('#bmBox'); a.classList.add('flash'); setTimeout(function(){ a.classList.remove('flash'); }, 2400); }
 
 /* ---------- Dateien ---------- */
 function loadXLSX(){
@@ -1629,7 +1733,10 @@ $('#resetBtn').addEventListener('click', function(){
 
 forget();
 $('#link').value = '';
+$('#bmLink').href = bookmarklet();
+$('#bmLink').addEventListener('click', function(e){ e.preventDefault(); flashBm(); setStatus('busy', '<p>Den Knopf nicht hier anklicken, sondern mit der Maus in die Lesezeichenleiste ziehen. Dann die Umfrage öffnen und dort auf den Knopf klicken.</p>'); });
 renderAll();
+receiveObserved();
 /* Auch beim Zurückblättern im Browser nicht den alten Stand zeigen */
 window.addEventListener('pageshow', function(e){ if (e.persisted) location.reload(); });
 
