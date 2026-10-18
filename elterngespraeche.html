@@ -19,7 +19,7 @@
   --ink:#132340; --ink-2:#4b5a7a; --ink-3:#6c7a97; --line:#e1e6ef; --line-2:#c8d0de;
   --primary:#132340; --primary-2:#22396a; --primary-ink:#ffffff;
   --accent:#fe6b3d; --accent-soft:#fff0ea; --accent-line:#ffcdb8;
-  --yes:#15803d; --yes-bg:#dcfce7; --maybe:#a16207; --maybe-bg:#fef3c7;
+  --yes:#15803d; --yes-bg:#dcfce7; --maybe:#a16207; --maybe-bg:#fef3c7; --hard:#b9381a; --hard-bg:#ffe9e1;
   --warn:#b91c1c; --warn-bg:#fef2f2; --warn-line:#fecaca; --good:#047857; --good-bg:#ecfdf5; --good-line:#a7f3d0;
   --shadow:0 1px 2px rgba(19,35,64,.05), 0 6px 24px rgba(19,35,64,.07);
   --shadow-sm:0 1px 2px rgba(19,35,64,.09);
@@ -33,7 +33,7 @@
     --ink:#f2f5fb; --ink-2:#b8c3da; --ink-3:#909dba; --line:#2a3f68; --line-2:#3c5389;
     --primary:#fe6b3d; --primary-2:#ff8259; --primary-ink:#132340;
     --accent:#ff7a4f; --accent-soft:#3a3450; --accent-line:#7b4b50;
-    --yes:#4ade80; --yes-bg:#16392f; --maybe:#fbbf24; --maybe-bg:#3d3420;
+    --yes:#4ade80; --yes-bg:#16392f; --maybe:#fbbf24; --maybe-bg:#3d3420; --hard:#ff9a7a; --hard-bg:#4a3036;
     --warn:#fb8a8a; --warn-bg:#3a2236; --warn-line:#6b2f3f; --good:#34d399; --good-bg:#153a37; --good-line:#22604f;
     --shadow:0 1px 2px rgba(0,0,0,.25), 0 8px 28px rgba(0,0,0,.22); --shadow-sm:0 1px 2px rgba(0,0,0,.35);
   }
@@ -44,7 +44,7 @@
   --ink:#f2f5fb; --ink-2:#b8c3da; --ink-3:#909dba; --line:#2a3f68; --line-2:#3c5389;
   --primary:#fe6b3d; --primary-2:#ff8259; --primary-ink:#132340;
   --accent:#ff7a4f; --accent-soft:#3a3450; --accent-line:#7b4b50;
-  --yes:#4ade80; --yes-bg:#16392f; --maybe:#fbbf24; --maybe-bg:#3d3420;
+  --yes:#4ade80; --yes-bg:#16392f; --maybe:#fbbf24; --maybe-bg:#3d3420; --hard:#ff9a7a; --hard-bg:#4a3036;
   --warn:#fb8a8a; --warn-bg:#3a2236; --warn-line:#6b2f3f; --good:#34d399; --good-bg:#153a37; --good-line:#22604f;
   --shadow:0 1px 2px rgba(0,0,0,.25), 0 8px 28px rgba(0,0,0,.22); --shadow-sm:0 1px 2px rgba(0,0,0,.35);
 }
@@ -172,6 +172,38 @@ input[type=checkbox]{accent-color:var(--primary)}
 .pin.on{opacity:1;color:var(--accent);background:var(--accent-soft)}
 .pin.on svg{fill:currentColor}
 .empty{color:var(--ink-3)}
+.tag.grp{background:var(--surface-3);color:var(--ink-2)}
+.tag.hard{background:var(--hard-bg);color:var(--hard)}
+.hardbox{margin:0 0 14px;border:1px solid var(--line);border-radius:14px;padding:4px 16px;background:var(--surface)}
+.hardbox[open]{padding-bottom:14px}
+.hardbox summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-weight:600;font-size:.93rem;padding:9px 0}
+.hardbox summary::-webkit-details-marker{display:none}
+.hardbox summary::before{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin:0 3px 0 2px}
+.hardbox[open] summary::before{transform:rotate(45deg)}
+.hcount{font-weight:500;font-size:.8rem;color:var(--ink-3);background:var(--surface-2);border-radius:999px;padding:1px 9px}
+.hardbox .hint{margin:0 0 10px}
+.hchips{display:flex;flex-wrap:wrap;gap:8px}
+.hchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:5px 6px 5px 12px;cursor:pointer;font-size:.88rem}
+.hchip .hn{font-weight:600}
+.hchip .hl{font-size:.75rem;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--surface-2);color:var(--ink-3)}
+.hchip:hover{border-color:var(--ink-3)}
+.hchip.on{border-color:var(--hard);background:var(--hard-bg)}
+.hchip.on .hl{background:var(--hard);color:var(--surface)}
+.grip{flex:none;display:grid;place-items:center;width:22px;height:28px;border:0;border-radius:6px;background:none;color:var(--ink-3);cursor:grab;padding:0;touch-action:none}
+.grip svg{width:16px;height:16px;fill:currentColor;stroke:none}
+.grip:hover{background:var(--surface-2);color:var(--ink)}
+.grip.picked{background:var(--accent);color:#fff}
+body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
+.ghost{position:fixed;left:0;top:0;z-index:50;pointer-events:none;padding:6px 12px;border-radius:10px;background:var(--primary);color:var(--primary-ink);font-weight:600;font-size:.88rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.grid tr.dropto .who{box-shadow:inset 0 0 0 2px var(--accent);background:var(--accent-soft)}
+.grid tr.ghead th{background:var(--surface-2);padding:6px 10px;border-left:3px solid var(--accent)}
+.grid tr.ghead.miss th{border-left-color:var(--warn)}
+.ghin{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;position:sticky;left:10px;width:max-content;max-width:calc(100vw - 80px)}
+.gt{font-weight:650;font-size:.84rem}
+.gs{font-size:.84rem;color:var(--ink-2)}
+.ghin .btn{min-height:28px;padding:.15em .7em;font-size:.8rem}
+.grid tr.ing .who{border-left:3px solid var(--accent);padding-left:5px}
+.hdot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--hard)}
 
 /* ---------- Schritt 3: Antworten ---------- */
 .meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-bottom:12px}
@@ -243,7 +275,7 @@ input[type=checkbox]{accent-color:var(--primary)}
 @media (prefers-reduced-motion: reduce){ .spin{animation:none} }
 @media print{
   body{background:#fff;color:#000;font-size:11pt}
-  .lead,#stepLoad,#stepGrid,.tools,.mode-hint,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
+  .lead,#stepLoad,#stepGrid,.tools,.mode-hint,.hardbox,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
   .top{padding:0 0 6px}
   .card{border:0;box-shadow:none;padding:0;margin:8px 0;background:none}
   .kpi,.missing,.dayc{background:none !important;border:1px solid #bbb}
@@ -314,13 +346,18 @@ input[type=checkbox]{accent-color:var(--primary)}
     <button class="btn small" type="button" id="printBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg><span>Drucken</span></button>
   </div>
   <p class="mode-hint" id="modeHint"></p>
+  <details class="hardbox" id="hardBox">
+    <summary>Schwierigkeitsgrad der Gespräche <span class="hcount" id="hardCount">optional</span></summary>
+    <p class="hint">Gespräche antippen, die anspruchsvoll sind. SmartSlot plant sie dann nach Möglichkeit nicht direkt nacheinander. Alle anderen gelten als einfach.</p>
+    <div class="hchips" id="hardChips"></div>
+  </details>
   <div class="plan" id="plan"></div>
   <p class="hint">Mit der Stecknadel hältst du eine Familie an ihrem Termin fest. So bleibt der Termin auch dann, wenn später neue Antworten dazukommen.</p>
 </section>
 
 <section class="card" id="stepGrid" aria-labelledby="hGrid" hidden>
   <div class="card-head"><span class="num" aria-hidden="true">3</span><div><h2 id="hGrid">Antworten prüfen und anpassen</h2>
-    <p class="sub">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant.</p></div></div>
+    <p class="sub">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant. Einen Namen am Griff auf einen anderen ziehen: Die beiden bekommen einen gemeinsamen Termin.</p></div></div>
   <div class="meta" id="meta"></div>
   <p class="warnline" id="dupes" hidden></p>
   <div class="opts">
@@ -655,7 +692,8 @@ function setData(d, info){
   d.slots.forEach(function(x){ s.slots.push({ id: s.nextId++, day: x.day || '', time: x.time || '', on: true }); });
   d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
   normalizeDays(s.slots);
-  if (old && samePoll(old, s)){ carryOver(old, s); normalizeDays(s.slots); }
+  if (old && samePoll(old, s)){ carryOver(old, s); normalizeDays(s.slots); tidyGroups(s); }
+  pickFrom = null;
   state = s;
   changed();
 }
@@ -686,9 +724,11 @@ function carryOver(old, s){
     var i = who[pkey(op)], np = i != null ? s.people[i] : null;
     if (np){
       np.on = op.on; np.name = op.name;
+      if (op.group) np.group = op.group;
+      if (op.hard) np.hard = true;
       old.slots.forEach(function(x, j){ if (x.manual && map[j] >= 0) np.ans[map[j]] = op.ans[j]; });
     } else if (op.manual){
-      np = { id: s.nextId++, name: op.name, orig: op.orig, on: op.on, manual: true, ans: s.slots.map(function(){ return N; }) };
+      np = { id: s.nextId++, name: op.name, orig: op.orig, on: op.on, manual: true, group: op.group, hard: op.hard, ans: s.slots.map(function(){ return N; }) };
       old.slots.forEach(function(x, j){ if (map[j] >= 0) np.ans[map[j]] = op.ans[j]; });
       s.people.push(np);
     }
@@ -701,33 +741,55 @@ function save(){}
 function forget(){ try { localStorage.removeItem(KEY); sessionStorage.clear(); } catch (e){} }
 
 /* ---------- Verteilen ----------
-   1. So viele Familien wie möglich (grösster Fluss). Bleibt eine Familie ohne Termin, geht es wirklich nicht:
-      jede andere Verteilung liesse dann eine andere Familie ohne Termin.
+   Geplant wird mit Einheiten: einer Familie allein oder einer Gruppe, die einen gemeinsamen Termin braucht
+   (für sie passt ein Termin nur, wenn er für alle Mitglieder passt).
+   1. So viele Einheiten wie möglich (grösster Fluss). Bleibt eine ohne Termin, geht es wirklich nicht:
+      jede andere Verteilung liesse dann eine andere ohne Termin.
    2. Dann so wenige Tage wie möglich. Welche Tage es mindestens braucht, wird durchprobiert (bei mehr als 12 Tagen
       werden Tage einzeln weggelassen, solange alle Platz haben).
-   3. Danach keine Lücken zwischen den Gesprächen eines Tages und wenig «wenn nötig». Das erledigt eine Suche, die
-      Familien verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
-   Gewichte: ein Tag 1 000 000, eine Lücke 30, ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
-var COST = { day: 1e6, gap: 30, rank: 0.01 };
+   3. Danach: anspruchsvolle Gespräche nicht direkt nacheinander, keine Lücken, wenig «wenn nötig». Das erledigt eine
+      Suche, die Einheiten verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
+   Gewichte: ein Tag 1 000 000, zwei anspruchsvolle direkt nacheinander 50, eine Lücke 30,
+   ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
+var COST = { day: 1e6, adj: 50, gap: 30, rank: 0.01 };
 var solveMemo = { key: '', res: null };
 function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function solve(s){
-  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, dayKey(x), x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans]; })]);
+  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, dayKey(x), x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans, p.group || 0, p.hard ? 1 : 0]; })]);
   if (solveMemo.key === key) return solveMemo.res;
   var res = solveNow(s);
   solveMemo = { key: key, res: res };
   return res;
 }
-function solveNow(s){
-  var T = s.slots.length, P = s.people.length, cap = Math.max(1, Math.min(20, s.cap | 0)), wM = s.mode === 'wunsch' ? 5000 : 25;
-  var slotOf = [], pinned = [], load = [], idx = {}, i, j, k;
-  for (i = 0; i < P; i++){ slotOf.push(-1); pinned.push(false); }
-  for (j = 0; j < T; j++){ load.push(0); idx[s.slots[j].id] = j; }
-  function usable(i, j){ var v = s.people[i].ans[j]; return s.slots[j].on && (v === Y || (v === M && s.useMaybe)); }
+/* Einheiten bilden: Gruppen zusammen, sonst jede eingeplante Familie für sich */
+function makeUnits(s){
+  var units = [], byGroup = {};
   s.people.forEach(function(p, i){
-    var j = idx[s.pins[p.id]];
-    if (!p.on || j == null || !s.slots[j].on || !(p.ans[j] > N) || load[j] >= cap) return;
-    slotOf[i] = j; pinned[i] = true; load[j]++;
+    if (!p.on) return;
+    if (p.group){
+      if (byGroup[p.group] == null){ byGroup[p.group] = units.length; units.push({ members: [], group: p.group }); }
+      units[byGroup[p.group]].members.push(i);
+    } else units.push({ members: [i], group: null });
+  });
+  units.forEach(function(u){
+    u.ans = s.slots.map(function(x, j){ return Math.min.apply(null, u.members.map(function(i){ return s.people[i].ans[j]; })); });
+    u.hard = u.members.some(function(i){ return !!s.people[i].hard; });
+  });
+  return units;
+}
+function solveNow(s){
+  var T = s.slots.length, cap = Math.max(1, Math.min(20, s.cap | 0)), wM = s.mode === 'wunsch' ? 5000 : 25;
+  var units = makeUnits(s), P = units.length;
+  var slotOf = [], pinned = [], load = [], hl = [], idx = {}, i, j, k;
+  for (i = 0; i < P; i++){ slotOf.push(-1); pinned.push(false); }
+  for (j = 0; j < T; j++){ load.push(0); hl.push(0); idx[s.slots[j].id] = j; }
+  function usable(i, j){ var v = units[i].ans[j]; return s.slots[j].on && (v === Y || (v === M && s.useMaybe)); }
+  /* festgehalten: der Termin eines Mitglieds, wenn er für die ganze Einheit passt */
+  units.forEach(function(u, x){
+    for (var m = 0; m < u.members.length; m++){
+      var j = idx[s.pins[s.people[u.members[m]].id]];
+      if (j != null && s.slots[j].on && u.ans[j] > N && load[j] < cap){ slotOf[x] = j; pinned[x] = true; load[j]++; if (u.hard) hl[j]++; return; }
+    }
   });
   /* angebotene Termine je Tag, in zeitlicher Folge */
   var order = slotOrder(s), rank = [], dayOf = [], days = [], dayIdx = {};
@@ -741,7 +803,7 @@ function solveNow(s){
   var D = days.length, free = [], acc = [];
   for (i = 0; i < P; i++){
     acc.push(order.filter(function(j){ return usable(i, j); }));
-    if (s.people[i].on && !pinned[i]) free.push(i);
+    if (!pinned[i]) free.push(i);
   }
   function inside(allowed, j){ return !allowed || allowed[dayOf[j]]; }
 
@@ -752,7 +814,7 @@ function solveNow(s){
     function edge(a, b, c, w){ G[a].push({ to: b, cap: c, cost: w, rev: G[b].length }); G[b].push({ to: a, cap: 0, cost: -w, rev: G[a].length - 1 }); }
     free.forEach(function(i){
       edge(S, 1 + i, 1, 0);
-      acc[i].forEach(function(j){ if (inside(allowed, j)) edge(1 + i, 1 + P + j, 1, (s.people[i].ans[j] === M ? BIG : 0) + rank[j]); });
+      acc[i].forEach(function(j){ if (inside(allowed, j)) edge(1 + i, 1 + P + j, 1, (units[i].ans[j] === M ? BIG : 0) + rank[j]); });
     });
     for (var j = 0; j < T; j++) if (s.slots[j].on && cap > load[j] && inside(allowed, j)) edge(1 + P + j, Z, cap - load[j], 0);
     for (;;){
@@ -776,7 +838,7 @@ function solveNow(s){
     free.forEach(function(i){ G[1 + i].forEach(function(e){ if (e.to > P && e.to <= P + T && e.cap === 0) own[i] = e.to - 1 - P; }); });
     return { own: own, n: n };
   }
-  /* schnelle Prüfung, ob eine Auswahl von Tagen für alle reicht (erweiternde Wege) */
+  /* schnelle Prüfung, wie viele Einheiten mit einer Auswahl von Tagen Platz haben (erweiternde Wege) */
   function fitCount(allowed){
     var ld = load.slice(), occ = s.slots.map(function(){ return []; }), n = 0;
     function aug(i, seen){
@@ -828,33 +890,57 @@ function solveNow(s){
   var proven = !!K && D > 1 && D <= 12;
 
   function anneal(c, seed){
-    var own = c.start.slice(), ld = load.slice(), occ = s.slots.map(function(){ return []; }), ok = [], opts = [];
-    var mv = free.filter(function(i){ return own[i] >= 0; });
-    mv.forEach(function(i){ ld[own[i]]++; occ[own[i]].push(i); });
+    var own = c.start.slice(), ld = load.slice(), hd = hl.slice(), occ = s.slots.map(function(){ return []; }), ok = [], opts = [];
+    var mv = free.filter(function(i){ return own[i] >= 0; }), outs = [];
+    mv.forEach(function(i){ ld[own[i]]++; if (units[i].hard) hd[own[i]]++; occ[own[i]].push(i); });
     for (var i = 0; i < P; i++){
       ok.push({});
       opts.push(acc[i].filter(function(j){ return inside(c.allowed, j); }));
       opts[i].forEach(function(j){ ok[i][j] = true; });
+      if (free.indexOf(i) >= 0 && own[i] < 0 && opts[i].length) outs.push(i);
+    }
+    /* Wer ohne Termin bleibt, ist nicht fest: eine Einheit ohne Termin kann den Platz einer anderen übernehmen (gleich viele mit Termin) */
+    function swapOut(y, x, b){
+      var hx = units[x].hard ? 1 : 0, hy = units[y].hard ? 1 : 0;
+      hd[b] += hy - hx; occ[b][occ[b].indexOf(x)] = y; own[y] = b; own[x] = -1;
+      mv[mv.indexOf(x)] = y; outs[outs.indexOf(y)] = x;
     }
     function dayCost(d){
       if (d < 0) return 0;
-      var q = days[d], first = -1, last = -1, g = 0, k;
+      var q = days[d], first = -1, last = -1, g = 0, a = 0, k;
       for (k = 0; k < q.length; k++) if (ld[q[k]]){ if (first < 0) first = k; last = k; }
       if (first < 0) return 0;
-      for (k = first; k <= last; k++) if (!ld[q[k]]) g++;
-      return COST.day + COST.gap * g;
+      for (k = first; k <= last; k++){
+        if (!ld[q[k]]) g++;
+        if (k < last && hd[q[k]] && hd[q[k + 1]]) a++;
+      }
+      return COST.day + COST.gap * g + COST.adj * a;
     }
-    function sc(i, j){ return (s.people[i].ans[j] === M ? wM : 0) + COST.rank * rank[j]; }
-    function move(i, a, b){ ld[a]--; occ[a].splice(occ[a].indexOf(i), 1); ld[b]++; occ[b].push(i); own[i] = b; }
+    function sc(i, j){ return (units[i].ans[j] === M ? wM : 0) + COST.rank * rank[j]; }
+    function move(i, a, b){ var h = units[i].hard ? 1 : 0; ld[a]--; hd[a] -= h; occ[a].splice(occ[a].indexOf(i), 1); ld[b]++; hd[b] += h; occ[b].push(i); own[i] = b; }
     function daysCost(list){ var seen = {}, t = 0; list.forEach(function(d){ if (!seen[d]){ seen[d] = true; t += dayCost(d); } }); return t; }
     var cost = 0, d;
     for (d = 0; d < D; d++) cost += dayCost(d);
     mv.forEach(function(i){ cost += sc(i, own[i]); });
-    var best = { own: own.slice(), cost: cost }, rnd = rng(seed), N = Math.min(30000, 3000 + 500 * mv.length), T0 = 80, T1 = 0.05;
+    var best = { own: own.slice(), cost: cost }, rnd = rng(seed), N = Math.min(30000, 3000 + 500 * mv.length), T0 = 80, T1 = 0.05, delta, before;
     if (mv.length) for (var it = 0; it < N; it++){
-      var temp = T0 * Math.pow(T1 / T0, it / N), x = mv[(rnd() * mv.length) | 0], a = own[x], o = opts[x];
+      var temp = T0 * Math.pow(T1 / T0, it / N), x, a, o;
+      if (outs.length && rnd() < 0.2){
+        var y = outs[(rnd() * outs.length) | 0], yb = opts[y][(rnd() * opts[y].length) | 0], vx;
+        if (ld[yb] < cap || !occ[yb].length) continue;
+        vx = occ[yb][(rnd() * occ[yb].length) | 0];
+        before = daysCost([dayOf[yb]]);
+        swapOut(y, vx, yb);
+        delta = daysCost([dayOf[yb]]) - before + sc(y, yb) - sc(vx, yb);
+        if (delta <= 1e-9 || rnd() < Math.exp(-delta / temp)){
+          cost += delta;
+          if (cost < best.cost - 1e-9) best = { own: own.slice(), cost: cost };
+        } else swapOut(vx, y, yb);
+        continue;
+      }
+      x = mv[(rnd() * mv.length) | 0]; a = own[x]; o = opts[x];
       if (o.length < 2) continue;
-      var b = o[(rnd() * o.length) | 0], delta, undo, before, g, cc;
+      var b = o[(rnd() * o.length) | 0], undo, g, cc;
       if (b === a) continue;
       if (ld[b] < cap){   // verschieben
         before = daysCost([dayOf[a], dayOf[b]]);
@@ -865,17 +951,28 @@ function solveNow(s){
         if (!occ[b].length) continue;
         g = occ[b][(rnd() * occ[b].length) | 0];
         if (ok[g][a]){   // tauschen
+          before = daysCost([dayOf[a], dayOf[b]]);
           move(x, a, b); move(g, b, a);
-          delta = sc(x, b) + sc(g, a) - sc(x, a) - sc(g, b);
+          delta = daysCost([dayOf[a], dayOf[b]]) - before + sc(x, b) + sc(g, a) - sc(x, a) - sc(g, b);
           undo = (function(x, g, a, b){ return function(){ move(x, b, a); move(g, a, b); }; })(x, g, a, b);
         } else {   // weiterschieben: x nimmt den Platz von g, g geht an einen freien Termin
           cc = -1;
           for (var t = 0; t < 4 && cc < 0; t++){ var y = opts[g][(rnd() * opts[g].length) | 0]; if (y !== b && ld[y] < cap) cc = y; }
-          if (cc < 0) continue;
-          before = daysCost([dayOf[a], dayOf[cc]]);
-          move(g, b, cc); move(x, a, b);
-          delta = daysCost([dayOf[a], dayOf[cc]]) - before + sc(x, b) - sc(x, a) + sc(g, cc) - sc(g, b);
-          undo = (function(x, g, a, b, cc){ return function(){ move(x, b, a); move(g, cc, b); }; })(x, g, a, b, cc);
+          if (cc >= 0){
+            before = daysCost([dayOf[a], dayOf[b], dayOf[cc]]);
+            move(g, b, cc); move(x, a, b);
+            delta = daysCost([dayOf[a], dayOf[b], dayOf[cc]]) - before + sc(x, b) - sc(x, a) + sc(g, cc) - sc(g, b);
+            undo = (function(x, g, a, b, cc){ return function(){ move(x, b, a); move(g, cc, b); }; })(x, g, a, b, cc);
+          } else {   // Ringtausch zu dritt: x an den Platz von g, g an den von h, h an den von x
+            cc = opts[g][(rnd() * opts[g].length) | 0];
+            if (cc === a || cc === b || !occ[cc].length) continue;
+            var h3 = occ[cc][(rnd() * occ[cc].length) | 0];
+            if (h3 === x || !ok[h3][a]) continue;
+            before = daysCost([dayOf[a], dayOf[b], dayOf[cc]]);
+            move(x, a, b); move(g, b, cc); move(h3, cc, a);
+            delta = daysCost([dayOf[a], dayOf[b], dayOf[cc]]) - before + sc(x, b) - sc(x, a) + sc(g, cc) - sc(g, b) + sc(h3, a) - sc(h3, cc);
+            undo = (function(x, g, h3, a, b, cc){ return function(){ move(h3, a, cc); move(g, cc, b); move(x, b, a); }; })(x, g, h3, a, b, cc);
+          }
         }
       }
       if (delta <= 1e-9 || rnd() < Math.exp(-delta / temp)){
@@ -887,40 +984,45 @@ function solveNow(s){
   }
   var bestRun = null;
   cands.forEach(function(c, n){ var r = anneal(c, 20261018 + n * 7919); if (!bestRun || r.cost < bestRun.cost - 1e-9) bestRun = r; });
-  slotOf = bestRun.own;
+  var uSlot = bestRun.own;
 
-  var holders = s.slots.map(function(){ return []; }), missing = [], nOn = 0, nMaybe = 0, nOpen = 0, ld = s.slots.map(function(){ return 0; });
-  slotOf.forEach(function(j, i){ if (j >= 0){ holders[j].push(i); ld[j]++; if (s.people[i].ans[j] === M) nMaybe++; } });
+  /* zurück auf die einzelnen Familien */
+  var pSlot = s.people.map(function(){ return -1; }), pPinned = s.people.map(function(){ return false; }), unitOf = s.people.map(function(){ return -1; });
+  units.forEach(function(u, x){ u.members.forEach(function(i){ unitOf[i] = x; pSlot[i] = uSlot[x]; pPinned[i] = pinned[x]; }); });
+  var holders = s.slots.map(function(){ return []; }), holdersU = s.slots.map(function(){ return []; }), missing = [], nMaybe = 0, nOpen = 0, ld = s.slots.map(function(){ return 0; }), hd = ld.slice();
+  pSlot.forEach(function(j, i){ if (j >= 0) holders[j].push(i); });
+  uSlot.forEach(function(j, x){ if (j >= 0){ holdersU[j].push(x); ld[j]++; if (units[x].hard) hd[j]++; if (units[x].ans[j] === M) nMaybe++; } });
   s.slots.forEach(function(x){ if (x.on) nOpen += cap; });
-  s.people.forEach(function(p, i){
-    if (!p.on) return;
-    nOn++;
-    if (slotOf[i] >= 0) return;
-    var any = p.ans.some(function(v){ return v > N; });
-    var on = s.slots.map(function(x, j){ return j; }).filter(function(j){ return s.slots[j].on && p.ans[j] > N; });
-    var okj = on.filter(function(j){ return usable(i, j); });
-    missing.push({ i: i, why: !any ? 'none' : !on.length ? 'off' : !okj.length ? 'maybe' : 'full', opts: okj });
+  units.forEach(function(u, x){
+    if (uSlot[x] >= 0) return;
+    var any = u.ans.some(function(v){ return v > N; });
+    var each = u.members.length > 1 && u.members.every(function(i){ return s.people[i].ans.some(function(v){ return v > N; }); });
+    var on = s.slots.map(function(sl, j){ return j; }).filter(function(j){ return s.slots[j].on && u.ans[j] > N; });
+    var okj = on.filter(function(j){ return usable(x, j); });
+    missing.push({ u: x, i: u.members[0], why: !any ? (each ? 'nocommon' : 'none') : !on.length ? 'off' : !okj.length ? 'maybe' : 'full', opts: okj });
   });
-  /* Übersicht je Tag: von wann bis wann, wie viele Gespräche, wie viele Lücken */
-  var nDays = 0, nGaps = 0, dayInfo = days.map(function(q){
-    var first = -1, last = -1, gaps = 0, talks = 0;
+  /* Übersicht je Tag: von wann bis wann, wie viele Gespräche, Lücken, anspruchsvolle direkt nacheinander */
+  var nDays = 0, nGaps = 0, nAdj = 0, dayInfo = days.map(function(q){
+    var first = -1, last = -1, gaps = 0, adj = 0, talks = 0;
     q.forEach(function(j, k){ if (ld[j]){ if (first < 0) first = k; last = k; talks += ld[j]; } });
-    for (var k = first; first >= 0 && k <= last; k++) if (!ld[q[k]]) gaps++;
-    if (first >= 0){ nDays++; nGaps += gaps; }
-    return { day: s.slots[q[0]].day, slots: q, first: first, last: last, used: first >= 0, gaps: gaps, talks: talks };
+    for (var k = first; first >= 0 && k <= last; k++){ if (!ld[q[k]]) gaps++; if (k < last && hd[q[k]] && hd[q[k + 1]]) adj++; }
+    if (first >= 0){ nDays++; nGaps += gaps; nAdj += adj; }
+    return { day: s.slots[q[0]].day, slots: q, first: first, last: last, used: first >= 0, gaps: gaps, adj: adj, talks: talks };
   });
-  /* Wird ein Tag nur für wenige Familien gebraucht? Dann kann man ihn weglassen und diese Familien selbst anfragen. */
+  /* Wird ein Tag nur für wenige gebraucht? Dann kann man ihn weglassen und diese Familien selbst anfragen. */
   dayInfo.forEach(function(info, d){
     info.lost = 0; info.only = [];
-    if (!info.used || D < 2 || info.slots.some(function(j){ return slotOf.some(function(x, i){ return x === j && pinned[i]; }); })) return;
+    if (!info.used || D < 2 || info.slots.some(function(j){ return uSlot.some(function(x, u){ return x === j && pinned[u]; }); })) return;
     var without = {};
     days.forEach(function(q, e){ without[e] = e !== d; });
     info.lost = K - fitCount(without);
-    info.only = free.filter(function(i){ return acc[i].length && acc[i].every(function(j){ return dayOf[j] === d; }); });
+    info.only = free.filter(function(u){ return acc[u].length && acc[u].every(function(j){ return dayOf[j] === d; }); });
   });
-  return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap,
-    days: dayInfo, nDays: nDays, nGaps: nGaps, nDaysOffered: D, proven: proven };
+  return { slotOf: pSlot, pinned: pPinned, unitOf: unitOf, units: units, uSlot: uSlot, uPinned: pinned, holders: holders, holdersU: holdersU,
+    missing: missing, nOn: P, nMaybe: nMaybe, nOpen: nOpen, cap: cap, days: dayInfo, nDays: nDays, nGaps: nGaps, nAdj: nAdj,
+    anyHard: units.some(function(u){ return u.hard; }), nDaysOffered: D, proven: proven };
 }
+
 /* ---------- Gleicher Tag? ----------
    Termine mit demselben Datum gehören zum selben Tag, auch wenn sie verschieden beschriftet sind
    («Montag, 26. Oktober 2026», «Mo 26.10.», «26.10.2026», «2026-10-26», «Oct 26»). Fehlt das Jahr, gilt das häufigste. */
@@ -1022,40 +1124,46 @@ function renderSummary(r){
   if (r.nOn && !r.missing.length) notes.push('🎉 ' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.');
   if (r.proven && r.nDays > 1) notes.push('Weniger als ' + r.nDays + ' Tage reichen nicht für alle ' + got + ' Familien.');
   if (r.nOn > r.nOpen) notes.push('Es gibt weniger Plätze als Familien.');
+  if (r.anyHard && got) notes.push(r.nAdj ? (r.nAdj === 1 ? 'Einmal folgen' : r.nAdj + '-mal folgen') + ' zwei anspruchsvolle Gespräche direkt aufeinander; anders ging es nicht.' : 'Anspruchsvolle Gespräche folgen nirgends direkt aufeinander.');
   var n = $('#summaryNote');
   n.hidden = !notes.length; n.textContent = notes.join(' ');
   $('#planSub').textContent = r.nOn ? got + ' von ' + plural(r.nOn, 'Familie', 'Familien') + ' an ' + plural(r.nDays, 'Tag', 'Tagen') + (r.nDays ? (r.nGaps ? ', ' + plural(r.nGaps, 'Lücke', 'Lücken') : ', ohne Lücken') : '') + '.' : 'Noch keine Familien eingetragen.';
 }
+function unitName(r, x){ return r.units[x].members.map(function(i){ return state.people[i].name; }).join(' + '); }
 function renderMissing(r){
   var el = $('#missing'), s = state;
   if (!r.missing.length){ el.hidden = true; el.innerHTML = ''; return; }
   var n = r.missing.length;
   var h = '<h3>' + WARN + 'Kein Termin möglich für ' + (n === 1 ? '1 Familie' : n + ' Familien') + '</h3><ul>';
   r.missing.forEach(function(m){
-    var why;
-    if (m.why === 'none') why = 'hat keinen Termin angekreuzt.';
-    else if (m.why === 'off') why = 'hat nur Termine angekreuzt, die ausgeschaltet sind.';
-    else if (m.why === 'maybe') why = 'hat nur «wenn nötig» angekreuzt, und das ist ausgeschaltet.';
+    var why, group = r.units[m.u].members.length > 1;
+    if (m.why === 'none') why = group ? 'haben keinen Termin angekreuzt.' : 'hat keinen Termin angekreuzt.';
+    else if (m.why === 'nocommon') why = 'haben keinen gemeinsamen Termin angekreuzt.';
+    else if (m.why === 'off') why = (group ? 'haben' : 'hat') + ' nur Termine angekreuzt, die ausgeschaltet sind.';
+    else if (m.why === 'maybe') why = (group ? 'haben' : 'hat') + ' nur «wenn nötig» angekreuzt, und das ist ausgeschaltet.';
     else why = 'alle passenden Termine sind besetzt, und jede andere Verteilung liesse eine andere Familie ohne Termin: ' + m.opts.map(function(j){
-      var hs = r.holders[j].map(function(i){ return esc(s.people[i].name) + (r.pinned[i] ? ' (festgehalten)' : ''); }).join(', ');
+      var hs = r.holdersU[j].map(function(x){ return esc(unitName(r, x)) + (r.uPinned[x] ? ' (festgehalten)' : ''); }).join(', ');
       return esc(slotLabel(s.slots[j])) + (hs ? ' (' + hs + ')' : '');
     }).join('; ') + '.';
-    h += '<li><b>' + esc(s.people[m.i].name) + '</b> <span class="why">– ' + why + '</span></li>';
+    h += '<li><b>' + esc(unitName(r, m.u)) + '</b> <span class="why">– ' + why + '</span></li>';
   });
   h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen, einen zusätzlichen Termin hinzufügen oder mehr Gespräche pro Termin erlauben. Soll lieber eine andere Familie verschoben werden: die gewünschte Familie mit der Stecknadel festhalten.</p>';
   el.innerHTML = h; el.hidden = false;
 }
-function tagFor(i, j){ return state.people[i].ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : ''; }
-function pinFor(i, r){
-  var on = r.pinned[i], n = esc(state.people[i].name);
-  return '<button type="button" class="pin' + (on ? ' on' : '') + '" data-act="pin" data-p="' + i + '" aria-pressed="' + on + '" aria-label="' + n + ' festhalten" title="' + (on ? 'Festgehalten – antippen zum Lösen' : 'An diesem Termin festhalten') + '">' + PIN + '</button>';
+function tagFor(r, x, j){
+  var u = r.units[x];
+  return (u.members.length > 1 ? ' <span class="tag grp">gemeinsam</span>' : '') + (u.hard ? ' <span class="tag hard">anspruchsvoll</span>' : '') + (u.ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : '');
+}
+function pinFor(r, x){
+  var on = r.uPinned[x], n = esc(unitName(r, x));
+  return '<button type="button" class="pin' + (on ? ' on' : '') + '" data-act="pin" data-u="' + x + '" aria-pressed="' + on + '" aria-label="' + n + ' festhalten" title="' + (on ? 'Festgehalten – antippen zum Lösen' : 'An diesem Termin festhalten') + '">' + PIN + '</button>';
 }
 /* welche Termine eines Tages gezeigt werden: belegte, Lücken dazwischen und auf Wunsch alle freien */
 function dayRows(d){
   var s = state, out = [];
   d.slots.forEach(function(j, k){
-    var hs = last.holders[j], gap = d.used && !hs.length && k > d.first && k < d.last;
-    if (hs.length || gap || s.showFree) out.push({ j: j, hs: hs, gap: gap });
+    var us = last.holdersU[j], gap = d.used && !us.length && k > d.first && k < d.last;
+    if (us.length || gap || s.showFree) out.push({ j: j, us: us, gap: gap });
   });
   return out;
 }
@@ -1066,27 +1174,39 @@ function renderPlan(r){
       if (!d.used) return;
       var rows = dayRows(d).map(function(x){
         var t = '<span class="t">' + esc(s.slots[x.j].time || s.slots[x.j].day) + '</span>';
-        if (x.hs.length) return '<li class="row">' + t + '<span class="ws">' + x.hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, x.j) + pinFor(i, r) + '</span>'; }).join('') + '</span></li>';
+        if (x.us.length) return '<li class="row">' + t + '<span class="ws">' + x.us.map(function(u){ return '<span class="w"><span class="n">' + esc(unitName(r, u)) + '</span>' + tagFor(r, u, x.j) + pinFor(r, u) + '</span>'; }).join('') + '</span></li>';
         return '<li class="row ' + (x.gap ? 'gap' : 'free') + '">' + t + '<span class="ws">' + (x.gap ? '<span class="lk">Lücke</span>' : '<span class="frei">frei</span>') + '</span></li>';
       }).join('');
       var drop = '';
       if (d.used && d.lost > 0 && d.lost <= 3){
-        var only = d.only.length === d.lost ? 'Dieser Tag wird nur für ' + d.only.map(function(i){ return esc(s.people[i].name); }).join(', ') + ' gebraucht.'
+        var only = d.only.length === d.lost ? 'Dieser Tag wird nur für ' + d.only.map(function(u){ return esc(unitName(r, u)); }).join(', ') + ' gebraucht.'
           : 'Ohne diesen Tag bekämen ' + (d.lost === 1 ? '1 Familie' : d.lost + ' Familien') + ' keinen Termin.';
         drop = '<div class="drop"><span>' + only + '</span><button type="button" class="btn small" data-act="dropday" data-d="' + k + '">Tag weglassen</button></div>';
       }
-      h += '<section class="dayc' + (d.used ? '' : ' unused') + '"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + drop + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
+      h += '<section class="dayc"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + drop + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
     });
   } else {
     var list = s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on; })
       .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); });
     if (list.length) h = '<ol class="rows byname">' + list.map(function(i){
-      var j = r.slotOf[i];
+      var j = r.slotOf[i], x = r.unitOf[i], u = r.units[x], with_ = u.members.filter(function(m){ return m !== i; }).map(function(m){ return s.people[m].name; });
       return '<li class="row' + (j < 0 ? ' none' : '') + '"><span class="n">' + esc(s.people[i].name) + '</span><span class="ws">' +
-        (j < 0 ? '<span class="frei">kein Termin</span>' : '<span class="w">' + esc(slotLabel(s.slots[j])) + tagFor(i, j) + pinFor(i, r) + '</span>') + '</span></li>';
+        (j < 0 ? '<span class="frei">kein Termin</span>' : '<span class="w">' + esc(slotLabel(s.slots[j])) + (with_.length ? ' <span class="tag grp">mit ' + esc(with_.join(', ')) + '</span>' : '') + (u.hard ? ' <span class="tag hard">anspruchsvoll</span>' : '') + (u.ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : '') + pinFor(r, x) + '</span>') + '</span></li>';
     }).join('') + '</ol>';
   }
   $('#plan').innerHTML = h || '<p class="empty">Noch keine Termine verteilt.</p>';
+  renderHard(r);
+}
+/* Schwierigkeitsgrad: je Gespräch antippen */
+function renderHard(r){
+  var box = $('#hardChips'), s = state;
+  var order = r.units.map(function(u, x){ return x; }).sort(function(a, b){ return unitName(r, a).localeCompare(unitName(r, b), 'de'); });
+  box.innerHTML = order.length ? order.map(function(x){
+    var u = r.units[x];
+    return '<button type="button" class="hchip' + (u.hard ? ' on' : '') + '" data-act="hard" data-u="' + x + '" aria-pressed="' + u.hard + '"><span class="hn">' + esc(unitName(r, x)) + '</span><span class="hl">' + (u.hard ? 'Anspruchsvoll' : 'Einfach') + '</span></button>';
+  }).join('') : '<p class="empty">Noch keine Familien.</p>';
+  var n = r.units.filter(function(u){ return u.hard; }).length;
+  $('#hardCount').textContent = n ? n + ' anspruchsvoll' : 'optional';
 }
 function renderMeta(){
   var s = state, bits = [];
@@ -1095,13 +1215,26 @@ function renderMeta(){
   bits.push(plural(s.people.length, 'Familie', 'Familien'));
   bits.push(plural(s.slots.length, 'Termin', 'Termine'));
   if (s.loaded) bits.push('eingelesen ' + fmt(new Date(s.loaded), { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }));
-  var h = bits.map(function(b){ return '<span class="chip">' + b + '</span>'; }).join('');
-  $('#meta').innerHTML = h;
+  $('#meta').innerHTML = bits.map(function(b){ return '<span class="chip">' + b + '</span>'; }).join('');
   var seen = {}, d = [];
   s.people.forEach(function(p){ var k = pkey({ name: p.name }); seen[k] = (seen[k] || 0) + 1; if (seen[k] === 2) d.push(p.name); });
   var w = $('#dupes');
   w.hidden = !d.length;
-  w.textContent = d.length ? '⚠️ Doppelt eingetragen: ' + d.join(', ') + '. Falls es dieselbe Familie ist, einen Eintrag ausschalten.' : '';
+  w.textContent = d.length ? '⚠️ Doppelt eingetragen: ' + d.join(', ') + '. Ist es dieselbe Familie, die beiden Namen aufeinanderziehen, dann bekommen sie einen gemeinsamen Termin.' : '';
+}
+var GRIP = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="6" r="1.3"/><circle cx="15" cy="6" r="1.3"/><circle cx="9" cy="12" r="1.3"/><circle cx="15" cy="12" r="1.3"/><circle cx="9" cy="18" r="1.3"/><circle cx="15" cy="18" r="1.3"/></svg>';
+/* Zeilen der Tabelle: Mitglieder einer Gruppe direkt untereinander, mit einer Kopfzeile */
+function gridRows(s){
+  var out = [], done = {};
+  s.people.forEach(function(p, i){
+    if (!p.group){ out.push({ i: i }); return; }
+    if (done[p.group]) return;
+    done[p.group] = true;
+    var mem = s.people.map(function(q, k){ return k; }).filter(function(k){ return s.people[k].group === p.group; });
+    out.push({ head: p.group, members: mem });
+    mem.forEach(function(k){ out.push({ i: k, inGroup: true }); });
+  });
+  return out;
 }
 function renderGrid(r){
   var s = state, order = slotOrder(s), groups = dayGroups(s, order), anyDay = groups.some(function(g){ return g.day; }), first = {};
@@ -1123,12 +1256,22 @@ function renderGrid(r){
     return '<th' + fc(j, 'sh' + (x.on ? '' : ' off')) + ' scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
       (x.manual ? '<button type="button" class="del" data-act="dels" data-s="' + j + '" aria-label="Termin ' + esc(slotLabel(x)) + ' entfernen" title="Termin entfernen">×</button>' : '') + '</th>';
   }).join('') + '</tr></thead><tbody>';
-  s.people.forEach(function(p, i){
-    var miss = p.on && r.slotOf[i] < 0;
-    h += '<tr class="' + (p.on ? '' : 'off') + (miss ? ' miss' : '') + '"><th class="who" scope="row"><div class="whoin">' +
+  gridRows(s).forEach(function(row){
+    if (row.head){
+      var x = r.unitOf[row.members[0]], miss = x >= 0 && r.uSlot[x] < 0;
+      h += '<tr class="ghead' + (miss ? ' miss' : '') + '"><th class="who" scope="row" colspan="' + (order.length + 1) + '"><div class="ghin"><span class="gt">Gemeinsamer Termin</span>' +
+        '<span class="gs">' + (x < 0 ? '' : r.uSlot[x] >= 0 ? esc(slotLabel(s.slots[r.uSlot[x]])) : 'kein gemeinsamer Termin') + '</span>' +
+        '<button type="button" class="btn small" data-act="ungroup" data-gid="' + esc(row.head) + '">Gruppe lösen</button></div></th></tr>';
+      return;
+    }
+    var i = row.i, p = s.people[i], miss = p.on && r.slotOf[i] < 0;
+    h += '<tr class="' + (p.on ? '' : 'off') + (miss ? ' miss' : '') + (row.inGroup ? ' ing' : '') + '" data-row="' + i + '"><th class="who" scope="row"><div class="whoin">' +
+      '<button type="button" class="grip" data-act="grip" data-p="' + i + '" aria-label="' + esc(p.name) + ' ziehen oder antippen, um mit einer anderen Familie zusammenzufassen" title="Auf einen anderen Namen ziehen: gemeinsamer Termin">' + GRIP + '</button>' +
       '<input type="checkbox" data-act="person" data-p="' + i + '"' + (p.on ? ' checked' : '') + ' aria-label="' + esc(p.name) + ' einplanen" title="einplanen">' +
       '<input class="nm" type="text" data-act="name" data-p="' + i + '" value="' + esc(p.name) + '" aria-label="Name">' +
-      (p.manual ? '<button type="button" class="del" data-act="delp" data-p="' + i + '" aria-label="' + esc(p.name) + ' entfernen" title="Familie entfernen">×</button>' : '') +
+      (p.hard ? '<span class="hdot" title="anspruchsvoll" aria-label="anspruchsvoll"></span>' : '') +
+      (row.inGroup ? '<button type="button" class="del" data-act="leave" data-p="' + i + '" aria-label="' + esc(p.name) + ' aus der Gruppe nehmen" title="Aus der Gruppe nehmen">×</button>' : '') +
+      (p.manual ? '<button type="button" class="del" data-act="delp" data-p="' + i + '" aria-label="' + esc(p.name) + ' entfernen" title="Familie entfernen">🗑</button>' : '') +
       '</div></th>' + order.map(function(j){
         var v = p.ans[j], cls = v === Y ? 'y' : v === M ? 'm' : 'n', pick = r.slotOf[i] === j;
         var word = v === Y ? 'Ja' : v === M ? 'Wenn nötig' : 'Nein';
@@ -1143,6 +1286,7 @@ function renderGrid(r){
   [].forEach.call(g.querySelectorAll('input[data-mixed]'), function(x){ x.indeterminate = true; });
   var dh = g.querySelector('.dayh');
   g.style.setProperty('--dayh', dh ? dh.offsetHeight + 'px' : '0px');
+  if (pickFrom != null){ var pb = g.querySelector('.grip[data-p="' + pickFrom + '"]'); if (pb) pb.classList.add('picked'); }
 }
 
 function changed(focusSel, keepGrid){
@@ -1156,13 +1300,14 @@ function changed(focusSel, keepGrid){
 }
 
 /* ---------- Text, CSV, Drucken ---------- */
+function unitNote(r, x, j){ var u = r.units[x]; return (u.hard ? ' (anspruchsvoll)' : '') + (u.ans[j] === M ? ' (wenn nötig)' : ''); }
 function planText(){
   var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
   if (view === 'zeit'){
     r.days.forEach(function(d){
       if (!d.used) return;
       var lines = dayRows(d).map(function(x){
-        return '  ' + (s.slots[x.j].time || s.slots[x.j].day) + '  ' + (x.hs.length ? x.hs.map(function(i){ return s.people[i].name + (s.people[i].ans[x.j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei');
+        return '  ' + (s.slots[x.j].time || s.slots[x.j].day) + '  ' + (x.us.length ? x.us.map(function(u){ return unitName(r, u) + unitNote(r, u, x.j); }).join(', ') : 'frei');
       });
       out.push('');
       out.push(dayLabel(d) + (d.used ? ' (' + daySpan(d) + ')' : ''));
@@ -1174,7 +1319,7 @@ function planText(){
       .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); })
       .forEach(function(i){ out.push(s.people[i].name + ': ' + slotLabel(s.slots[r.slotOf[i]])); });
   }
-  if (r.missing.length){ out.push(''); out.push('Ohne Termin: ' + r.missing.map(function(m){ return s.people[m.i].name; }).join(', ')); }
+  if (r.missing.length){ out.push(''); out.push('Ohne Termin: ' + r.missing.map(function(m){ return unitName(r, m.u); }).join(', ')); }
   return out.join('\n');
 }
 function csvCell(v){ v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[;"\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
@@ -1183,11 +1328,17 @@ function planCSV(){
   r.days.forEach(function(d){
     if (d.used) dayRows(d).forEach(function(x){
       var sl = s.slots[x.j];
-      if (x.hs.length) x.hs.forEach(function(i){ rows.push([sl.day, sl.time, s.people[i].name, s.people[i].ans[x.j] === M ? 'wenn nötig' : '']); });
+      if (x.us.length) x.us.forEach(function(u){
+        var notes = [];
+        if (r.units[u].members.length > 1) notes.push('gemeinsam');
+        if (r.units[u].hard) notes.push('anspruchsvoll');
+        if (r.units[u].ans[x.j] === M) notes.push('wenn nötig');
+        rows.push([sl.day, sl.time, unitName(r, u), notes.join(', ')]);
+      });
       else rows.push([sl.day, sl.time, '', x.gap ? 'Lücke' : 'frei']);
     });
   });
-  r.missing.forEach(function(m){ rows.push(['', '', s.people[m.i].name, 'kein Termin']); });
+  r.missing.forEach(function(m){ rows.push(['', '', unitName(r, m.u), 'kein Termin']); });
   return '﻿' + rows.map(function(row){ return row.map(csvCell).join(';'); }).join('\r\n') + '\r\n';
 }
 function copyText(t){
@@ -1264,9 +1415,106 @@ $('#grid').addEventListener('click', function(e){
   } else if (act === 'delp'){
     delete state.pins[state.people[i].id];
     state.people.splice(i, 1);
+    tidyGroups();
+    changed();
+  } else if (act === 'ungroup'){
+    state.people.forEach(function(p){ if (p.group === b.dataset.gid) delete p.group; });
+    changed();
+  } else if (act === 'leave'){
+    delete state.people[i].group;
+    tidyGroups();
     changed();
   }
 });
+/* ---------- Zusammenfassen: einen Namen auf einen anderen ziehen ----------
+   Mit Maus oder Finger am Griff ziehen und über einem anderen Namen loslassen. Ohne Ziehen geht es auch:
+   erst den einen Griff antippen, dann den anderen (auch mit der Tastatur). */
+var pickFrom = null, drag = null;
+function joinGroup(a, b){
+  var pa = state.people[a], pb = state.people[b];
+  if (a === b || (pa.group && pa.group === pb.group)) return;
+  var g = pb.group || 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  pb.group = g; pa.group = g;
+  tidyGroups();
+  setStatus('ok', '<p>✓ ' + esc(pa.name) + ' und ' + esc(pb.name) + ' bekommen einen gemeinsamen Termin.</p>');
+  changed();
+}
+function tidyGroups(st){
+  var n = {};
+  st = st || state;
+  st.people.forEach(function(p){ if (p.group) n[p.group] = (n[p.group] || 0) + 1; });
+  st.people.forEach(function(p){ if (p.group && n[p.group] < 2) delete p.group; });
+}
+function rowUnder(x, y){
+  var el = document.elementFromPoint(x, y), tr = el && el.closest && el.closest('#grid tr[data-row]');
+  return tr ? +tr.dataset.row : -1;
+}
+function dragMove(e){
+  if (!drag || e.pointerId !== drag.id) return;
+  var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (!drag.moved && dx * dx + dy * dy < 36) return;
+  if (!drag.moved){
+    drag.moved = true;
+    drag.ghost = document.createElement('div');
+    drag.ghost.className = 'ghost';
+    drag.ghost.textContent = state.people[drag.i].name;
+    document.body.appendChild(drag.ghost);
+    document.body.classList.add('dragging');
+  }
+  drag.ghost.style.transform = 'translate(' + (e.clientX + 12) + 'px,' + (e.clientY + 10) + 'px)';
+  var t = rowUnder(e.clientX, e.clientY);
+  [].forEach.call(document.querySelectorAll('#grid tr.dropto'), function(r){ r.classList.remove('dropto'); });
+  if (t >= 0 && t !== drag.i){ var tr = document.querySelector('#grid tr[data-row="' + t + '"]'); if (tr) tr.classList.add('dropto'); }
+  /* am Rand der Tabelle weiterrollen */
+  var w = $('.gridwrap'), rc = w.getBoundingClientRect();
+  if (e.clientY < rc.top + 40) w.scrollTop -= 12; else if (e.clientY > rc.bottom - 40) w.scrollTop += 12;
+}
+function dragEnd(e){
+  if (!drag || e.pointerId !== drag.id) return;
+  var d = drag;
+  drag = null;
+  window.removeEventListener('pointermove', dragMove);
+  window.removeEventListener('pointerup', dragEnd);
+  window.removeEventListener('pointercancel', dragEnd);
+  document.body.classList.remove('dragging');
+  [].forEach.call(document.querySelectorAll('#grid tr.dropto'), function(r){ r.classList.remove('dropto'); });
+  if (d.ghost) d.ghost.remove();
+  if (d.moved){
+    var t = e.type === 'pointerup' ? rowUnder(e.clientX, e.clientY) : -1;
+    pickFrom = null;
+    if (t >= 0 && t !== d.i) joinGroup(d.i, t); else renderGrid(last);
+    return;
+  }
+  pickGrip(d.i);
+}
+function pickGrip(i){
+  if (pickFrom == null){
+    pickFrom = i;
+    renderGrid(last);
+    setStatus('busy', '<p>' + esc(state.people[i].name) + ' ist ausgewählt. Jetzt beim Namen, mit dem es einen gemeinsamen Termin geben soll, den Griff antippen. Nochmals antippen bricht ab.</p>');
+    var g = document.querySelector('#grid .grip[data-p="' + i + '"]'); if (g) g.focus({ preventScroll: true });
+  } else if (pickFrom === i){
+    pickFrom = null; setStatus('', ''); renderGrid(last);
+  } else {
+    var a = pickFrom; pickFrom = null; joinGroup(a, i);
+  }
+}
+$('#grid').addEventListener('pointerdown', function(e){
+  var g = e.target.closest('.grip');
+  if (!g || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  e.preventDefault();
+  drag = { i: +g.dataset.p, x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, ghost: null };
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  window.addEventListener('pointercancel', dragEnd);
+});
+$('#grid').addEventListener('keydown', function(e){
+  var g = e.target.closest && e.target.closest('.grip');
+  if (g && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); pickGrip(+g.dataset.p); }
+  if (e.key === 'Escape' && pickFrom != null){ pickFrom = null; setStatus('', ''); renderGrid(last); }
+});
+
+
 $('#grid').addEventListener('change', function(e){
   var t = e.target, act = t.dataset.act;
   if (act === 'slot'){ state.slots[+t.dataset.s].on = t.checked; changed('#grid input[data-act="slot"][data-s="' + t.dataset.s + '"]'); }
@@ -1286,10 +1534,23 @@ $('#plan').addEventListener('click', function(e){
   if (dd){ last.days[+dd.dataset.d].slots.forEach(function(j){ state.slots[j].on = false; }); changed(); return; }
   var b = e.target.closest('button[data-act="pin"]');
   if (!b) return;
-  var i = +b.dataset.p, p = state.people[i];
-  if (state.pins[p.id] != null) delete state.pins[p.id];
-  else if (last.slotOf[i] >= 0) state.pins[p.id] = state.slots[last.slotOf[i]].id;
-  changed('#plan button[data-act="pin"][data-p="' + i + '"]');
+  var x = +b.dataset.u, u = last.units[x], on = last.uPinned[x], j = last.uSlot[x];
+  u.members.forEach(function(i){ var p = state.people[i]; if (on) delete state.pins[p.id]; else if (j >= 0) state.pins[p.id] = state.slots[j].id; });
+  var first = state.people[u.members[0]].id;
+  changed();
+  var nb = null;
+  [].forEach.call(document.querySelectorAll('#plan button[data-act="pin"]'), function(btn){ if (!nb && last.units[+btn.dataset.u] && state.people[last.units[+btn.dataset.u].members[0]].id === first) nb = btn; });
+  if (nb) nb.focus({ preventScroll: true });
+});
+$('#hardChips').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act="hard"]');
+  if (!b) return;
+  var u = last.units[+b.dataset.u], to = !u.hard, first = state.people[u.members[0]].id;
+  u.members.forEach(function(i){ state.people[i].hard = to; });
+  changed();
+  var nb = null;
+  [].forEach.call(document.querySelectorAll('#hardChips button'), function(btn){ if (!nb && state.people[last.units[+btn.dataset.u].members[0]].id === first) nb = btn; });
+  if (nb) nb.focus({ preventScroll: true });
 });
 
 $('#addPerson').addEventListener('submit', function(e){
