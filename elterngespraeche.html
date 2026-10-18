@@ -7,212 +7,286 @@
 <title>Elterngespräche verteilen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --paper:#fffdf7; --paper-2:#f3ecdd; --paper-3:#ebe1cd; --ink:#2b2118; --ink-soft:#6b5a48; --line:#d9cdb8; --line-2:#b9ab95;
-  --edge:#2b2118; --ochre:#e4a428; --ochre-2:#b47d12; --focus:#3c7fd6;
-  --yes:#3f6b2d; --yes-bg:#d6e8c9; --maybe:#8a5e00; --maybe-bg:#f7e2a8; --warn:#9c3622; --warn-bg:#f8e0d8; --good-bg:#e2efd6;
-  --font-body:'Andika','Trebuchet MS','Segoe UI',system-ui,sans-serif;
-  --font-head:'Fredoka','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:light;
+  --bg:#f4f6fb; --surface:#ffffff; --surface-2:#f1f4f9; --surface-3:#e9edf5;
+  --ink:#0f172a; --ink-2:#475569; --ink-3:#64748b; --line:#e3e8f0; --line-2:#cdd5e1;
+  --accent:#4f46e5; --accent-2:#4338ca; --accent-ink:#ffffff; --accent-soft:#eef0ff; --accent-line:#c7cbfb;
+  --yes:#15803d; --yes-bg:#dcfce7; --maybe:#a16207; --maybe-bg:#fef3c7;
+  --warn:#b91c1c; --warn-bg:#fef2f2; --warn-line:#fecaca; --good:#047857; --good-bg:#ecfdf5; --good-line:#a7f3d0;
+  --shadow:0 1px 2px rgba(15,23,42,.05), 0 6px 24px rgba(15,23,42,.06);
+  --shadow-sm:0 1px 2px rgba(15,23,42,.08);
+  --r:16px; --r-sm:10px;
+  --font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){ --paper:#2a231c; --paper-2:#1e1914; --paper-3:#382e24; --ink:#f6eddd; --ink-soft:#cdbb9f; --line:#4a3d31; --line-2:#6c5a46;
-    --edge:#0d0a07; --yes:#a9d993; --yes-bg:#2e4526; --maybe:#f1cc74; --maybe-bg:#4d3c12; --warn:#ffab96; --warn-bg:#4b2620; --good-bg:#2b3d24; }
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0b1020; --surface:#121a2b; --surface-2:#18213a; --surface-3:#202b47;
+    --ink:#e7eaf3; --ink-2:#a9b2c7; --ink-3:#8b95ab; --line:#233049; --line-2:#33415f;
+    --accent:#8b93ff; --accent-2:#a3a9ff; --accent-ink:#0b1020; --accent-soft:#1f2550; --accent-line:#3a4290;
+    --yes:#4ade80; --yes-bg:#123222; --maybe:#fbbf24; --maybe-bg:#3a2d0c;
+    --warn:#f87171; --warn-bg:#2b1418; --warn-line:#5c2229; --good:#34d399; --good-bg:#0f2a21; --good-line:#1f5641;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25); --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  }
 }
-:root[data-theme="dark"]{ --paper:#2a231c; --paper-2:#1e1914; --paper-3:#382e24; --ink:#f6eddd; --ink-soft:#cdbb9f; --line:#4a3d31; --line-2:#6c5a46;
-  --edge:#0d0a07; --yes:#a9d993; --yes-bg:#2e4526; --maybe:#f1cc74; --maybe-bg:#4d3c12; --warn:#ffab96; --warn-bg:#4b2620; --good-bg:#2b3d24; }
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1020; --surface:#121a2b; --surface-2:#18213a; --surface-3:#202b47;
+  --ink:#e7eaf3; --ink-2:#a9b2c7; --ink-3:#8b95ab; --line:#233049; --line-2:#33415f;
+  --accent:#8b93ff; --accent-2:#a3a9ff; --accent-ink:#0b1020; --accent-soft:#1f2550; --accent-line:#3a4290;
+  --yes:#4ade80; --yes-bg:#123222; --maybe:#fbbf24; --maybe-bg:#3a2d0c;
+  --warn:#f87171; --warn-bg:#2b1418; --warn-line:#5c2229; --good:#34d399; --good-bg:#0f2a21; --good-line:#1f5641;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25); --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper-2);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.45}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0 0 auto 0;height:340px;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 100% at 15% 0%, var(--accent-soft), transparent 70%), radial-gradient(50% 90% at 90% 0%, var(--accent-soft), transparent 70%)}
 button,input,textarea,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 [hidden]{display:none !important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-.top,main{max-width:1120px;margin:0 auto;padding:0 16px}
-.top{padding-top:28px;padding-bottom:6px}
-h1,h2,h3{font-family:var(--font-head);font-weight:600;line-height:1.15;margin:0}
-h1{font-size:clamp(1.7rem,4.5vw,2.3rem)}
-.lead{margin:.45em 0 0;color:var(--ink-soft);max-width:46em}
-.card{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:20px;margin:18px 0}
-.card h2{font-size:1.3rem;display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.num{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ochre);color:#2b2118;border:2px solid var(--edge);font-size:1rem}
-.hint{color:var(--ink-soft);font-size:.92rem;margin:.6em 0 0}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.01em}
+.top{padding:36px 0 8px;display:flex;gap:16px;align-items:center}
+.logo{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent)}
+.logo svg{width:28px;height:28px;stroke-width:1.9}
+h1{font-size:clamp(1.55rem,4vw,2.05rem);font-weight:700;letter-spacing:-.02em}
+.lead{margin:.3em 0 0;color:var(--ink-2);max-width:48em}
 
-/* ---------- Knöpfe ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:.45em 1em;border:2px solid var(--edge);border-radius:12px;
-  background:var(--paper-3);color:var(--ink);box-shadow:0 3px 0 var(--edge);cursor:pointer;font-family:var(--font-head);font-weight:600;white-space:nowrap;text-decoration:none}
-.btn:hover{filter:brightness(1.04)}
-.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--edge)}
-.btn.primary{background:var(--ochre);color:#2b2118}
-.btn.small{min-height:36px;padding:.25em .8em}
-.btn[disabled]{opacity:.55;cursor:progress}
-.linkbtn{background:none;border:0;padding:0;color:var(--ink-soft);text-decoration:underline;cursor:pointer}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px;margin:18px 0}
+.card-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.card-head h2{font-size:1.18rem;font-weight:650}
+.card-head .sub{margin:.2em 0 0;color:var(--ink-2);font-size:.93rem}
+.num{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.95rem}
+.hint{color:var(--ink-3);font-size:.88rem;margin:.6em 0 0}
+
+/* ---------- Knöpfe und Felder ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:.45em 1em;border:1px solid var(--line-2);border-radius:var(--r-sm);
+  background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm);cursor:pointer;font-weight:600;font-size:.92rem;white-space:nowrap;text-decoration:none;transition:background .15s, border-color .15s, transform .05s}
+.btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-2)}
+.btn.small{min-height:34px;padding:.3em .8em;font-size:.86rem}
+.btn[disabled]{opacity:.6;cursor:progress}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink-3);text-decoration:underline;cursor:pointer}
+.field{position:relative;flex:1 1 320px;min-width:0}
+.field svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+input[type=text],input[type=number],textarea{border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--surface);transition:border-color .15s, box-shadow .15s}
+input[type=text]:focus,input[type=number]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input[type=checkbox]{accent-color:var(--accent)}
 
 /* ---------- Schritt 1: Laden ---------- */
 .linkrow{display:flex;gap:10px;flex-wrap:wrap}
-.linkrow input{flex:1 1 320px;min-width:0;min-height:46px;padding:.5em .8em;border:2px solid var(--line-2);border-radius:12px;background:var(--paper)}
-.linkrow input:focus{border-color:var(--focus)}
-.status{margin-top:12px;padding:10px 14px;border-radius:12px;border:2px solid var(--line)}
-.status.busy{background:var(--paper-2)}
-.status.ok{background:var(--good-bg);border-color:transparent}
-.status.err{background:var(--warn-bg);border-color:transparent}
-.status p{margin:.3em 0}
-.status details{margin-top:.4em;font-size:.85rem;color:var(--ink-soft)}
-.status code{word-break:break-all}
-.spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--ochre-2);border-radius:50%;vertical-align:-2px;margin-right:6px;animation:spin .8s linear infinite}
+.linkrow input{width:100%;min-height:46px;padding:.55em .9em .55em 40px;font-size:1rem}
+.linkrow .btn{min-height:46px;padding:0 1.4em}
+.status{display:flex;flex-direction:column;gap:2px;margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font-size:.93rem}
+.status.busy{background:var(--surface-2)}
+.status.ok{background:var(--good-bg);border-color:var(--good-line);color:var(--ink)}
+.status.err{background:var(--warn-bg);border-color:var(--warn-line)}
+.status p{margin:.15em 0}
+.status details{margin-top:.4em;font-size:.82rem;color:var(--ink-2)}
+.spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;margin-right:8px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.other{margin-top:14px;border-top:2px dashed var(--line);padding-top:10px}
-.other summary{cursor:pointer;font-family:var(--font-head);font-weight:600;color:var(--ink-soft);padding:4px 0}
-.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:10px}
-.way{border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.way h3{font-size:1.05rem}
-.way p{margin:0;font-size:.92rem;color:var(--ink-soft)}
-.way textarea{width:100%;min-height:96px;padding:.5em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper);font-size:.9rem;resize:vertical}
+.other{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.other summary{cursor:pointer;font-weight:600;color:var(--ink-2);padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px;font-size:.93rem}
+.other summary::-webkit-details-marker{display:none}
+.other summary::before{content:'';width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin:0 4px 0 2px}
+.other[open] summary::before{transform:rotate(45deg)}
+.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:12px}
+.way{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.way h3{font-size:.98rem;font-weight:650;display:flex;align-items:center;gap:8px}
+.way h3 svg{color:var(--accent)}
+.way p{margin:0;font-size:.88rem;color:var(--ink-2)}
+.way textarea{width:100%;min-height:96px;padding:.55em .7em;font-size:.86rem;resize:vertical}
 .way .row2{display:flex;gap:8px;flex-wrap:wrap}
-.privacy{margin:14px 0 0;font-size:.85rem;color:var(--ink-soft)}
+.privacy{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:.84rem;color:var(--ink-2)}
+.privacy svg{color:var(--ink-3);margin-top:1px}
 
 /* ---------- Schritt 2: Verteilung ---------- */
-.summary{font-size:1.08rem;padding:12px 16px;border-radius:14px;background:var(--good-bg);margin-bottom:12px}
-.summary.part{background:var(--paper-2)}
-.summary b{font-family:var(--font-head);font-weight:600}
-.missing{border:2px solid var(--warn);background:var(--warn-bg);border-radius:14px;padding:14px 16px;margin-bottom:14px}
-.missing h3{font-size:1.1rem;color:var(--warn);margin-bottom:6px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--surface)}
+.kpi .lab{display:flex;align-items:center;gap:6px;color:var(--ink-2);font-size:.84rem;font-weight:500}
+.kpi .val{font-size:1.7rem;font-weight:650;letter-spacing:-.02em;margin-top:2px}
+.kpi .val small{font-size:.95rem;font-weight:500;color:var(--ink-3);letter-spacing:0}
+.kpi .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.kpi.good{background:var(--good-bg);border-color:var(--good-line)} .kpi.good .dot{background:var(--good)}
+.kpi.warn{background:var(--warn-bg);border-color:var(--warn-line)} .kpi.warn .dot{background:var(--warn)}
+.note{margin:12px 0 0;color:var(--ink-2);font-size:.93rem}
+.missing{border:1px solid var(--warn-line);background:var(--warn-bg);border-radius:14px;padding:14px 16px;margin-top:14px}
+.missing h3{font-size:1rem;font-weight:650;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .missing ul{margin:0;padding-left:1.2em}
 .missing li{margin:.35em 0}
-.missing .why{color:var(--ink-soft)}
-.missing .tip{font-size:.88rem;color:var(--ink-soft);margin:.6em 0 0}
-.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
-.seg{display:inline-flex;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
-.seg button{border:0;background:var(--paper);padding:.45em .9em;cursor:pointer;font-family:var(--font-head);font-weight:600;min-height:38px}
-.seg button[aria-pressed="true"]{background:var(--ochre);color:#2b2118}
-.check{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.check input{width:18px;height:18px;accent-color:var(--ochre-2)}
+.missing .why{color:var(--ink-2)}
+.missing .tip{font-size:.86rem;color:var(--ink-2);margin:.6em 0 0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 12px}
+.seg{display:inline-flex;padding:3px;border-radius:12px;background:var(--surface-3);gap:2px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:.4em .85em;cursor:pointer;font-weight:600;font-size:.86rem;color:var(--ink-2);min-height:34px}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.check{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.92rem}
+.check input{width:17px;height:17px}
 .spacer{flex:1}
-.plan .day{font-size:1.05rem;margin:16px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--line)}
-.plan .day:first-child{margin-top:4px}
-.rows{list-style:none;margin:0;padding:0}
-.rows .row{display:flex;gap:14px;align-items:baseline;padding:6px 4px;border-bottom:1px solid var(--line)}
-.rows .row:last-child{border-bottom:0}
-.rows .t{flex:none;min-width:6.5em;font-variant-numeric:tabular-nums;font-weight:700}
-.rows.byname .n{flex:none;min-width:12em;font-weight:700}
-.rows .ws{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;min-width:0}
-.rows .w{display:inline-flex;align-items:center;gap:6px}
-.rows .free .t,.frei{color:var(--ink-soft);font-weight:400;font-style:italic}
+.mode-hint{margin:-4px 0 12px;font-size:.86rem;color:var(--ink-3)}
+.plan{display:grid;gap:12px}
+.dayc{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.dayc header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:baseline;padding:11px 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.dayc h3{font-size:.98rem;font-weight:650}
+.dayc .dm{font-size:.84rem;color:var(--ink-2)}
+.dayc .dm b{font-weight:600;color:var(--ink)}
+.dayc.unused header{border-bottom:0}
+.dayc.unused h3,.dayc.unused .dm{color:var(--ink-3)}
+.rows{list-style:none;margin:0;padding:4px 0}
+.rows .row{display:flex;gap:16px;align-items:center;padding:7px 16px;min-height:42px}
+.rows .row + .row{border-top:1px solid var(--line)}
+.rows .t{flex:none;min-width:7.2em;font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:500;font-size:.92rem}
+.rows .ws{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;min-width:0}
+.rows .w{display:inline-flex;align-items:center;gap:8px}
+.rows .n{font-weight:600}
+.rows .gap{background:repeating-linear-gradient(135deg, transparent 0 8px, var(--surface-2) 8px 16px)}
+.rows .gap .lk{color:var(--warn);font-weight:600;font-size:.86rem}
+.rows .free .t,.frei{color:var(--ink-3);font-weight:400}
+.byname{border:1px solid var(--line);border-radius:14px}
+.byname .n{flex:none;min-width:13em}
 .rows .none .n{color:var(--warn)}
-.tag{display:inline-block;font-size:.78rem;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.tag{display:inline-flex;align-items:center;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
 .tag.maybe{background:var(--maybe-bg);color:var(--maybe)}
-.pin{border:0;background:none;cursor:pointer;font-size:.95rem;line-height:1;padding:4px;border-radius:8px;opacity:.28;filter:grayscale(1)}
-.pin:hover{opacity:.7}
-.pin.on{opacity:1;filter:none;background:var(--paper-3)}
-.empty{color:var(--ink-soft)}
+.pin{display:inline-grid;place-items:center;width:28px;height:28px;border:0;border-radius:8px;background:none;cursor:pointer;color:var(--ink-3);opacity:.55;padding:0}
+.pin svg{width:16px;height:16px}
+.pin:hover{opacity:1;background:var(--surface-2)}
+.pin.on{opacity:1;color:var(--accent);background:var(--accent-soft)}
+.pin.on svg{fill:currentColor}
+.empty{color:var(--ink-3)}
 
 /* ---------- Schritt 3: Antworten ---------- */
-.meta{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;color:var(--ink-soft);font-size:.92rem;margin-bottom:10px}
-.meta b{color:var(--ink)}
-.warnline{color:var(--warn);font-size:.92rem;margin:0 0 10px}
-.opts{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-bottom:6px}
-.opts input[type=number]{width:4.2em;min-height:38px;padding:.2em .4em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper);margin-left:6px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.88rem;color:var(--ink-soft);margin:10px 0}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{display:inline-flex;align-items:center;justify-content:center;gap:2px;min-width:26px;padding:0 4px;height:22px;border-radius:6px;font-style:normal;font-size:.8rem}
-.gridwrap{overflow:auto;max-height:72vh;border:2px solid var(--line);border-radius:14px;background:var(--paper);-webkit-overflow-scrolling:touch}
-.grid{border-collapse:separate;border-spacing:0;font-size:.88rem}
-.grid th,.grid td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:0;background:var(--paper)}
-.grid thead th{position:sticky;top:0;z-index:2;background:var(--paper-2);font-weight:700}
-.grid thead tr:nth-child(2) th{top:var(--dayh,0px)}
-.grid .corner{left:0;z-index:4;text-align:left;padding:8px 10px;vertical-align:bottom;min-width:13em}
-.grid .dayh{text-align:left;padding:6px 10px;white-space:nowrap;font-family:var(--font-head);font-weight:600;border-bottom:1px solid var(--line-2)}
-.grid .sh{padding:4px 2px 6px;vertical-align:bottom;min-width:58px}
-.grid .sh label{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;white-space:nowrap;padding:0 4px}
-.grid .sh .tl{font-variant-numeric:tabular-nums}
-.grid .sh.off .tl{text-decoration:line-through;color:var(--ink-soft)}
-.grid .sh input,.grid .who input[type=checkbox]{width:17px;height:17px;margin:0;accent-color:var(--ochre-2)}
-.grid .who{position:sticky;left:0;z-index:1;text-align:left;font-weight:400;padding:3px 6px;white-space:nowrap}
-.grid tbody .who{background:var(--paper)}
-.grid .whoin{display:flex;align-items:center;gap:6px}
-.grid .nm{width:11.5em;border:1px solid transparent;border-radius:6px;background:transparent;padding:3px 5px}
-.grid .nm:hover{border-color:var(--line)}
-.grid .nm:focus{border-color:var(--focus);background:var(--paper)}
-.grid tr.off .nm{text-decoration:line-through;color:var(--ink-soft)}
-.grid tr.miss .who{box-shadow:inset 4px 0 0 var(--warn)}
-.grid td{text-align:center}
-.grid .c{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;min-width:58px;height:34px;border:0;border-radius:0;background:transparent;cursor:pointer;font-size:.9rem;padding:0}
-.grid .c.y{background:var(--yes-bg);color:var(--yes);font-weight:700}
-.grid .c.m{background:var(--maybe-bg);color:var(--maybe)}
-.grid .c.n{color:var(--line-2)}
-.grid .c.pick{box-shadow:inset 0 0 0 3px var(--edge);font-weight:700}
-.grid .c.pick::after{content:'★';font-size:.75em}
-.grid td.off .c,.grid tr.off .c{opacity:.35}
-.grid tfoot th,.grid tfoot td{background:var(--paper-2);color:var(--ink-soft);font-size:.8rem;padding:5px 4px;position:sticky;bottom:0}
-.grid tfoot .who{z-index:3}
-.del{border:0;background:none;color:var(--ink-soft);cursor:pointer;font-size:1rem;line-height:1;padding:2px 5px;border-radius:6px}
-.del:hover{color:var(--warn);background:var(--warn-bg)}
-.legend i.y{background:var(--yes-bg);color:var(--yes);font-weight:700}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-bottom:12px}
+.meta .chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);font-size:.82rem}
+.meta .chip b{color:var(--ink);font-weight:600}
+.warnline{color:var(--warn);font-size:.9rem;margin:0 0 10px}
+.opts{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-bottom:8px;font-size:.92rem}
+.opts input[type=number]{width:4.4em;min-height:36px;padding:.2em .5em;margin-left:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.84rem;color:var(--ink-2);margin:12px 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{display:inline-flex;align-items:center;justify-content:center;gap:2px;min-width:28px;height:22px;padding:0 5px;border-radius:7px;font-style:normal;font-size:.78rem;font-weight:700}
+.legend i.y{background:var(--yes-bg);color:var(--yes)}
 .legend i.m{background:var(--maybe-bg);color:var(--maybe)}
-.legend i.p{box-shadow:inset 0 0 0 3px var(--edge);background:var(--yes-bg);color:var(--yes)}
-.add{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:12px}
-.add form{display:flex;gap:6px;flex:1 1 280px;min-width:0}
-.add input{flex:1;min-width:0;min-height:38px;padding:.3em .6em;border:2px solid var(--line-2);border-radius:10px;background:var(--paper)}
+.legend i.n{color:var(--line-2)}
+.legend i.p{background:var(--yes-bg);color:var(--yes);box-shadow:inset 0 0 0 2px var(--accent)}
+.gridwrap{overflow:auto;max-height:72vh;border:1px solid var(--line);border-radius:14px;background:var(--surface);-webkit-overflow-scrolling:touch}
+.grid{border-collapse:separate;border-spacing:0;font-size:.86rem}
+.grid th,.grid td{border-bottom:1px solid var(--line);padding:0;background:var(--surface)}
+.grid thead th{position:sticky;top:0;z-index:2;background:var(--surface-2);font-weight:600}
+.grid thead tr:nth-child(2) th{top:var(--dayh,0px)}
+.grid .corner{left:0;z-index:4;text-align:left;padding:8px 12px;vertical-align:bottom;min-width:14em;color:var(--ink-2);border-right:1px solid var(--line)}
+.grid .dayh{text-align:left;padding:8px 10px;white-space:nowrap;font-weight:650;border-left:1px solid var(--line-2)}
+.grid .sh{padding:6px 2px 8px;vertical-align:bottom;min-width:60px;font-weight:500}
+.grid .sh.first{border-left:1px solid var(--line-2)}
+.grid .sh label{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;padding:0 4px}
+.grid .sh .tl{font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.grid .sh.off .tl{text-decoration:line-through;color:var(--ink-3)}
+.grid .sh input,.grid .who input[type=checkbox]{width:16px;height:16px;margin:0}
+.grid .who{position:sticky;left:0;z-index:1;text-align:left;font-weight:400;padding:3px 8px;white-space:nowrap;border-right:1px solid var(--line)}
+.grid .whoin{display:flex;align-items:center;gap:6px}
+.grid .nm{width:11.5em;border:1px solid transparent;border-radius:7px;background:transparent;padding:4px 6px}
+.grid .nm:hover{border-color:var(--line)}
+.grid tr.off .nm{text-decoration:line-through;color:var(--ink-3)}
+.grid tr.miss .who{box-shadow:inset 3px 0 0 var(--warn)}
+.grid td{text-align:center;padding:3px}
+.grid td.first{border-left:1px solid var(--line-2)}
+.grid .c{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;min-width:52px;height:30px;border:0;border-radius:8px;background:transparent;cursor:pointer;font-size:.85rem;padding:0;transition:background .12s}
+.grid .c:hover{background:var(--surface-2)}
+.grid .c.y{background:var(--yes-bg);color:var(--yes);font-weight:700}
+.grid .c.m{background:var(--maybe-bg);color:var(--maybe);font-weight:600}
+.grid .c.n{color:var(--line-2)}
+.grid .c.pick{box-shadow:inset 0 0 0 2px var(--accent);font-weight:700}
+.grid .c.pick::after{content:'★';font-size:.72em;color:var(--accent)}
+.grid td.off .c,.grid tr.off .c{opacity:.35}
+.grid tfoot th,.grid tfoot td{background:var(--surface-2);color:var(--ink-3);font-size:.78rem;padding:6px 4px;position:sticky;bottom:0;border-bottom:0}
+.grid tfoot .who{z-index:3;font-weight:600}
+.del{border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:1rem;line-height:1;padding:3px 6px;border-radius:6px}
+.del:hover{color:var(--warn);background:var(--warn-bg)}
+.add{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:14px}
+.add form{display:flex;gap:8px;flex:1 1 280px;min-width:0}
+.add input{flex:1;min-width:0;min-height:38px;padding:.35em .7em}
 
-.foot{max-width:1120px;margin:0 auto;padding:4px 16px 40px;color:var(--ink-soft);font-size:.88rem;display:flex;flex-wrap:wrap;gap:8px 18px}
+.foot{padding:4px 0 40px;color:var(--ink-3);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px 18px}
 
+@media (max-width:760px){ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (max-width:640px){
-  .card{padding:16px;border-radius:16px}
-  .rows .t{min-width:5em}
-  .rows.byname .row{flex-direction:column;gap:2px}
-  .rows.byname .n{min-width:0}
+  .top{padding-top:24px}
+  .logo{width:44px;height:44px;border-radius:12px}
+  .card{padding:16px;border-radius:14px}
+  .rows .row{gap:12px;padding:7px 12px}
+  .rows .t{min-width:5.6em;font-size:.86rem}
+  .byname .row{flex-direction:column;align-items:flex-start;gap:2px}
+  .byname .n{min-width:0}
   .grid .corner{min-width:10em}
   .grid .nm{width:8.5em}
+  .kpi .val{font-size:1.45rem}
 }
 @media (prefers-reduced-motion: reduce){ .spin{animation:none} }
 @media print{
-  body{background:#fff;color:#000;font-size:12pt}
-  .top .lead,#stepLoad,#stepGrid,.tools,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
-  .card{border:0;padding:0;margin:10px 0;background:none}
-  .summary,.missing{background:none !important;border:1px solid #999}
+  body{background:#fff;color:#000;font-size:11pt}
+  body::before,.lead,.logo,#stepLoad,#stepGrid,.tools,.mode-hint,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
+  .top{padding:0 0 6px}
+  .card{border:0;box-shadow:none;padding:0;margin:8px 0;background:none}
+  .kpi,.missing,.dayc{background:none !important;border:1px solid #bbb}
+  .dayc header{background:#f2f2f2}
   .tag.maybe{border:1px solid #999;background:none;color:#000}
-  .rows .row{break-inside:avoid}
-  .plan .day{break-after:avoid}
+  .rows .row,.dayc{break-inside:avoid}
 }
 </style>
 </head>
 <body>
+<div class="wrap">
 <header class="top">
-  <h1>Elterngespräche verteilen</h1>
-  <p class="lead">Link der Terminumfrage einfügen. Das Tool liest die Antworten und verteilt die Termine so, dass möglichst alle Familien einen Termin bekommen. Wo das nicht geht, steht, für wen und warum.</p>
+  <span class="logo" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8.5 14.5l2.2 2.2 4.8-4.8"/></svg></span>
+  <div>
+    <h1>Elterngespräche verteilen</h1>
+    <p class="lead">Link der Terminumfrage einfügen. Das Tool verteilt die Termine so, dass alle Familien einen bekommen, wenn das irgendwie geht. Es braucht dabei möglichst wenige Tage und lässt keine Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
+  </div>
 </header>
 
 <main>
 <section class="card" id="stepLoad" aria-labelledby="hLoad">
-  <h2 id="hLoad"><span class="num" aria-hidden="true">1</span>Umfrage laden</h2>
+  <div class="card-head"><span class="num" aria-hidden="true">1</span><div><h2 id="hLoad">Umfrage laden</h2>
+    <p class="sub">Geht mit Rallly (z. B. termin.cevi.tools), Nuudel, Framadate, Doodle, geteilten Google-Tabellen und anderen Umfrage-Seiten, die die Antworten als Tabelle zeigen.</p></div></div>
   <form class="linkrow" id="linkForm">
-    <label class="sr" for="link">Link der Terminumfrage</label>
-    <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Link einfügen, z. B. https://termin.cevi.tools/invite/… oder https://nuudel.digitalcourage.de/…">
+    <div class="field">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.5a4 4 0 0 0 5.7.4l3-3a4 4 0 0 0-5.7-5.7l-1.6 1.6"/><path d="M14 10.5a4 4 0 0 0-5.7-.4l-3 3a4 4 0 0 0 5.7 5.7l1.6-1.6"/></svg>
+      <label class="sr" for="link">Link der Terminumfrage</label>
+      <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://termin.cevi.tools/invite/…  oder  https://nuudel.digitalcourage.de/…">
+    </div>
     <button class="btn primary" type="submit" id="loadBtn">Laden</button>
   </form>
-  <p class="hint">Geht mit Nuudel, Framadate, Doodle, Rallly (z. B. termin.cevi.tools), geteilten Google-Tabellen und anderen Umfrage-Seiten, die die Antworten als Tabelle zeigen. Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
+  <p class="hint">Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unter «Andere Wege» hochladen.</p>
   <div class="status" id="status" role="status" aria-live="polite" hidden></div>
 
   <details class="other" id="other">
     <summary>Andere Wege: Datei, Tabelle einfügen oder selbst erfassen</summary>
     <div class="ways">
       <div class="way">
-        <h3>Exportierte Datei</h3>
+        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>Exportierte Datei</h3>
         <p>CSV- oder Excel-Datei mit den Antworten, z. B. aus Nuudel, Framadate, Doodle, Microsoft Forms, Google Forms oder einer eigenen Tabelle.</p>
         <button class="btn small" type="button" id="fileBtn">Datei wählen</button>
         <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
       </div>
       <div class="way">
-        <h3>Tabelle einfügen</h3>
+        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>Tabelle einfügen</h3>
         <p>Aus Excel oder einer Webseite kopieren: je Familie eine Zeile. Die Termine stehen als Spalten mit Ja / Nein / Wenn nötig (auch ✓, x, OK) oder zusammen in einem Feld, getrennt mit Strichpunkt.</p>
         <label class="sr" for="paste">Tabelle</label>
         <textarea id="paste" placeholder="Name&#9;Mo 16:00&#9;Mo 16:20&#10;Fam. Muster&#9;Ja&#9;Nein"></textarea>
         <button class="btn small" type="button" id="pasteBtn">Übernehmen</button>
       </div>
       <div class="way">
-        <h3>Selbst erfassen</h3>
+        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Selbst erfassen</h3>
         <p>Mit einer leeren Tabelle beginnen und Termine und Familien von Hand eintragen. Oder zuerst ein Beispiel ansehen.</p>
         <div class="row2">
           <button class="btn small" type="button" id="manualBtn">Leere Tabelle</button>
@@ -221,44 +295,52 @@ h1{font-size:clamp(1.7rem,4.5vw,2.3rem)}
       </div>
     </div>
   </details>
-  <p class="privacy">🔒 Die Antworten werden nur hier im Browser verarbeitet und bis «Alles löschen» in diesem Browser aufbewahrt. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</p>
+  <p class="privacy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+    <span>Die Antworten werden nur hier im Browser verarbeitet und bis «Alles löschen» in diesem Browser aufbewahrt. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</span></p>
 </section>
 
 <section class="card" id="stepPlan" aria-labelledby="hPlan" hidden>
-  <h2 id="hPlan"><span class="num" aria-hidden="true">2</span>Verteilung</h2>
-  <div class="summary" id="summary"></div>
+  <div class="card-head"><span class="num" aria-hidden="true">2</span><div><h2 id="hPlan">Verteilung</h2>
+    <p class="sub" id="planSub"></p></div></div>
+  <div class="kpis" id="summary"></div>
+  <p class="note" id="summaryNote" hidden></p>
   <div class="missing" id="missing" hidden></div>
   <div class="tools">
-    <div class="seg" role="group" aria-label="Sortierung">
+    <div class="seg" role="group" aria-label="Was ist wichtiger?" id="modeSeg">
+      <button type="button" data-mode="kompakt" aria-pressed="true">Kompakt</button>
+      <button type="button" data-mode="wunsch" aria-pressed="false">Elternwunsch zuerst</button>
+    </div>
+    <div class="seg" role="group" aria-label="Sortierung" id="viewSeg">
       <button type="button" data-view="zeit" aria-pressed="true">nach Termin</button>
       <button type="button" data-view="name" aria-pressed="false">nach Familie</button>
     </div>
-    <label class="check"><input type="checkbox" id="showFree"> freie Termine zeigen</label>
+    <label class="check"><input type="checkbox" id="showFree"> alle freien Termine</label>
     <span class="spacer"></span>
-    <button class="btn small" type="button" id="copyBtn">Liste kopieren</button>
-    <button class="btn small" type="button" id="csvBtn">Für Excel speichern</button>
-    <button class="btn small" type="button" id="printBtn">Drucken</button>
+    <button class="btn small" type="button" id="copyBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Liste kopieren</span></button>
+    <button class="btn small" type="button" id="csvBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Für Excel</span></button>
+    <button class="btn small" type="button" id="printBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg><span>Drucken</span></button>
   </div>
+  <p class="mode-hint" id="modeHint"></p>
   <div class="plan" id="plan"></div>
-  <p class="hint">📌 hält eine Familie an ihrem Termin fest. So bleibt der Termin auch dann, wenn später neue Antworten dazukommen.</p>
+  <p class="hint">Mit der Stecknadel hältst du eine Familie an ihrem Termin fest. So bleibt der Termin auch dann, wenn später neue Antworten dazukommen.</p>
 </section>
 
 <section class="card" id="stepGrid" aria-labelledby="hGrid" hidden>
-  <h2 id="hGrid"><span class="num" aria-hidden="true">3</span>Antworten prüfen und anpassen</h2>
+  <div class="card-head"><span class="num" aria-hidden="true">3</span><div><h2 id="hGrid">Antworten prüfen und anpassen</h2>
+    <p class="sub">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant.</p></div></div>
   <div class="meta" id="meta"></div>
   <p class="warnline" id="dupes" hidden></p>
   <div class="opts">
     <label>Gespräche pro Termin<input type="number" id="cap" min="1" max="20" step="1" value="1"></label>
-    <label class="check"><input type="checkbox" id="useMaybe" checked> «Wenn nötig» verwenden, wenn es sonst nicht aufgeht</label>
+    <label class="check"><input type="checkbox" id="useMaybe" checked> «Wenn nötig»-Antworten verwenden</label>
   </div>
   <div class="legend" aria-hidden="true">
-    <span><i class="y">✓</i> Ja</span><span><i class="m">(✓)</i> Wenn nötig</span><span><i>·</i> Nein</span><span><i class="p">✓ ★</i> zugeteilt</span>
+    <span><i class="y">✓</i> Ja</span><span><i class="m">(✓)</i> Wenn nötig</span><span><i class="n">·</i> Nein</span><span><i class="p">✓★</i> zugeteilt</span>
   </div>
-  <p class="hint" style="margin:0 0 10px">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant. Bei mehreren gleich guten Lösungen kommen frühere Termine zuerst dran.</p>
   <div class="gridwrap"><table class="grid" id="grid"></table></div>
   <div class="add">
-    <form id="addPerson"><label class="sr" for="newPerson">Familie hinzufügen</label><input id="newPerson" placeholder="Familie hinzufügen (z. B. Antwort per Telefon)"><button class="btn small" type="submit">+ Familie</button></form>
-    <form id="addSlot"><label class="sr" for="newSlot">Termin hinzufügen</label><input id="newSlot" placeholder="Termin hinzufügen, z. B. Do 29.10. 18:20"><button class="btn small" type="submit">+ Termin</button></form>
+    <form id="addPerson"><label class="sr" for="newPerson">Familie hinzufügen</label><input id="newPerson" type="text" placeholder="Familie hinzufügen (z. B. Antwort per Telefon)"><button class="btn small" type="submit">+ Familie</button></form>
+    <form id="addSlot"><label class="sr" for="newSlot">Termin hinzufügen</label><input id="newSlot" type="text" placeholder="Termin hinzufügen, z. B. Do 29.10. 18:20"><button class="btn small" type="submit">+ Termin</button></form>
   </div>
 </section>
 </main>
@@ -267,6 +349,7 @@ h1{font-size:clamp(1.7rem,4.5vw,2.3rem)}
   <span>Alles wird hier im Browser berechnet.</span>
   <button class="linkbtn" type="button" id="resetBtn" hidden>Alles löschen</button>
 </footer>
+</div>
 
 <script>
 (function(){
@@ -894,7 +977,7 @@ function pkey(p){ return clean(p.orig || p.name).toLowerCase(); }
 function setData(d, info){
   var old = state;
   var s = { title: d.title || '', source: info.source || '', link: info.link || '', loaded: Date.now(),
-    cap: old ? old.cap : 1, useMaybe: old ? old.useMaybe : true, showFree: old ? old.showFree : false, nextId: 1, slots: [], people: [], pins: {} };
+    cap: old ? old.cap : 1, useMaybe: old ? old.useMaybe : true, showFree: old ? old.showFree : false, mode: old && old.mode || 'kompakt', nextId: 1, slots: [], people: [], pins: {} };
   d.slots.forEach(function(x){ s.slots.push({ id: s.nextId++, day: x.day || '', time: x.time || '', on: true }); });
   d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
   if (old && s.link && old.link === s.link) carryOver(old, s);
@@ -940,66 +1023,206 @@ function restore(){
 }
 
 /* ---------- Verteilen ----------
-   Familien und Termine bilden ein Netz; gesucht ist eine Zuteilung mit möglichst vielen Familien (grösster Fluss).
-   Unter allen solchen Zuteilungen wird «Wenn nötig» so selten wie möglich gebraucht, danach kommen frühere Termine zuerst.
-   Kann eine Familie nicht eingeplant werden, geht es wirklich nicht: jede andere Verteilung liesse dann eine andere Familie ohne Termin. */
+   1. So viele Familien wie möglich (grösster Fluss). Bleibt eine Familie ohne Termin, geht es wirklich nicht:
+      jede andere Verteilung liesse dann eine andere Familie ohne Termin.
+   2. Danach ein möglichst effizienter Plan: wenige Tage, keine Lücken zwischen den Gesprächen eines Tages,
+      wenig «wenn nötig». Welche Tage es mindestens braucht, wird durchprobiert; die Lücken schliesst eine Suche,
+      die Familien verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
+   Gewichte: ein Tag 1000, eine Lücke 30, ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
+var COST = { day: 1000, gap: 30, rank: 0.01 };
+var solveMemo = { key: '', res: null };
+function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function solve(s){
-  var T = s.slots.length, P = s.people.length, cap = Math.max(1, Math.min(20, s.cap | 0));
-  var slotOf = [], pinned = [], used = [], idx = {}, i, j;
+  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, x.day, x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans]; })]);
+  if (solveMemo.key === key) return solveMemo.res;
+  var res = solveNow(s);
+  solveMemo = { key: key, res: res };
+  return res;
+}
+function solveNow(s){
+  var T = s.slots.length, P = s.people.length, cap = Math.max(1, Math.min(20, s.cap | 0)), wM = s.mode === 'wunsch' ? 5000 : 25;
+  var slotOf = [], pinned = [], load = [], idx = {}, i, j, k;
   for (i = 0; i < P; i++){ slotOf.push(-1); pinned.push(false); }
-  for (j = 0; j < T; j++){ used.push(0); idx[s.slots[j].id] = j; }
+  for (j = 0; j < T; j++){ load.push(0); idx[s.slots[j].id] = j; }
   function usable(i, j){ var v = s.people[i].ans[j]; return s.slots[j].on && (v === Y || (v === M && s.useMaybe)); }
   s.people.forEach(function(p, i){
     var j = idx[s.pins[p.id]];
-    if (!p.on || j == null || !s.slots[j].on || !(p.ans[j] > N) || used[j] >= cap) return;
-    slotOf[i] = j; pinned[i] = true; used[j]++;
+    if (!p.on || j == null || !s.slots[j].on || !(p.ans[j] > N) || load[j] >= cap) return;
+    slotOf[i] = j; pinned[i] = true; load[j]++;
   });
-  var order = slotOrder(s), rank = [];
-  order.forEach(function(j, r){ rank[j] = r; });
-  var S = 0, Z = 1 + P + T, G = [], BIG = (T + 1) * (P + 1) + 1;
-  for (i = 0; i <= Z; i++) G.push([]);
-  function edge(a, b, c, w){ G[a].push({ to: b, cap: c, cost: w, rev: G[b].length }); G[b].push({ to: a, cap: 0, cost: -w, rev: G[a].length - 1 }); }
+  /* angebotene Termine je Tag, in zeitlicher Folge */
+  var order = slotOrder(s), rank = [], dayOf = [], days = [], dayIdx = {};
+  order.forEach(function(j, r){
+    rank[j] = r; dayOf[j] = -1;
+    if (!s.slots[j].on) return;
+    var d = s.slots[j].day;
+    if (!(d in dayIdx)){ dayIdx[d] = days.length; days.push([]); }
+    dayOf[j] = dayIdx[d]; days[dayOf[j]].push(j);
+  });
+  var D = days.length, free = [], acc = [];
   for (i = 0; i < P; i++){
-    if (!s.people[i].on || pinned[i]) continue;
-    edge(S, 1 + i, 1, 0);
-    for (j = 0; j < T; j++) if (usable(i, j)) edge(1 + i, 1 + P + j, 1, (s.people[i].ans[j] === M ? BIG : 0) + rank[j]);
+    acc.push(order.filter(function(j){ return usable(i, j); }));
+    if (s.people[i].on && !pinned[i]) free.push(i);
   }
-  for (j = 0; j < T; j++) if (s.slots[j].on && cap > used[j]) edge(1 + P + j, Z, cap - used[j], 0);
-  /* kürzeste Wege nacheinander (Bellman-Ford), je ein Gespräch mehr */
-  for (;;){
-    var dist = [], pv = [], pe = [], inq = [], q = [S], u, v, k;
-    for (v = 0; v <= Z; v++){ dist.push(Infinity); pv.push(-1); pe.push(-1); inq.push(false); }
-    dist[S] = 0;
-    while (q.length){
-      u = q.shift(); inq[u] = false;
-      for (k = 0; k < G[u].length; k++){
-        var e = G[u][k];
-        if (e.cap > 0 && dist[u] + e.cost < dist[e.to]){
-          dist[e.to] = dist[u] + e.cost; pv[e.to] = u; pe[e.to] = k;
-          if (!inq[e.to]){ inq[e.to] = true; q.push(e.to); }
+  function inside(allowed, j){ return !allowed || allowed[dayOf[j]]; }
+
+  /* grösste Zuteilung, wenig «wenn nötig», frühe Termine (kürzeste Wege nacheinander) */
+  function flow(allowed){
+    var S = 0, Z = 1 + P + T, G = [], BIG = (T + 1) * (P + 1) + 1, own = slotOf.slice(), n = 0;
+    for (var v = 0; v <= Z; v++) G.push([]);
+    function edge(a, b, c, w){ G[a].push({ to: b, cap: c, cost: w, rev: G[b].length }); G[b].push({ to: a, cap: 0, cost: -w, rev: G[a].length - 1 }); }
+    free.forEach(function(i){
+      edge(S, 1 + i, 1, 0);
+      acc[i].forEach(function(j){ if (inside(allowed, j)) edge(1 + i, 1 + P + j, 1, (s.people[i].ans[j] === M ? BIG : 0) + rank[j]); });
+    });
+    for (var j = 0; j < T; j++) if (s.slots[j].on && cap > load[j] && inside(allowed, j)) edge(1 + P + j, Z, cap - load[j], 0);
+    for (;;){
+      var dist = [], pv = [], pe = [], inq = [], q = [S], u, e, k;
+      for (v = 0; v <= Z; v++){ dist.push(Infinity); pv.push(-1); pe.push(-1); inq.push(false); }
+      dist[S] = 0;
+      while (q.length){
+        u = q.shift(); inq[u] = false;
+        for (k = 0; k < G[u].length; k++){
+          e = G[u][k];
+          if (e.cap > 0 && dist[u] + e.cost < dist[e.to]){
+            dist[e.to] = dist[u] + e.cost; pv[e.to] = u; pe[e.to] = k;
+            if (!inq[e.to]){ inq[e.to] = true; q.push(e.to); }
+          }
         }
       }
+      if (dist[Z] === Infinity) break;
+      for (v = Z; v !== S; v = pv[v]){ e = G[pv[v]][pe[v]]; e.cap--; G[v][e.rev].cap++; }
+      n++;
     }
-    if (dist[Z] === Infinity) break;
-    for (v = Z; v !== S; v = pv[v]){ var f = G[pv[v]][pe[v]]; f.cap--; G[v][f.rev].cap++; }
+    free.forEach(function(i){ G[1 + i].forEach(function(e){ if (e.to > P && e.to <= P + T && e.cap === 0) own[i] = e.to - 1 - P; }); });
+    return { own: own, n: n };
   }
-  for (i = 0; i < P; i++){
-    if (pinned[i]) continue;
-    G[1 + i].forEach(function(e){ if (e.to > P && e.to <= P + T && e.cap === 0) slotOf[i] = e.to - 1 - P; });
+  /* schnelle Prüfung, ob eine Auswahl von Tagen für alle reicht (erweiternde Wege) */
+  function fits(allowed, need){
+    var ld = load.slice(), occ = s.slots.map(function(){ return []; }), n = 0;
+    function aug(i, seen){
+      for (var k = 0; k < acc[i].length; k++){
+        var j = acc[i][k];
+        if (seen[j] || !inside(allowed, j)) continue;
+        seen[j] = true;
+        if (ld[j] < cap){ ld[j]++; occ[j].push(i); return true; }
+        for (var h = 0; h < occ[j].length; h++){
+          var g = occ[j][h];
+          if (aug(g, seen)){ occ[j][h] = i; return true; }
+        }
+      }
+      return false;
+    }
+    for (var x = 0; x < free.length; x++) if (aug(free[x], {})) n++;
+    return n >= need;
   }
-  var holders = s.slots.map(function(){ return []; }), missing = [], nOn = 0, nMaybe = 0, nOpen = 0;
-  slotOf.forEach(function(j, i){ if (j >= 0){ holders[j].push(i); if (s.people[i].ans[j] === M) nMaybe++; } });
-  s.slots.forEach(function(x, j){ if (x.on) nOpen += cap; });
+
+  var all = flow(null), K = all.n, cands = [{ allowed: null, start: all.own }];
+  /* mit möglichst wenigen Tagen auskommen */
+  if (K && D > 1 && D <= 12){
+    var must = {};
+    slotOf.forEach(function(j){ if (j >= 0 && dayOf[j] >= 0) must[dayOf[j]] = true; });
+    var found = [];
+    for (var size = 1; size < D && !found.length; size++){
+      (function pick(from, chosen){
+        if (found.length >= 5) return;
+        if (chosen.length === size){
+          var allowed = {};
+          chosen.forEach(function(d){ allowed[d] = true; });
+          for (var d in must) if (!allowed[d]) return;
+          if (fits(allowed, K)) found.push(allowed);
+          return;
+        }
+        for (var d2 = from; d2 < D; d2++) pick(d2 + 1, chosen.concat(d2));
+      })(0, []);
+    }
+    found.forEach(function(allowed){ var f = flow(allowed); if (f.n === K) cands.push({ allowed: allowed, start: f.own }); });
+  }
+
+  function anneal(c, seed){
+    var own = c.start.slice(), ld = load.slice(), occ = s.slots.map(function(){ return []; }), ok = [], opts = [];
+    var mv = free.filter(function(i){ return own[i] >= 0; });
+    mv.forEach(function(i){ ld[own[i]]++; occ[own[i]].push(i); });
+    for (var i = 0; i < P; i++){
+      ok.push({});
+      opts.push(acc[i].filter(function(j){ return inside(c.allowed, j); }));
+      opts[i].forEach(function(j){ ok[i][j] = true; });
+    }
+    function dayCost(d){
+      if (d < 0) return 0;
+      var q = days[d], first = -1, last = -1, g = 0, k;
+      for (k = 0; k < q.length; k++) if (ld[q[k]]){ if (first < 0) first = k; last = k; }
+      if (first < 0) return 0;
+      for (k = first; k <= last; k++) if (!ld[q[k]]) g++;
+      return COST.day + COST.gap * g;
+    }
+    function sc(i, j){ return (s.people[i].ans[j] === M ? wM : 0) + COST.rank * rank[j]; }
+    function move(i, a, b){ ld[a]--; occ[a].splice(occ[a].indexOf(i), 1); ld[b]++; occ[b].push(i); own[i] = b; }
+    function daysCost(list){ var seen = {}, t = 0; list.forEach(function(d){ if (!seen[d]){ seen[d] = true; t += dayCost(d); } }); return t; }
+    var cost = 0, d;
+    for (d = 0; d < D; d++) cost += dayCost(d);
+    mv.forEach(function(i){ cost += sc(i, own[i]); });
+    var best = { own: own.slice(), cost: cost }, rnd = rng(seed), N = Math.min(30000, 3000 + 500 * mv.length), T0 = 80, T1 = 0.05;
+    if (mv.length) for (var it = 0; it < N; it++){
+      var temp = T0 * Math.pow(T1 / T0, it / N), x = mv[(rnd() * mv.length) | 0], a = own[x], o = opts[x];
+      if (o.length < 2) continue;
+      var b = o[(rnd() * o.length) | 0], delta, undo, before, g, cc;
+      if (b === a) continue;
+      if (ld[b] < cap){   // verschieben
+        before = daysCost([dayOf[a], dayOf[b]]);
+        move(x, a, b);
+        delta = daysCost([dayOf[a], dayOf[b]]) - before + sc(x, b) - sc(x, a);
+        undo = (function(x, a, b){ return function(){ move(x, b, a); }; })(x, a, b);
+      } else {
+        if (!occ[b].length) continue;
+        g = occ[b][(rnd() * occ[b].length) | 0];
+        if (ok[g][a]){   // tauschen
+          move(x, a, b); move(g, b, a);
+          delta = sc(x, b) + sc(g, a) - sc(x, a) - sc(g, b);
+          undo = (function(x, g, a, b){ return function(){ move(x, b, a); move(g, a, b); }; })(x, g, a, b);
+        } else {   // weiterschieben: x nimmt den Platz von g, g geht an einen freien Termin
+          cc = -1;
+          for (var t = 0; t < 4 && cc < 0; t++){ var y = opts[g][(rnd() * opts[g].length) | 0]; if (y !== b && ld[y] < cap) cc = y; }
+          if (cc < 0) continue;
+          before = daysCost([dayOf[a], dayOf[cc]]);
+          move(g, b, cc); move(x, a, b);
+          delta = daysCost([dayOf[a], dayOf[cc]]) - before + sc(x, b) - sc(x, a) + sc(g, cc) - sc(g, b);
+          undo = (function(x, g, a, b, cc){ return function(){ move(x, b, a); move(g, cc, b); }; })(x, g, a, b, cc);
+        }
+      }
+      if (delta <= 1e-9 || rnd() < Math.exp(-delta / temp)){
+        cost += delta;
+        if (cost < best.cost - 1e-9) best = { own: own.slice(), cost: cost };
+      } else undo();
+    }
+    return best;
+  }
+  var bestRun = null;
+  cands.forEach(function(c, n){ var r = anneal(c, 20261018 + n * 7919); if (!bestRun || r.cost < bestRun.cost - 1e-9) bestRun = r; });
+  slotOf = bestRun.own;
+
+  var holders = s.slots.map(function(){ return []; }), missing = [], nOn = 0, nMaybe = 0, nOpen = 0, ld = s.slots.map(function(){ return 0; });
+  slotOf.forEach(function(j, i){ if (j >= 0){ holders[j].push(i); ld[j]++; if (s.people[i].ans[j] === M) nMaybe++; } });
+  s.slots.forEach(function(x){ if (x.on) nOpen += cap; });
   s.people.forEach(function(p, i){
     if (!p.on) return;
     nOn++;
     if (slotOf[i] >= 0) return;
-    var all = p.ans.some(function(v){ return v > N; });
+    var any = p.ans.some(function(v){ return v > N; });
     var on = s.slots.map(function(x, j){ return j; }).filter(function(j){ return s.slots[j].on && p.ans[j] > N; });
-    var ok = on.filter(function(j){ return usable(i, j); });
-    missing.push({ i: i, why: !all ? 'none' : !on.length ? 'off' : !ok.length ? 'maybe' : 'full', opts: ok });
+    var okj = on.filter(function(j){ return usable(i, j); });
+    missing.push({ i: i, why: !any ? 'none' : !on.length ? 'off' : !okj.length ? 'maybe' : 'full', opts: okj });
   });
-  return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap };
+  /* Übersicht je Tag: von wann bis wann, wie viele Gespräche, wie viele Lücken */
+  var nDays = 0, nGaps = 0, dayInfo = days.map(function(q){
+    var first = -1, last = -1, gaps = 0, talks = 0;
+    q.forEach(function(j, k){ if (ld[j]){ if (first < 0) first = k; last = k; talks += ld[j]; } });
+    for (var k = first; first >= 0 && k <= last; k++) if (!ld[q[k]]) gaps++;
+    if (first >= 0){ nDays++; nGaps += gaps; }
+    return { day: s.slots[q[0]].day, slots: q, first: first, last: last, used: first >= 0, gaps: gaps, talks: talks };
+  });
+  return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap,
+    days: dayInfo, nDays: nDays, nGaps: nGaps, nDaysOffered: D };
 }
 /* Termine nach Tag (in der Reihenfolge der Umfrage) und darin nach Uhrzeit */
 function minutes(t){ var m = /(\d{1,2}):(\d{2})/.exec(t || '') || /(\d{1,2})\.(\d{2})\b(?!\.)/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : 1e4; }
@@ -1023,6 +1246,16 @@ function dayGroups(s, order){
 function slotLabel(x){ return x.day && x.time ? x.day + ', ' + x.time : x.day || x.time; }
 
 /* ---------- Anzeigen ---------- */
+var PIN = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3.5 20.5 9l-3.2 1.1-3.6 3.6.4 4.3-2.1 2.1-3.4-3.4L4 21l-.1-.1 4.4-4.6-3.4-3.4 2.1-2.1 4.3.4 3.6-3.6z"/></svg>';
+var WARN = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg>';
+function timeFrom(t){ var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? (m[1].length < 2 ? '0' : '') + m[1] + ':' + m[2] : t; }
+function timeTo(t){ var all = String(t || '').match(/\d{1,2}[:.]\d{2}/g); return all && all.length > 1 ? all[all.length - 1].replace('.', ':') : timeFrom(t); }
+function dayLabel(d){ return d.day || 'Termine'; }
+function dayMeta(d){
+  if (!d.used) return 'nicht gebraucht';
+  var s = state, a = s.slots[d.slots[d.first]], b = s.slots[d.slots[d.last]];
+  return '<b>' + esc(timeFrom(a.time)) + '–' + esc(timeTo(b.time)) + '</b> · ' + plural(d.talks, 'Gespräch', 'Gespräche') + ' · ' + (d.gaps ? plural(d.gaps, 'Lücke', 'Lücken') : 'ohne Lücke');
+}
 function renderAll(){
   var on = !!state;
   $('#stepPlan').hidden = !on; $('#stepGrid').hidden = !on; $('#resetBtn').hidden = !on;
@@ -1031,56 +1264,76 @@ function renderAll(){
   $('#cap').value = last.cap;
   $('#useMaybe').checked = !!state.useMaybe;
   $('#showFree').checked = !!state.showFree;
-  [].forEach.call(document.querySelectorAll('.seg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); });
+  [].forEach.call(document.querySelectorAll('#viewSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); });
+  [].forEach.call(document.querySelectorAll('#modeSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.mode === (state.mode || 'kompakt') ? 'true' : 'false'); });
+  $('#modeHint').textContent = state.mode === 'wunsch'
+    ? 'Elternwunsch zuerst: «Wenn nötig» nur, wenn eine Familie sonst keinen Termin bekäme. Danach möglichst wenige Tage und keine Lücken.'
+    : 'Kompakt: so wenige Tage wie möglich und keine Leerzeiten zwischen den Gesprächen. Dafür werden auch «Wenn nötig»-Antworten genutzt.';
   renderSummary(last); renderMissing(last); renderPlan(last); renderMeta(); renderGrid(last);
 }
 function renderSummary(r){
-  var el = $('#summary'), got = r.nOn - r.missing.length, h;
-  if (!r.nOn) h = 'Noch keine Familien eingetragen.';
-  else if (!r.missing.length) h = '🎉 <b>' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.</b>';
-  else h = '<b>' + got + ' von ' + r.nOn + ' Familien</b> haben einen Termin.';
-  if (got && r.nMaybe) h += ' ' + (r.nMaybe === 1 ? 'Eine davon' : r.nMaybe + ' davon') + ' mit «wenn nötig».';
-  if (r.nOpen) h += ' Belegt: ' + got + ' von ' + r.nOpen + ' Plätzen.';
-  if (r.nOn > r.nOpen) h += ' <br>Es gibt weniger Plätze als Familien.';
-  el.innerHTML = h;
-  el.className = 'summary' + (r.missing.length || !r.nOn ? ' part' : '');
+  var got = r.nOn - r.missing.length;
+  function tile(label, value, of, tone){
+    return '<div class="kpi' + (tone ? ' ' + tone : '') + '"><div class="lab"><span class="dot" aria-hidden="true"></span>' + label + '</div><div class="val">' + value + (of != null ? ' <small>von ' + of + '</small>' : '') + '</div></div>';
+  }
+  $('#summary').innerHTML =
+    tile('Familien mit Termin', got, r.nOn, !r.nOn ? '' : r.missing.length ? 'warn' : 'good') +
+    tile(r.nDays === 1 ? 'Tag gebraucht' : 'Tage gebraucht', r.nDays, r.nDaysOffered) +
+    tile('Lücken', r.nGaps, null, got && !r.nGaps ? 'good' : '') +
+    tile('«Wenn nötig» genutzt', r.nMaybe, null, '');
+  var notes = [];
+  if (r.nOn && !r.missing.length) notes.push('🎉 ' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.');
+  var spare = r.days.filter(function(d){ return !d.used; }).map(function(d){ return dayLabel(d); });
+  if (spare.length && got) notes.push('Nicht gebraucht: ' + spare.join(', ') + '.');
+  if (r.nOn > r.nOpen) notes.push('Es gibt weniger Plätze als Familien.');
+  var n = $('#summaryNote');
+  n.hidden = !notes.length; n.textContent = notes.join(' ');
+  $('#planSub').textContent = r.nOn ? got + ' von ' + plural(r.nOn, 'Familie', 'Familien') + ' an ' + plural(r.nDays, 'Tag', 'Tagen') + (r.nDays ? (r.nGaps ? ', ' + plural(r.nGaps, 'Lücke', 'Lücken') : ', ohne Lücken') : '') + '.' : 'Noch keine Familien eingetragen.';
 }
 function renderMissing(r){
   var el = $('#missing'), s = state;
   if (!r.missing.length){ el.hidden = true; el.innerHTML = ''; return; }
   var n = r.missing.length;
-  var h = '<h3>Kein Termin möglich für ' + (n === 1 ? '1 Familie' : n + ' Familien') + '</h3><ul>';
+  var h = '<h3>' + WARN + 'Kein Termin möglich für ' + (n === 1 ? '1 Familie' : n + ' Familien') + '</h3><ul>';
   r.missing.forEach(function(m){
     var why;
     if (m.why === 'none') why = 'hat keinen Termin angekreuzt.';
     else if (m.why === 'off') why = 'hat nur Termine angekreuzt, die ausgeschaltet sind.';
     else if (m.why === 'maybe') why = 'hat nur «wenn nötig» angekreuzt, und das ist ausgeschaltet.';
     else why = 'alle passenden Termine sind besetzt, und jede andere Verteilung liesse eine andere Familie ohne Termin: ' + m.opts.map(function(j){
-      var hs = r.holders[j].map(function(i){ return esc(s.people[i].name) + (r.pinned[i] ? ' 📌' : ''); }).join(', ');
+      var hs = r.holders[j].map(function(i){ return esc(s.people[i].name) + (r.pinned[i] ? ' (festgehalten)' : ''); }).join(', ');
       return esc(slotLabel(s.slots[j])) + (hs ? ' (' + hs + ')' : '');
     }).join('; ') + '.';
     h += '<li><b>' + esc(s.people[m.i].name) + '</b> <span class="why">– ' + why + '</span></li>';
   });
-  h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen, einen zusätzlichen Termin hinzufügen oder mehr Gespräche pro Termin erlauben. Wer lieber eine andere Familie verschieben möchte: die gewünschte Familie mit 📌 festhalten.</p>';
+  h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen, einen zusätzlichen Termin hinzufügen oder mehr Gespräche pro Termin erlauben. Soll lieber eine andere Familie verschoben werden: die gewünschte Familie mit der Stecknadel festhalten.</p>';
   el.innerHTML = h; el.hidden = false;
 }
 function tagFor(i, j){ return state.people[i].ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : ''; }
 function pinFor(i, r){
   var on = r.pinned[i], n = esc(state.people[i].name);
-  return '<button type="button" class="pin' + (on ? ' on' : '') + '" data-act="pin" data-p="' + i + '" aria-pressed="' + on + '" aria-label="' + n + ' festhalten" title="' + (on ? 'Festgehalten – antippen zum Lösen' : 'An diesem Termin festhalten') + '">📌</button>';
+  return '<button type="button" class="pin' + (on ? ' on' : '') + '" data-act="pin" data-p="' + i + '" aria-pressed="' + on + '" aria-label="' + n + ' festhalten" title="' + (on ? 'Festgehalten – antippen zum Lösen' : 'An diesem Termin festhalten') + '">' + PIN + '</button>';
+}
+/* welche Termine eines Tages gezeigt werden: belegte, Lücken dazwischen und auf Wunsch alle freien */
+function dayRows(d){
+  var s = state, out = [];
+  d.slots.forEach(function(j, k){
+    var hs = last.holders[j], gap = d.used && !hs.length && k > d.first && k < d.last;
+    if (hs.length || gap || s.showFree) out.push({ j: j, hs: hs, gap: gap });
+  });
+  return out;
 }
 function renderPlan(r){
   var s = state, h = '';
   if (view === 'zeit'){
-    dayGroups(s, slotOrder(s)).forEach(function(g){
-      var rows = '';
-      g.idx.forEach(function(j){
-        var x = s.slots[j], hs = r.holders[j];
-        if (!hs.length && !(s.showFree && x.on)) return;
-        rows += '<li class="row' + (hs.length ? '' : ' free') + '"><span class="t">' + esc(x.time || x.day) + '</span><span class="ws">' +
-          (hs.length ? hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, j) + pinFor(i, r) + '</span>'; }).join('') : '<span class="frei">frei</span>') + '</span></li>';
-      });
-      if (rows) h += (g.day ? '<h3 class="day">' + esc(g.day) + '</h3>' : '') + '<ol class="rows">' + rows + '</ol>';
+    r.days.forEach(function(d){
+      if (!d.used && !s.showFree) return;
+      var rows = dayRows(d).map(function(x){
+        var t = '<span class="t">' + esc(s.slots[x.j].time || s.slots[x.j].day) + '</span>';
+        if (x.hs.length) return '<li class="row">' + t + '<span class="ws">' + x.hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, x.j) + pinFor(i, r) + '</span>'; }).join('') + '</span></li>';
+        return '<li class="row ' + (x.gap ? 'gap' : 'free') + '">' + t + '<span class="ws">' + (x.gap ? '<span class="lk">Lücke</span>' : '<span class="frei">frei</span>') + '</span></li>';
+      }).join('');
+      h += '<section class="dayc' + (d.used ? '' : ' unused') + '"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
     });
   } else {
     var list = s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on; })
@@ -1100,8 +1353,8 @@ function renderMeta(){
   bits.push(plural(s.people.length, 'Familie', 'Familien'));
   bits.push(plural(s.slots.length, 'Termin', 'Termine'));
   if (s.loaded) bits.push('geladen ' + fmt(new Date(s.loaded), { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }));
-  var h = bits.map(function(b){ return '<span>' + b + '</span>'; }).join('');
-  if (s.link) h += '<button type="button" class="btn small" id="reloadBtn" title="Neue Antworten holen; was hier von Hand angepasst wurde, bleibt">↻ Neu laden</button>';
+  var h = bits.map(function(b){ return '<span class="chip">' + b + '</span>'; }).join('');
+  if (s.link) h += '<button type="button" class="btn small" id="reloadBtn" title="Neue Antworten holen; was hier von Hand angepasst wurde, bleibt"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>Neu laden</button>';
   $('#meta').innerHTML = h;
   var seen = {}, d = [];
   s.people.forEach(function(p){ var k = pkey({ name: p.name }); seen[k] = (seen[k] || 0) + 1; if (seen[k] === 2) d.push(p.name); });
@@ -1110,18 +1363,20 @@ function renderMeta(){
   w.textContent = d.length ? '⚠️ Doppelt eingetragen: ' + d.join(', ') + '. Falls es dieselbe Familie ist, einen Eintrag ausschalten.' : '';
 }
 function renderGrid(r){
-  var s = state, order = slotOrder(s), groups = dayGroups(s, order), anyDay = groups.some(function(g){ return g.day; });
+  var s = state, order = slotOrder(s), groups = dayGroups(s, order), anyDay = groups.some(function(g){ return g.day; }), first = {};
+  groups.forEach(function(g, k){ if (k) first[g.idx[0]] = true; });
   var counts = s.slots.map(function(x, j){
     var y = 0, m = 0;
     s.people.forEach(function(p){ if (p.on){ if (p.ans[j] === Y) y++; else if (p.ans[j] === M) m++; } });
     return y + (m ? ' (+' + m + ')' : '');
   });
+  function fc(j, cls){ cls = (cls || '') + (first[j] ? ' first' : ''); return cls.trim() ? ' class="' + cls.trim() + '"' : ''; }
   var h = '<thead>';
   var corner = '<th class="corner" scope="col"' + (anyDay ? ' rowspan="2"' : '') + '>Familie</th>';
   if (anyDay) h += '<tr>' + corner + groups.map(function(g){ return '<th class="dayh" scope="colgroup" colspan="' + g.idx.length + '">' + esc(g.day || '–') + '</th>'; }).join('') + '</tr>';
   h += '<tr>' + (anyDay ? '' : corner) + order.map(function(j){
     var x = s.slots[j];
-    return '<th class="sh' + (x.on ? '' : ' off') + '" scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
+    return '<th' + fc(j, 'sh' + (x.on ? '' : ' off')) + ' scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
       (x.manual ? '<button type="button" class="del" data-act="dels" data-s="' + j + '" aria-label="Termin ' + esc(slotLabel(x)) + ' entfernen" title="Termin entfernen">×</button>' : '') + '</th>';
   }).join('') + '</tr></thead><tbody>';
   s.people.forEach(function(p, i){
@@ -1133,12 +1388,12 @@ function renderGrid(r){
       '</div></th>' + order.map(function(j){
         var v = p.ans[j], cls = v === Y ? 'y' : v === M ? 'm' : 'n', pick = r.slotOf[i] === j;
         var word = v === Y ? 'Ja' : v === M ? 'Wenn nötig' : 'Nein';
-        return '<td' + (s.slots[j].on ? '' : ' class="off"') + '><button type="button" class="c ' + cls + (pick ? ' pick' : '') + '" data-act="cell" data-p="' + i + '" data-s="' + j + '" aria-label="' +
+        return '<td' + fc(j, s.slots[j].on ? '' : 'off') + '><button type="button" class="c ' + cls + (pick ? ' pick' : '') + '" data-act="cell" data-p="' + i + '" data-s="' + j + '" aria-label="' +
           esc(p.name + ', ' + slotLabel(s.slots[j]) + ': ' + word + (pick ? ', zugeteilt' : '')) + '">' + (v === Y ? '✓' : v === M ? '(✓)' : '·') + '</button></td>';
       }).join('') + '</tr>';
   });
-  if (!s.people.length) h += '<tr><th class="who" scope="row" style="padding:10px;color:var(--ink-soft)">Noch keine Familien</th>' + order.map(function(){ return '<td></td>'; }).join('') + '</tr>';
-  h += '</tbody><tfoot><tr><th class="who" scope="row">Zusagen</th>' + order.map(function(j){ return '<td>' + counts[j] + '</td>'; }).join('') + '</tr></tfoot>';
+  if (!s.people.length) h += '<tr><th class="who" scope="row" style="padding:10px;color:var(--ink-3)">Noch keine Familien</th>' + order.map(function(j){ return '<td' + fc(j) + '></td>'; }).join('') + '</tr>';
+  h += '</tbody><tfoot><tr><th class="who" scope="row">Zusagen</th>' + order.map(function(j){ return '<td' + fc(j) + '>' + counts[j] + '</td>'; }).join('') + '</tr></tfoot>';
   var g = $('#grid');
   g.innerHTML = h;
   var dh = g.querySelector('.dayh');
@@ -1159,14 +1414,14 @@ function changed(focusSel, keepGrid){
 function planText(){
   var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
   if (view === 'zeit'){
-    dayGroups(s, slotOrder(s)).forEach(function(g){
-      var lines = [];
-      g.idx.forEach(function(j){
-        var hs = r.holders[j];
-        if (!hs.length && !(s.showFree && s.slots[j].on)) return;
-        lines.push('  ' + (s.slots[j].time || s.slots[j].day) + '  ' + (hs.length ? hs.map(function(i){ return s.people[i].name + (s.people[i].ans[j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei'));
+    r.days.forEach(function(d){
+      if (!d.used && !s.showFree) return;
+      var lines = dayRows(d).map(function(x){
+        return '  ' + (s.slots[x.j].time || s.slots[x.j].day) + '  ' + (x.hs.length ? x.hs.map(function(i){ return s.people[i].name + (s.people[i].ans[x.j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei');
       });
-      if (lines.length){ out.push(''); if (g.day) out.push(g.day); out = out.concat(lines); }
+      out.push('');
+      out.push(dayLabel(d) + (d.used ? ' (' + timeFrom(s.slots[d.slots[d.first]].time) + '–' + timeTo(s.slots[d.slots[d.last]].time) + ')' : ''));
+      out = out.concat(lines);
     });
   } else {
     out.push('');
@@ -1180,10 +1435,12 @@ function planText(){
 function csvCell(v){ v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return /[;"\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
 function planCSV(){
   var s = state, r = last, rows = [['Tag', 'Zeit', 'Familie', 'Hinweis']];
-  slotOrder(s).forEach(function(j){
-    var x = s.slots[j], hs = r.holders[j];
-    if (hs.length) hs.forEach(function(i){ rows.push([x.day, x.time, s.people[i].name, s.people[i].ans[j] === M ? 'wenn nötig' : '']); });
-    else if (s.showFree && x.on) rows.push([x.day, x.time, '', 'frei']);
+  r.days.forEach(function(d){
+    dayRows(d).forEach(function(x){
+      var sl = s.slots[x.j];
+      if (x.hs.length) x.hs.forEach(function(i){ rows.push([sl.day, sl.time, s.people[i].name, s.people[i].ans[x.j] === M ? 'wenn nötig' : '']); });
+      else rows.push([sl.day, sl.time, '', x.gap ? 'Lücke' : 'frei']);
+    });
   });
   r.missing.forEach(function(m){ rows.push(['', '', s.people[m.i].name, 'kein Termin']); });
   return '﻿' + rows.map(function(row){ return row.map(csvCell).join(';'); }).join('\r\n') + '\r\n';
@@ -1197,22 +1454,22 @@ function copyText(t){
     document.body.removeChild(ta); ok ? res() : rej(new Error('Kopieren nicht möglich'));
   });
 }
-function flash(btn, text){ var t = btn.textContent; btn.textContent = text; setTimeout(function(){ btn.textContent = t; }, 1600); }
+function flash(btn, text){ var el = btn.querySelector('span') || btn, t = el.textContent; el.textContent = text; setTimeout(function(){ el.textContent = t; }, 1600); }
 
 /* ---------- Beispiel ---------- */
 function demoData(){
-  var days = [['Montag, 26. Oktober 2026', ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40']],
-              ['Mittwoch, 28. Oktober 2026', ['13:30', '13:50', '14:10', '14:30', '14:50']],
-              ['Donnerstag, 29. Oktober 2026', ['17:00', '17:20', '17:40', '18:00']]];
+  var days = [['Montag, 26. Oktober 2026', ['16:00', '16:20', '16:40', '17:00', '17:20', '17:40', '18:00', '18:20']],
+              ['Mittwoch, 28. Oktober 2026', ['13:30', '13:50', '14:10', '14:30', '14:50', '15:10', '15:30', '15:50']],
+              ['Donnerstag, 29. Oktober 2026', ['17:00', '17:20', '17:40', '18:00', '18:20']]];
   var slots = [];
   days.forEach(function(d){ d[1].forEach(function(t){ slots.push({ day: d[0], time: t }); }); });
   /* j = ja, v = wenn nötig, . = nein; | trennt die Tage */
-  var fam = [['Fam. Ammann', 'j.....|.....|....'], ['Fam. Baumann', 'j.....|.....|....'], ['Fam. Brunner', 'jjj...|.....|jj..'],
-    ['Fam. Egli', '......|jjjjj|....'], ['Fam. Frei', '..jj..|.....|....'], ['Fam. Gerber', '......|..v..|....'],
-    ['Fam. Graf', '....jj|.....|jjjj'], ['Fam. Huber', '......|jj...|....'], ['Fam. Keller', 'jjjjjj|.....|....'],
-    ['Fam. Lüthi', '......|.....|..jj'], ['Fam. Meier', '.j.j..|.j...|....'], ['Fam. Moser', '......|.....|....'],
-    ['Fam. Schmid', '...jjv|.....|vv..'], ['Fam. Steiner', '......|j.jj.|....'], ['Fam. Wyss', 'jj....|.....|j...'],
-    ['Fam. Zürcher', '......|...jj|...j']];
+  var fam = [['Fam. Ammann', 'j.......|........|.....'], ['Fam. Baumann', 'j.......|........|.....'], ['Fam. Brunner', 'jjj.....|........|jj...'],
+    ['Fam. Egli', '........|jjjjj...|.....'], ['Fam. Frei', '..jj....|........|.....'], ['Fam. Gerber', '........|..v.....|.....'],
+    ['Fam. Graf', '....jj..|........|jjjj.'], ['Fam. Huber', '........|jj......|.....'], ['Fam. Keller', 'jjjjjjjj|........|.....'],
+    ['Fam. Lüthi', '......jj|........|..jj.'], ['Fam. Meier', '.j.j....|.j......|.....'], ['Fam. Moser', '........|........|.....'],
+    ['Fam. Schmid', '...jjv..|........|vv...'], ['Fam. Steiner', '........|j.jj....|.....'], ['Fam. Wyss', 'jj......|........|j....'],
+    ['Fam. Zürcher', '........|...jjjj.|...j.']];
   return { title: 'Beispiel 4b', slots: slots, people: fam.map(function(f){
     return { name: f[0], ans: f[1].replace(/\|/g, '').split('').map(function(c){ return c === 'j' ? Y : c === 'v' ? M : N; }) };
   }) };
@@ -1247,7 +1504,8 @@ $('#meta').addEventListener('click', function(e){ if (e.target.closest('#reloadB
 $('#cap').addEventListener('input', function(){ var v = parseInt(this.value, 10); if (v >= 1 && v <= 20){ state.cap = v; changed(); } });
 $('#useMaybe').addEventListener('change', function(){ state.useMaybe = this.checked; changed(); });
 $('#showFree').addEventListener('change', function(){ state.showFree = this.checked; changed(); });
-document.querySelector('.seg').addEventListener('click', function(e){ var b = e.target.closest('button[data-view]'); if (b){ view = b.dataset.view; changed(); } });
+$('#viewSeg').addEventListener('click', function(e){ var b = e.target.closest('button[data-view]'); if (b){ view = b.dataset.view; changed(); } });
+$('#modeSeg').addEventListener('click', function(e){ var b = e.target.closest('button[data-mode]'); if (b){ state.mode = b.dataset.mode; changed(); } });
 
 $('#grid').addEventListener('click', function(e){
   var b = e.target.closest('button[data-act]');
