@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Elterngespräche verteilen</title>
+<title>Terminklar – Elterngespräche effizient organisieren</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -57,7 +57,8 @@ h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.01em}
 .top{padding:36px 0 8px;display:flex;gap:16px;align-items:center}
 .logo{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent)}
 .logo svg{width:28px;height:28px;stroke-width:1.9}
-h1{font-size:clamp(1.55rem,4vw,2.05rem);font-weight:700;letter-spacing:-.02em}
+h1{font-size:clamp(1.9rem,5vw,2.6rem);font-weight:700;letter-spacing:-.03em;background:linear-gradient(90deg, var(--ink) 0%, var(--accent) 120%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kicker{margin:0 0 2px;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .lead{margin:.3em 0 0;color:var(--ink-2);max-width:48em}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px;margin:18px 0}
@@ -77,38 +78,33 @@ h1{font-size:clamp(1.55rem,4vw,2.05rem);font-weight:700;letter-spacing:-.02em}
 .btn.small{min-height:34px;padding:.3em .8em;font-size:.86rem}
 .btn[disabled]{opacity:.6;cursor:progress}
 .linkbtn{background:none;border:0;padding:0;color:var(--ink-3);text-decoration:underline;cursor:pointer}
-.field{position:relative;flex:1 1 320px;min-width:0}
-.field svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
 input[type=text],input[type=number],textarea{border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--surface);transition:border-color .15s, box-shadow .15s}
 input[type=text]:focus,input[type=number]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 input[type=checkbox]{accent-color:var(--accent)}
 
-/* ---------- Schritt 1: Laden ---------- */
-.linkrow{display:flex;gap:10px;flex-wrap:wrap}
-.linkrow input{width:100%;min-height:46px;padding:.55em .9em .55em 40px;font-size:1rem}
-.linkrow .btn{min-height:46px;padding:0 1.4em}
+/* ---------- Schritt 1: Einlesen ---------- */
+.dropzone{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;padding:22px;border:2px dashed var(--line-2);border-radius:16px;background:var(--surface-2);transition:background .15s, border-color .15s}
+.dropzone.over{background:var(--accent-soft);border-color:var(--accent)}
+.dropzone > svg{width:30px;height:30px;color:var(--accent)}
+.dz-txt{flex:1 1 220px;display:flex;flex-direction:column}
+.dz-txt b{font-size:1.02rem}
+.dz-txt span{color:var(--ink-3);font-size:.86rem}
+.dropzone .btn{min-height:44px;padding:0 1.4em}
 .status{display:flex;flex-direction:column;gap:2px;margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font-size:.93rem}
 .status.busy{background:var(--surface-2)}
 .status.ok{background:var(--good-bg);border-color:var(--good-line);color:var(--ink)}
 .status.err{background:var(--warn-bg);border-color:var(--warn-line)}
 .status p{margin:.15em 0}
-.status details{margin-top:.4em;font-size:.82rem;color:var(--ink-2)}
 .spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;margin-right:8px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.bmbox{margin-top:16px;padding:16px 18px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:14px;font-size:.92rem;transition:box-shadow .2s}
-.bmbox.flash{box-shadow:0 0 0 3px var(--accent)}
-.bm-head{display:flex;align-items:center;gap:8px;color:var(--ink)}
-.bm-head svg{color:var(--accent)}
-.bmbox ol{margin:8px 0 0;padding-left:1.3em;color:var(--ink-2)}
-.bmbox li{margin:.45em 0}
-.bmbox code{font-size:.86em;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
-.bm{display:inline-flex;align-items:center;gap:6px;margin:4px 0 0 4px;padding:.35em .9em;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:600;text-decoration:none;cursor:grab;box-shadow:var(--shadow-sm)}
-.bm::before{content:'';width:8px;height:8px;border-radius:2px;background:currentColor;opacity:.7}
-.alt{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:16px;padding:14px 16px;border:1px dashed var(--line-2);border-radius:14px;transition:background .15s, border-color .15s}
-.alt.flash{background:var(--accent-soft);border-color:var(--accent)}
-.alt > svg{color:var(--accent)}
-.alt-txt{flex:1 1 260px;display:flex;flex-direction:column;font-size:.9rem}
-.alt-txt span{color:var(--ink-2);font-size:.86rem}
+.howto{margin-top:14px;font-size:.9rem}
+.howto summary{cursor:pointer;font-weight:600;color:var(--ink-2);list-style:none;display:inline-flex;align-items:center;gap:8px;padding:4px 0}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary::before{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin:0 3px 0 2px}
+.howto[open] summary::before{transform:rotate(45deg)}
+.howto ul{margin:8px 0 0;padding-left:1.2em;color:var(--ink-2)}
+.howto li{margin:.4em 0}
+.howto b{color:var(--ink)}
 .privacy{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:.84rem;color:var(--ink-2)}
 .privacy svg{color:var(--ink-3);margin-top:1px}
 
@@ -239,7 +235,7 @@ input[type=checkbox]{accent-color:var(--accent)}
 @media (prefers-reduced-motion: reduce){ .spin{animation:none} }
 @media print{
   body{background:#fff;color:#000;font-size:11pt}
-  body::before,.lead,.logo,#stepLoad,#stepGrid,.tools,.mode-hint,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
+  body::before,.lead,.kicker,.logo,#stepLoad,#stepGrid,.tools,.mode-hint,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
   .top{padding:0 0 6px}
   .card{border:0;box-shadow:none;padding:0;margin:8px 0;background:none}
   .kpi,.missing,.dayc{background:none !important;border:1px solid #bbb}
@@ -254,44 +250,36 @@ input[type=checkbox]{accent-color:var(--accent)}
 <header class="top">
   <span class="logo" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8.5 14.5l2.2 2.2 4.8-4.8"/></svg></span>
   <div>
-    <h1>Elterngespräche verteilen</h1>
-    <p class="lead">Link der Terminumfrage einfügen. Das Tool verteilt die Termine so, dass alle Familien einen bekommen, wenn das irgendwie geht. Dabei braucht es so wenige Tage wie möglich und lässt keine Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
+    <p class="kicker">Elterngespräche effizient organisieren</p>
+    <h1>Terminklar</h1>
+    <p class="lead">Antworten der Terminumfrage einlesen, und Terminklar verteilt die Gespräche: Alle Familien bekommen einen Termin, wenn das irgendwie geht, an möglichst wenigen Tagen und ohne Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
   </div>
 </header>
 
 <main>
 <section class="card" id="stepLoad" aria-labelledby="hLoad">
-  <div class="card-head"><span class="num" aria-hidden="true">1</span><div><h2 id="hLoad">Umfrage laden</h2>
-    <p class="sub">Geht mit Rallly (z. B. termin.cevi.tools), Nuudel, Framadate, Doodle, geteilten Google-Tabellen und anderen Umfrage-Seiten, die die Antworten als Tabelle zeigen.</p></div></div>
-  <form class="linkrow" id="linkForm">
-    <div class="field">
-      <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.5a4 4 0 0 0 5.7.4l3-3a4 4 0 0 0-5.7-5.7l-1.6 1.6"/><path d="M14 10.5a4 4 0 0 0-5.7-.4l-3 3a4 4 0 0 0 5.7 5.7l1.6-1.6"/></svg>
-      <label class="sr" for="link">Link der Terminumfrage</label>
-      <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://termin.cevi.tools/invite/…  oder  https://nuudel.digitalcourage.de/…">
-    </div>
-    <button class="btn primary" type="submit" id="loadBtn">Laden</button>
-  </form>
-  <p class="hint">Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
-  <div class="status" id="status" role="status" aria-live="polite" hidden></div>
-
-  <div class="bmbox" id="bmBox">
-    <div class="bm-head"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4-6 4z"/></svg><b>Klappt der Link nicht? Dann mit dem Auslese-Knopf</b></div>
-    <ol>
-      <li>Diesen Knopf mit der Maus in die Lesezeichenleiste des Browsers ziehen (nur einmal nötig):
-        <a class="bm" id="bmLink" href="#" title="In die Lesezeichenleiste ziehen">Elterngespräche übernehmen</a></li>
-      <li>Die Umfrage im Browser öffnen, z. B. <code>termin.cevi.tools/invite/…</code>. Sind die Namen verborgen: als Ersteller:in angemeldet die Verwaltungs-Seite der Umfrage öffnen.</li>
-      <li>Oben in der Lesezeichenleiste auf «Elterngespräche übernehmen» klicken. Dieses Tool öffnet sich in einem neuen Tab und teilt die Termine zu.</li>
-    </ol>
-    <p class="hint">Der Knopf liest nur, was du auf der Umfrage-Seite selbst sehen kannst, und gibt es direkt an dieses Tool weiter. Geht am Computer mit Chrome, Edge, Firefox und Safari. Lesezeichenleiste nicht sichtbar? Ctrl+Shift+B (Mac: ⌘+Shift+B).</p>
-  </div>
-  <div class="alt" id="other">
+  <div class="card-head"><span class="num" aria-hidden="true">1</span><div><h2 id="hLoad">Antworten einlesen</h2>
+    <p class="sub">Die Antworten der Umfrage als CSV- oder Excel-Datei herunterladen und hier hineinziehen.</p></div></div>
+  <div class="dropzone" id="dropZone">
     <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
-    <div class="alt-txt"><b>Oder: exportierte Datei hochladen</b><span>CSV- oder Excel-Datei mit den Antworten, z. B. aus Nuudel, Framadate, Doodle, Microsoft Forms oder Google Forms.</span></div>
-    <button class="btn small" type="button" id="fileBtn">Datei wählen</button>
+    <div class="dz-txt"><b>Datei hierher ziehen</b><span>CSV oder Excel (.csv, .xlsx, .xls, .ods)</span></div>
+    <button class="btn primary" type="button" id="fileBtn">Datei wählen</button>
     <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
   </div>
+  <div class="status" id="status" role="status" aria-live="polite" hidden></div>
+  <details class="howto">
+    <summary>So kommst du zur Datei</summary>
+    <ul>
+      <li><b>Rallly</b> (z. B. termin.cevi.tools): die Umfrage als Ersteller:in öffnen, «Umfrage verwalten» → «CSV exportieren».</li>
+      <li><b>Nuudel, Framadate:</b> auf der Umfrage-Seite den CSV-Export herunterladen. Bei verborgenen Ergebnissen über den Admin-Link.</li>
+      <li><b>Doodle:</b> die Umfrage öffnen und als Excel-Datei exportieren.</li>
+      <li><b>Microsoft Forms:</b> unter «Antworten» auf «In Excel öffnen» klicken und die Datei speichern.</li>
+      <li><b>Google Forms:</b> unter «Antworten» im Menü ⋮ «Antworten herunterladen (.csv)» wählen.</li>
+      <li><b>Eigene Tabelle:</b> je Familie eine Zeile, je Termin eine Spalte, in den Feldern Ja / Nein / Wenn nötig (auch ✓, x oder OK).</li>
+    </ul>
+  </details>
   <p class="privacy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
-    <span>Die Antworten werden nur hier im Browser verarbeitet und nirgends gespeichert. Wer die Seite neu öffnet, beginnt mit einer leeren Seite. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</span></p>
+    <span>Die Datei wird nur hier im Browser gelesen. Nichts wird hochgeladen oder gespeichert, und wer die Seite neu öffnet, beginnt mit einer leeren Seite.</span></p>
 </section>
 
 <section class="card" id="stepPlan" aria-labelledby="hPlan" hidden>
@@ -341,7 +329,7 @@ input[type=checkbox]{accent-color:var(--accent)}
 </main>
 
 <footer class="foot">
-  <span>Alles wird hier im Browser berechnet.</span>
+  <span><b>Terminklar</b> · Alles wird hier im Browser berechnet.</span>
   <button class="linkbtn" type="button" id="resetBtn" hidden>Alles löschen</button>
 </footer>
 </div>
@@ -351,19 +339,11 @@ input[type=checkbox]{accent-color:var(--accent)}
 'use strict';
 var KEY = 'elterngespraeche-v1';
 var Y = 2, M = 1, N = 0;   // Antworten: Ja, Wenn nötig, Nein
-/* Umfrage-Seiten erlauben fremden Seiten das Auslesen meist nicht (CORS). Darum zuerst direkt, dann über Weiterleitungsdienste. */
-var ROUTES = [
-  { name: 'direkt', url: function(u){ return u; } },
-  { name: 'allorigins.win', url: function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); } },
-  { name: 'codetabs.com', url: function(u){ return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); } },
-  { name: 'allorigins.win (2)', url: function(u){ return 'https://api.allorigins.win/get?url=' + encodeURIComponent(u); }, unwrap: function(t){ var j = JSON.parse(t); return j && typeof j.contents === 'string' ? j.contents : ''; } },
-  { name: 'corsproxy.io', url: function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); } }
-];
 var XLSX_URL = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
 var XLSX_SRI = 'sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';
 
 var $ = function(s){ return document.querySelector(s); };
-var state = null, view = 'zeit', last = null, busy = false;
+var state = null, view = 'zeit', last = null;
 
 function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
 function clean(c){ return String(c == null ? '' : c).replace(/\s+/g, ' ').trim(); }
@@ -371,11 +351,11 @@ function plural(n, one, many){ return n + ' ' + (n === 1 ? one : many); }
 
 /* ---------- Antworten in Tabellen erkennen ---------- */
 var RX_YES = /^(ja|j|yes|y|ok|okay|x|1|oui|si|sì|true|wahr|passt|geht|möglich|verfügbar|habe zeit|✓|✔|✔️|✅|☑|☑️|☒|👍)$/i;
-var RX_MAYBE = /^(\((ja|ok|okay|yes|x|✓|✔)\)|wenn nötig|wenn notwendig|falls nötig|notfalls|im notfall|unter vorbehalt|vorbehalt|bedingt|evtl\.?|eventuell|vielleicht|ifneedbe|if need be|if-need-be|maybe|si nécessaire|peut-être|~|\?)$/i;
+var RX_MAYBE = /^(\((ja|ok|okay|yes|x|✓|✔)\)|wenn nötig|wenn notwendig|falls nötig|falls notwendig|falls erforderlich|wenn erforderlich|notfalls|im notfall|unter vorbehalt|vorbehalt|bedingt|evtl\.?|eventuell|vielleicht|ifneedbe|if need be|if-need-be|maybe|si nécessaire|peut-être|~|\?)$/i;
 var RX_NO = /^(nein|n|no|non|0|-|–|—|✗|✘|❌|✕|×|☐|false|falsch|unkown|unknown|geht nicht|passt nicht|nicht möglich|unmöglich|kann nicht|keine zeit|nicht verfügbar)$/i;
 var RX_HEAD = /^(name|namen|vorname|nachname|familie|familien|teilnehmer|teilnehmende|teilnehmerin|teilnehmerinnen|participant|participants|eltern|kind|kinder|schüler|schülerin|wer|person|personen)\s*:?$/i;
 var RX_FOOT = /^(anzahl|summe|total|gesamt|count|sum|nombre|zusagen|stimmen|addition|ergebnis|resultat|beste wahl)\b/i;
-var RX_TIME_END = /^(.*\S)\s+((?:von\s+)?\d{1,2}[:.]\d{2}(?:\s*(?:-|–|—|bis)\s*\d{1,2}[:.]\d{2})?(?:\s*uhr)?)$/i;
+var RX_TIME_END = /^(.*?\S)\s+((?:von\s+)?\d{1,2}[:.]\d{2}(?:\s*(?:-|–|—|bis)\s*\d{1,2}[:.]\d{2})?(?:\s*uhr)?)$/i;
 var RX_CLOCK = /\d{1,2}[:.]\d{2}|\d{1,2}\s?uhr\b/i;
 var RX_STAMP = /\d{1,2}:\d{2}:\d{2}/;   // Zeitstempel eines Formulars, kein Termin
 var RX_DAY = /\d{1,2}\.\s?\d{1,2}\.|\d{1,2}\.?\s(jan|feb|mär|mar|apr|mai|may|jun|jul|aug|sep|okt|oct|nov|dez|dec)|\b(mo|di|mi|do|fr|sa|so|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|mon|tue|wed|thu|fri|sat|sun)\b/i;
@@ -606,420 +586,12 @@ function guessDelim(text){
   return n[';'] > n[','] ? ';' : ',';
 }
 
-/* ---------- Webseiten lesen: Tabellen und Export-Links ---------- */
-var INLINE = { B: 1, I: 1, EM: 1, STRONG: 1, U: 1, SMALL: 1, SUP: 1, SUB: 1, A: 1, ABBR: 1, MARK: 1, FONT: 1 };
-function nodeText(n){
-  if (n.nodeType === 3) return n.data;
-  if (n.nodeType !== 1 || /^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(n.tagName)) return '';
-  if (n.tagName === 'BR') return ' ';
-  var out = '';
-  for (var k = 0; k < n.childNodes.length; k++) out += nodeText(n.childNodes[k]);
-  return INLINE[n.tagName] ? out : ' ' + out + ' ';
-}
-function cellText(td){
-  var x = td.cloneNode(true);
-  [].forEach.call(x.querySelectorAll('button, input, select, textarea, .btn, [role="button"]'), function(e){ if (e.parentNode) e.parentNode.removeChild(e); });
-  var t = clean(nodeText(x));
-  if (t) return t;
-  /* Nur ein Symbol: Titel, Alternativtext oder Klassen deuten */
-  var els = [x].concat([].slice.call(x.querySelectorAll('*'))), k;
-  for (k = 0; k < els.length; k++){
-    t = clean(els[k].getAttribute('title') || els[k].getAttribute('alt') || els[k].getAttribute('aria-label') || '');
-    if (t) return t;
-  }
-  var cls = ' ' + els.map(function(e){ return (e.getAttribute('class') || '') + ' ' + (e.getAttribute('data-value') || ''); }).join(' ').toLowerCase() + ' ';
-  if (/[\s_-](ifneedbe|if-need-be|maybe|inbetween|warning|vorbehalt|partial)[\s_-]/.test(cls)) return 'Wenn nötig';
-  if (/[\s_-](yes|ok|check|checked|success|available|accepted|ja)[\s_-]/.test(cls)) return 'Ja';
-  if (/[\s_-](no|danger|cross|times|unavailable|declined|nein)[\s_-]/.test(cls)) return 'Nein';
-  return '';
-}
-/* HTML-Tabelle → Zeilen; über mehrere Spalten oder Zeilen gezogene Zellen gelten für jede davon */
-function tableRows(table){
-  var trs = [].filter.call(table.rows, function(tr){ return !(tr.parentNode && tr.parentNode.tagName === 'TFOOT'); }), grid = [];
-  trs.forEach(function(tr, r){
-    grid[r] = grid[r] || [];
-    var c = 0;
-    [].forEach.call(tr.cells, function(td){
-      while (grid[r][c] != null) c++;
-      var t = cellText(td);
-      var cs = Math.min(60, Math.max(1, parseInt(td.getAttribute('colspan'), 10) || 1)), rs = Math.min(60, Math.max(1, parseInt(td.getAttribute('rowspan'), 10) || 1));
-      for (var dr = 0; dr < rs && r + dr < trs.length; dr++){
-        grid[r + dr] = grid[r + dr] || [];
-        for (var dc = 0; dc < cs; dc++) grid[r + dr][c + dc] = t;
-      }
-      c += cs;
-    });
-  });
-  return grid.map(function(row){ var out = []; for (var k = 0; k < row.length; k++) out.push(row[k] == null ? '' : row[k]); return out; });
-}
-function fromDoc(doc){
-  var best = null, err = null;
-  [].forEach.call(doc.querySelectorAll('table'), function(t){
-    if (t.rows.length < 2) return;
-    try { var d = fromRows(tableRows(t)); if (!best || pollScore(d) > pollScore(best)) best = d; }
-    catch (e){ if (!err || e.code === 'empty') err = e; }
-  });
-  if (!best) throw err && err.code === 'empty' ? err : new Error('Auf der Seite wurde keine Tabelle mit Antworten gefunden.');
-  var h = doc.querySelector('h1');
-  best.title = clean(h && h.textContent || doc.title).slice(0, 90);
-  return best;
-}
-function exportLinks(doc, base){
-  var seen = {}, out = [];
-  [].forEach.call(doc.querySelectorAll('a[href]'), function(a){
-    var h = a.getAttribute('href') || '', u;
-    if (!/exportcsv|export[^"'#]*csv|\.csv([?#]|$)|format=csv|output=csv/i.test(h) && !/\bcsv\b/i.test(a.textContent || '')) return;
-    try { u = new URL(h, base).href; } catch (e){ return; }
-    if (/^https?:/.test(u) && !seen[u]){ seen[u] = true; out.push(u); }
-  });
-  return out.slice(0, 3);
-}
-async function readPage(text, url, ctx){
-  if (!/^\s*</.test(text)) return fromRows(parseDelimited(text));   // die Adresse liefert selbst eine Tabelle
-  if (/self\.__next_f/.test(text)){
-    try { return fromFlight(text); } catch (e){ if (e.code === 'empty' || e.code === 'hidden') throw e; }
-  }
-  var doc = new DOMParser().parseFromString(text, 'text/html'), links = exportLinks(doc, url);
-  for (var k = 0; k < links.length; k++){
-    try { return await fetchVia(links[k], csvParse, ctx, false); }
-    catch (e){ if (e.code === 'empty') throw e; }
-  }
-  return fromDoc(doc);
-}
-function csvParse(text){
-  if (/^\s*</.test(text)) throw new Error('eine Webseite statt der Tabelle erhalten');
-  return fromRows(parseDelimited(text));
-}
-
-/* ---------- Doodle ---------- */
+/* ---------- Datum und Zeit anzeigen ---------- */
 function fmt(d, opts, tz){
   try { return new Intl.DateTimeFormat('de-CH', tz ? Object.assign({ timeZone: tz }, opts) : opts).format(d); }
   catch (e){ return new Intl.DateTimeFormat('de-CH', opts).format(d); }
 }
-function fromDoodle(j){
-  if (!j || !Array.isArray(j.options) || !Array.isArray(j.participants)) throw new Error('Keine Doodle-Daten erhalten.');
-  if (!j.options.length) throw new Error('Die Doodle-Umfrage enthält keine Termine.');
-  if (!j.participants.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
-  var tz = j.initiator && j.initiator.timeZone || undefined;
-  var DAY = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, TIME = { hour: '2-digit', minute: '2-digit' };
-  var slots = j.options.map(function(o, i){
-    if (o.text) return splitLabel(o.text);
-    var a = o.start != null ? o.start : o.startDateTime, b = o.end != null ? o.end : o.endDateTime;
-    var ds = a != null ? new Date(a) : null, de = b != null ? new Date(b) : null;
-    if (!ds || isNaN(ds)) return { day: '', time: 'Termin ' + (i + 1) };
-    var day = fmt(ds, DAY, tz);
-    if (o.allday || o.allDay) return { day: day, time: 'ganzer Tag' };
-    return { day: day, time: fmt(ds, TIME, tz) + (de && !isNaN(de) && de > ds ? '–' + fmt(de, TIME, tz) : '') };
-  });
-  /* Doodle: 0 = nein, 1 = ja, 2 = wenn nötig */
-  var people = j.participants.map(function(p){
-    var pref = p.preferences || [];
-    return { name: clean(p.name) || 'Ohne Namen', ans: slots.map(function(_, i){ var v = pref[i]; return v === 1 || v === true ? Y : v === 2 ? M : N; }) };
-  });
-  return { title: clean(j.title), slots: slots, people: people };
-}
-function doodleParse(text){
-  var j;
-  try { j = JSON.parse(String(text).replace(/^﻿/, '')); } catch (e){ throw new Error('keine Umfragedaten erhalten'); }
-  return fromDoodle(j);
-}
-
-/* ---------- Rallly (z. B. termin.cevi.tools, rallly.co) ----------
-   Ab Version 4 stecken Umfrage und Antworten in den Daten, die Next.js mit der Teilnahme-Seite mitschickt (self.__next_f).
-   Version 3 holt sie über die tRPC-Schnittstelle. Optionen: { id, startTime | start, duration in Minuten (0 = ganzer Tag) },
-   Antworten: { optionId, type: "yes" | "ifNeedBe" | "no" }. */
-function fromFlight(html){
-  var doc = new DOMParser().parseFromString(html, 'text/html'), chunks = [];
-  [].forEach.call(doc.querySelectorAll('script'), function(s){
-    var re = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g, m;
-    while ((m = re.exec(s.textContent))) try { chunks.push(JSON.parse(m[1])); } catch (e){}
-  });
-  return fromFlightText(chunks.join(''));
-}
-function fromFlightText(text){
-  var rows = {};
-  text.split('\n').forEach(function(line){
-    var m = /^([0-9a-f]+):([\[{].*)$/.exec(line);
-    if (m) try { rows[m[1]] = JSON.parse(m[2]); } catch (e){}
-  });
-  /* Verweise wie "$1a" oder "$1a:props:poll" auflösen */
-  function deref(v){
-    var m = typeof v === 'string' && /^\$([0-9a-f]+)(?::(.+))?$/.exec(v);
-    if (!m || rows[m[1]] === undefined) return v;
-    var x = rows[m[1]];
-    (m[2] ? m[2].split(':') : []).forEach(function(k){ x = x == null ? x : x[k]; });
-    return x;
-  }
-  /* Die Antworten stehen je nach Rallly-Version unter «participants» (Version 4.15) oder als zwischengespeicherte
-     Abfrage polls.participants.list unter «data» (frühere 4er-Versionen). Darum: jede Liste von Einträgen mit Name und Stimmen. */
-  var poll = null, parts = null, seen = 0;
-  function isPart(x){ x = deref(x); return !!x && typeof x === 'object' && 'name' in x && Array.isArray(deref(x.votes)); }
-  function walk(v, depth){
-    if (!v || typeof v !== 'object' || depth > 60 || ++seen > 300000 || (poll && parts)) return;
-    if (Array.isArray(v)){
-      if (!parts && v.length && isPart(v[0]) && v.every(isPart)) parts = v.map(deref);
-    } else {
-      var o = deref(v.options), p = deref(v.participants), o0 = Array.isArray(o) && deref(o[0]);
-      if (!poll && o0 && typeof o0 === 'object' && ('startTime' in o0 || 'start' in o0) && 'duration' in o0) poll = { title: v.title, timeZone: v.timeZone, options: o.map(deref) };
-      if (!parts && Array.isArray(p) && !p.length) parts = [];
-    }
-    for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) walk(deref(v[k]), depth + 1);
-  }
-  Object.keys(rows).forEach(function(k){ walk(rows[k], 0); });
-  if (!poll) throw new Error('keine Rallly-Daten auf der Seite');
-  if (!parts || !parts.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
-  return fromRallly(poll, parts.map(function(p){ return { name: p.name, hidden: p.hidden, votes: (deref(p.votes) || []).map(deref) }; }));
-}
-function trpcParse(text){
-  var j;
-  try { j = JSON.parse(text); } catch (e){ throw new Error('keine Rallly-Daten erhalten'); }
-  function data(r){ r = r && r.result && r.result.data; return r && r.json !== undefined ? r.json : r; }
-  var poll = Array.isArray(j) && data(j[0]), parts = Array.isArray(j) && data(j[1]);
-  if (!poll || !Array.isArray(poll.options)) throw new Error('keine Rallly-Daten erhalten');
-  if (!Array.isArray(parts) || !parts.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
-  return fromRallly(poll, parts);
-}
-function fromRallly(poll, parts){
-  var tz = poll.timeZone || 'UTC';   // ohne Zeitzone gelten die Zeiten so, wie sie eingegeben wurden
-  var DAY = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, TIME = { hour: '2-digit', minute: '2-digit' };
-  function when(o){ var v = o.startTime != null ? o.startTime : o.start, d = new Date(typeof v === 'string' ? v.replace(/^\$D/, '') : v); return isNaN(d) ? null : d; }
-  var opts = poll.options.filter(function(o){ return o && when(o); }).sort(function(a, b){ return when(a) - when(b); }), at = {};
-  if (!opts.length) throw new Error('Die Umfrage enthält keine Termine.');
-  opts.forEach(function(o, j){ at[o.id] = j; });
-  var slots = opts.map(function(o){
-    var d = when(o), day = fmt(d, DAY, tz);
-    if (!o.duration) return { day: day, time: 'ganzer Tag' };
-    return { day: day, time: fmt(d, TIME, tz) + '–' + fmt(new Date(d.getTime() + o.duration * 60000), TIME, tz) };
-  });
-  var hidden = 0, people = parts.map(function(p, k){
-    var name = clean(p.name), ans = slots.map(function(){ return N; });
-    if (!name){ hidden++; name = 'Verborgen ' + (k + 1); }
-    (p.votes || []).forEach(function(v){ var j = v && at[v.optionId]; if (j != null) ans[j] = v.type === 'yes' ? Y : v.type === 'ifNeedBe' ? M : N; });
-    return { name: name, ans: ans };
-  });
-  if (hidden === people.length){ var e = new Error('In dieser Umfrage sind die Namen der Teilnehmenden verborgen.'); e.code = 'hidden'; throw e; }
-  return { title: clean(poll.title), slots: slots, people: people };
-}
-
-/* ---------- Link erkennen ---------- */
-var HINT_FILE = 'Hier am besten die Antworten als Excel- oder CSV-Datei herunterladen und unten bei «Datei wählen» hochladen.';
-function detect(raw){
-  raw = clean(raw);
-  if (!raw) return null;
-  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)) raw = 'https://' + raw;
-  var u;
-  try { u = new URL(raw); } catch (e){ return null; }
-  if (!/^https?:$/.test(u.protocol) || u.hostname.indexOf('.') < 0) return null;
-  var host = u.hostname.toLowerCase().replace(/^www\./, ''), path = u.pathname, m;
-  /* Formulare zeigen die Antworten nur der Person, die sie erstellt hat */
-  if (/(^|\.)forms\.(office|microsoft)\.com$|(^|\.)forms\.cloud\.microsoft$/.test(host))
-    return { error: 'Microsoft Forms zeigt die Antworten nur dir. In Forms unter «Antworten» auf «In Excel öffnen» klicken und die Datei unten bei «Datei wählen» hochladen.', other: true };
-  if ((host === 'docs.google.com' && /^\/forms\//.test(path)) || host === 'forms.gle')
-    return { error: 'Google Forms zeigt die Antworten nur dir. In Forms unter «Antworten» die Tabelle öffnen und deren Link hier einfügen (Freigabe «Alle mit dem Link»), oder die Antworten als CSV herunterladen und hier hochladen.', other: true };
-  if (/(^|\.)sharepoint\.com$|(^|\.)onedrive\.live\.com$|^1drv\.ms$|(^|\.)dropbox\.com$|(^|\.)icloud\.com$/.test(host))
-    return { error: 'Dateien in OneDrive, SharePoint, Dropbox oder iCloud lassen sich nicht direkt lesen. ' + HINT_FILE, other: true };
-  if (host === 'docs.google.com' && /^\/spreadsheets\//.test(path)){
-    var gid = (/gid=(\d+)/.exec(u.hash + u.search) || [])[1], url = '';
-    if ((m = /\/spreadsheets\/d\/e\/([^/]+)/.exec(path))) url = 'https://docs.google.com/spreadsheets/d/e/' + m[1] + '/pub?output=csv';
-    else if ((m = /\/spreadsheets\/d\/([^/]+)/.exec(path))) url = 'https://docs.google.com/spreadsheets/d/' + m[1] + '/export?format=csv';
-    if (!url) return { error: 'In diesem Google-Link wurde keine Tabelle gefunden.' };
-    return { kind: 'sheet', name: 'Google Tabellen', link: raw, steps: [{ url: url + (gid ? '&gid=' + gid : ''), parse: 'csv', retry: true }] };
-  }
-  var rl = /\/(invite|poll)\/([A-Za-z0-9_-]{6,})\/?$/.exec(path);
-  if (/(^|\.)rallly\.co$|^termin\.cevi\.tools$/.test(host) && !rl) return { error: 'Bitte den Link zur Umfrage selbst einfügen (er enthält /invite/ oder /poll/).' };
-  if (rl && !/(^|\.)doodle\.com$/.test(host)){
-    var rid = rl[2], batch = { 0: { json: { urlId: rid } }, 1: { json: { pollId: rid } } };
-    return { kind: 'rallly', name: host === 'termin.cevi.tools' ? 'Cevi Termin' : 'Rallly', link: raw, steps: [
-      { url: u.origin + '/invite/' + rid, parse: 'page', retry: true },
-      { url: u.origin + '/api/trpc/polls.get,polls.participants.list?batch=1&input=' + encodeURIComponent(JSON.stringify(batch)), parse: 'trpc', retry: true }
-    ] };
-  }
-  if (/(^|\.)doodle\.com$/.test(host)){
-    m = /\/poll\/([A-Za-z0-9]+)/.exec(path) || /\/id\/([A-Za-z0-9]+)/.exec(path) || /\/group-poll\/[a-z-]+\/([A-Za-z0-9-]+)/.exec(path) || /\/([A-Za-z0-9]{8,})\/?$/.exec(path);
-    if (!m) return { error: 'Im Doodle-Link steht keine Umfrage. Bitte den Link zur Umfrage selbst einfügen.' };
-    return { kind: 'doodle', name: 'Doodle', link: raw, steps: [{ url: 'https://doodle.com/api/v2.0/polls/' + m[1] + '?adminKey=&participantKey=', parse: 'doodle', retry: true }] };
-  }
-  /* Nuudel und Framadate (…/ID, …/ID/admin, …/studs.php?poll=ID): direkt den CSV-Export holen.
-     Alle anderen Seiten: die Seite selbst lesen; bietet sie einen CSV-Export an, wird dieser genommen, sonst die Tabelle. */
-  var steps = [], fd = framadate(u), known = /nuudel|framadate/.test(host);
-  if (known && fd) steps.push({ url: fd.url, parse: 'csv', retry: true });
-  steps.push({ url: u.href.replace(/#.*$/, ''), parse: 'page', retry: false });
-  return { kind: known ? 'framadate' : 'page', name: /nuudel/.test(host) ? 'Nuudel' : /framadate/.test(host) ? 'Framadate' : host, link: raw, admin: !!(fd && fd.admin), steps: steps };
-}
-function framadate(u){
-  var segs = u.pathname.split('/').filter(Boolean), id = '', admin = false;
-  var file = segs.length && /\.php$/i.test(segs[segs.length - 1]) ? segs.pop() : '';
-  if (file){
-    admin = /^admin/i.test(file) || !!u.searchParams.get('admin');
-    id = u.searchParams.get('poll') || u.searchParams.get('admin') || '';
-  } else {
-    var k = segs.indexOf('vote'); if (k < 0) k = segs.indexOf('action');
-    if (k > 0) segs = segs.slice(0, k);
-    if (segs[segs.length - 1] === 'admin'){ admin = true; segs.pop(); }
-    id = segs.pop() || '';
-  }
-  if (!/^[A-Za-z0-9-]{4,}$/.test(id)) return null;
-  return { admin: admin, url: u.origin + (segs.length ? '/' + segs.join('/') : '') + '/exportcsv.php?' + (admin ? 'admin=' : 'poll=') + encodeURIComponent(id) };
-}
-
-/* ---------- Laden ---------- */
-function fetchText(url, ms){
-  var ctl = typeof AbortController === 'function' ? new AbortController() : null;
-  var timer = setTimeout(function(){ if (ctl) ctl.abort(); }, ms);
-  return fetch(url, { signal: ctl ? ctl.signal : undefined, credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' })
-    .then(function(r){ if (!r.ok) throw new Error('Antwort ' + r.status); return r.text(); })
-    .then(function(t){ clearTimeout(timer); return t; }, function(e){ clearTimeout(timer); throw e && e.name === 'AbortError' ? new Error('keine Antwort (Zeit abgelaufen)') : e; });
-}
-function proxyNoise(t){ t = String(t || '').trim(); return t.length < 8 || (t.length < 400 && /^\{\s*"(error|Error|message|status)"\s*:/.test(t)); }
-/* Holt eine Adresse; klappt ein Weg nicht, kommt der nächste dran. Der Weg, der einmal ging, wird zuerst wieder versucht. */
-async function fetchVia(url, parse, ctx, retryParse){
-  var order = ROUTES.map(function(_, k){ return k; }), lastErr = null;
-  if (ctx.route != null) order = [ctx.route].concat(order.filter(function(k){ return k !== ctx.route; }));
-  for (var n = 0; n < order.length; n++){
-    var k = order[n], text;
-    ctx.tries++;
-    setStatus('busy', '<span class="spin" aria-hidden="true"></span>Umfrage wird geladen …' + (ctx.tries > 1 ? ' (Versuch ' + ctx.tries + ')' : ''));
-    try { text = await fetchText(ROUTES[k].url(url), 12000); if (ROUTES[k].unwrap) text = ROUTES[k].unwrap(text); }
-    catch (e){ ctx.notes.push(ROUTES[k].name + ' · ' + url + ': ' + msg(e)); lastErr = e; continue; }
-    if (proxyNoise(text)){ ctx.notes.push(ROUTES[k].name + ' · ' + url + ': leere Antwort'); continue; }
-    ctx.route = k;
-    try { return await parse(String(text).replace(/^﻿/, ''), url); }
-    catch (e){
-      ctx.notes.push(ROUTES[k].name + ' · ' + url + ': ' + msg(e));
-      if (e.code === 'empty' || e.code === 'hidden' || !retryParse) throw e;
-      lastErr = e; ctx.route = null;
-    }
-  }
-  throw lastErr || new Error('nicht erreichbar');
-}
-async function fetchPoll(src){
-  var ctx = { route: null, tries: 0, notes: [] }, err = null;
-  var parsers = { csv: csvParse, doodle: doodleParse, trpc: trpcParse, page: function(t, url){ return readPage(t, url, ctx); } };
-  for (var k = 0; k < src.steps.length; k++){
-    try { return await fetchVia(src.steps[k].url, parsers[src.steps[k].parse], ctx, src.steps[k].retry); }
-    catch (e){ if (e.code === 'empty' || e.code === 'hidden'){ e.notes = ctx.notes; throw e; } err = err || e; }
-  }
-  err = err || new Error('nicht geladen');
-  err.notes = ctx.notes;
-  throw err;
-}
-
-async function loadLink(raw){
-  if (busy) return;
-  var src = detect(raw);
-  if (!src || src.error){
-    setStatus('err', '<p>' + esc(src && src.error || 'Das sieht nicht nach einem Link aus. Bitte den ganzen Link der Umfrage einfügen (er beginnt mit https://).') + '</p>');
-    if (src && src.other) flashFile();
-    return;
-  }
-  busy = true; $('#loadBtn').disabled = true;
-  try {
-    var data = await fetchPoll(src);
-    setData(data, { source: src.name, link: src.link });
-    setStatus('ok', '<p>✓ Umfrage geladen: ' + plural(data.people.length, 'Antwort', 'Antworten') + ', ' + plural(data.slots.length, 'Termin', 'Termine') + '.</p>');
-    $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch (e){
-    var h;
-    if (e.code === 'empty') h = '<p><b>Die Umfrage wurde gefunden, enthält aber noch keine Antworten.</b></p>';
-    else if (e.code === 'hidden') h = '<p><b>Die Umfrage wurde gefunden, aber die Namen der Teilnehmenden sind verborgen.</b></p><p>Ohne Namen lassen sich die Termine nicht zuteilen. In den Einstellungen der Umfrage das Verbergen der Teilnehmenden kurz ausschalten, hier «Laden» drücken und danach wieder einschalten.</p>';
-    else {
-      h = '<p><b>Die Umfrage konnte nicht geladen werden.</b></p>';
-      if (src.kind === 'rallly') h += '<p>Die Seite sperrt das Auslesen von aussen. So geht es trotzdem: mit dem Auslese-Knopf direkt auf der Umfrage-Seite (siehe unten).</p>';
-      else if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und unten bei «Datei wählen» hochladen.</p>';
-      else if (src.kind === 'sheet') h += '<p>Ist die Tabelle für «Alle mit dem Link» freigegeben? Sonst in Google Tabellen «Datei → Herunterladen → CSV» wählen und die Datei unten bei «Datei wählen» hochladen.</p>';
-      else if (src.kind === 'framadate') h += '<p>Dann auf der Umfrage-Seite den CSV-Export herunterladen und unten bei «Datei wählen» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
-      else h += '<p>Diese Seite zeigt die Antworten nicht in einer lesbaren Tabelle, oder sie lässt sich nicht abrufen. Dann den Auslese-Knopf direkt auf der Umfrage-Seite verwenden (siehe unten). ' + esc(HINT_FILE) + '</p>';
-      if (src.kind === 'rallly' || src.kind === 'page' || src.kind === 'doodle') flashBm(); else flashFile();
-    }
-    if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary>' + e.notes.map(esc).join('<br>') + '</details>';
-    setStatus('err', h);
-  } finally {
-    busy = false; $('#loadBtn').disabled = false;
-  }
-}
-function flashFile(){ var a = $('#other'); a.classList.add('flash'); setTimeout(function(){ a.classList.remove('flash'); }, 2400); }
 function setStatus(kind, html){ var s = $('#status'); s.hidden = !html; s.className = 'status ' + kind; s.innerHTML = html || ''; }
-
-/* ---------- Auslese-Knopf ----------
-   Ein Lesezeichen, das auf der Umfrage-Seite selbst läuft. Es nimmt, was der Browser dort sieht: die Seite, die Daten,
-   die Next.js mitschickt (Rallly), und die Schnittstelle der Seite mit der eigenen Anmeldung (Rallly, Doodle, CSV-Export).
-   Dann öffnet es dieses Tool in einem neuen Tab und gibt ihm die Daten per postMessage. Kein Weiterleitungsdienst nötig. */
-var BM_BODY = [
-  "if(location.href.indexOf(T)===0){alert('Diesen Knopf in die Lesezeichenleiste ziehen. Dann die Umfrage öffnen und dort auf den Knopf klicken.');return;}",
-  "var w=window.open(T+'#empfang','_blank');",
-  "if(!w){alert('Bitte Pop-ups für diese Seite erlauben und den Knopf nochmals anklicken.');return;}",
-  "var d={v:1,url:location.href,title:document.title,html:document.documentElement.outerHTML.slice(0,6e6),flight:''},jobs=[],ready=false,done=false,sent=false;",
-  "try{d.flight=(self.__next_f||[]).map(function(x){return x&&typeof x[1]==='string'?x[1]:''}).join('')}catch(e){}",
-  "function get(u,k){jobs.push(fetch(u,{credentials:'include'}).then(function(r){return r.ok?r.text():''}).then(function(t){if(t)d[k]=t}).catch(function(){}))}",
-  "var m=location.pathname.match(/\\/(?:invite|poll)\\/([A-Za-z0-9_-]{6,})/);",
-  "if(m)get('/api/trpc/polls.get,polls.participants.list?batch=1&input='+encodeURIComponent(JSON.stringify({0:{json:{urlId:m[1]}},1:{json:{pollId:m[1]}}})),'trpc');",
-  "var dm=/doodle\\.com$/.test(location.hostname)&&location.pathname.match(/\\/(?:poll|id)\\/([A-Za-z0-9-]{6,})/);",
-  "if(dm)get('/api/v2.0/polls/'+dm[1]+'?adminKey=&participantKey=','doodle');",
-  "var a=document.querySelector('a[href*=\"exportcsv\"],a[href$=\".csv\"]');",
-  "if(a)get(a.href,'csv');",
-  "function go(){if(ready&&done&&!sent){sent=true;w.postMessage({eg:d},O)}}",
-  "addEventListener('message',function(e){if(e.source===w&&e.data==='eg-bereit'){ready=true;go()}});",
-  "Promise.all(jobs).then(function(){done=true;go()});"
-].join('');
-function bookmarklet(){
-  var tool = location.origin + location.pathname, origin = location.origin && location.origin !== 'null' ? location.origin : '*';
-  return 'javascript:' + encodeURIComponent('(function(){var T=' + JSON.stringify(tool) + ',O=' + JSON.stringify(origin) + ';' + BM_BODY + '})()');
-}
-function fromObserved(d){
-  var tries = [], notes = [], hidden = null, empty = null;
-  if (d.trpc) tries.push(['Schnittstelle', function(){ return trpcParse(d.trpc); }]);
-  if (d.flight) tries.push(['Seitendaten', function(){ return fromFlightText(d.flight); }]);
-  if (d.html && /self\.__next_f/.test(d.html)) tries.push(['Seite', function(){ return fromFlight(d.html); }]);
-  if (d.doodle) tries.push(['Doodle', function(){ return doodleParse(d.doodle); }]);
-  if (d.csv) tries.push(['CSV-Export', function(){ return csvParse(d.csv); }]);
-  if (d.html) tries.push(['Tabelle', function(){ return fromDoc(new DOMParser().parseFromString(d.html, 'text/html')); }]);
-  for (var k = 0; k < tries.length; k++){
-    try { return tries[k][1](); }
-    catch (e){
-      if (e.code === 'hidden') hidden = hidden || e; else if (e.code === 'empty') empty = empty || e;
-      notes.push(tries[k][0] + ': ' + msg(e));
-    }
-  }
-  var err = hidden || empty || new Error('keine Antworten gefunden');
-  err.notes = notes;
-  throw err;
-}
-function useObserved(d){
-  var host = '';
-  try { host = new URL(d.url).hostname.replace(/^www\./, ''); } catch (e){}
-  try {
-    var data = fromObserved(d);
-    setData(data, { source: (host === 'termin.cevi.tools' ? 'Cevi Termin' : host || 'Umfrage') + ' · Auslese-Knopf' });
-    setStatus('ok', '<p>✓ Von der Umfrage-Seite übernommen: ' + plural(data.people.length, 'Antwort', 'Antworten') + ', ' + plural(data.slots.length, 'Termin', 'Termine') + '.</p>');
-    $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch (e){
-    var h = e.code === 'hidden'
-      ? '<p><b>Auf dieser Seite sind die Namen der Teilnehmenden verborgen.</b></p><p>Als Ersteller:in angemeldet die Verwaltungs-Seite der Umfrage öffnen (der Link enthält /poll/) und dort den Auslese-Knopf anklicken. Oder das Verbergen der Teilnehmenden in den Einstellungen kurz ausschalten.</p>'
-      : e.code === 'empty' ? '<p><b>Die Umfrage enthält noch keine Antworten.</b></p>'
-      : '<p><b>Auf dieser Seite wurden keine Antworten gefunden.</b></p><p>Den Knopf auf der Seite der Umfrage selbst anklicken, dort wo die Antworten zu sehen sind.</p>';
-    if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary>' + esc(d.url || '') + '<br>' + e.notes.map(esc).join('<br>') + '</details>';
-    setStatus('err', h);
-  }
-}
-/* Dieses Tool wurde vom Auslese-Knopf geöffnet: bereit melden, Daten annehmen */
-function receiveObserved(){
-  if (location.hash !== '#empfang' || !window.opener) return;
-  history.replaceState(null, '', location.pathname + location.search);
-  var got = false, tries = 0;
-  setStatus('busy', '<span class="spin" aria-hidden="true"></span>Antworten werden von der Umfrage-Seite übernommen …');
-  window.addEventListener('message', function(e){
-    if (got || e.source !== window.opener || !e.data || !e.data.eg) return;
-    got = true;
-    useObserved(e.data.eg);
-  });
-  (function ping(){
-    if (got) return;
-    try { window.opener.postMessage('eg-bereit', '*'); } catch (err){}
-    if (++tries < 60) setTimeout(ping, 250);
-    else setStatus('err', '<p>Von der Umfrage-Seite kam nichts an. Bitte dort den Auslese-Knopf nochmals anklicken.</p>');
-  })();
-}
-function flashBm(){ var a = $('#bmBox'); a.classList.add('flash'); setTimeout(function(){ a.classList.remove('flash'); }, 2400); }
 
 /* ---------- Dateien ---------- */
 function loadXLSX(){
@@ -1068,16 +640,23 @@ function okey(x){ return (x.day + '|' + x.time).toLowerCase(); }
 function pkey(p){ return clean(p.orig || p.name).toLowerCase(); }
 function setData(d, info){
   var old = state;
-  var s = { title: d.title || '', source: info.source || '', link: info.link || '', loaded: Date.now(),
+  var s = { title: d.title || '', source: info.source || '', loaded: Date.now(),
     cap: old ? old.cap : 1, useMaybe: old ? old.useMaybe : true, showFree: old ? old.showFree : false, mode: old && old.mode || 'kompakt', nextId: 1, slots: [], people: [], pins: {} };
   d.slots.forEach(function(x){ s.slots.push({ id: s.nextId++, day: x.day || '', time: x.time || '', on: true }); });
   d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
   normalizeDays(s.slots);
-  if (old && s.link && old.link === s.link){ carryOver(old, s); normalizeDays(s.slots); }
+  if (old && samePoll(old, s)){ carryOver(old, s); normalizeDays(s.slots); }
   state = s;
   changed();
 }
-/* Beim Neuladen derselben Umfrage bleibt, was von Hand gemacht wurde: ausgeschaltete Termine und Familien, ergänzte Einträge, Namen, 📌 */
+/* Wird später eine neue Datei derselben Umfrage eingelesen (mindestens die Hälfte der Termine gleich), bleibt, was von Hand
+   gemacht wurde: ausgeschaltete Termine und Familien, ergänzte Einträge, Namen, Stecknadeln */
+function samePoll(old, s){
+  var keys = {}, same = 0;
+  old.slots.forEach(function(x){ if (!x.manual) keys[okey(x)] = true; });
+  s.slots.forEach(function(x){ if (keys[okey(x)]) same++; });
+  return same > 0 && same * 2 >= Math.max(s.slots.length, Object.keys(keys).length);
+}
 function carryOver(old, s){
   var at = {};
   s.slots.forEach(function(x, j){ at[okey(x)] = j; });
@@ -1505,9 +1084,8 @@ function renderMeta(){
   if (s.source) bits.push(esc(s.source));
   bits.push(plural(s.people.length, 'Familie', 'Familien'));
   bits.push(plural(s.slots.length, 'Termin', 'Termine'));
-  if (s.loaded) bits.push('geladen ' + fmt(new Date(s.loaded), { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }));
+  if (s.loaded) bits.push('eingelesen ' + fmt(new Date(s.loaded), { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }));
   var h = bits.map(function(b){ return '<span class="chip">' + b + '</span>'; }).join('');
-  if (s.link) h += '<button type="button" class="btn small" id="reloadBtn" title="Neue Antworten holen; was hier von Hand angepasst wurde, bleibt"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>Neu laden</button>';
   $('#meta').innerHTML = h;
   var seen = {}, d = [];
   s.people.forEach(function(p){ var k = pkey({ name: p.name }); seen[k] = (seen[k] || 0) + 1; if (seen[k] === 2) d.push(p.name); });
@@ -1633,18 +1211,26 @@ function demoData(){
 }
 
 /* ---------- Bedienung ---------- */
-$('#linkForm').addEventListener('submit', function(e){ e.preventDefault(); loadLink($('#link').value); });
-$('#link').addEventListener('paste', function(){ var el = this; setTimeout(function(){ if (/^\s*\S+\.\S+\/\S+\s*$/.test(el.value)) loadLink(el.value); }, 0); });
 $('#fileBtn').addEventListener('click', function(){ $('#file').click(); });
-$('#file').addEventListener('change', async function(){
-  var f = this.files && this.files[0];
-  if (!f) return;
+(function(){
+  var z = $('#dropZone');
+  ['dragenter', 'dragover'].forEach(function(t){ z.addEventListener(t, function(e){ e.preventDefault(); z.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function(t){ z.addEventListener(t, function(e){ e.preventDefault(); z.classList.remove('over'); }); });
+  z.addEventListener('drop', function(e){ var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) readChosen(f); });
+  /* eine Datei, die neben die Fläche fällt, soll der Browser nicht öffnen */
+  window.addEventListener('dragover', function(e){ e.preventDefault(); });
+  window.addEventListener('drop', function(e){ e.preventDefault(); });
+})();
+async function readChosen(f){
   setStatus('busy', '<span class="spin" aria-hidden="true"></span>Datei wird gelesen …');
   try { var data = await readFile(f); useLocal(function(){ return data; }, f.name); }
   catch (e){ setStatus('err', '<p>' + esc(e.message || String(e)) + '</p>'); }
+}
+$('#file').addEventListener('change', function(){
+  var f = this.files && this.files[0];
+  if (f) readChosen(f);
   this.value = '';
 });
-$('#meta').addEventListener('click', function(e){ if (e.target.closest('#reloadBtn') && state && state.link){ $('#link').value = state.link; loadLink(state.link); } });
 $('#cap').addEventListener('input', function(){ var v = parseInt(this.value, 10); if (v >= 1 && v <= 20){ state.cap = v; changed(); } });
 $('#useMaybe').addEventListener('change', function(){ state.useMaybe = this.checked; changed(); });
 $('#showFree').addEventListener('change', function(){ state.showFree = this.checked; changed(); });
@@ -1726,22 +1312,18 @@ $('#printBtn').addEventListener('click', function(){ window.print(); });
 $('#resetBtn').addEventListener('click', function(){
   if (!confirm('Alle Antworten und Zuteilungen auf dieser Seite löschen?')) return;
   try { localStorage.removeItem(KEY); } catch (e){}
-  state = null; last = null; $('#link').value = ''; setStatus('', '');
+  state = null; last = null; setStatus('', '');
   renderAll();
   window.scrollTo(0, 0);
 });
 
 forget();
-$('#link').value = '';
-$('#bmLink').href = bookmarklet();
-$('#bmLink').addEventListener('click', function(e){ e.preventDefault(); flashBm(); setStatus('busy', '<p>Den Knopf nicht hier anklicken, sondern mit der Maus in die Lesezeichenleiste ziehen. Dann die Umfrage öffnen und dort auf den Knopf klicken.</p>'); });
 renderAll();
-receiveObserved();
 /* Auch beim Zurückblättern im Browser nicht den alten Stand zeigen */
 window.addEventListener('pageshow', function(e){ if (e.persisted) location.reload(); });
 
 /* Für Tests */
-window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, fromDoodle: fromDoodle, fromPage: function(html){ return fromDoc(new DOMParser().parseFromString(html, 'text/html')); }, fromFlight: fromFlight, trpcParse: trpcParse, detect: detect, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
+window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
 testHook();
 })();
 </script>
