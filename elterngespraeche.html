@@ -183,19 +183,30 @@ input[type=checkbox]{accent-color:var(--primary)}
 .hcount{font-weight:500;font-size:.8rem;color:var(--ink-3);background:var(--surface-2);border-radius:999px;padding:1px 9px}
 .hardbox .hint{margin:0 0 10px}
 .hchips{display:flex;flex-wrap:wrap;gap:8px}
-.hchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:5px 6px 5px 12px;cursor:pointer;font-size:.88rem}
+.hchip{display:inline-flex;align-items:center;border:1px solid var(--line-2);background:var(--surface);border-radius:999px;font-size:.88rem;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transition:box-shadow .12s, border-color .12s, opacity .12s}
+.hmain{display:inline-flex;align-items:center;gap:8px;border:0;background:none;border-radius:999px;padding:6px 6px 6px 12px;cursor:inherit;font:inherit;color:inherit}
+.hmain .lk2{width:15px;height:15px;color:var(--accent)}
+.hx{border:0;background:none;color:var(--ink-3);font-size:1.05rem;line-height:1;padding:4px 10px 4px 2px;cursor:pointer;border-radius:0 999px 999px 0}
+.hx:hover{color:var(--warn)}
+.hchip.grp{border-style:solid;border-color:var(--accent-line);background:var(--accent-soft)}
+.hchip.grp.on{border-color:var(--hard);background:var(--hard-bg)}
+.hchips.dragging .hchip:not(.src){border-style:dashed}
+.hchip.src{opacity:.45}
+.hchip.dropto{box-shadow:0 0 0 3px var(--accent);border-color:var(--accent)}
+.hhelp{margin:0 0 12px;padding-left:1.2em;color:var(--ink-2);font-size:.88rem}
+.hhelp li{margin:.3em 0}
+.hmsg{margin:10px 0 0;font-size:.88rem;color:var(--good)}
+.offday{white-space:nowrap}
+.grid .dayh.off{color:var(--ink-3)}
+.offt{font-size:.75rem;font-weight:500}
 .hchip .hn{font-weight:600}
 .hchip .hl{font-size:.75rem;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--surface-2);color:var(--ink-3)}
 .hchip:hover{border-color:var(--ink-3)}
+.hchip:focus-within{border-color:var(--ink-3)}
 .hchip.on{border-color:var(--hard);background:var(--hard-bg)}
 .hchip.on .hl{background:var(--hard);color:var(--surface)}
-.grip{flex:none;display:grid;place-items:center;width:22px;height:28px;border:0;border-radius:6px;background:none;color:var(--ink-3);cursor:grab;padding:0;touch-action:none}
-.grip svg{width:16px;height:16px;fill:currentColor;stroke:none}
-.grip:hover{background:var(--surface-2);color:var(--ink)}
-.grip.picked{background:var(--accent);color:#fff}
 body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
 .ghost{position:fixed;left:0;top:0;z-index:50;pointer-events:none;padding:6px 12px;border-radius:10px;background:var(--primary);color:var(--primary-ink);font-weight:600;font-size:.88rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-.grid tr.dropto .who{box-shadow:inset 0 0 0 2px var(--accent);background:var(--accent-soft)}
 .grid tr.ghead th{background:var(--surface-2);padding:6px 10px;border-left:3px solid var(--accent)}
 .grid tr.ghead.miss th{border-left-color:var(--warn)}
 .ghin{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;position:sticky;left:10px;width:max-content;max-width:calc(100vw - 80px)}
@@ -331,25 +342,20 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
   <p class="note" id="summaryNote" hidden></p>
   <div class="missing" id="missing" hidden></div>
   <div class="tools">
-    <div class="seg" role="group" aria-label="Was ist wichtiger?" id="modeSeg">
-      <button type="button" data-mode="kompakt" aria-pressed="true">Kompakt</button>
-      <button type="button" data-mode="wunsch" aria-pressed="false">Elternwunsch zuerst</button>
-    </div>
-    <div class="seg" role="group" aria-label="Sortierung" id="viewSeg">
-      <button type="button" data-view="zeit" aria-pressed="true">nach Termin</button>
-      <button type="button" data-view="name" aria-pressed="false">nach Familie</button>
-    </div>
     <label class="check"><input type="checkbox" id="showFree"> freie Termine zeigen</label>
     <span class="spacer"></span>
     <button class="btn small" type="button" id="copyBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Liste kopieren</span></button>
     <button class="btn small" type="button" id="csvBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Für Excel</span></button>
     <button class="btn small" type="button" id="printBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg><span>Drucken</span></button>
   </div>
-  <p class="mode-hint" id="modeHint"></p>
   <details class="hardbox" id="hardBox">
-    <summary>Schwierigkeitsgrad der Gespräche <span class="hcount" id="hardCount">optional</span></summary>
-    <p class="hint">Gespräche antippen, die anspruchsvoll sind. SmartSlot plant sie dann nach Möglichkeit nicht direkt nacheinander. Alle anderen gelten als einfach.</p>
+    <summary>Gespräche einteilen: Schwierigkeitsgrad und gemeinsame Termine <span class="hcount" id="hardCount">optional</span></summary>
+    <ul class="hhelp">
+      <li><b>Antippen:</b> wechselt zwischen einfach und anspruchsvoll. Anspruchsvolle Gespräche plant SmartSlot nach Möglichkeit nicht direkt nacheinander.</li>
+      <li><b>Auf ein anderes Gespräch ziehen:</b> Die beiden bekommen einen gemeinsamen Termin, z. B. Eltern, die getrennt geantwortet haben. Mit × wird die Gruppe wieder gelöst.</li>
+    </ul>
     <div class="hchips" id="hardChips"></div>
+    <p class="hmsg" id="hardMsg" role="status" aria-live="polite" hidden></p>
   </details>
   <div class="plan" id="plan"></div>
   <p class="hint">Mit der Stecknadel hältst du eine Familie an ihrem Termin fest. So bleibt der Termin auch dann, wenn später neue Antworten dazukommen.</p>
@@ -357,11 +363,10 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
 
 <section class="card" id="stepGrid" aria-labelledby="hGrid" hidden>
   <div class="card-head"><span class="num" aria-hidden="true">3</span><div><h2 id="hGrid">Antworten prüfen und anpassen</h2>
-    <p class="sub">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Ohne Häkchen wird ein Termin nicht angeboten oder eine Familie nicht eingeplant. Einen Namen am Griff auf einen anderen ziehen: Die beiden bekommen einen gemeinsamen Termin.</p></div></div>
+    <p class="sub">Ein Feld antippen ändert die Antwort (Nein → Ja → Wenn nötig). Gemeinsame Termine und den Schwierigkeitsgrad legst du oben bei «Gespräche einteilen» fest.</p></div></div>
   <div class="meta" id="meta"></div>
   <p class="warnline" id="dupes" hidden></p>
   <div class="opts">
-    <label>Gespräche pro Termin<input type="number" id="cap" min="1" max="20" step="1" value="1"></label>
     <label class="check"><input type="checkbox" id="useMaybe" checked> «Wenn nötig»-Antworten verwenden</label>
   </div>
   <div class="legend" aria-hidden="true">
@@ -693,7 +698,6 @@ function setData(d, info){
   d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
   normalizeDays(s.slots);
   if (old && samePoll(old, s)){ carryOver(old, s); normalizeDays(s.slots); tidyGroups(s); }
-  pickFrom = null;
   state = s;
   changed();
 }
@@ -749,13 +753,12 @@ function forget(){ try { localStorage.removeItem(KEY); sessionStorage.clear(); }
       werden Tage einzeln weggelassen, solange alle Platz haben).
    3. Danach: anspruchsvolle Gespräche nicht direkt nacheinander, keine Lücken, wenig «wenn nötig». Das erledigt eine
       Suche, die Einheiten verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
-   Gewichte: ein Tag 1 000 000, zwei anspruchsvolle direkt nacheinander 50, eine Lücke 30,
-   ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
+   Gewichte: ein Tag 1 000 000, zwei anspruchsvolle direkt nacheinander 50, eine Lücke 30, ein «wenn nötig» 25. */
 var COST = { day: 1e6, adj: 50, gap: 30, rank: 0.01 };
 var solveMemo = { key: '', res: null };
 function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function solve(s){
-  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, dayKey(x), x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans, p.group || 0, p.hard ? 1 : 0]; })]);
+  var key = JSON.stringify([s.useMaybe, s.pins, s.slots.map(function(x){ return [x.id, x.on, dayKey(x), x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans, p.group || 0, p.hard ? 1 : 0]; })]);
   if (solveMemo.key === key) return solveMemo.res;
   var res = solveNow(s);
   solveMemo = { key: key, res: res };
@@ -778,7 +781,7 @@ function makeUnits(s){
   return units;
 }
 function solveNow(s){
-  var T = s.slots.length, cap = Math.max(1, Math.min(20, s.cap | 0)), wM = s.mode === 'wunsch' ? 5000 : 25;
+  var T = s.slots.length, cap = 1, wM = 25;
   var units = makeUnits(s), P = units.length;
   var slotOf = [], pinned = [], load = [], hl = [], idx = {}, i, j, k;
   for (i = 0; i < P; i++){ slotOf.push(-1); pinned.push(false); }
@@ -1102,14 +1105,8 @@ function renderAll(){
   $('#stepPlan').hidden = !on; $('#stepGrid').hidden = !on; $('#resetBtn').hidden = !on;
   if (!on) return;
   last = solve(state);
-  $('#cap').value = last.cap;
   $('#useMaybe').checked = !!state.useMaybe;
   $('#showFree').checked = !!state.showFree;
-  [].forEach.call(document.querySelectorAll('#viewSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); });
-  [].forEach.call(document.querySelectorAll('#modeSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.mode === (state.mode || 'kompakt') ? 'true' : 'false'); });
-  $('#modeHint').textContent = state.mode === 'wunsch'
-    ? 'Immer so wenige Tage wie möglich. Elternwunsch zuerst: danach «Wenn nötig» nur dort, wo es für die wenigen Tage nötig ist. Dafür bleibt eher einmal eine Lücke.'
-    : 'Immer so wenige Tage wie möglich. Kompakt: danach keine Leerzeiten zwischen den Gesprächen; dafür werden auch «Wenn nötig»-Antworten genutzt.';
   renderSummary(last); renderMissing(last); renderPlan(last); renderMeta(); renderGrid(last);
 }
 function renderSummary(r){
@@ -1125,8 +1122,10 @@ function renderSummary(r){
   if (r.proven && r.nDays > 1) notes.push('Weniger als ' + r.nDays + ' Tage reichen nicht für alle ' + got + ' Familien.');
   if (r.nOn > r.nOpen) notes.push('Es gibt weniger Plätze als Familien.');
   if (r.anyHard && got) notes.push(r.nAdj ? (r.nAdj === 1 ? 'Einmal folgen' : r.nAdj + '-mal folgen') + ' zwei anspruchsvolle Gespräche direkt aufeinander; anders ging es nicht.' : 'Anspruchsvolle Gespräche folgen nirgends direkt aufeinander.');
+  var off = dayGroups(state, slotOrder(state)).filter(function(g){ return g.idx.every(function(j){ return !state.slots[j].on; }); });
   var n = $('#summaryNote');
-  n.hidden = !notes.length; n.textContent = notes.join(' ');
+  n.hidden = !notes.length && !off.length;
+  n.innerHTML = notes.map(esc).join(' ') + off.map(function(g){ return ' <span class="offday">Weggelassen: ' + esc(g.day || 'Termine') + ' <button type="button" class="linkbtn" data-act="restoreday" data-key="' + esc(g.key) + '">wieder aufnehmen</button></span>'; }).join('');
   $('#planSub').textContent = r.nOn ? got + ' von ' + plural(r.nOn, 'Familie', 'Familien') + ' an ' + plural(r.nDays, 'Tag', 'Tagen') + (r.nDays ? (r.nGaps ? ', ' + plural(r.nGaps, 'Lücke', 'Lücken') : ', ohne Lücken') : '') + '.' : 'Noch keine Familien eingetragen.';
 }
 function unitName(r, x){ return r.units[x].members.map(function(i){ return state.people[i].name; }).join(' + '); }
@@ -1147,7 +1146,7 @@ function renderMissing(r){
     }).join('; ') + '.';
     h += '<li><b>' + esc(unitName(r, m.u)) + '</b> <span class="why">– ' + why + '</span></li>';
   });
-  h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen, einen zusätzlichen Termin hinzufügen oder mehr Gespräche pro Termin erlauben. Soll lieber eine andere Familie verschoben werden: die gewünschte Familie mit der Stecknadel festhalten.</p>';
+  h += '</ul><p class="tip">Tipp: Diese Familien nach weiteren Zeiten fragen und unten ankreuzen oder einen zusätzlichen Termin hinzufügen. Soll lieber eine andere Familie verschoben werden: die gewünschte Familie mit der Stecknadel festhalten.</p>';
   el.innerHTML = h; el.hidden = false;
 }
 function tagFor(r, x, j){
@@ -1169,7 +1168,7 @@ function dayRows(d){
 }
 function renderPlan(r){
   var s = state, h = '';
-  if (view === 'zeit'){
+  {
     r.days.forEach(function(d, k){
       if (!d.used) return;
       var rows = dayRows(d).map(function(x){
@@ -1185,14 +1184,6 @@ function renderPlan(r){
       }
       h += '<section class="dayc"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + drop + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
     });
-  } else {
-    var list = s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on; })
-      .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); });
-    if (list.length) h = '<ol class="rows byname">' + list.map(function(i){
-      var j = r.slotOf[i], x = r.unitOf[i], u = r.units[x], with_ = u.members.filter(function(m){ return m !== i; }).map(function(m){ return s.people[m].name; });
-      return '<li class="row' + (j < 0 ? ' none' : '') + '"><span class="n">' + esc(s.people[i].name) + '</span><span class="ws">' +
-        (j < 0 ? '<span class="frei">kein Termin</span>' : '<span class="w">' + esc(slotLabel(s.slots[j])) + (with_.length ? ' <span class="tag grp">mit ' + esc(with_.join(', ')) + '</span>' : '') + (u.hard ? ' <span class="tag hard">anspruchsvoll</span>' : '') + (u.ans[j] === M ? ' <span class="tag maybe">wenn nötig</span>' : '') + pinFor(r, x) + '</span>') + '</span></li>';
-    }).join('') + '</ol>';
   }
   $('#plan').innerHTML = h || '<p class="empty">Noch keine Termine verteilt.</p>';
   renderHard(r);
@@ -1202,11 +1193,16 @@ function renderHard(r){
   var box = $('#hardChips'), s = state;
   var order = r.units.map(function(u, x){ return x; }).sort(function(a, b){ return unitName(r, a).localeCompare(unitName(r, b), 'de'); });
   box.innerHTML = order.length ? order.map(function(x){
-    var u = r.units[x];
-    return '<button type="button" class="hchip' + (u.hard ? ' on' : '') + '" data-act="hard" data-u="' + x + '" aria-pressed="' + u.hard + '"><span class="hn">' + esc(unitName(r, x)) + '</span><span class="hl">' + (u.hard ? 'Anspruchsvoll' : 'Einfach') + '</span></button>';
+    var u = r.units[x], grp = u.members.length > 1, nm = esc(unitName(r, x));
+    return '<div class="hchip' + (u.hard ? ' on' : '') + (grp ? ' grp' : '') + '" data-u="' + x + '">' +
+      '<button type="button" class="hmain" data-act="hard" data-u="' + x + '" aria-pressed="' + u.hard + '" aria-label="' + nm + ': ' + (u.hard ? 'anspruchsvoll' : 'einfach') + '. Antippen zum Wechseln, ziehen für einen gemeinsamen Termin" title="Antippen: einfach / anspruchsvoll · Ziehen: auf ein anderes Gespräch für einen gemeinsamen Termin">' +
+      (grp ? LINK : '') + '<span class="hn">' + nm + '</span><span class="hl">' + (u.hard ? 'Anspruchsvoll' : 'Einfach') + '</span></button>' +
+      (grp ? '<button type="button" class="hx" data-act="ungroup" data-gid="' + esc(u.group) + '" aria-label="Gruppe ' + nm + ' lösen" title="Gruppe lösen">×</button>' : '') + '</div>';
   }).join('') : '<p class="empty">Noch keine Familien.</p>';
-  var n = r.units.filter(function(u){ return u.hard; }).length;
-  $('#hardCount').textContent = n ? n + ' anspruchsvoll' : 'optional';
+  var n = r.units.filter(function(u){ return u.hard; }).length, g = r.units.filter(function(u){ return u.members.length > 1; }).length, bits = [];
+  if (n) bits.push(n + ' anspruchsvoll');
+  if (g) bits.push(g === 1 ? '1 gemeinsamer Termin' : g + ' gemeinsame Termine');
+  $('#hardCount').textContent = bits.length ? bits.join(' · ') : 'optional';
 }
 function renderMeta(){
   var s = state, bits = [];
@@ -1222,6 +1218,7 @@ function renderMeta(){
   w.hidden = !d.length;
   w.textContent = d.length ? '⚠️ Doppelt eingetragen: ' + d.join(', ') + '. Ist es dieselbe Familie, die beiden Namen aufeinanderziehen, dann bekommen sie einen gemeinsamen Termin.' : '';
 }
+var LINK = '<svg class="i lk2" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.5a4 4 0 0 0 5.7.4l3-3a4 4 0 0 0-5.7-5.7l-1.6 1.6"/><path d="M14 10.5a4 4 0 0 0-5.7-.4l-3 3a4 4 0 0 0 5.7 5.7l1.6-1.6"/></svg>';
 var GRIP = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="6" r="1.3"/><circle cx="15" cy="6" r="1.3"/><circle cx="9" cy="12" r="1.3"/><circle cx="15" cy="12" r="1.3"/><circle cx="9" cy="18" r="1.3"/><circle cx="15" cy="18" r="1.3"/></svg>';
 /* Zeilen der Tabelle: Mitglieder einer Gruppe direkt untereinander, mit einer Kopfzeile */
 function gridRows(s){
@@ -1249,11 +1246,11 @@ function renderGrid(r){
   var corner = '<th class="corner" scope="col"' + (anyDay ? ' rowspan="2"' : '') + '>Familie</th>';
   if (anyDay) h += '<tr>' + corner + groups.map(function(g, k){
     var n = g.idx.filter(function(j){ return s.slots[j].on; }).length;
-    return '<th class="dayh" scope="colgroup" colspan="' + g.idx.length + '"><label><input type="checkbox" data-act="day" data-g="' + k + '"' + (n ? ' checked' : '') + (n && n < g.idx.length ? ' data-mixed="1"' : '') + ' aria-label="' + esc(g.day || 'Tag') + ' anbieten">' + esc(g.day || '–') + '</label></th>';
+    return '<th class="dayh' + (n ? '' : ' off') + '" scope="colgroup" colspan="' + g.idx.length + '">' + esc(g.day || '–') + (n ? '' : ' <span class="offt">weggelassen</span>') + '</th>';
   }).join('') + '</tr>';
   h += '<tr>' + (anyDay ? '' : corner) + order.map(function(j){
     var x = s.slots[j];
-    return '<th' + fc(j, 'sh' + (x.on ? '' : ' off')) + ' scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
+    return '<th' + fc(j, 'sh' + (x.on ? '' : ' off')) + ' scope="col"><span class="tl">' + esc(x.time) + '</span>' +
       (x.manual ? '<button type="button" class="del" data-act="dels" data-s="' + j + '" aria-label="Termin ' + esc(slotLabel(x)) + ' entfernen" title="Termin entfernen">×</button>' : '') + '</th>';
   }).join('') + '</tr></thead><tbody>';
   gridRows(s).forEach(function(row){
@@ -1266,11 +1263,8 @@ function renderGrid(r){
     }
     var i = row.i, p = s.people[i], miss = p.on && r.slotOf[i] < 0;
     h += '<tr class="' + (p.on ? '' : 'off') + (miss ? ' miss' : '') + (row.inGroup ? ' ing' : '') + '" data-row="' + i + '"><th class="who" scope="row"><div class="whoin">' +
-      '<button type="button" class="grip" data-act="grip" data-p="' + i + '" aria-label="' + esc(p.name) + ' ziehen oder antippen, um mit einer anderen Familie zusammenzufassen" title="Auf einen anderen Namen ziehen: gemeinsamer Termin">' + GRIP + '</button>' +
-      '<input type="checkbox" data-act="person" data-p="' + i + '"' + (p.on ? ' checked' : '') + ' aria-label="' + esc(p.name) + ' einplanen" title="einplanen">' +
       '<input class="nm" type="text" data-act="name" data-p="' + i + '" value="' + esc(p.name) + '" aria-label="Name">' +
       (p.hard ? '<span class="hdot" title="anspruchsvoll" aria-label="anspruchsvoll"></span>' : '') +
-      (row.inGroup ? '<button type="button" class="del" data-act="leave" data-p="' + i + '" aria-label="' + esc(p.name) + ' aus der Gruppe nehmen" title="Aus der Gruppe nehmen">×</button>' : '') +
       (p.manual ? '<button type="button" class="del" data-act="delp" data-p="' + i + '" aria-label="' + esc(p.name) + ' entfernen" title="Familie entfernen">🗑</button>' : '') +
       '</div></th>' + order.map(function(j){
         var v = p.ans[j], cls = v === Y ? 'y' : v === M ? 'm' : 'n', pick = r.slotOf[i] === j;
@@ -1283,10 +1277,8 @@ function renderGrid(r){
   h += '</tbody><tfoot><tr><th class="who" scope="row">Zusagen</th>' + order.map(function(j){ return '<td' + fc(j) + '>' + counts[j] + '</td>'; }).join('') + '</tr></tfoot>';
   var g = $('#grid');
   g.innerHTML = h;
-  [].forEach.call(g.querySelectorAll('input[data-mixed]'), function(x){ x.indeterminate = true; });
   var dh = g.querySelector('.dayh');
   g.style.setProperty('--dayh', dh ? dh.offsetHeight + 'px' : '0px');
-  if (pickFrom != null){ var pb = g.querySelector('.grip[data-p="' + pickFrom + '"]'); if (pb) pb.classList.add('picked'); }
 }
 
 function changed(focusSel, keepGrid){
@@ -1303,7 +1295,7 @@ function changed(focusSel, keepGrid){
 function unitNote(r, x, j){ var u = r.units[x]; return (u.hard ? ' (anspruchsvoll)' : '') + (u.ans[j] === M ? ' (wenn nötig)' : ''); }
 function planText(){
   var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
-  if (view === 'zeit'){
+  {
     r.days.forEach(function(d){
       if (!d.used) return;
       var lines = dayRows(d).map(function(x){
@@ -1313,11 +1305,6 @@ function planText(){
       out.push(dayLabel(d) + (d.used ? ' (' + daySpan(d) + ')' : ''));
       out = out.concat(lines);
     });
-  } else {
-    out.push('');
-    s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on && r.slotOf[i] >= 0; })
-      .sort(function(a, b){ return s.people[a].name.localeCompare(s.people[b].name, 'de'); })
-      .forEach(function(i){ out.push(s.people[i].name + ': ' + slotLabel(s.slots[r.slotOf[i]])); });
   }
   if (r.missing.length){ out.push(''); out.push('Ohne Termin: ' + r.missing.map(function(m){ return unitName(r, m.u); }).join(', ')); }
   return out.join('\n');
@@ -1392,11 +1379,8 @@ $('#file').addEventListener('change', function(){
   if (f) readChosen(f);
   this.value = '';
 });
-$('#cap').addEventListener('input', function(){ var v = parseInt(this.value, 10); if (v >= 1 && v <= 20){ state.cap = v; changed(); } });
 $('#useMaybe').addEventListener('change', function(){ state.useMaybe = this.checked; changed(); });
 $('#showFree').addEventListener('change', function(){ state.showFree = this.checked; changed(); });
-$('#viewSeg').addEventListener('click', function(e){ var b = e.target.closest('button[data-view]'); if (b){ view = b.dataset.view; changed(); } });
-$('#modeSeg').addEventListener('click', function(e){ var b = e.target.closest('button[data-mode]'); if (b){ state.mode = b.dataset.mode; changed(); } });
 
 $('#grid').addEventListener('click', function(e){
   var b = e.target.closest('button[data-act]');
@@ -1420,115 +1404,118 @@ $('#grid').addEventListener('click', function(e){
   } else if (act === 'ungroup'){
     state.people.forEach(function(p){ if (p.group === b.dataset.gid) delete p.group; });
     changed();
-  } else if (act === 'leave'){
-    delete state.people[i].group;
-    tidyGroups();
-    changed();
   }
 });
-/* ---------- Zusammenfassen: einen Namen auf einen anderen ziehen ----------
-   Mit Maus oder Finger am Griff ziehen und über einem anderen Namen loslassen. Ohne Ziehen geht es auch:
-   erst den einen Griff antippen, dann den anderen (auch mit der Tastatur). */
-var pickFrom = null, drag = null;
-function joinGroup(a, b){
-  var pa = state.people[a], pb = state.people[b];
-  if (a === b || (pa.group && pa.group === pb.group)) return;
-  var g = pb.group || 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-  pb.group = g; pa.group = g;
-  tidyGroups();
-  setStatus('ok', '<p>✓ ' + esc(pa.name) + ' und ' + esc(pb.name) + ' bekommen einen gemeinsamen Termin.</p>');
-  changed();
-}
+/* ---------- Zusammenfassen: ein Gespräch auf ein anderes ziehen ----------
+   Im Bereich «Gespräche einteilen»: ein Gespräch mit Maus oder Finger anfassen und über einem anderen loslassen.
+   Die beiden bekommen dann einen gemeinsamen Termin. Kurz antippen wechselt zwischen einfach und anspruchsvoll. */
+var drag = null, noClick = false;
+function newGroupId(){ return 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function tidyGroups(st){
   var n = {};
   st = st || state;
   st.people.forEach(function(p){ if (p.group) n[p.group] = (n[p.group] || 0) + 1; });
   st.people.forEach(function(p){ if (p.group && n[p.group] < 2) delete p.group; });
 }
-function rowUnder(x, y){
-  var el = document.elementFromPoint(x, y), tr = el && el.closest && el.closest('#grid tr[data-row]');
-  return tr ? +tr.dataset.row : -1;
+function hardMsg(html){ var m = $('#hardMsg'); m.innerHTML = html || ''; m.hidden = !html; }
+function joinUnits(from, to){
+  var a = last.units[from], b = last.units[to];
+  if (!a || !b || from === to) return;
+  var g = b.group || a.group || newGroupId(), na = unitName(last, from), nb = unitName(last, to);
+  a.members.concat(b.members).forEach(function(i){ state.people[i].group = g; });
+  tidyGroups();
+  changed();
+  hardMsg('✓ ' + esc(na) + ' und ' + esc(nb) + ' bekommen einen gemeinsamen Termin.');
 }
-function dragMove(e){
+function chipUnder(x, y){
+  var el = document.elementFromPoint(x, y), c = el && el.closest && el.closest('#hardChips .hchip');
+  return c ? +c.dataset.u : -1;
+}
+function chipMarks(t){
+  [].forEach.call(document.querySelectorAll('#hardChips .hchip'), function(c){ c.classList.toggle('dropto', +c.dataset.u === t); });
+}
+function chipMove(e){
   if (!drag || e.pointerId !== drag.id) return;
   var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-  if (!drag.moved && dx * dx + dy * dy < 36) return;
+  if (!drag.moved && dx * dx + dy * dy < 49) return;
   if (!drag.moved){
     drag.moved = true;
     drag.ghost = document.createElement('div');
     drag.ghost.className = 'ghost';
-    drag.ghost.textContent = state.people[drag.i].name;
+    drag.ghost.textContent = unitName(last, drag.u);
     document.body.appendChild(drag.ghost);
     document.body.classList.add('dragging');
+    $('#hardChips').classList.add('dragging');
+    var src = document.querySelector('#hardChips .hchip[data-u="' + drag.u + '"]'); if (src) src.classList.add('src');
   }
+  e.preventDefault();
   drag.ghost.style.transform = 'translate(' + (e.clientX + 12) + 'px,' + (e.clientY + 10) + 'px)';
-  var t = rowUnder(e.clientX, e.clientY);
-  [].forEach.call(document.querySelectorAll('#grid tr.dropto'), function(r){ r.classList.remove('dropto'); });
-  if (t >= 0 && t !== drag.i){ var tr = document.querySelector('#grid tr[data-row="' + t + '"]'); if (tr) tr.classList.add('dropto'); }
-  /* am Rand der Tabelle weiterrollen */
-  var w = $('.gridwrap'), rc = w.getBoundingClientRect();
-  if (e.clientY < rc.top + 40) w.scrollTop -= 12; else if (e.clientY > rc.bottom - 40) w.scrollTop += 12;
+  var t = chipUnder(e.clientX, e.clientY);
+  chipMarks(t !== drag.u ? t : -1);
+  /* am Rand des Fensters weiterrollen */
+  if (e.clientY < 50) window.scrollBy(0, -14); else if (e.clientY > window.innerHeight - 50) window.scrollBy(0, 14);
 }
-function dragEnd(e){
+function chipEnd(e){
   if (!drag || e.pointerId !== drag.id) return;
   var d = drag;
   drag = null;
-  window.removeEventListener('pointermove', dragMove);
-  window.removeEventListener('pointerup', dragEnd);
-  window.removeEventListener('pointercancel', dragEnd);
+  window.removeEventListener('pointermove', chipMove);
+  window.removeEventListener('pointerup', chipEnd);
+  window.removeEventListener('pointercancel', chipEnd);
+  if (!d.moved) return;   // nur angetippt: das erledigt der Klick
+  noClick = true;
+  setTimeout(function(){ noClick = false; }, 0);
   document.body.classList.remove('dragging');
-  [].forEach.call(document.querySelectorAll('#grid tr.dropto'), function(r){ r.classList.remove('dropto'); });
+  $('#hardChips').classList.remove('dragging');
   if (d.ghost) d.ghost.remove();
-  if (d.moved){
-    var t = e.type === 'pointerup' ? rowUnder(e.clientX, e.clientY) : -1;
-    pickFrom = null;
-    if (t >= 0 && t !== d.i) joinGroup(d.i, t); else renderGrid(last);
+  chipMarks(-1);
+  var src = document.querySelector('#hardChips .hchip.src'); if (src) src.classList.remove('src');
+  var t = e.type === 'pointerup' ? chipUnder(e.clientX, e.clientY) : -1;
+  if (t >= 0 && t !== d.u) joinUnits(d.u, t);
+}
+$('#hardChips').addEventListener('pointerdown', function(e){
+  var c = e.target.closest('.hchip');
+  if (!c || e.target.closest('.hx') || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  if (e.pointerType === 'mouse') e.preventDefault();
+  drag = { u: +c.dataset.u, x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, ghost: null };
+  window.addEventListener('pointermove', chipMove, { passive: false });
+  window.addEventListener('pointerup', chipEnd);
+  window.addEventListener('pointercancel', chipEnd);
+});
+$('#hardChips').addEventListener('click', function(e){
+  if (noClick) return;
+  var b = e.target.closest('button[data-act]');
+  if (!b) return;
+  if (b.dataset.act === 'ungroup'){
+    var gid = b.dataset.gid;
+    state.people.forEach(function(p){ if (p.group === gid) delete p.group; });
+    hardMsg('Gruppe gelöst.');
+    changed();
     return;
   }
-  pickGrip(d.i);
-}
-function pickGrip(i){
-  if (pickFrom == null){
-    pickFrom = i;
-    renderGrid(last);
-    setStatus('busy', '<p>' + esc(state.people[i].name) + ' ist ausgewählt. Jetzt beim Namen, mit dem es einen gemeinsamen Termin geben soll, den Griff antippen. Nochmals antippen bricht ab.</p>');
-    var g = document.querySelector('#grid .grip[data-p="' + i + '"]'); if (g) g.focus({ preventScroll: true });
-  } else if (pickFrom === i){
-    pickFrom = null; setStatus('', ''); renderGrid(last);
-  } else {
-    var a = pickFrom; pickFrom = null; joinGroup(a, i);
-  }
-}
-$('#grid').addEventListener('pointerdown', function(e){
-  var g = e.target.closest('.grip');
-  if (!g || (e.pointerType === 'mouse' && e.button !== 0)) return;
-  e.preventDefault();
-  drag = { i: +g.dataset.p, x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, ghost: null };
-  window.addEventListener('pointermove', dragMove);
-  window.addEventListener('pointerup', dragEnd);
-  window.addEventListener('pointercancel', dragEnd);
+  var u = last.units[+b.dataset.u], to = !u.hard, first = state.people[u.members[0]].id;
+  u.members.forEach(function(i){ state.people[i].hard = to; });
+  hardMsg('');
+  changed();
+  var nb = null;
+  [].forEach.call(document.querySelectorAll('#hardChips button.hmain'), function(btn){ if (!nb && state.people[last.units[+btn.dataset.u].members[0]].id === first) nb = btn; });
+  if (nb) nb.focus({ preventScroll: true });
 });
-$('#grid').addEventListener('keydown', function(e){
-  var g = e.target.closest && e.target.closest('.grip');
-  if (g && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); pickGrip(+g.dataset.p); }
-  if (e.key === 'Escape' && pickFrom != null){ pickFrom = null; setStatus('', ''); renderGrid(last); }
-});
-
 
 $('#grid').addEventListener('change', function(e){
   var t = e.target, act = t.dataset.act;
-  if (act === 'slot'){ state.slots[+t.dataset.s].on = t.checked; changed('#grid input[data-act="slot"][data-s="' + t.dataset.s + '"]'); }
-  else if (act === 'person'){ state.people[+t.dataset.p].on = t.checked; changed('#grid input[data-act="person"][data-p="' + t.dataset.p + '"]'); }
-  else if (act === 'day'){
-    dayGroups(state, slotOrder(state))[+t.dataset.g].idx.forEach(function(j){ state.slots[j].on = t.checked; });
-    changed('#grid input[data-act="day"][data-g="' + t.dataset.g + '"]');
-  }
-  else if (act === 'name'){
+  if (act === 'name'){
     var v = clean(t.value), p = state.people[+t.dataset.p];
     if (v){ p.name = v; changed(null, true); } else t.value = p.name;
   }
 });
 $('#grid').addEventListener('keydown', function(e){ if (e.key === 'Enter' && e.target.dataset.act === 'name') e.target.blur(); });
+$('#summaryNote').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act="restoreday"]');
+  if (!b) return;
+  state.slots.forEach(function(x){ if (dayKey(x) === b.dataset.key) x.on = true; });
+  changed();
+});
 $('#plan').addEventListener('click', function(e){
   var dd = e.target.closest('button[data-act="dropday"]');
   if (dd){ last.days[+dd.dataset.d].slots.forEach(function(j){ state.slots[j].on = false; }); changed(); return; }
@@ -1542,16 +1529,7 @@ $('#plan').addEventListener('click', function(e){
   [].forEach.call(document.querySelectorAll('#plan button[data-act="pin"]'), function(btn){ if (!nb && last.units[+btn.dataset.u] && state.people[last.units[+btn.dataset.u].members[0]].id === first) nb = btn; });
   if (nb) nb.focus({ preventScroll: true });
 });
-$('#hardChips').addEventListener('click', function(e){
-  var b = e.target.closest('button[data-act="hard"]');
-  if (!b) return;
-  var u = last.units[+b.dataset.u], to = !u.hard, first = state.people[u.members[0]].id;
-  u.members.forEach(function(i){ state.people[i].hard = to; });
-  changed();
-  var nb = null;
-  [].forEach.call(document.querySelectorAll('#hardChips button'), function(btn){ if (!nb && state.people[last.units[+btn.dataset.u].members[0]].id === first) nb = btn; });
-  if (nb) nb.focus({ preventScroll: true });
-});
+
 
 $('#addPerson').addEventListener('submit', function(e){
   e.preventDefault();
