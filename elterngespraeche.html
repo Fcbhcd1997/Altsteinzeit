@@ -95,23 +95,16 @@ input[type=checkbox]{accent-color:var(--accent)}
 .status details{margin-top:.4em;font-size:.82rem;color:var(--ink-2)}
 .spin{display:inline-block;width:1em;height:1em;border:2px solid var(--line-2);border-top-color:var(--accent);border-radius:50%;vertical-align:-2px;margin-right:8px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.other{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
-.other summary{cursor:pointer;font-weight:600;color:var(--ink-2);padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px;font-size:.93rem}
-.other summary::-webkit-details-marker{display:none}
-.other summary::before{content:'';width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin:0 4px 0 2px}
-.other[open] summary::before{transform:rotate(45deg)}
-.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:12px}
-.way{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.way h3{font-size:.98rem;font-weight:650;display:flex;align-items:center;gap:8px}
-.way h3 svg{color:var(--accent)}
-.way p{margin:0;font-size:.88rem;color:var(--ink-2)}
-.way textarea{width:100%;min-height:96px;padding:.55em .7em;font-size:.86rem;resize:vertical}
-.way .row2{display:flex;gap:8px;flex-wrap:wrap}
+.alt{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:16px;padding:14px 16px;border:1px dashed var(--line-2);border-radius:14px;transition:background .15s, border-color .15s}
+.alt.flash{background:var(--accent-soft);border-color:var(--accent)}
+.alt > svg{color:var(--accent)}
+.alt-txt{flex:1 1 260px;display:flex;flex-direction:column;font-size:.9rem}
+.alt-txt span{color:var(--ink-2);font-size:.86rem}
 .privacy{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:.84rem;color:var(--ink-2)}
 .privacy svg{color:var(--ink-3);margin-top:1px}
 
 /* ---------- Schritt 2: Verteilung ---------- */
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:640px}
 .kpi{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--surface)}
 .kpi .lab{display:flex;align-items:center;gap:6px;color:var(--ink-2);font-size:.84rem;font-weight:500}
 .kpi .val{font-size:1.7rem;font-weight:650;letter-spacing:-.02em;margin-top:2px}
@@ -222,7 +215,6 @@ input[type=checkbox]{accent-color:var(--accent)}
 
 .foot{padding:4px 0 40px;color:var(--ink-3);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px 18px}
 
-@media (max-width:760px){ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))} }
 @media (max-width:640px){
   .top{padding-top:24px}
   .logo{width:44px;height:44px;border-radius:12px}
@@ -270,37 +262,17 @@ input[type=checkbox]{accent-color:var(--accent)}
     </div>
     <button class="btn primary" type="submit" id="loadBtn">Laden</button>
   </form>
-  <p class="hint">Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unter «Andere Wege» hochladen.</p>
+  <p class="hint">Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
   <div class="status" id="status" role="status" aria-live="polite" hidden></div>
 
-  <details class="other" id="other">
-    <summary>Andere Wege: Datei, Tabelle einfügen oder selbst erfassen</summary>
-    <div class="ways">
-      <div class="way">
-        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>Exportierte Datei</h3>
-        <p>CSV- oder Excel-Datei mit den Antworten, z. B. aus Nuudel, Framadate, Doodle, Microsoft Forms, Google Forms oder einer eigenen Tabelle.</p>
-        <button class="btn small" type="button" id="fileBtn">Datei wählen</button>
-        <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
-      </div>
-      <div class="way">
-        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>Tabelle einfügen</h3>
-        <p>Aus Excel oder einer Webseite kopieren: je Familie eine Zeile. Die Termine stehen als Spalten mit Ja / Nein / Wenn nötig (auch ✓, x, OK) oder zusammen in einem Feld, getrennt mit Strichpunkt.</p>
-        <label class="sr" for="paste">Tabelle</label>
-        <textarea id="paste" placeholder="Name&#9;Mo 16:00&#9;Mo 16:20&#10;Fam. Muster&#9;Ja&#9;Nein"></textarea>
-        <button class="btn small" type="button" id="pasteBtn">Übernehmen</button>
-      </div>
-      <div class="way">
-        <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Selbst erfassen</h3>
-        <p>Mit einer leeren Tabelle beginnen und Termine und Familien von Hand eintragen. Oder zuerst ein Beispiel ansehen.</p>
-        <div class="row2">
-          <button class="btn small" type="button" id="manualBtn">Leere Tabelle</button>
-          <button class="btn small" type="button" id="demoBtn">Beispiel ansehen</button>
-        </div>
-      </div>
-    </div>
-  </details>
+  <div class="alt" id="other">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
+    <div class="alt-txt"><b>Oder: exportierte Datei hochladen</b><span>CSV- oder Excel-Datei mit den Antworten, z. B. aus Nuudel, Framadate, Doodle, Microsoft Forms oder Google Forms.</span></div>
+    <button class="btn small" type="button" id="fileBtn">Datei wählen</button>
+    <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
+  </div>
   <p class="privacy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
-    <span>Die Antworten werden nur hier im Browser verarbeitet und bis «Alles löschen» in diesem Browser aufbewahrt. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</span></p>
+    <span>Die Antworten werden nur hier im Browser verarbeitet und nirgends gespeichert. Wer die Seite neu öffnet, beginnt mit einer leeren Seite. Weil Umfrage-Seiten das direkte Auslesen meist sperren, holt das Tool die Daten über einen öffentlichen Weiterleitungsdienst (allorigins.win, codetabs.com oder corsproxy.io). Wer das nicht möchte, lädt die exportierte Datei hoch.</span></p>
 </section>
 
 <section class="card" id="stepPlan" aria-labelledby="hPlan" hidden>
@@ -318,7 +290,7 @@ input[type=checkbox]{accent-color:var(--accent)}
       <button type="button" data-view="zeit" aria-pressed="true">nach Termin</button>
       <button type="button" data-view="name" aria-pressed="false">nach Familie</button>
     </div>
-    <label class="check"><input type="checkbox" id="showFree"> alle freien Termine</label>
+    <label class="check"><input type="checkbox" id="showFree"> freie Termine zeigen</label>
     <span class="spacer"></span>
     <button class="btn small" type="button" id="copyBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Liste kopieren</span></button>
     <button class="btn small" type="button" id="csvBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>Für Excel</span></button>
@@ -365,6 +337,7 @@ var ROUTES = [
   { name: 'direkt', url: function(u){ return u; } },
   { name: 'allorigins.win', url: function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); } },
   { name: 'codetabs.com', url: function(u){ return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); } },
+  { name: 'allorigins.win (2)', url: function(u){ return 'https://api.allorigins.win/get?url=' + encodeURIComponent(u); }, unwrap: function(t){ var j = JSON.parse(t); return j && typeof j.contents === 'string' ? j.contents : ''; } },
   { name: 'corsproxy.io', url: function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); } }
 ];
 var XLSX_URL = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
@@ -754,13 +727,18 @@ function fromFlight(html){
     (m[2] ? m[2].split(':') : []).forEach(function(k){ x = x == null ? x : x[k]; });
     return x;
   }
+  /* Die Antworten stehen je nach Rallly-Version unter «participants» (Version 4.15) oder als zwischengespeicherte
+     Abfrage polls.participants.list unter «data» (frühere 4er-Versionen). Darum: jede Liste von Einträgen mit Name und Stimmen. */
   var poll = null, parts = null, seen = 0;
+  function isPart(x){ x = deref(x); return !!x && typeof x === 'object' && 'name' in x && Array.isArray(deref(x.votes)); }
   function walk(v, depth){
     if (!v || typeof v !== 'object' || depth > 60 || ++seen > 300000 || (poll && parts)) return;
-    if (!Array.isArray(v)){
-      var o = deref(v.options), p = deref(v.participants), o0 = Array.isArray(o) && deref(o[0]), p0 = Array.isArray(p) && deref(p[0]);
+    if (Array.isArray(v)){
+      if (!parts && v.length && isPart(v[0]) && v.every(isPart)) parts = v.map(deref);
+    } else {
+      var o = deref(v.options), p = deref(v.participants), o0 = Array.isArray(o) && deref(o[0]);
       if (!poll && o0 && typeof o0 === 'object' && ('startTime' in o0 || 'start' in o0) && 'duration' in o0) poll = { title: v.title, timeZone: v.timeZone, options: o.map(deref) };
-      if (!parts && Array.isArray(p) && (!p.length || (p0 && typeof p0 === 'object' && 'votes' in p0))) parts = p.map(deref);
+      if (!parts && Array.isArray(p) && !p.length) parts = [];
     }
     for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) walk(deref(v[k]), depth + 1);
   }
@@ -801,7 +779,7 @@ function fromRallly(poll, parts){
 }
 
 /* ---------- Link erkennen ---------- */
-var HINT_FILE = 'Hier am besten die Antworten als Excel- oder CSV-Datei herunterladen und unter «Andere Wege» hochladen.';
+var HINT_FILE = 'Hier am besten die Antworten als Excel- oder CSV-Datei herunterladen und unten bei «Datei wählen» hochladen.';
 function detect(raw){
   raw = clean(raw);
   if (!raw) return null;
@@ -812,7 +790,7 @@ function detect(raw){
   var host = u.hostname.toLowerCase().replace(/^www\./, ''), path = u.pathname, m;
   /* Formulare zeigen die Antworten nur der Person, die sie erstellt hat */
   if (/(^|\.)forms\.(office|microsoft)\.com$|(^|\.)forms\.cloud\.microsoft$/.test(host))
-    return { error: 'Microsoft Forms zeigt die Antworten nur dir. In Forms unter «Antworten» auf «In Excel öffnen» klicken und die Datei hier unter «Andere Wege» hochladen.', other: true };
+    return { error: 'Microsoft Forms zeigt die Antworten nur dir. In Forms unter «Antworten» auf «In Excel öffnen» klicken und die Datei unten bei «Datei wählen» hochladen.', other: true };
   if ((host === 'docs.google.com' && /^\/forms\//.test(path)) || host === 'forms.gle')
     return { error: 'Google Forms zeigt die Antworten nur dir. In Forms unter «Antworten» die Tabelle öffnen und deren Link hier einfügen (Freigabe «Alle mit dem Link»), oder die Antworten als CSV herunterladen und hier hochladen.', other: true };
   if (/(^|\.)sharepoint\.com$|(^|\.)onedrive\.live\.com$|^1drv\.ms$|(^|\.)dropbox\.com$|(^|\.)icloud\.com$/.test(host))
@@ -878,7 +856,7 @@ async function fetchVia(url, parse, ctx, retryParse){
     var k = order[n], text;
     ctx.tries++;
     setStatus('busy', '<span class="spin" aria-hidden="true"></span>Umfrage wird geladen …' + (ctx.tries > 1 ? ' (Versuch ' + ctx.tries + ')' : ''));
-    try { text = await fetchText(ROUTES[k].url(url), 12000); }
+    try { text = await fetchText(ROUTES[k].url(url), 12000); if (ROUTES[k].unwrap) text = ROUTES[k].unwrap(text); }
     catch (e){ ctx.notes.push(ROUTES[k].name + ' · ' + url + ': ' + msg(e)); lastErr = e; continue; }
     if (proxyNoise(text)){ ctx.notes.push(ROUTES[k].name + ' · ' + url + ': leere Antwort'); continue; }
     ctx.route = k;
@@ -908,7 +886,7 @@ async function loadLink(raw){
   var src = detect(raw);
   if (!src || src.error){
     setStatus('err', '<p>' + esc(src && src.error || 'Das sieht nicht nach einem Link aus. Bitte den ganzen Link der Umfrage einfügen (er beginnt mit https://).') + '</p>');
-    if (src && src.other) $('#other').open = true;
+    if (src && src.other) flashFile();
     return;
   }
   busy = true; $('#loadBtn').disabled = true;
@@ -923,12 +901,12 @@ async function loadLink(raw){
     else if (e.code === 'hidden') h = '<p><b>Die Umfrage wurde gefunden, aber die Namen der Teilnehmenden sind verborgen.</b></p><p>Ohne Namen lassen sich die Termine nicht zuteilen. In den Einstellungen der Umfrage das Verbergen der Teilnehmenden kurz ausschalten, hier «Laden» drücken und danach wieder einschalten.</p>';
     else {
       h = '<p><b>Die Umfrage konnte nicht geladen werden.</b></p>';
-      if (src.kind === 'rallly') h += '<p>Die Umfrage-Seite liess sich nicht auslesen. Steht im Link /invite/ oder /poll/? Wenn ja, die Antworten unten von Hand eintragen oder als Datei hochladen.</p>';
-      else if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und hier unter «Andere Wege» hochladen, oder sie unten von Hand eintragen.</p>';
-      else if (src.kind === 'sheet') h += '<p>Ist die Tabelle für «Alle mit dem Link» freigegeben? Sonst in Google Tabellen «Datei → Herunterladen → CSV» wählen und die Datei hier unter «Andere Wege» hochladen.</p>';
-      else if (src.kind === 'framadate') h += '<p>Dann auf der Umfrage-Seite den CSV-Export herunterladen und hier unter «Andere Wege» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
+      if (src.kind === 'rallly') h += '<p>Die Rallly-Seite liess sich nicht auslesen. Bitte noch einmal «Laden» drücken. Klappt es weiterhin nicht, die «Technischen Angaben» unten mitschicken.</p>';
+      else if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und unten bei «Datei wählen» hochladen.</p>';
+      else if (src.kind === 'sheet') h += '<p>Ist die Tabelle für «Alle mit dem Link» freigegeben? Sonst in Google Tabellen «Datei → Herunterladen → CSV» wählen und die Datei unten bei «Datei wählen» hochladen.</p>';
+      else if (src.kind === 'framadate') h += '<p>Dann auf der Umfrage-Seite den CSV-Export herunterladen und unten bei «Datei wählen» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
       else h += '<p>Diese Seite zeigt die Antworten nicht in einer lesbaren Tabelle, oder sie lässt sich nicht abrufen. ' + esc(HINT_FILE) + '</p>';
-      $('#other').open = true;
+      flashFile();
     }
     if (e.notes && e.notes.length) h += '<details><summary>Technische Angaben</summary>' + e.notes.map(esc).join('<br>') + '</details>';
     setStatus('err', h);
@@ -936,6 +914,7 @@ async function loadLink(raw){
     busy = false; $('#loadBtn').disabled = false;
   }
 }
+function flashFile(){ var a = $('#other'); a.classList.add('flash'); setTimeout(function(){ a.classList.remove('flash'); }, 2400); }
 function setStatus(kind, html){ var s = $('#status'); s.hidden = !html; s.className = 'status ' + kind; s.innerHTML = html || ''; }
 
 /* ---------- Dateien ---------- */
@@ -974,6 +953,11 @@ function useLocal(fn, source){
     $('#stepPlan').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (e){ setStatus('err', '<p>' + esc(e.message || String(e)) + '</p><p>Erwartet wird je Familie eine Zeile: die Termine als Spalten mit Ja / Nein / Wenn nötig, oder zusammen in einem Feld, getrennt mit Strichpunkt.</p>'); }
 }
+/* für die Tests: Beispiel und Tabellen ohne Datei laden */
+function testHook(){
+  window.__eg.demo = function(){ useLocal(demoData, 'Beispiel'); };
+  window.__eg.rows = function(rows, name){ useLocal(function(){ return fromRows(rows); }, name || 'Tabelle'); };
+}
 
 /* ---------- Zustand ---------- */
 function okey(x){ return (x.day + '|' + x.time).toLowerCase(); }
@@ -984,7 +968,8 @@ function setData(d, info){
     cap: old ? old.cap : 1, useMaybe: old ? old.useMaybe : true, showFree: old ? old.showFree : false, mode: old && old.mode || 'kompakt', nextId: 1, slots: [], people: [], pins: {} };
   d.slots.forEach(function(x){ s.slots.push({ id: s.nextId++, day: x.day || '', time: x.time || '', on: true }); });
   d.people.forEach(function(x){ s.people.push({ id: s.nextId++, name: x.name, orig: x.name, on: true, ans: x.ans.slice() }); });
-  if (old && s.link && old.link === s.link) carryOver(old, s);
+  normalizeDays(s.slots);
+  if (old && s.link && old.link === s.link){ carryOver(old, s); normalizeDays(s.slots); }
   state = s;
   changed();
 }
@@ -1018,13 +1003,9 @@ function carryOver(old, s){
     if (np && pj >= 0 && map[pj] >= 0) s.pins[np.id] = s.slots[map[pj]].id;
   });
 }
-function save(){ try { localStorage.setItem(KEY, JSON.stringify({ state: state, view: view })); } catch (e){} }
-function restore(){
-  try {
-    var d = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (d && d.state && Array.isArray(d.state.slots) && Array.isArray(d.state.people)){ state = d.state; view = d.view === 'name' ? 'name' : 'zeit'; }
-  } catch (e){}
-}
+/* Nichts wird aufbewahrt: wer die Seite neu öffnet, beginnt mit einer leeren Seite */
+function save(){}
+function forget(){ try { localStorage.removeItem(KEY); sessionStorage.clear(); } catch (e){} }
 
 /* ---------- Verteilen ----------
    1. So viele Familien wie möglich (grösster Fluss). Bleibt eine Familie ohne Termin, geht es wirklich nicht:
@@ -1038,7 +1019,7 @@ var COST = { day: 1e6, gap: 30, rank: 0.01 };
 var solveMemo = { key: '', res: null };
 function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function solve(s){
-  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, x.day, x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans]; })]);
+  var key = JSON.stringify([s.cap, s.useMaybe, s.mode, s.pins, s.slots.map(function(x){ return [x.id, x.on, dayKey(x), x.time]; }), s.people.map(function(p){ return [p.id, p.on, p.ans]; })]);
   if (solveMemo.key === key) return solveMemo.res;
   var res = solveNow(s);
   solveMemo = { key: key, res: res };
@@ -1060,7 +1041,7 @@ function solveNow(s){
   order.forEach(function(j, r){
     rank[j] = r; dayOf[j] = -1;
     if (!s.slots[j].on) return;
-    var d = s.slots[j].day;
+    var d = dayKey(s.slots[j]);
     if (!(d in dayIdx)){ dayIdx[d] = days.length; days.push([]); }
     dayOf[j] = dayIdx[d]; days[dayOf[j]].push(j);
   });
@@ -1247,21 +1228,63 @@ function solveNow(s){
   return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap,
     days: dayInfo, nDays: nDays, nGaps: nGaps, nDaysOffered: D, proven: proven };
 }
-/* Termine nach Tag (in der Reihenfolge der Umfrage) und darin nach Uhrzeit */
+/* ---------- Gleicher Tag? ----------
+   Termine mit demselben Datum gehören zum selben Tag, auch wenn sie verschieden beschriftet sind
+   («Montag, 26. Oktober 2026», «Mo 26.10.», «26.10.2026», «2026-10-26», «Oct 26»). Fehlt das Jahr, gilt das häufigste. */
+var RX_WEEKDAY = /\b(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|mo|di|mi|do|fr|sa|so)\b/i;
+function dateOf(text){
+  var t = String(text || '').toLowerCase(), m;
+  function y(v){ return !v ? 0 : +v < 100 ? 2000 + +v : +v; }
+  if ((m = /(\d{4})-(\d{1,2})-(\d{1,2})/.exec(t))) return { y: +m[1], m: +m[2], d: +m[3] };
+  if ((m = /\b(\d{1,2})\.\s?(\d{1,2})\.(?:\s?(\d{4}|\d{2})\b)?/.exec(t))) return { y: y(m[3]), m: +m[2], d: +m[1] };
+  if ((m = /\b(\d{1,2})\.?\s+(jan|feb|mär|maer|mar|apr|mai|may|jun|jul|aug|sep|okt|oct|nov|dez|dec)[a-zä]*\.?(?:,?\s+(\d{4}))?/.exec(t))) return { y: y(m[3]), m: MON[m[2] === 'maer' ? 'mär' : m[2]], d: +m[1] };
+  if ((m = /\b(jan|feb|mär|mar|apr|mai|may|jun|jul|aug|sep|okt|oct|nov|dez|dec)[a-zä]*\.?\s+(\d{1,2})\b(?:,?\s+(\d{4}))?/.exec(t))) return { y: y(m[3]), m: MON[m[1]], d: +m[2] };
+  return null;
+}
+function normalizeDays(slots){
+  var info = slots.map(function(x){ return dateOf(x.day) || (!x.day ? dateOf(x.time) : null); }), years = {}, y0 = 0;
+  info.forEach(function(d){ if (d && d.y) years[d.y] = (years[d.y] || 0) + 1; });
+  Object.keys(years).forEach(function(k){ if (!y0 || years[k] > years[y0]) y0 = +k; });
+  function two(n){ return (n < 10 ? '0' : '') + n; }
+  slots.forEach(function(x, k){
+    var d = info[k], w = RX_WEEKDAY.exec(x.day || '');
+    x.dayKey = d && d.m ? (d.y || y0 || 0) + '-' + two(d.m) + '-' + two(d.d)
+      : w ? 'w' + WD.indexOf(w[1].slice(0, 2).toLowerCase()) : 't:' + clean(x.day).toLowerCase();
+  });
+  /* Anzeige: je Tag die ausführlichste Bezeichnung, mit Wochentag oder Monatsnamen vor reinen Zahlen */
+  var label = {};
+  function score(t){ return (/[a-zäöü]/i.test(t) ? 1000 : 0) + t.length; }
+  slots.forEach(function(x){ if (x.day && (!label[x.dayKey] || score(x.day) > score(label[x.dayKey]))) label[x.dayKey] = x.day; });
+  slots.forEach(function(x){ if (label[x.dayKey]) x.day = label[x.dayKey]; });
+  return slots;
+}
+function dayKey(x){ return x.dayKey || 't:' + clean(x.day).toLowerCase(); }
+
+/* Termine nach Datum (sonst in der Reihenfolge der Umfrage) und darin nach Uhrzeit */
 function minutes(t){ var m = /(\d{1,2}):(\d{2})/.exec(t || '') || /(\d{1,2})\.(\d{2})\b(?!\.)/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : 1e4; }
 function slotOrder(s){
-  var dayRank = {}, n = 0;
-  s.slots.forEach(function(x){ if (!(x.day in dayRank)) dayRank[x.day] = n++; });
+  var first = {}, n = 0;
+  s.slots.forEach(function(x){ var k = dayKey(x); if (!(k in first)) first[k] = n++; });
+  var keys = Object.keys(first).sort(function(a, b){
+    var da = /^\d/.test(a), db = /^\d/.test(b);   // echte Daten zuerst und der Reihe nach, dann Wochentage, dann der Rest
+    if (da && db) return a < b ? -1 : a > b ? 1 : 0;
+    if (da !== db) return da ? -1 : 1;
+    var wa = /^w\d$/.test(a), wb = /^w\d$/.test(b);
+    if (wa && wb) return a < b ? -1 : 1;
+    if (wa !== wb) return wa ? -1 : 1;
+    return first[a] - first[b];
+  }), rank = {};
+  keys.forEach(function(k, i){ rank[k] = i; });
   return s.slots.map(function(x, j){ return j; }).sort(function(a, b){
     var A = s.slots[a], B = s.slots[b];
-    return dayRank[A.day] - dayRank[B.day] || minutes(A.time) - minutes(B.time) || a - b;
+    return rank[dayKey(A)] - rank[dayKey(B)] || minutes(A.time) - minutes(B.time) || a - b;
   });
 }
 function dayGroups(s, order){
   var out = [];
   order.forEach(function(j){
-    var d = s.slots[j].day, g = out[out.length - 1];
-    if (!g || g.day !== d) out.push(g = { day: d, idx: [] });
+    var k = dayKey(s.slots[j]), g = out[out.length - 1];
+    if (!g || g.key !== k) out.push(g = { key: k, day: s.slots[j].day, idx: [] });
     g.idx.push(j);
   });
   return out;
@@ -1275,9 +1298,6 @@ function timeFrom(t){ var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? (
 function timeTo(t){ var all = String(t || '').match(/\d{1,2}[:.]\d{2}/g); return all && all.length > 1 ? all[all.length - 1].replace('.', ':') : timeFrom(t); }
 function dayLabel(d){ return d.day || 'Termine'; }
 function daySpan(d){ var a = timeFrom(state.slots[d.slots[d.first]].time), b = timeTo(state.slots[d.slots[d.last]].time); return a === b ? a : a + '–' + b; }
-function offDays(){
-  return dayGroups(state, slotOrder(state)).filter(function(g){ return g.idx.every(function(j){ return !state.slots[j].on; }); }).map(function(g){ return g.day || 'Termine'; });
-}
 function dayMeta(d){
   if (!d.used) return 'nicht gebraucht';
   return '<b>' + esc(daySpan(d)) + '</b> · ' + plural(d.talks, 'Gespräch', 'Gespräche') + ' · ' + (d.gaps ? plural(d.gaps, 'Lücke', 'Lücken') : 'ohne Lücke');
@@ -1304,16 +1324,10 @@ function renderSummary(r){
   }
   $('#summary').innerHTML =
     tile('Familien mit Termin', got, r.nOn, !r.nOn ? '' : r.missing.length ? 'warn' : 'good') +
-    tile(r.nDays === 1 ? 'Tag gebraucht' : 'Tage gebraucht', r.nDays, r.nDaysOffered) +
-    tile('Lücken', r.nGaps, null, got && !r.nGaps ? 'good' : '') +
-    tile('«Wenn nötig» genutzt', r.nMaybe, null, '');
+    tile('Lücken', r.nGaps, null, got && !r.nGaps ? 'good' : '');
   var notes = [];
   if (r.nOn && !r.missing.length) notes.push('🎉 ' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.');
-  var spare = r.days.filter(function(d){ return !d.used; }).map(function(d){ return dayLabel(d); });
-  if (spare.length && got) notes.push('Nicht gebraucht: ' + spare.join(', ') + '.');
   if (r.proven && r.nDays > 1) notes.push('Weniger als ' + r.nDays + ' Tage reichen nicht für alle ' + got + ' Familien.');
-  var off = offDays();
-  if (off.length) notes.push('Weggelassen: ' + off.join(', ') + '.');
   if (r.nOn > r.nOpen) notes.push('Es gibt weniger Plätze als Familien.');
   var n = $('#summaryNote');
   n.hidden = !notes.length; n.textContent = notes.join(' ');
@@ -1356,7 +1370,7 @@ function renderPlan(r){
   var s = state, h = '';
   if (view === 'zeit'){
     r.days.forEach(function(d, k){
-      if (!d.used && !s.showFree) return;
+      if (!d.used) return;
       var rows = dayRows(d).map(function(x){
         var t = '<span class="t">' + esc(s.slots[x.j].time || s.slots[x.j].day) + '</span>';
         if (x.hs.length) return '<li class="row">' + t + '<span class="ws">' + x.hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, x.j) + pinFor(i, r) + '</span>'; }).join('') + '</span></li>';
@@ -1454,7 +1468,7 @@ function planText(){
   var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
   if (view === 'zeit'){
     r.days.forEach(function(d){
-      if (!d.used && !s.showFree) return;
+      if (!d.used) return;
       var lines = dayRows(d).map(function(x){
         return '  ' + (s.slots[x.j].time || s.slots[x.j].day) + '  ' + (x.hs.length ? x.hs.map(function(i){ return s.people[i].name + (s.people[i].ans[x.j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei');
       });
@@ -1475,7 +1489,7 @@ function csvCell(v){ v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return 
 function planCSV(){
   var s = state, r = last, rows = [['Tag', 'Zeit', 'Familie', 'Hinweis']];
   r.days.forEach(function(d){
-    dayRows(d).forEach(function(x){
+    if (d.used) dayRows(d).forEach(function(x){
       var sl = s.slots[x.j];
       if (x.hs.length) x.hs.forEach(function(i){ rows.push([sl.day, sl.time, s.people[i].name, s.people[i].ans[x.j] === M ? 'wenn nötig' : '']); });
       else rows.push([sl.day, sl.time, '', x.gap ? 'Lücke' : 'frei']);
@@ -1526,19 +1540,6 @@ $('#file').addEventListener('change', async function(){
   catch (e){ setStatus('err', '<p>' + esc(e.message || String(e)) + '</p>'); }
   this.value = '';
 });
-$('#pasteBtn').addEventListener('click', function(){
-  var t = $('#paste').value;
-  if (!t.trim()){ $('#paste').focus(); return; }
-  useLocal(function(){ return fromRows(parseDelimited(t)); }, 'Eingefügte Tabelle');
-});
-$('#manualBtn').addEventListener('click', function(){
-  setData({ slots: [], people: [] }, { source: 'Von Hand' });
-  setStatus('', '');
-  $('#stepGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  $('#newSlot').focus({ preventScroll: true });
-});
-$('#demoBtn').addEventListener('click', function(){ useLocal(demoData, 'Beispiel'); });
-
 $('#meta').addEventListener('click', function(e){ if (e.target.closest('#reloadBtn') && state && state.link){ $('#link').value = state.link; loadLink(state.link); } });
 $('#cap').addEventListener('input', function(){ var v = parseInt(this.value, 10); if (v >= 1 && v <= 20){ state.cap = v; changed(); } });
 $('#useMaybe').addEventListener('change', function(){ state.useMaybe = this.checked; changed(); });
@@ -1606,6 +1607,7 @@ $('#addSlot').addEventListener('submit', function(e){
   var x = splitLabel(v);
   state.slots.push({ id: state.nextId++, day: x.day, time: x.time, on: true, manual: true });
   state.people.forEach(function(p){ p.ans.push(N); });
+  normalizeDays(state.slots);
   $('#newSlot').value = '';
   changed('#newSlot');
 });
@@ -1620,17 +1622,20 @@ $('#printBtn').addEventListener('click', function(){ window.print(); });
 $('#resetBtn').addEventListener('click', function(){
   if (!confirm('Alle Antworten und Zuteilungen auf dieser Seite löschen?')) return;
   try { localStorage.removeItem(KEY); } catch (e){}
-  state = null; last = null; $('#link').value = ''; $('#paste').value = ''; setStatus('', '');
+  state = null; last = null; $('#link').value = ''; setStatus('', '');
   renderAll();
   window.scrollTo(0, 0);
 });
 
-restore();
-if (state && state.link) $('#link').value = state.link;
+forget();
+$('#link').value = '';
 renderAll();
+/* Auch beim Zurückblättern im Browser nicht den alten Stand zeigen */
+window.addEventListener('pageshow', function(e){ if (e.persisted) location.reload(); });
 
 /* Für Tests */
 window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, fromDoodle: fromDoodle, fromPage: function(html){ return fromDoc(new DOMParser().parseFromString(html, 'text/html')); }, fromFlight: fromFlight, trpcParse: trpcParse, detect: detect, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
+testHook();
 })();
 </script>
 </body>
