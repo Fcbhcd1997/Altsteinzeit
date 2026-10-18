@@ -142,6 +142,10 @@ input[type=checkbox]{accent-color:var(--accent)}
 .dayc .dm{font-size:.84rem;color:var(--ink-2)}
 .dayc .dm b{font-weight:600;color:var(--ink)}
 .dayc.unused header{border-bottom:0}
+.dayc .drop{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between;padding:9px 16px;background:var(--maybe-bg);border-bottom:1px solid var(--line);font-size:.86rem}
+.dayc .drop .btn{min-height:30px;font-size:.82rem}
+.grid .dayh label{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.grid .dayh input{width:16px;height:16px;margin:0}
 .dayc.unused h3,.dayc.unused .dm{color:var(--ink-3)}
 .rows{list-style:none;margin:0;padding:4px 0}
 .rows .row{display:flex;gap:16px;align-items:center;padding:7px 16px;min-height:42px}
@@ -250,7 +254,7 @@ input[type=checkbox]{accent-color:var(--accent)}
   <span class="logo" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M8.5 14.5l2.2 2.2 4.8-4.8"/></svg></span>
   <div>
     <h1>Elterngespräche verteilen</h1>
-    <p class="lead">Link der Terminumfrage einfügen. Das Tool verteilt die Termine so, dass alle Familien einen bekommen, wenn das irgendwie geht. Es braucht dabei möglichst wenige Tage und lässt keine Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
+    <p class="lead">Link der Terminumfrage einfügen. Das Tool verteilt die Termine so, dass alle Familien einen bekommen, wenn das irgendwie geht. Dabei braucht es so wenige Tage wie möglich und lässt keine Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
   </div>
 </header>
 
@@ -1025,11 +1029,12 @@ function restore(){
 /* ---------- Verteilen ----------
    1. So viele Familien wie möglich (grösster Fluss). Bleibt eine Familie ohne Termin, geht es wirklich nicht:
       jede andere Verteilung liesse dann eine andere Familie ohne Termin.
-   2. Danach ein möglichst effizienter Plan: wenige Tage, keine Lücken zwischen den Gesprächen eines Tages,
-      wenig «wenn nötig». Welche Tage es mindestens braucht, wird durchprobiert; die Lücken schliesst eine Suche,
-      die Familien verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
-   Gewichte: ein Tag 1000, eine Lücke 30, ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
-var COST = { day: 1000, gap: 30, rank: 0.01 };
+   2. Dann so wenige Tage wie möglich. Welche Tage es mindestens braucht, wird durchprobiert (bei mehr als 12 Tagen
+      werden Tage einzeln weggelassen, solange alle Platz haben).
+   3. Danach keine Lücken zwischen den Gesprächen eines Tages und wenig «wenn nötig». Das erledigt eine Suche, die
+      Familien verschiebt und tauscht (simuliertes Abkühlen, fester Startwert: gleiche Antworten, gleicher Plan).
+   Gewichte: ein Tag 1 000 000, eine Lücke 30, ein «wenn nötig» 25 (kompakt) oder 5000 (Elternwunsch zuerst). */
+var COST = { day: 1e6, gap: 30, rank: 0.01 };
 var solveMemo = { key: '', res: null };
 function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function solve(s){
@@ -1098,7 +1103,7 @@ function solveNow(s){
     return { own: own, n: n };
   }
   /* schnelle Prüfung, ob eine Auswahl von Tagen für alle reicht (erweiternde Wege) */
-  function fits(allowed, need){
+  function fitCount(allowed){
     var ld = load.slice(), occ = s.slots.map(function(){ return []; }), n = 0;
     function aug(i, seen){
       for (var k = 0; k < acc[i].length; k++){
@@ -1114,8 +1119,9 @@ function solveNow(s){
       return false;
     }
     for (var x = 0; x < free.length; x++) if (aug(free[x], {})) n++;
-    return n >= need;
+    return n;
   }
+  function fits(allowed, need){ return fitCount(allowed) >= need; }
 
   var all = flow(null), K = all.n, cands = [{ allowed: null, start: all.own }];
   /* mit möglichst wenigen Tagen auskommen */
@@ -1137,7 +1143,15 @@ function solveNow(s){
       })(0, []);
     }
     found.forEach(function(allowed){ var f = flow(allowed); if (f.n === K) cands.push({ allowed: allowed, start: f.own }); });
+  } else if (K && D > 12){
+    var keep = {}, use = days.map(function(q, d){ return { d: d, n: free.reduce(function(a, i){ return a + q.filter(function(j){ return acc[i].indexOf(j) >= 0; }).length; }, 0) }; });
+    days.forEach(function(q, d){ keep[d] = true; });
+    slotOf.forEach(function(j){ if (j >= 0 && dayOf[j] >= 0) keep[dayOf[j]] = 'pin'; });
+    use.sort(function(a, b){ return a.n - b.n; }).forEach(function(u){ if (keep[u.d] === 'pin') return; keep[u.d] = false; if (!fits(keep, K)) keep[u.d] = true; });
+    var fk = flow(keep);
+    if (fk.n === K) cands.push({ allowed: keep, start: fk.own });
   }
+  var proven = !!K && D > 1 && D <= 12;
 
   function anneal(c, seed){
     var own = c.start.slice(), ld = load.slice(), occ = s.slots.map(function(){ return []; }), ok = [], opts = [];
@@ -1221,8 +1235,17 @@ function solveNow(s){
     if (first >= 0){ nDays++; nGaps += gaps; }
     return { day: s.slots[q[0]].day, slots: q, first: first, last: last, used: first >= 0, gaps: gaps, talks: talks };
   });
+  /* Wird ein Tag nur für wenige Familien gebraucht? Dann kann man ihn weglassen und diese Familien selbst anfragen. */
+  dayInfo.forEach(function(info, d){
+    info.lost = 0; info.only = [];
+    if (!info.used || D < 2 || info.slots.some(function(j){ return slotOf.some(function(x, i){ return x === j && pinned[i]; }); })) return;
+    var without = {};
+    days.forEach(function(q, e){ without[e] = e !== d; });
+    info.lost = K - fitCount(without);
+    info.only = free.filter(function(i){ return acc[i].length && acc[i].every(function(j){ return dayOf[j] === d; }); });
+  });
   return { slotOf: slotOf, pinned: pinned, holders: holders, missing: missing, nOn: nOn, nMaybe: nMaybe, nOpen: nOpen, cap: cap,
-    days: dayInfo, nDays: nDays, nGaps: nGaps, nDaysOffered: D };
+    days: dayInfo, nDays: nDays, nGaps: nGaps, nDaysOffered: D, proven: proven };
 }
 /* Termine nach Tag (in der Reihenfolge der Umfrage) und darin nach Uhrzeit */
 function minutes(t){ var m = /(\d{1,2}):(\d{2})/.exec(t || '') || /(\d{1,2})\.(\d{2})\b(?!\.)/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : 1e4; }
@@ -1251,10 +1274,13 @@ var WARN = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4
 function timeFrom(t){ var m = /(\d{1,2})[:.](\d{2})/.exec(t || ''); return m ? (m[1].length < 2 ? '0' : '') + m[1] + ':' + m[2] : t; }
 function timeTo(t){ var all = String(t || '').match(/\d{1,2}[:.]\d{2}/g); return all && all.length > 1 ? all[all.length - 1].replace('.', ':') : timeFrom(t); }
 function dayLabel(d){ return d.day || 'Termine'; }
+function daySpan(d){ var a = timeFrom(state.slots[d.slots[d.first]].time), b = timeTo(state.slots[d.slots[d.last]].time); return a === b ? a : a + '–' + b; }
+function offDays(){
+  return dayGroups(state, slotOrder(state)).filter(function(g){ return g.idx.every(function(j){ return !state.slots[j].on; }); }).map(function(g){ return g.day || 'Termine'; });
+}
 function dayMeta(d){
   if (!d.used) return 'nicht gebraucht';
-  var s = state, a = s.slots[d.slots[d.first]], b = s.slots[d.slots[d.last]];
-  return '<b>' + esc(timeFrom(a.time)) + '–' + esc(timeTo(b.time)) + '</b> · ' + plural(d.talks, 'Gespräch', 'Gespräche') + ' · ' + (d.gaps ? plural(d.gaps, 'Lücke', 'Lücken') : 'ohne Lücke');
+  return '<b>' + esc(daySpan(d)) + '</b> · ' + plural(d.talks, 'Gespräch', 'Gespräche') + ' · ' + (d.gaps ? plural(d.gaps, 'Lücke', 'Lücken') : 'ohne Lücke');
 }
 function renderAll(){
   var on = !!state;
@@ -1267,8 +1293,8 @@ function renderAll(){
   [].forEach.call(document.querySelectorAll('#viewSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'); });
   [].forEach.call(document.querySelectorAll('#modeSeg button'), function(b){ b.setAttribute('aria-pressed', b.dataset.mode === (state.mode || 'kompakt') ? 'true' : 'false'); });
   $('#modeHint').textContent = state.mode === 'wunsch'
-    ? 'Elternwunsch zuerst: «Wenn nötig» nur, wenn eine Familie sonst keinen Termin bekäme. Danach möglichst wenige Tage und keine Lücken.'
-    : 'Kompakt: so wenige Tage wie möglich und keine Leerzeiten zwischen den Gesprächen. Dafür werden auch «Wenn nötig»-Antworten genutzt.';
+    ? 'Immer so wenige Tage wie möglich. Elternwunsch zuerst: danach «Wenn nötig» nur dort, wo es für die wenigen Tage nötig ist. Dafür bleibt eher einmal eine Lücke.'
+    : 'Immer so wenige Tage wie möglich. Kompakt: danach keine Leerzeiten zwischen den Gesprächen; dafür werden auch «Wenn nötig»-Antworten genutzt.';
   renderSummary(last); renderMissing(last); renderPlan(last); renderMeta(); renderGrid(last);
 }
 function renderSummary(r){
@@ -1285,6 +1311,9 @@ function renderSummary(r){
   if (r.nOn && !r.missing.length) notes.push('🎉 ' + (r.nOn === 1 ? 'Die Familie hat' : 'Alle ' + r.nOn + ' Familien haben') + ' einen Termin.');
   var spare = r.days.filter(function(d){ return !d.used; }).map(function(d){ return dayLabel(d); });
   if (spare.length && got) notes.push('Nicht gebraucht: ' + spare.join(', ') + '.');
+  if (r.proven && r.nDays > 1) notes.push('Weniger als ' + r.nDays + ' Tage reichen nicht für alle ' + got + ' Familien.');
+  var off = offDays();
+  if (off.length) notes.push('Weggelassen: ' + off.join(', ') + '.');
   if (r.nOn > r.nOpen) notes.push('Es gibt weniger Plätze als Familien.');
   var n = $('#summaryNote');
   n.hidden = !notes.length; n.textContent = notes.join(' ');
@@ -1326,14 +1355,20 @@ function dayRows(d){
 function renderPlan(r){
   var s = state, h = '';
   if (view === 'zeit'){
-    r.days.forEach(function(d){
+    r.days.forEach(function(d, k){
       if (!d.used && !s.showFree) return;
       var rows = dayRows(d).map(function(x){
         var t = '<span class="t">' + esc(s.slots[x.j].time || s.slots[x.j].day) + '</span>';
         if (x.hs.length) return '<li class="row">' + t + '<span class="ws">' + x.hs.map(function(i){ return '<span class="w"><span class="n">' + esc(s.people[i].name) + '</span>' + tagFor(i, x.j) + pinFor(i, r) + '</span>'; }).join('') + '</span></li>';
         return '<li class="row ' + (x.gap ? 'gap' : 'free') + '">' + t + '<span class="ws">' + (x.gap ? '<span class="lk">Lücke</span>' : '<span class="frei">frei</span>') + '</span></li>';
       }).join('');
-      h += '<section class="dayc' + (d.used ? '' : ' unused') + '"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
+      var drop = '';
+      if (d.used && d.lost > 0 && d.lost <= 3){
+        var only = d.only.length === d.lost ? 'Dieser Tag wird nur für ' + d.only.map(function(i){ return esc(s.people[i].name); }).join(', ') + ' gebraucht.'
+          : 'Ohne diesen Tag bekämen ' + (d.lost === 1 ? '1 Familie' : d.lost + ' Familien') + ' keinen Termin.';
+        drop = '<div class="drop"><span>' + only + '</span><button type="button" class="btn small" data-act="dropday" data-d="' + k + '">Tag weglassen</button></div>';
+      }
+      h += '<section class="dayc' + (d.used ? '' : ' unused') + '"><header><h3>' + esc(dayLabel(d)) + '</h3><span class="dm">' + dayMeta(d) + '</span></header>' + drop + (rows ? '<ol class="rows">' + rows + '</ol>' : '') + '</section>';
     });
   } else {
     var list = s.people.map(function(p, i){ return i; }).filter(function(i){ return s.people[i].on; })
@@ -1373,7 +1408,10 @@ function renderGrid(r){
   function fc(j, cls){ cls = (cls || '') + (first[j] ? ' first' : ''); return cls.trim() ? ' class="' + cls.trim() + '"' : ''; }
   var h = '<thead>';
   var corner = '<th class="corner" scope="col"' + (anyDay ? ' rowspan="2"' : '') + '>Familie</th>';
-  if (anyDay) h += '<tr>' + corner + groups.map(function(g){ return '<th class="dayh" scope="colgroup" colspan="' + g.idx.length + '">' + esc(g.day || '–') + '</th>'; }).join('') + '</tr>';
+  if (anyDay) h += '<tr>' + corner + groups.map(function(g, k){
+    var n = g.idx.filter(function(j){ return s.slots[j].on; }).length;
+    return '<th class="dayh" scope="colgroup" colspan="' + g.idx.length + '"><label><input type="checkbox" data-act="day" data-g="' + k + '"' + (n ? ' checked' : '') + (n && n < g.idx.length ? ' data-mixed="1"' : '') + ' aria-label="' + esc(g.day || 'Tag') + ' anbieten">' + esc(g.day || '–') + '</label></th>';
+  }).join('') + '</tr>';
   h += '<tr>' + (anyDay ? '' : corner) + order.map(function(j){
     var x = s.slots[j];
     return '<th' + fc(j, 'sh' + (x.on ? '' : ' off')) + ' scope="col"><label title="' + esc(slotLabel(x)) + ' anbieten"><input type="checkbox" data-act="slot" data-s="' + j + '"' + (x.on ? ' checked' : '') + ' aria-label="' + esc(slotLabel(x)) + ' anbieten"><span class="tl">' + esc(x.time) + '</span></label>' +
@@ -1396,6 +1434,7 @@ function renderGrid(r){
   h += '</tbody><tfoot><tr><th class="who" scope="row">Zusagen</th>' + order.map(function(j){ return '<td' + fc(j) + '>' + counts[j] + '</td>'; }).join('') + '</tr></tfoot>';
   var g = $('#grid');
   g.innerHTML = h;
+  [].forEach.call(g.querySelectorAll('input[data-mixed]'), function(x){ x.indeterminate = true; });
   var dh = g.querySelector('.dayh');
   g.style.setProperty('--dayh', dh ? dh.offsetHeight + 'px' : '0px');
 }
@@ -1420,7 +1459,7 @@ function planText(){
         return '  ' + (s.slots[x.j].time || s.slots[x.j].day) + '  ' + (x.hs.length ? x.hs.map(function(i){ return s.people[i].name + (s.people[i].ans[x.j] === M ? ' (wenn nötig)' : ''); }).join(', ') : 'frei');
       });
       out.push('');
-      out.push(dayLabel(d) + (d.used ? ' (' + timeFrom(s.slots[d.slots[d.first]].time) + '–' + timeTo(s.slots[d.slots[d.last]].time) + ')' : ''));
+      out.push(dayLabel(d) + (d.used ? ' (' + daySpan(d) + ')' : ''));
       out = out.concat(lines);
     });
   } else {
@@ -1531,6 +1570,10 @@ $('#grid').addEventListener('change', function(e){
   var t = e.target, act = t.dataset.act;
   if (act === 'slot'){ state.slots[+t.dataset.s].on = t.checked; changed('#grid input[data-act="slot"][data-s="' + t.dataset.s + '"]'); }
   else if (act === 'person'){ state.people[+t.dataset.p].on = t.checked; changed('#grid input[data-act="person"][data-p="' + t.dataset.p + '"]'); }
+  else if (act === 'day'){
+    dayGroups(state, slotOrder(state))[+t.dataset.g].idx.forEach(function(j){ state.slots[j].on = t.checked; });
+    changed('#grid input[data-act="day"][data-g="' + t.dataset.g + '"]');
+  }
   else if (act === 'name'){
     var v = clean(t.value), p = state.people[+t.dataset.p];
     if (v){ p.name = v; changed(null, true); } else t.value = p.name;
@@ -1538,6 +1581,8 @@ $('#grid').addEventListener('change', function(e){
 });
 $('#grid').addEventListener('keydown', function(e){ if (e.key === 'Enter' && e.target.dataset.act === 'name') e.target.blur(); });
 $('#plan').addEventListener('click', function(e){
+  var dd = e.target.closest('button[data-act="dropday"]');
+  if (dd){ last.days[+dd.dataset.d].slots.forEach(function(j){ state.slots[j].on = false; }); changed(); return; }
   var b = e.target.closest('button[data-act="pin"]');
   if (!b) return;
   var i = +b.dataset.p, p = state.people[i];
