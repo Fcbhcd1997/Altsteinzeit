@@ -189,10 +189,10 @@ h1{font-size:clamp(1.7rem,4.5vw,2.3rem)}
   <h2 id="hLoad"><span class="num" aria-hidden="true">1</span>Umfrage laden</h2>
   <form class="linkrow" id="linkForm">
     <label class="sr" for="link">Link der Terminumfrage</label>
-    <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Link einfügen, z. B. https://nuudel.digitalcourage.de/… oder https://doodle.com/…">
+    <input id="link" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Link einfügen, z. B. https://termin.cevi.tools/invite/… oder https://nuudel.digitalcourage.de/…">
     <button class="btn primary" type="submit" id="loadBtn">Laden</button>
   </form>
-  <p class="hint">Geht mit Nuudel, Framadate, Doodle, geteilten Google-Tabellen und anderen Umfrage-Seiten, die die Antworten als Tabelle zeigen. Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
+  <p class="hint">Geht mit Nuudel, Framadate, Doodle, Rallly (z. B. termin.cevi.tools), geteilten Google-Tabellen und anderen Umfrage-Seiten, die die Antworten als Tabelle zeigen. Bei verborgenen Ergebnissen den Admin-Link nehmen. Bei Microsoft Forms, Google Forms und anderen Formularen die Antworten als Datei herunterladen und unten hochladen.</p>
   <div class="status" id="status" role="status" aria-live="polite" hidden></div>
 
   <details class="other" id="other">
@@ -597,6 +597,9 @@ function exportLinks(doc, base){
 }
 async function readPage(text, url, ctx){
   if (!/^\s*</.test(text)) return fromRows(parseDelimited(text));   // die Adresse liefert selbst eine Tabelle
+  if (/self\.__next_f/.test(text)){
+    try { return fromFlight(text); } catch (e){ if (e.code === 'empty' || e.code === 'hidden') throw e; }
+  }
   var doc = new DOMParser().parseFromString(text, 'text/html'), links = exportLinks(doc, url);
   for (var k = 0; k < links.length; k++){
     try { return await fetchVia(links[k], csvParse, ctx, false); }
@@ -642,6 +645,74 @@ function doodleParse(text){
   return fromDoodle(j);
 }
 
+/* ---------- Rallly (z. B. termin.cevi.tools, rallly.co) ----------
+   Ab Version 4 stecken Umfrage und Antworten in den Daten, die Next.js mit der Teilnahme-Seite mitschickt (self.__next_f).
+   Version 3 holt sie über die tRPC-Schnittstelle. Optionen: { id, startTime | start, duration in Minuten (0 = ganzer Tag) },
+   Antworten: { optionId, type: "yes" | "ifNeedBe" | "no" }. */
+function fromFlight(html){
+  var doc = new DOMParser().parseFromString(html, 'text/html'), chunks = [], rows = {};
+  [].forEach.call(doc.querySelectorAll('script'), function(s){
+    var re = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g, m;
+    while ((m = re.exec(s.textContent))) try { chunks.push(JSON.parse(m[1])); } catch (e){}
+  });
+  chunks.join('').split('\n').forEach(function(line){
+    var m = /^([0-9a-f]+):([\[{].*)$/.exec(line);
+    if (m) try { rows[m[1]] = JSON.parse(m[2]); } catch (e){}
+  });
+  /* Verweise wie "$1a" oder "$1a:props:poll" auflösen */
+  function deref(v){
+    var m = typeof v === 'string' && /^\$([0-9a-f]+)(?::(.+))?$/.exec(v);
+    if (!m || rows[m[1]] === undefined) return v;
+    var x = rows[m[1]];
+    (m[2] ? m[2].split(':') : []).forEach(function(k){ x = x == null ? x : x[k]; });
+    return x;
+  }
+  var poll = null, parts = null, seen = 0;
+  function walk(v, depth){
+    if (!v || typeof v !== 'object' || depth > 60 || ++seen > 300000 || (poll && parts)) return;
+    if (!Array.isArray(v)){
+      var o = deref(v.options), p = deref(v.participants), o0 = Array.isArray(o) && deref(o[0]), p0 = Array.isArray(p) && deref(p[0]);
+      if (!poll && o0 && typeof o0 === 'object' && ('startTime' in o0 || 'start' in o0) && 'duration' in o0) poll = { title: v.title, timeZone: v.timeZone, options: o.map(deref) };
+      if (!parts && Array.isArray(p) && (!p.length || (p0 && typeof p0 === 'object' && 'votes' in p0))) parts = p.map(deref);
+    }
+    for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) walk(deref(v[k]), depth + 1);
+  }
+  Object.keys(rows).forEach(function(k){ walk(rows[k], 0); });
+  if (!poll) throw new Error('keine Rallly-Daten auf der Seite');
+  if (!parts || !parts.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
+  return fromRallly(poll, parts.map(function(p){ return { name: p.name, hidden: p.hidden, votes: (deref(p.votes) || []).map(deref) }; }));
+}
+function trpcParse(text){
+  var j;
+  try { j = JSON.parse(text); } catch (e){ throw new Error('keine Rallly-Daten erhalten'); }
+  function data(r){ r = r && r.result && r.result.data; return r && r.json !== undefined ? r.json : r; }
+  var poll = Array.isArray(j) && data(j[0]), parts = Array.isArray(j) && data(j[1]);
+  if (!poll || !Array.isArray(poll.options)) throw new Error('keine Rallly-Daten erhalten');
+  if (!Array.isArray(parts) || !parts.length) throw emptyError('Die Umfrage enthält noch keine Antworten.');
+  return fromRallly(poll, parts);
+}
+function fromRallly(poll, parts){
+  var tz = poll.timeZone || 'UTC';   // ohne Zeitzone gelten die Zeiten so, wie sie eingegeben wurden
+  var DAY = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }, TIME = { hour: '2-digit', minute: '2-digit' };
+  function when(o){ var v = o.startTime != null ? o.startTime : o.start, d = new Date(typeof v === 'string' ? v.replace(/^\$D/, '') : v); return isNaN(d) ? null : d; }
+  var opts = poll.options.filter(function(o){ return o && when(o); }).sort(function(a, b){ return when(a) - when(b); }), at = {};
+  if (!opts.length) throw new Error('Die Umfrage enthält keine Termine.');
+  opts.forEach(function(o, j){ at[o.id] = j; });
+  var slots = opts.map(function(o){
+    var d = when(o), day = fmt(d, DAY, tz);
+    if (!o.duration) return { day: day, time: 'ganzer Tag' };
+    return { day: day, time: fmt(d, TIME, tz) + '–' + fmt(new Date(d.getTime() + o.duration * 60000), TIME, tz) };
+  });
+  var hidden = 0, people = parts.map(function(p, k){
+    var name = clean(p.name), ans = slots.map(function(){ return N; });
+    if (!name){ hidden++; name = 'Verborgen ' + (k + 1); }
+    (p.votes || []).forEach(function(v){ var j = v && at[v.optionId]; if (j != null) ans[j] = v.type === 'yes' ? Y : v.type === 'ifNeedBe' ? M : N; });
+    return { name: name, ans: ans };
+  });
+  if (hidden === people.length){ var e = new Error('In dieser Umfrage sind die Namen der Teilnehmenden verborgen.'); e.code = 'hidden'; throw e; }
+  return { title: clean(poll.title), slots: slots, people: people };
+}
+
 /* ---------- Link erkennen ---------- */
 var HINT_FILE = 'Hier am besten die Antworten als Excel- oder CSV-Datei herunterladen und unter «Andere Wege» hochladen.';
 function detect(raw){
@@ -665,6 +736,15 @@ function detect(raw){
     else if ((m = /\/spreadsheets\/d\/([^/]+)/.exec(path))) url = 'https://docs.google.com/spreadsheets/d/' + m[1] + '/export?format=csv';
     if (!url) return { error: 'In diesem Google-Link wurde keine Tabelle gefunden.' };
     return { kind: 'sheet', name: 'Google Tabellen', link: raw, steps: [{ url: url + (gid ? '&gid=' + gid : ''), parse: 'csv', retry: true }] };
+  }
+  var rl = /\/(invite|poll)\/([A-Za-z0-9_-]{6,})\/?$/.exec(path);
+  if (/(^|\.)rallly\.co$|^termin\.cevi\.tools$/.test(host) && !rl) return { error: 'Bitte den Link zur Umfrage selbst einfügen (er enthält /invite/ oder /poll/).' };
+  if (rl && !/(^|\.)doodle\.com$/.test(host)){
+    var rid = rl[2], batch = { 0: { json: { urlId: rid } }, 1: { json: { pollId: rid } } };
+    return { kind: 'rallly', name: host === 'termin.cevi.tools' ? 'Cevi Termin' : 'Rallly', link: raw, steps: [
+      { url: u.origin + '/invite/' + rid, parse: 'page', retry: true },
+      { url: u.origin + '/api/trpc/polls.get,polls.participants.list?batch=1&input=' + encodeURIComponent(JSON.stringify(batch)), parse: 'trpc', retry: true }
+    ] };
   }
   if (/(^|\.)doodle\.com$/.test(host)){
     m = /\/poll\/([A-Za-z0-9]+)/.exec(path) || /\/id\/([A-Za-z0-9]+)/.exec(path) || /\/group-poll\/[a-z-]+\/([A-Za-z0-9-]+)/.exec(path) || /\/([A-Za-z0-9]{8,})\/?$/.exec(path);
@@ -718,7 +798,7 @@ async function fetchVia(url, parse, ctx, retryParse){
     try { return await parse(String(text).replace(/^﻿/, ''), url); }
     catch (e){
       ctx.notes.push(ROUTES[k].name + ' · ' + url + ': ' + msg(e));
-      if (e.code === 'empty' || !retryParse) throw e;
+      if (e.code === 'empty' || e.code === 'hidden' || !retryParse) throw e;
       lastErr = e; ctx.route = null;
     }
   }
@@ -726,10 +806,10 @@ async function fetchVia(url, parse, ctx, retryParse){
 }
 async function fetchPoll(src){
   var ctx = { route: null, tries: 0, notes: [] }, err = null;
-  var parsers = { csv: csvParse, doodle: doodleParse, page: function(t, url){ return readPage(t, url, ctx); } };
+  var parsers = { csv: csvParse, doodle: doodleParse, trpc: trpcParse, page: function(t, url){ return readPage(t, url, ctx); } };
   for (var k = 0; k < src.steps.length; k++){
     try { return await fetchVia(src.steps[k].url, parsers[src.steps[k].parse], ctx, src.steps[k].retry); }
-    catch (e){ if (e.code === 'empty'){ e.notes = ctx.notes; throw e; } err = err || e; }
+    catch (e){ if (e.code === 'empty' || e.code === 'hidden'){ e.notes = ctx.notes; throw e; } err = err || e; }
   }
   err = err || new Error('nicht geladen');
   err.notes = ctx.notes;
@@ -753,9 +833,11 @@ async function loadLink(raw){
   } catch (e){
     var h;
     if (e.code === 'empty') h = '<p><b>Die Umfrage wurde gefunden, enthält aber noch keine Antworten.</b></p>';
+    else if (e.code === 'hidden') h = '<p><b>Die Umfrage wurde gefunden, aber die Namen der Teilnehmenden sind verborgen.</b></p><p>Ohne Namen lassen sich die Termine nicht zuteilen. In den Einstellungen der Umfrage das Verbergen der Teilnehmenden kurz ausschalten, hier «Laden» drücken und danach wieder einschalten.</p>';
     else {
       h = '<p><b>Die Umfrage konnte nicht geladen werden.</b></p>';
-      if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und hier unter «Andere Wege» hochladen, oder sie unten von Hand eintragen.</p>';
+      if (src.kind === 'rallly') h += '<p>Die Umfrage-Seite liess sich nicht auslesen. Steht im Link /invite/ oder /poll/? Wenn ja, die Antworten unten von Hand eintragen oder als Datei hochladen.</p>';
+      else if (src.kind === 'doodle') h += '<p>Doodle gibt die Antworten nicht immer an andere Seiten heraus. Dann in Doodle die Antworten als Excel-Datei exportieren und hier unter «Andere Wege» hochladen, oder sie unten von Hand eintragen.</p>';
       else if (src.kind === 'sheet') h += '<p>Ist die Tabelle für «Alle mit dem Link» freigegeben? Sonst in Google Tabellen «Datei → Herunterladen → CSV» wählen und die Datei hier unter «Andere Wege» hochladen.</p>';
       else if (src.kind === 'framadate') h += '<p>Dann auf der Umfrage-Seite den CSV-Export herunterladen und hier unter «Andere Wege» hochladen.' + (src.admin ? '' : ' Sind die Ergebnisse der Umfrage verborgen, den Admin-Link verwenden.') + '</p>';
       else h += '<p>Diese Seite zeigt die Antworten nicht in einer lesbaren Tabelle, oder sie lässt sich nicht abrufen. ' + esc(HINT_FILE) + '</p>';
@@ -1245,7 +1327,7 @@ if (state && state.link) $('#link').value = state.link;
 renderAll();
 
 /* Für Tests */
-window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, fromDoodle: fromDoodle, fromPage: function(html){ return fromDoc(new DOMParser().parseFromString(html, 'text/html')); }, detect: detect, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
+window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, fromDoodle: fromDoodle, fromPage: function(html){ return fromDoc(new DOMParser().parseFromString(html, 'text/html')); }, fromFlight: fromFlight, trpcParse: trpcParse, detect: detect, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
 })();
 </script>
 </body>
