@@ -269,6 +269,69 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
 
 .foot{padding:4px 0 40px;color:var(--ink-3);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px 18px}
 
+/* ---------- Konto ---------- */
+.top{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px 24px}
+.topmain{flex:1 1 420px;min-width:0}
+.acct{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:.88rem;color:var(--ink-2);min-width:0}
+.acct .me{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.acct .av{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase}
+.acct .mail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:22em}
+.loadcard{display:flex;align-items:center;gap:4px;color:var(--ink-2)}
+.authcard{max-width:460px;padding:26px}
+.tabs{display:flex;padding:3px;border-radius:12px;background:var(--surface-3);gap:2px;margin-bottom:20px}
+.tabs button{flex:1;border:0;background:transparent;border-radius:9px;padding:.5em .8em;cursor:pointer;font-weight:600;font-size:.9rem;color:var(--ink-2);min-height:38px}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.authcard h2{font-size:1.25rem;font-weight:650}
+.authcard .sub{margin:.35em 0 16px;color:var(--ink-2);font-size:.93rem}
+.fld{display:flex;flex-direction:column;gap:5px;margin:0 0 14px;font-size:.88rem;font-weight:600;color:var(--ink-2)}
+.fld .row2{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.fld input{min-height:44px;padding:.5em .8em;font-size:1rem;font-weight:400;color:var(--ink)}
+.fld .linkbtn{font-weight:500;font-size:.84rem}
+input[type=email],input[type=password]{border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--surface);transition:border-color .15s, box-shadow .15s}
+input[type=email]:focus,input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.btn.wide{width:100%;min-height:46px;font-size:.98rem}
+.alinks{margin:14px 0 0;text-align:center;font-size:.88rem}
+.guest{margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.86rem;color:var(--ink-3);text-align:center}
+.amsg{margin:0 0 14px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);font-size:.9rem;color:var(--ink)}
+.amsg.ok{background:var(--good-bg);border-color:var(--good-line)}
+.amsg.err{background:var(--warn-bg);border-color:var(--warn-line)}
+.amsg p{margin:0}
+.amsg p + p{margin-top:.4em}
+.amsg .linkbtn{color:inherit;font-weight:600}
+.newslot{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+.newslot input{flex:1 1 260px;min-width:0;min-height:44px;padding:.45em .8em;font-size:1rem}
+.newslot .btn{min-height:44px}
+.slist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.sitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:1px solid var(--line);border-radius:14px;padding:8px 10px 8px 8px;background:var(--surface);transition:border-color .15s, box-shadow .15s}
+.sitem:hover{border-color:var(--line-2);box-shadow:var(--shadow-sm)}
+.sopen{flex:1 1 260px;min-width:0;display:flex;align-items:center;gap:12px;border:0;background:none;text-align:left;cursor:pointer;padding:6px 8px;border-radius:10px;color:inherit}
+.sopen .ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+.sopen .tx{display:flex;flex-direction:column;min-width:0}
+.sname{font-weight:650;font-size:1rem;overflow-wrap:anywhere}
+.smeta{font-size:.84rem;color:var(--ink-3)}
+.smeta .warn{color:var(--warn)}
+.sacts{display:flex;gap:6px;margin-left:auto}
+.btn.quiet{box-shadow:none;background:transparent;border-color:transparent;color:var(--ink-2)}
+.btn.quiet:hover{background:var(--surface-2);border-color:var(--line)}
+.btn.danger:hover{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.sedit{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:8px;padding:4px}
+.sedit input{flex:1 1 220px;min-width:0;min-height:40px;padding:.4em .7em}
+.sempty{border:2px dashed var(--line-2);border-radius:14px;padding:22px;text-align:center;color:var(--ink-3);font-size:.93rem}
+.slotbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:18px 0 -4px}
+.slotname{flex:1 1 240px;min-width:0;font-size:1.3rem;font-weight:650;letter-spacing:-.01em;padding:.25em .45em;border-color:transparent !important;background:transparent !important}
+.slotname:hover{border-color:var(--line-2) !important}
+.slotname:focus{background:var(--surface) !important;border-color:var(--accent) !important}
+.saved{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:.86rem;color:var(--ink-3)}
+.saved.ok{color:var(--good)}
+.saved.err{color:var(--warn);font-weight:600}
+.saved .btn{min-height:30px;font-size:.82rem;font-weight:600}
+.savetoast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:40;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;width:max-content;max-width:calc(100% - 32px);padding:11px 14px 11px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--warn-line);box-shadow:0 10px 32px rgba(0,0,0,.2);font-size:.9rem}
+.savetoast b{color:var(--warn)}
+.savetoast .btn{min-height:32px;font-size:.84rem}
+.signed .top .lead{display:none}
+.guestbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin:18px 0 -4px;padding:10px 14px;border-radius:12px;background:var(--maybe-bg);font-size:.9rem}
+
 @media (max-width:640px){
   :root{--logo-h:44px}
   .top{padding-top:22px}
@@ -282,11 +345,16 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
   .grid .corner{min-width:10em}
   .grid .nm{width:8.5em}
   .kpi .val{font-size:1.45rem}
+  .top{gap:6px}
+  .acct{margin-top:0;order:-1;width:100%;justify-content:flex-end}
+  .acct .mail{max-width:13em}
+  .authcard{padding:20px 16px}
+  .slotname{font-size:1.12rem}
 }
 @media (prefers-reduced-motion: reduce){ .spin{animation:none} }
 @media print{
   body{background:#fff;color:#000;font-size:11pt}
-  .lead,#stepLoad,#stepGrid,.tools,.mode-hint,.hardbox,.foot,.pin,.missing .tip,#stepPlan > .hint,.num{display:none !important}
+  .lead,#stepLoad,#stepGrid,.tools,.mode-hint,.hardbox,.foot,.pin,.missing .tip,#stepPlan > .hint,.num,.acct,.slotbar,.guestbar,.savetoast{display:none !important}
   .top{padding:0 0 6px}
   .card{border:0;box-shadow:none;padding:0;margin:8px 0;background:none}
   .kpi,.missing,.dayc{background:none !important;border:1px solid #bbb}
@@ -299,20 +367,60 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
 <body>
 <div class="wrap">
 <header class="top">
-  <h1 class="brand"><picture>
-    <source srcset="bilder/smartslot-logo-dunkel.webp" media="(prefers-color-scheme: dark)">
-    <img src="bilder/smartslot-logo-hell.webp" alt="SmartSlot" width="760" height="168">
-  </picture></h1>
-  <p class="tagline">Termine effizient organisieren</p>
-  <div>
+  <div class="topmain">
+    <h1 class="brand"><picture>
+      <source srcset="bilder/smartslot-logo-dunkel.webp" media="(prefers-color-scheme: dark)">
+      <img src="bilder/smartslot-logo-hell.webp" alt="SmartSlot" width="760" height="168">
+    </picture></h1>
+    <p class="tagline">Termine effizient organisieren</p>
     <p class="lead">Antworten der Terminumfrage einlesen, und SmartSlot verteilt die Gespräche: Alle Familien bekommen einen Termin, wenn das irgendwie geht, an möglichst wenigen Tagen und ohne Leerzeiten. Wer keinen Termin bekommen kann, steht mit Grund in einer Liste.</p>
+  </div>
+  <div class="acct" id="acct" hidden>
+    <span class="me" id="acctMe"><span class="av" id="acctAv" aria-hidden="true"></span><span class="mail" id="acctMail"></span></span>
+    <button class="btn small" type="button" id="logoutBtn">Abmelden</button>
   </div>
 </header>
 
 <main>
+<section class="card loadcard" id="loadView" hidden><span class="spin" aria-hidden="true"></span><span id="loadText">Wird geladen …</span></section>
+
+<section class="card authcard" id="authView" aria-labelledby="authTitle" hidden>
+  <div class="tabs" role="tablist" id="authTabs">
+    <button type="button" role="tab" data-mode="in" aria-selected="true" aria-controls="authForm">Anmelden</button>
+    <button type="button" role="tab" data-mode="up" aria-selected="false" aria-controls="authForm">Konto erstellen</button>
+  </div>
+  <form id="authForm" novalidate>
+    <h2 id="authTitle">Anmelden</h2>
+    <p class="sub" id="authSub"></p>
+    <div class="amsg" id="authMsg" role="status" aria-live="polite" hidden></div>
+    <label class="fld" id="mailRow"><span>E-Mail-Adresse</span><input type="email" id="authEmail" name="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254"></label>
+    <div class="fld" id="pwRow"><span class="row2"><label for="authPw" id="pwLabel">Passwort</label><button type="button" class="linkbtn" id="pwShow" aria-controls="authPw">anzeigen</button></span><input type="password" id="authPw" name="password" autocomplete="current-password" maxlength="72"></div>
+    <label class="fld" id="pw2Row" hidden><span>Passwort wiederholen</span><input type="password" id="authPw2" autocomplete="new-password" maxlength="72"></label>
+    <button class="btn primary wide" type="submit" id="authSubmit">Anmelden</button>
+    <p class="alinks" id="authLinks"><button type="button" class="linkbtn" id="forgotBtn">Passwort vergessen?</button><button type="button" class="linkbtn" id="backLoginBtn" hidden>Zurück zur Anmeldung</button></p>
+  </form>
+  <p class="guest" id="guestRow"><button type="button" class="linkbtn" id="guestBtn">Ohne Konto ausprobieren</button> · dann wird nichts gespeichert</p>
+</section>
+
+<section class="card" id="listView" aria-labelledby="hList" hidden>
+  <div class="card-head"><div><h2 id="hList">Meine SmartSlots</h2>
+    <p class="sub">Ein SmartSlot gehört zu einer Terminumfrage. Alles darin wird automatisch gespeichert.</p></div></div>
+  <form class="newslot" id="newSlotForm"><label class="sr" for="newSlotName">Name des neuen SmartSlots</label><input type="text" id="newSlotName" maxlength="120" placeholder="Name, z. B. Elterngespräche 4b Herbst" autocomplete="off"><button class="btn primary" type="submit">+ SmartSlot erstellen</button></form>
+  <div class="amsg" id="listMsg" role="status" aria-live="polite" hidden></div>
+  <ul class="slist" id="slotList"></ul>
+</section>
+
+<div id="work">
+<div class="slotbar" id="slotBar" hidden>
+  <button class="btn small" type="button" id="backBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Meine SmartSlots</span></button>
+  <label class="sr" for="slotName">Name des SmartSlots</label>
+  <input type="text" id="slotName" class="slotname" maxlength="120" autocomplete="off">
+  <span class="saved" id="saveState" role="status" aria-live="polite"></span>
+</div>
+<div class="guestbar" id="guestBar" hidden><span>Du arbeitest ohne Konto. Nichts wird gespeichert.</span><button class="btn small" type="button" id="guestLoginBtn">Anmelden oder Konto erstellen</button></div>
 <section class="card" id="stepLoad" aria-labelledby="hLoad">
   <div class="card-head"><span class="num" aria-hidden="true">1</span><div><h2 id="hLoad">Antworten einlesen</h2>
-    <p class="sub">Die Antworten der Umfrage als CSV- oder Excel-Datei herunterladen und hier hineinziehen.</p></div></div>
+    <p class="sub" id="loadSub">Die Antworten der Umfrage als CSV- oder Excel-Datei herunterladen und hier hineinziehen.</p></div></div>
   <div class="dropzone" id="dropZone">
     <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
     <div class="dz-txt"><b>Datei hierher ziehen</b><span>CSV oder Excel (.csv, .xlsx, .xls, .ods)</span></div>
@@ -365,14 +473,17 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
     <form id="addSlot"><label class="sr" for="newSlot">Termin hinzufügen</label><input id="newSlot" type="text" placeholder="Termin hinzufügen, z. B. Do 29.10. 18:20"><button class="btn small" type="submit">+ Termin</button></form>
   </div>
 </section>
+</div>
 </main>
 
 <footer class="foot">
-  <span><b>SmartSlot</b> · Alles wird hier im Browser berechnet.</span>
+  <span><b>SmartSlot</b> · <span id="footNote">Alles wird hier im Browser berechnet.</span></span>
   <button class="linkbtn" type="button" id="resetBtn" hidden>Alles löschen</button>
 </footer>
 </div>
+<div class="savetoast" id="saveToast" role="alert" hidden></div>
 
+<script src="smartslot-config.js"></script>
 <script>
 (function(){
 'use strict';
@@ -380,6 +491,8 @@ var KEY = 'elterngespraeche-v1';
 var Y = 2, M = 1, N = 0;   // Antworten: Ja, Wenn nötig, Nein
 var XLSX_URL = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
 var XLSX_SRI = 'sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';
+var SB_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js';
+var SB_SRI = 'sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok';
 
 var $ = function(s){ return document.querySelector(s); };
 var state = null, view = 'zeit', last = null;
@@ -633,16 +746,17 @@ function fmt(d, opts, tz){
 function setStatus(kind, html){ var s = $('#status'); s.hidden = !html; s.className = 'status ' + kind; s.innerHTML = html || ''; }
 
 /* ---------- Dateien ---------- */
-function loadXLSX(){
-  if (window.XLSX) return Promise.resolve(window.XLSX);
+function loadScript(url, sri, name, fail){
+  if (window[name]) return Promise.resolve(window[name]);
   return new Promise(function(res, rej){
     var s = document.createElement('script');
-    s.src = XLSX_URL; s.integrity = XLSX_SRI; s.crossOrigin = 'anonymous';
-    s.onload = function(){ window.XLSX ? res(window.XLSX) : rej(new Error('Excel-Leser fehlt')); };
-    s.onerror = function(){ rej(new Error('Der Excel-Leser konnte nicht geladen werden. Die Datei in Excel als CSV speichern und diese hochladen.')); };
+    s.src = url; s.integrity = sri; s.crossOrigin = 'anonymous';
+    s.onload = function(){ window[name] ? res(window[name]) : rej(new Error(fail)); };
+    s.onerror = function(){ rej(new Error(fail)); };
     document.head.appendChild(s);
   });
 }
+function loadXLSX(){ return loadScript(XLSX_URL, XLSX_SRI, 'XLSX', 'Der Excel-Leser konnte nicht geladen werden. Die Datei in Excel als CSV speichern und diese hochladen.'); }
 function decodeText(buf){
   try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
   catch (e){ return new TextDecoder('windows-1252').decode(buf); }   // CSV aus Excel unter Windows
@@ -727,8 +841,8 @@ function carryOver(old, s){
     if (np && pj >= 0 && map[pj] >= 0) s.pins[np.id] = s.slots[map[pj]].id;
   });
 }
-/* Nichts wird aufbewahrt: wer die Seite neu öffnet, beginnt mit einer leeren Seite */
-function save(){}
+/* Ohne Konto wird nichts aufbewahrt: wer die Seite neu öffnet, beginnt mit einer leeren Seite.
+   Mit Konto speichert save() den offenen SmartSlot (siehe «Konto» weiter unten). */
 function forget(){ try { localStorage.removeItem(KEY); sessionStorage.clear(); } catch (e){} }
 
 /* ---------- Verteilen ----------
@@ -1090,6 +1204,7 @@ function dayMeta(d){
 function renderAll(){
   var on = !!state;
   $('#stepPlan').hidden = !on; $('#stepGrid').hidden = !on; $('#resetBtn').hidden = !on;
+  $('#loadSub').textContent = on ? 'Neue Antworten derselben Umfrage? Die aktuelle Datei einfach nochmals einlesen: Was du angepasst hast, bleibt erhalten.' : 'Die Antworten der Umfrage als CSV- oder Excel-Datei herunterladen und hier hineinziehen.';
   if (!on) return;
   last = solve(state);
   $('#useMaybe').checked = !!state.useMaybe;
@@ -1281,7 +1396,7 @@ function changed(focusSel, keepGrid){
 /* ---------- Text, CSV, Drucken ---------- */
 function unitNote(r, x, j){ var u = r.units[x]; return (u.hard ? ' (anspruchsvoll)' : '') + (u.ans[j] === M ? ' (wenn nötig)' : ''); }
 function planText(){
-  var s = state, r = last, out = ['Elterngespräche' + (s.title ? ' – ' + s.title : '')];
+  var s = state, r = last, out = [acct.slot ? acct.slot.name : 'Elterngespräche' + (s.title ? ' – ' + s.title : '')];
   {
     r.days.forEach(function(d){
       if (!d.used) return;
@@ -1343,6 +1458,518 @@ function demoData(){
   return { title: 'Beispiel 4b', slots: slots, people: fam.map(function(f){
     return { name: f[0], ans: f[1].replace(/\|/g, '').split('').map(function(c){ return c === 'j' ? Y : c === 'v' ? M : N; }) };
   }) };
+}
+
+/* ---------- Konto: anmelden und SmartSlots speichern ----------
+   Mit Supabase: Adresse und Schlüssel stehen in smartslot-config.js, Tabelle und Zugriffsregeln in supabase/smartslot.sql.
+   Fehlen die Angaben, läuft SmartSlot wie bisher ohne Anmeldung, und nichts wird gespeichert.
+   Jeder SmartSlot ist eine Zeile der Tabelle «smartslots». Kurz nach jeder Änderung wird der ganze Zustand gespeichert.
+   Die Datenbank zählt «version» bei jeder Änderung hoch. Hat inzwischen ein anderes Fenster gespeichert, wird nichts
+   überschrieben, sondern nachgefragt. */
+var acct = { on: false, client: null, user: null, guest: false, carry: null, recovery: false, view: '', mode: 'in',
+  slot: null, dirty: false, saving: null, timer: 0, retry: 0, problem: '', errText: '', list: null, notice: null, nav: 0, busy: false, mail: '', out: false, toast: '' };
+var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+var SAVE_DELAY = 700;
+var ICON_SLOT = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/></svg>';
+
+function here(){ return location.origin + location.pathname; }
+function plainUrl(){ return location.pathname + location.search; }
+function hashParams(){ var o = {}; new URLSearchParams(location.hash.replace(/^#/, '')).forEach(function(v, k){ o[k] = v; }); return o; }
+function slotInHash(){ var id = hashParams().s; return id && UUID.test(id) ? id.toLowerCase() : ''; }
+function db(){ return acct.client.from('smartslots'); }
+
+function showView(v, text){
+  acct.view = v;
+  $('#loadView').hidden = v !== 'loading';
+  if (v === 'loading') $('#loadText').textContent = text || 'Wird geladen …';
+  $('#authView').hidden = v !== 'auth';
+  $('#listView').hidden = v !== 'list';
+  $('#work').hidden = acct.on && v !== 'work';
+  $('#slotBar').hidden = !(v === 'work' && acct.slot);
+  $('#guestBar').hidden = !(v === 'work' && acct.on && acct.guest && !acct.user);
+  $('#acct').hidden = !acct.user;
+  document.body.classList.toggle('signed', !!acct.user);
+  if (acct.user){ $('#acctMail').textContent = acct.user.email || ''; $('#acctAv').textContent = (acct.user.email || '?').charAt(0); }
+  $('#footNote').textContent = acct.user ? 'Deine SmartSlots werden in deinem Konto gespeichert.' : 'Alles wird hier im Browser berechnet.';
+  $('#resetBtn').textContent = acct.slot ? 'Antworten in diesem SmartSlot löschen' : 'Alles löschen';
+}
+function note(el, n){
+  el.hidden = !n;
+  el.className = 'amsg' + (n && n.kind ? ' ' + n.kind : '');
+  el.innerHTML = n ? n.html : '';
+}
+function txt(kind, s){ return { kind: kind, html: '<p>' + esc(s) + '</p>' }; }
+
+/* ---------- Anmelden, Konto erstellen, Passwort ---------- */
+var AUTH = {
+  'in': { title: 'Willkommen zurück', sub: 'Melde dich an, um deine SmartSlots zu öffnen.', go: 'Anmelden' },
+  up: { title: 'Neu bei SmartSlot?', sub: 'Mit einem Konto speichert SmartSlot deine Umfragen und Verteilungen. So kannst du jederzeit weiterarbeiten.', go: 'Konto erstellen' },
+  reset: { title: 'Passwort vergessen', sub: 'Gib deine E-Mail-Adresse ein. Du bekommst einen Link, mit dem du ein neues Passwort setzen kannst.', go: 'Link senden' },
+  newpw: { title: 'Neues Passwort', sub: 'Wähle ein neues Passwort für dein Konto.', go: 'Passwort speichern' }
+};
+function showAuth(mode, n){
+  var a = AUTH[mode], up = mode === 'up', np = mode === 'newpw', reset = mode === 'reset';
+  acct.mode = mode;
+  $('#authTabs').hidden = reset || np;
+  [].forEach.call(document.querySelectorAll('#authTabs button'), function(b){ b.setAttribute('aria-selected', String(b.dataset.mode === mode)); });
+  $('#authTitle').textContent = a.title;
+  $('#authSub').textContent = np && acct.user && acct.user.email ? 'Wähle ein neues Passwort für ' + acct.user.email + '.' : a.sub;
+  $('#mailRow').hidden = np;
+  $('#pwRow').hidden = reset;
+  $('#pw2Row').hidden = !(up || np);
+  $('#pwLabel').textContent = np ? 'Neues Passwort' : 'Passwort';
+  $('#authPw').setAttribute('autocomplete', up || np ? 'new-password' : 'current-password');
+  $('#authPw').placeholder = up || np ? 'mindestens 8 Zeichen' : '';
+  $('#authSubmit').textContent = a.go;
+  $('#forgotBtn').hidden = mode !== 'in';
+  $('#backLoginBtn').hidden = !(reset || np);
+  $('#backLoginBtn').textContent = np ? 'Später' : 'Zurück zur Anmeldung';
+  $('#guestRow').hidden = np;
+  note($('#authMsg'), n || null);
+  showView('auth');
+}
+function authFail(n, focus){
+  note($('#authMsg'), typeof n === 'string' ? txt('err', n) : n);
+  if (focus){ var el = $(focus); if (el && !el.closest('[hidden]')) el.focus(); }
+}
+function authText(e){
+  var c = e && e.code || '', m = e && e.message || String(e);
+  if (c === 'invalid_credentials' || /invalid login credentials/i.test(m)) return 'E-Mail-Adresse oder Passwort stimmt nicht.';
+  if (/invalid api key|no api key/i.test(m)) return 'Der Schlüssel in smartslot-config.js stimmt nicht.';
+  if (c === 'email_not_confirmed' || /email not confirmed/i.test(m)) return { kind: 'err', html: '<p>Bitte bestätige zuerst deine E-Mail-Adresse mit dem Link, den wir dir geschickt haben.</p><p>Keine E-Mail bekommen? <button type="button" class="linkbtn" data-act="resend">Nochmals schicken</button></p>' };
+  if (c === 'user_already_exists' || c === 'email_exists' || /already registered/i.test(m)) return 'Für diese E-Mail-Adresse gibt es schon ein Konto. Bitte melde dich an.';
+  if (c === 'weak_password' || /password should|password is too weak/i.test(m)) return 'Das Passwort ist zu schwach. Bitte nimm mindestens 8 Zeichen, am besten mit Zahlen und Sonderzeichen.';
+  if (c === 'same_password') return 'Das neue Passwort muss sich vom bisherigen unterscheiden.';
+  if (c === 'email_address_invalid' || /invalid format|email address .*invalid/i.test(m)) return 'Diese E-Mail-Adresse ist ungültig.';
+  if (c === 'signup_disabled' || /signups not allowed/i.test(m)) return 'Neue Konten können zurzeit nicht erstellt werden.';
+  if (/rate limit|too many/i.test(m) || /^over_/.test(c) || e && e.status === 429) return 'Gerade gab es zu viele Versuche oder E-Mails. Bitte warte ein paar Minuten und versuche es dann nochmals.';
+  if (c === 'session_not_found' || e && e.name === 'AuthSessionMissingError') return 'Die Sitzung ist abgelaufen. Bitte fordere einen neuen Link an.';
+  if (e && e.name === 'AuthRetryableFetchError' || /failed to fetch|networkerror|load failed/i.test(m)) return 'Keine Verbindung zum Server. Bitte prüfe die Internetverbindung.';
+  return 'Das ging nicht: ' + m;
+}
+function linkText(p){
+  if (p.error_code === 'otp_expired') return 'Der Link ist abgelaufen oder wurde schon benutzt. Melde dich an oder fordere einen neuen Link an.';
+  return 'Der Link hat nicht funktioniert. Bitte melde dich an oder fordere einen neuen Link an.';
+}
+function authBusy(on){ acct.busy = on; $('#authSubmit').disabled = on; }
+
+$('#authTabs').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-mode]');
+  if (b && b.dataset.mode !== acct.mode){ showAuth(b.dataset.mode); $('#authEmail').focus(); }
+});
+$('#forgotBtn').addEventListener('click', function(){ showAuth('reset'); $('#authEmail').focus(); });
+$('#backLoginBtn').addEventListener('click', function(){
+  if (acct.mode === 'newpw'){ acct.recovery = false; $('#authPw').value = $('#authPw2').value = ''; route(); }
+  else showAuth('in');
+});
+$('#pwShow').addEventListener('click', function(){
+  var show = $('#authPw').type === 'password';
+  $('#authPw').type = $('#authPw2').type = show ? 'text' : 'password';
+  this.textContent = show ? 'verbergen' : 'anzeigen';
+});
+$('#authMsg').addEventListener('click', async function(e){
+  if (e.target.closest('button[data-act="forgot"]')){ showAuth('reset'); $('#authEmail').focus(); return; }
+  var b = e.target.closest('button[data-act="resend"]');
+  if (!b || !acct.client) return;
+  var email = acct.mail || clean($('#authEmail').value).toLowerCase();
+  if (!email) return authFail('Bitte gib oben deine E-Mail-Adresse ein.', '#authEmail');
+  b.disabled = true;
+  var r = await acct.client.auth.resend({ type: 'signup', email: email, options: { emailRedirectTo: here() } });
+  note($('#authMsg'), r.error ? (typeof authText(r.error) === 'string' ? txt('err', authText(r.error)) : authText(r.error)) : txt('ok', 'Die E-Mail an ' + email + ' ist nochmals unterwegs.'));
+});
+$('#authForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  if (acct.busy) return;
+  if (!acct.client) return authFail('Die Anmeldung ist gerade nicht verfügbar. Bitte lade die Seite neu.');
+  var mode = acct.mode, email = clean($('#authEmail').value).toLowerCase(), pw = $('#authPw').value, pw2 = $('#authPw2').value, r;
+  if (mode !== 'newpw' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return authFail('Bitte gib eine gültige E-Mail-Adresse ein.', '#authEmail');
+  if (mode === 'in' && !pw) return authFail('Bitte gib dein Passwort ein.', '#authPw');
+  if (mode === 'up' || mode === 'newpw'){
+    if (pw.length < 8) return authFail('Das Passwort braucht mindestens 8 Zeichen.', '#authPw');
+    if (pw !== pw2) return authFail('Die beiden Passwörter stimmen nicht überein.', '#authPw2');
+  }
+  note($('#authMsg'), null);
+  authBusy(true);
+  try {
+    if (mode === 'in'){
+      acct.mail = email;
+      r = await acct.client.auth.signInWithPassword({ email: email, password: pw });
+      if (r.error) return authFail(authText(r.error), '#authPw');
+      $('#authPw').value = '';   // weiter geht es mit dem Anmelde-Ereignis
+    } else if (mode === 'up'){
+      acct.mail = email;
+      r = await acct.client.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: here() } });
+      if (r.error) return authFail(authText(r.error), '#authEmail');
+      $('#authPw').value = $('#authPw2').value = '';
+      /* Gibt es die Adresse schon, meldet Supabase das nicht als Fehler, sondern mit einem Konto ohne Anmeldearten */
+      if (!r.data.session && r.data.user && Array.isArray(r.data.user.identities) && !r.data.user.identities.length) showAuth('in', { kind: 'err', html: '<p>Für ' + esc(email) + ' gibt es schon ein Konto. Bitte melde dich an. Passwort vergessen? <button type="button" class="linkbtn" data-act="forgot">Neues Passwort setzen</button></p>' });
+      else if (!r.data.session) showAuth('in', { kind: 'ok', html: '<p><b>Fast geschafft!</b> Wir haben dir eine E-Mail an ' + esc(email) + ' geschickt. Klicke auf den Link darin, um dein Konto zu bestätigen. Danach bist du angemeldet.</p><p>Nichts angekommen? Schau im Spam-Ordner nach oder <button type="button" class="linkbtn" data-act="resend">schick die E-Mail nochmals</button>.</p>' });
+    } else if (mode === 'reset'){
+      r = await acct.client.auth.resetPasswordForEmail(email, { redirectTo: here() });
+      if (r.error) return authFail(authText(r.error), '#authEmail');
+      showAuth('in', txt('ok', 'Falls es für ' + email + ' ein Konto gibt, ist jetzt ein Link unterwegs. Damit kannst du ein neues Passwort setzen.'));
+    } else {
+      r = await acct.client.auth.updateUser({ password: pw });
+      if (r.error) return authFail(authText(r.error), '#authPw');
+      $('#authPw').value = $('#authPw2').value = '';
+      acct.recovery = false;
+      acct.notice = txt('ok', '✓ Dein neues Passwort ist gespeichert.');
+      route();
+    }
+  } catch (err){ authFail(authText(err)); }
+  finally { authBusy(false); }
+});
+$('#guestBtn').addEventListener('click', function(){
+  acct.guest = true;
+  if (acct.carry){ state = acct.carry; acct.carry = null; }
+  showView('work'); renderAll();
+});
+$('#guestLoginBtn').addEventListener('click', function(){
+  acct.guest = false; acct.carry = state; state = null; last = null; setStatus('', ''); renderAll();
+  showAuth('in', acct.carry ? txt('', 'Die eingelesenen Antworten bleiben erhalten: Nach dem Anmelden kannst du sie als SmartSlot speichern.') : null);
+  window.scrollTo(0, 0);
+});
+$('#logoutBtn').addEventListener('click', async function(){
+  if (!(await leaveSlot())) return;
+  history.replaceState(null, '', plainUrl());
+  acct.out = true;
+  await acct.client.auth.signOut({ scope: 'local' });   // nur in diesem Browser; das Ereignis zeigt danach die Anmeldung
+});
+
+/* Ereignisse von Supabase: beim Start, nach dem Anmelden, nach dem Abmelden, nach einem Link aus einer E-Mail */
+function onAuth(ev, session){
+  var user = session && session.user || null;
+  if (location.href.slice(-1) === '#') history.replaceState(history.state, '', plainUrl());
+  if (ev === 'PASSWORD_RECOVERY'){ acct.recovery = true; acct.user = user; showAuth('newpw'); return; }
+  if (!user){
+    var had = !!acct.user, mine = acct.out;
+    acct.user = null; acct.recovery = false; acct.out = false;
+    if (had || acct.view === 'loading'){
+      dropSlot();
+      if (had && !mine) acct.notice = txt('err', 'Du wurdest abgemeldet. Bitte melde dich wieder an.');
+      if (!acct.guest){ showAuth('in', acct.notice); acct.notice = null; }
+    }
+    return;
+  }
+  var same = acct.user && acct.user.id === user.id;
+  acct.user = user;
+  if (same) return;
+  acct.guest = false;
+  route();
+}
+function route(){
+  if (!acct.on) return;
+  if (acct.recovery) return showAuth('newpw');
+  if (!acct.user){ if (acct.guest) showView('work'); else showAuth(acct.mode === 'newpw' ? 'in' : acct.mode); return; }
+  navigate();
+}
+window.addEventListener('popstate', function(){ if (acct.on && acct.user && !acct.recovery) navigate(); });
+async function navigate(){
+  var id = slotInHash();
+  if (acct.slot && acct.slot.id === id){ showView('work'); return; }
+  if (acct.slot){
+    var keep = acct.slot.id;
+    if (!(await leaveSlot())){ history.pushState({ s: keep, fromList: true }, '', '#s=' + keep); return; }
+  }
+  if (id) openSlot(id); else showList();
+}
+
+/* ---------- Meine SmartSlots ---------- */
+function when(ts){
+  var d = new Date(ts);
+  if (isNaN(d)) return '';
+  var now = new Date(), t = fmt(d, { hour: '2-digit', minute: '2-digit' });
+  var diff = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 864e5);
+  return diff === 0 ? 'heute, ' + t : diff === 1 ? 'gestern, ' + t : fmt(d, { day: 'numeric', month: 'numeric', year: 'numeric' });
+}
+function slotMeta(x){
+  var m = x.meta || {}, parts = [], fam = +m.families || 0, miss = +m.missing || 0;
+  if (fam) parts.push(plural(fam, 'Familie', 'Familien'), miss ? '<span class="warn">' + miss + ' ohne Termin</span>' : 'alle mit Termin');
+  else parts.push('noch keine Antworten');
+  var w = when(x.updated_at);
+  if (w) parts.push('geändert ' + esc(w));
+  return parts.join(' · ');
+}
+function listNote(n){
+  var c = acct.carry, h = n ? n.html : '';
+  if (c) h += '<p>Die Antworten von vorhin' + (c.source ? ' (' + esc(c.source) + ')' : '') + ' sind noch da. Gib oben einen Namen ein und erstelle den SmartSlot: Dann werden sie darin gespeichert. <button type="button" class="linkbtn" data-act="dropcarry">Verwerfen</button></p>';
+  note($('#listMsg'), h ? { kind: n ? n.kind : '', html: h } : null);
+}
+async function showList(n){
+  var nav = ++acct.nav;
+  showView('list');
+  listNote(n || acct.notice);
+  acct.notice = null;
+  if (!acct.list) $('#slotList').innerHTML = '<li class="loadcard"><span class="spin" aria-hidden="true"></span>Wird geladen …</li>';
+  else renderList();
+  var r = await db().select('id,name,updated_at,meta:data->meta').eq('user_id', acct.user.id).order('updated_at', { ascending: false });
+  if (nav !== acct.nav) return;
+  if (r.error){
+    if (!acct.list) $('#slotList').innerHTML = '';
+    note($('#listMsg'), { kind: 'err', html: '<p>Die SmartSlots konnten nicht geladen werden. ' + esc(dbText(r.error)) + '</p><p><button type="button" class="linkbtn" data-act="reload">Nochmals versuchen</button></p>' });
+    return;
+  }
+  acct.list = r.data || [];
+  renderList();
+}
+function renderList(){
+  var L = acct.list || [];
+  $('#slotList').innerHTML = !L.length ? '<li class="sempty">Noch keine SmartSlots. Gib oben einen Namen ein und erstelle deinen ersten.</li>' : L.map(function(x){
+    return '<li class="sitem" data-id="' + esc(x.id) + '"><button type="button" class="sopen" data-act="open"><span class="ic">' + ICON_SLOT + '</span><span class="tx"><span class="sname">' + esc(x.name) + '</span><span class="smeta">' + slotMeta(x) + '</span></span></button>' +
+      '<span class="sacts"><button type="button" class="btn small quiet" data-act="rename">Umbenennen</button><button type="button" class="btn small quiet danger" data-act="delete">Löschen</button></span></li>';
+  }).join('');
+}
+function listItem(id){ return (acct.list || []).filter(function(x){ return x.id === id; })[0]; }
+$('#newSlotForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  var inp = $('#newSlotName'), name = clean(inp.value).slice(0, 120), btn = this.querySelector('button');
+  if (!name){ note($('#listMsg'), txt('err', 'Gib dem SmartSlot zuerst einen Namen.')); inp.focus(); return; }
+  btn.disabled = true;
+  var r = await db().insert({ name: name, data: acct.carry ? pack(acct.carry) : {} }).select('id');
+  btn.disabled = false;
+  if (r.error || !r.data || !r.data.length) return note($('#listMsg'), txt('err', 'Der SmartSlot konnte nicht erstellt werden. ' + (r.error ? dbText(r.error) : '')));
+  inp.value = ''; acct.carry = null;
+  history.pushState({ s: r.data[0].id, fromList: true }, '', '#s=' + r.data[0].id);
+  openSlot(r.data[0].id);
+});
+$('#listMsg').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-act]');
+  if (!b) return;
+  if (b.dataset.act === 'dropcarry'){ acct.carry = null; listNote(null); }
+  else if (b.dataset.act === 'reload') showList();
+});
+$('#slotList').addEventListener('click', async function(e){
+  var b = e.target.closest('button[data-act]'), li = b && b.closest('.sitem');
+  if (!li) return;
+  var id = li.dataset.id, x = listItem(id), act = b.dataset.act;
+  if (!x) return;
+  if (act === 'open'){
+    history.pushState({ s: id, fromList: true }, '', '#s=' + id);
+    openSlot(id);
+  } else if (act === 'rename'){
+    li.innerHTML = '<form class="sedit" data-id="' + esc(id) + '"><label class="sr" for="ren-' + esc(id) + '">Neuer Name</label><input type="text" id="ren-' + esc(id) + '" maxlength="120" value="' + esc(x.name) + '"><button class="btn small primary" type="submit">Speichern</button><button class="btn small" type="button" data-act="cancel">Abbrechen</button></form>';
+    var inp = li.querySelector('input'); inp.focus(); inp.select();
+  } else if (act === 'cancel') renderList();
+  else if (act === 'delete'){
+    if (!confirm('«' + x.name + '» endgültig löschen? Die Antworten und die Verteilung darin gehen verloren.')) return;
+    b.disabled = true;
+    var r = await db().delete().eq('id', id);
+    if (r.error){ b.disabled = false; return note($('#listMsg'), txt('err', 'Löschen ging nicht. ' + dbText(r.error))); }
+    acct.list = acct.list.filter(function(y){ return y.id !== id; });
+    renderList();
+    note($('#listMsg'), txt('ok', '«' + x.name + '» ist gelöscht.'));
+  }
+});
+$('#slotList').addEventListener('submit', async function(e){
+  var f = e.target.closest('form.sedit');
+  if (!f) return;
+  e.preventDefault();
+  var id = f.dataset.id, x = listItem(id), name = clean(f.querySelector('input').value).slice(0, 120);
+  if (!x) return;
+  if (!name || name === x.name) return renderList();
+  var r = await db().update({ name: name }).eq('id', id).select('id,updated_at');
+  if (r.error || !r.data || !r.data.length) return note($('#listMsg'), txt('err', 'Umbenennen ging nicht. ' + (r.error ? dbText(r.error) : '')));
+  x.name = name; x.updated_at = r.data[0].updated_at;
+  renderList();
+});
+$('#slotList').addEventListener('keydown', function(e){ if (e.key === 'Escape' && e.target.closest('form.sedit')) renderList(); });
+
+/* ---------- Ein SmartSlot ---------- */
+function restore(s){
+  if (!s || !Array.isArray(s.slots) || !Array.isArray(s.people)) return null;
+  var T = s.slots.length, top = 0;
+  if (!s.people.every(function(p){ return p && Array.isArray(p.ans) && p.ans.length === T; })) return null;
+  s.pins = s.pins && typeof s.pins === 'object' ? s.pins : {};
+  s.slots.concat(s.people).forEach(function(x){ top = Math.max(top, +x.id || 0); });
+  s.nextId = Math.max(+s.nextId || 0, top + 1);
+  return s;
+}
+async function openSlot(id){
+  var nav = ++acct.nav;
+  showView('loading', 'SmartSlot wird geöffnet …');
+  var r = await db().select('id,name,data,version').eq('id', id);
+  if (nav !== acct.nav) return;
+  if (r.error || !r.data || !r.data.length){
+    history.replaceState(null, '', plainUrl());
+    return showList(txt('err', r.error ? 'Der SmartSlot konnte nicht geöffnet werden. ' + dbText(r.error) : 'Diesen SmartSlot gibt es nicht (mehr).'));
+  }
+  var row = r.data[0], saved = row.data && row.data.state;
+  acct.slot = { id: row.id, name: row.name, version: row.version };
+  acct.dirty = false; acct.problem = '';
+  state = restore(saved); last = null;
+  setStatus('', ''); hardMsg(''); $('#hardBox').open = false;
+  if (saved && !state) setStatus('err', '<p>Die gespeicherten Antworten konnten nicht gelesen werden. Bitte die Datei nochmals einlesen.</p>');
+  showView('work');
+  $('#slotName').value = row.name;
+  renderAll(); saveUI();
+  window.scrollTo(0, 0);
+}
+function dropSlot(){
+  clearTimeout(acct.timer); clearTimeout(acct.retry);
+  acct.timer = acct.retry = 0; acct.slot = null; acct.dirty = false; acct.problem = '';
+  state = null; last = null; setStatus('', ''); hardMsg(''); renderAll(); saveUI();
+}
+/* Vor dem Schliessen: noch Ungespeichertes speichern; geht das nicht, nachfragen */
+async function leaveSlot(){
+  if (!acct.slot) return true;
+  for (var k = 0; k < 4 && (acct.dirty || acct.saving) && !isStuck(); k++) await flush();
+  if ((acct.dirty || acct.saving) && !confirm('Die letzten Änderungen sind nicht gespeichert. Trotzdem schliessen?')) return false;
+  dropSlot();
+  return true;
+}
+function isStuck(){ return acct.problem === 'conflict' || acct.problem === 'gone' || (acct.problem === 'error' && !acct.saving); }
+function pack(st){
+  var r = st ? solve(st) : null;
+  return { v: 1, meta: st ? { families: r.nOn, missing: r.missing.length, days: r.nDays, file: st.source || '' } : null, state: st };
+}
+function save(){
+  if (!acct.slot || acct.problem === 'conflict' || acct.problem === 'gone') return;
+  acct.dirty = true;
+  clearTimeout(acct.timer);
+  acct.timer = setTimeout(flush, SAVE_DELAY);
+  saveUI();
+}
+function flush(){
+  clearTimeout(acct.timer); acct.timer = 0;
+  if (acct.saving) return acct.saving;
+  var sl = acct.slot;
+  if (!sl || !acct.dirty || acct.problem === 'conflict' || acct.problem === 'gone') return Promise.resolve(!acct.dirty);
+  clearTimeout(acct.retry); acct.retry = 0;
+  acct.dirty = false; acct.problem = '';
+  var body = pack(state);
+  acct.saving = db().update({ data: body }).eq('id', sl.id).eq('version', sl.version).select('version').then(function(r){
+    if (r.error) throw r.error;
+    if (r.data && r.data.length){ sl.version = r.data[0].version; return true; }
+    /* nichts geändert: inzwischen anderswo gespeichert, oder gelöscht */
+    return db().select('id').eq('id', sl.id).then(function(q){
+      if (q.error) throw q.error;
+      if (acct.slot === sl){ acct.dirty = true; acct.problem = q.data && q.data.length ? 'conflict' : 'gone'; }
+      return false;
+    });
+  }).catch(function(e){
+    if (acct.slot === sl){
+      acct.dirty = true; acct.problem = 'error'; acct.errText = dbText(e);
+      acct.retry = setTimeout(flush, 8000);
+    }
+    return false;
+  }).then(function(ok){
+    acct.saving = null;
+    if (acct.slot !== sl) return ok;
+    if (acct.dirty && !acct.problem && !acct.timer) return flush();
+    saveUI();
+    return ok;
+  });
+  saveUI();
+  return acct.saving;
+}
+function dbText(e){
+  var m = e && (e.message || e.details) || String(e), c = e && e.code;
+  if (/failed to fetch|networkerror|load failed|network request failed/i.test(m)) return 'Keine Verbindung zum Server.';
+  if (c === 'PGRST205' || c === '42P01' || /smartslots/.test(m) && /could not find|does not exist/i.test(m)) return 'In Supabase fehlt die Tabelle «smartslots»: Bitte das SQL aus supabase/smartslot.sql ausführen.';
+  if (/invalid api key|no api key/i.test(m)) return 'Der Schlüssel in smartslot-config.js stimmt nicht.';
+  if (c === 'PGRST301' || c === 'PGRST303' || /jwt/i.test(m)) return 'Die Anmeldung ist abgelaufen. Bitte melde dich neu an.';
+  if (c === '42501') return 'Keine Berechtigung: Bitte das SQL aus supabase/smartslot.sql in Supabase ausführen.';
+  if (c === '23514') return 'Der Name ist leer oder zu lang, oder die Daten sind zu gross.';
+  return m;
+}
+function saveUI(){
+  var el = $('#saveState'), toast = $('#saveToast'), p = acct.problem, h = '';
+  if (!acct.slot){ el.innerHTML = ''; toast.hidden = true; return; }
+  if (p === 'conflict') h = '<b>Nicht gespeichert:</b> In einem anderen Fenster wurde inzwischen gespeichert.</span><button type="button" class="btn small" data-act="theirs">Diesen Stand laden</button><button type="button" class="btn small" data-act="mine">Meinen Stand behalten</button>';
+  else if (p === 'gone') h = '<b>Dieser SmartSlot wurde gelöscht.</b></span><button type="button" class="btn small" data-act="resave">Neu speichern</button>';
+  else if (p === 'error') h = '<b>Nicht gespeichert.</b> ' + esc(acct.errText) + '</span><button type="button" class="btn small" data-act="retry">Erneut versuchen</button>';
+  /* Probleme unten am Rand, damit man sie auch weiter unten auf der Seite sieht */
+  toast.hidden = !h;
+  if (acct.toast !== h){ acct.toast = h; toast.innerHTML = h ? '<span>' + h : ''; }
+  if (p){
+    el.className = 'saved err';
+    el.textContent = p === 'gone' ? '⚠ Gelöscht' : '⚠ Nicht gespeichert';
+  } else if (acct.dirty || acct.saving){
+    el.className = 'saved';
+    el.innerHTML = '<span class="spin" aria-hidden="true"></span>Wird gespeichert …';
+  } else {
+    el.className = 'saved ok';
+    el.textContent = '✓ Gespeichert';
+  }
+}
+$('#saveToast').addEventListener('click', async function(e){
+  var b = e.target.closest('button[data-act]'), sl = acct.slot;
+  if (!b || !sl) return;
+  var act = b.dataset.act;
+  if (act === 'retry'){ acct.problem = ''; flush(); }
+  else if (act === 'theirs'){
+    if (!confirm('Den gespeicherten Stand laden? Deine letzten Änderungen in diesem Fenster gehen verloren.')) return;
+    acct.dirty = false; acct.problem = '';
+    openSlot(sl.id);
+  } else if (act === 'mine'){
+    b.disabled = true;
+    var q = await db().select('version').eq('id', sl.id);
+    if (q.error || !q.data || !q.data.length){ b.disabled = false; acct.problem = q.error ? 'conflict' : 'gone'; return saveUI(); }
+    sl.version = q.data[0].version; acct.problem = ''; acct.dirty = true;
+    flush();
+  } else if (act === 'resave'){
+    b.disabled = true;
+    var r = await db().insert({ name: sl.name, data: pack(state) }).select('id,version');
+    if (r.error || !r.data || !r.data.length){
+      b.disabled = false;
+      $('#saveToast').firstChild.textContent = 'Neu speichern ging nicht. ' + (r.error ? dbText(r.error) : '');
+      return;
+    }
+    sl.id = r.data[0].id; sl.version = r.data[0].version; acct.problem = ''; acct.dirty = false;
+    history.replaceState({ s: sl.id, fromList: history.state && history.state.fromList }, '', '#s=' + sl.id);
+    saveUI();
+  }
+});
+$('#backBtn').addEventListener('click', async function(){
+  if (history.state && history.state.fromList){ history.back(); return; }   // weiter geht es bei «popstate»
+  if (!(await leaveSlot())) return;
+  history.replaceState(null, '', plainUrl());
+  showList();
+});
+$('#slotName').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') this.blur();
+  else if (e.key === 'Escape' && acct.slot){ this.value = acct.slot.name; this.blur(); }
+});
+$('#slotName').addEventListener('change', async function(){
+  var sl = acct.slot, inp = this, name = clean(inp.value).slice(0, 120);
+  if (!sl) return;
+  if (!name || name === sl.name){ inp.value = sl.name; return; }
+  var r = await db().update({ name: name }).eq('id', sl.id).select('id');
+  if (r.error || !r.data || !r.data.length){
+    if (acct.slot === sl) inp.value = sl.name;
+    var el = $('#saveState'); el.className = 'saved err'; el.textContent = 'Der Name konnte nicht gespeichert werden. ' + (r.error ? dbText(r.error) : '');
+    setTimeout(saveUI, 4000);
+    return;
+  }
+  sl.name = name;
+});
+window.addEventListener('beforeunload', function(e){
+  if (acct.slot && (acct.dirty || acct.saving)){ flush(); e.preventDefault(); e.returnValue = ''; }
+});
+document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden' && acct.dirty) flush(); });
+window.addEventListener('online', function(){ if (acct.problem === 'error'){ acct.problem = ''; flush(); } });
+
+function initAccount(){
+  var cfg = window.SMARTSLOT_CONFIG || {}, url = clean(cfg.supabaseUrl), key = clean(cfg.supabaseKey || cfg.supabaseAnonKey);
+  if (!url || !key) return;   // ohne Supabase: wie bisher, ohne Anmeldung
+  acct.on = true;
+  var p = hashParams();
+  if (p.error || p.error_code || p.error_description){
+    acct.notice = txt('err', linkText(p));
+    history.replaceState(null, '', plainUrl());
+  } else if (p.access_token){
+    if (p.type === 'recovery') acct.recovery = true;
+    else if (p.type === 'signup') acct.notice = txt('ok', '✓ Deine E-Mail-Adresse ist bestätigt. Willkommen bei SmartSlot!');
+  }
+  showView('loading');
+  loadScript(SB_URL, SB_SRI, 'supabase', 'Supabase fehlt').then(function(sb){
+    try { acct.client = sb.createClient(url, key, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }); }
+    catch (e){ acct.client = null; showAuth('in', txt('err', 'Die Angaben in smartslot-config.js stimmen nicht (' + msg(e) + ').')); return; }
+    /* Supabase rät, im Ereignis selbst nicht auf Supabase zu warten: deshalb mit setTimeout */
+    acct.client.auth.onAuthStateChange(function(ev, session){ setTimeout(function(){ onAuth(ev, session); }, 0); });
+  }, function(){
+    showAuth('in', txt('err', 'Die Anmeldung konnte nicht geladen werden. Bitte prüfe die Internetverbindung und lade die Seite neu. Ohne Konto geht es trotzdem.'));
+  });
 }
 
 /* ---------- Bedienung ---------- */
@@ -1541,11 +2168,17 @@ $('#addSlot').addEventListener('submit', function(e){
 $('#copyBtn').addEventListener('click', function(){ var b = this; copyText(planText()).then(function(){ flash(b, '✓ Kopiert'); }, function(){ flash(b, 'Ging nicht'); }); });
 $('#csvBtn').addEventListener('click', function(){
   var url = URL.createObjectURL(new Blob([planCSV()], { type: 'text/csv;charset=utf-8' })), a = document.createElement('a');
-  a.href = url; a.download = 'elterngespraeche.csv'; document.body.appendChild(a); a.click(); a.remove();
+  a.href = url; a.download = (acct.slot ? acct.slot.name.replace(/[\\/:*?"<>|]+/g, ' ').trim() || 'smartslot' : 'elterngespraeche') + '.csv'; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
 });
 $('#printBtn').addEventListener('click', function(){ window.print(); });
 $('#resetBtn').addEventListener('click', function(){
+  if (acct.slot){
+    if (!confirm('Alle Antworten und Zuteilungen in «' + acct.slot.name + '» löschen? Der SmartSlot selbst bleibt bestehen.')) return;
+    state = null; last = null; setStatus('', '');
+    save(); renderAll();
+    return;
+  }
   if (!confirm('Alle Antworten und Zuteilungen auf dieser Seite löschen?')) return;
   try { localStorage.removeItem(KEY); } catch (e){}
   state = null; last = null; setStatus('', '');
@@ -1561,6 +2194,7 @@ window.addEventListener('pageshow', function(e){ if (e.persisted) location.reloa
 /* Für Tests */
 window.__eg = { fromRows: fromRows, parseDelimited: parseDelimited, solve: solve, kindOf: kindOf, splitLabel: splitLabel };
 testHook();
+initAccount();
 })();
 </script>
 </body>
