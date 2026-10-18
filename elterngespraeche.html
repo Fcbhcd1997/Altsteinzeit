@@ -320,19 +320,6 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
     <input type="file" id="file" accept=".csv,.tsv,.txt,.xlsx,.xls,.ods,text/csv" hidden>
   </div>
   <div class="status" id="status" role="status" aria-live="polite" hidden></div>
-  <details class="howto">
-    <summary>So kommst du zur Datei</summary>
-    <ul>
-      <li><b>Rallly</b> (z. B. termin.cevi.tools): die Umfrage als Ersteller:in öffnen, «Umfrage verwalten» → «CSV exportieren».</li>
-      <li><b>Nuudel, Framadate:</b> auf der Umfrage-Seite den CSV-Export herunterladen. Bei verborgenen Ergebnissen über den Admin-Link.</li>
-      <li><b>Doodle:</b> die Umfrage öffnen und als Excel-Datei exportieren.</li>
-      <li><b>Microsoft Forms:</b> unter «Antworten» auf «In Excel öffnen» klicken und die Datei speichern.</li>
-      <li><b>Google Forms:</b> unter «Antworten» im Menü ⋮ «Antworten herunterladen (.csv)» wählen.</li>
-      <li><b>Eigene Tabelle:</b> je Familie eine Zeile, je Termin eine Spalte, in den Feldern Ja / Nein / Wenn nötig (auch ✓, x oder OK).</li>
-    </ul>
-  </details>
-  <p class="privacy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
-    <span>Die Datei wird nur hier im Browser gelesen. Nichts wird hochgeladen oder gespeichert, und wer die Seite neu öffnet, beginnt mit einer leeren Seite.</span></p>
 </section>
 
 <section class="card" id="stepPlan" aria-labelledby="hPlan" hidden>
@@ -351,8 +338,8 @@ body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
   <details class="hardbox" id="hardBox">
     <summary>Gespräche einteilen: Schwierigkeitsgrad und gemeinsame Termine <span class="hcount" id="hardCount">optional</span></summary>
     <ul class="hhelp">
-      <li><b>Antippen:</b> wechselt zwischen einfach und anspruchsvoll. Anspruchsvolle Gespräche plant SmartSlot nach Möglichkeit nicht direkt nacheinander.</li>
       <li><b>Auf ein anderes Gespräch ziehen:</b> Die beiden bekommen einen gemeinsamen Termin, z. B. Eltern, die getrennt geantwortet haben. Mit × wird die Gruppe wieder gelöst.</li>
+      <li><b>Antippen:</b> wechselt zwischen einfach und anspruchsvoll. Anspruchsvolle Gespräche plant SmartSlot nach Möglichkeit nicht direkt nacheinander.</li>
     </ul>
     <div class="hchips" id="hardChips"></div>
     <p class="hmsg" id="hardMsg" role="status" aria-live="polite" hidden></p>
